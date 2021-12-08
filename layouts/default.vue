@@ -1,117 +1,216 @@
 <template>
-  <v-app dark>
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
-      app
-    >
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
+    <v-app>
+        TESTE
+        <!-- <v-snackbar v-if="user" v-model="snackbar" :timeout="timeout">
+            {{ $t('welcome') }}
+            <span v-if="user.first_name">
+                {{ user.first_name }}
+            </span>
+            <span v-if="user.last_name">
+                {{ user.last_name + '!' }}
+            </span>
+            <template v-slot:action="{ attrs }">
+                <v-btn v-bind="attrs" @click="snackbar = false" text>
+                    <v-icon> mdi-close </v-icon>
+                </v-btn>
+            </template>
+        </v-snackbar>
+
+        <v-btn
+            ripple
+            class="right-drawer-btn"
+            :class="{ 'drawer-btn-opened': layerDrawer }"
+            color="secondary"
+            @click.stop="layerDrawer = !layerDrawer"
         >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-app-bar
-      :clipped-left="clipped"
-      fixed
-      app
-    >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn
-        icon
-        @click.stop="miniVariant = !miniVariant"
-      >
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="clipped = !clipped"
-      >
-        <v-icon>mdi-application</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="fixed = !fixed"
-      >
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title" />
-      <v-spacer />
-      <v-btn
-        icon
-        @click.stop="rightDrawer = !rightDrawer"
-      >
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
-    </v-app-bar>
-    <v-main>
-      <v-container>
-        <Nuxt />
-      </v-container>
-    </v-main>
-    <v-navigation-drawer
-      v-model="rightDrawer"
-      :right="right"
-      temporary
-      fixed
-    >
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-footer
-      :absolute="!fixed"
-      app
-    >
-      <span>&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>
-  </v-app>
+            <v-tooltip bottom>
+                <template #activator="{ on }">
+                    <v-icon v-on="on">
+                        {{
+                            layerDrawer
+                                ? 'mdi-chevron-right'
+                                : 'mdi-chevron-left'
+                        }}
+                    </v-icon>
+                </template>
+                <span> {{ $t('tooltip') }} </span>
+            </v-tooltip>
+        </v-btn>
+
+        <v-navigation-drawer
+            v-model="layerDrawer"
+            absolute
+            right
+            clipped
+            app
+            width="420"
+            disable-resize-watcher
+            class="elevation-4 navigation-drawer"
+            @input="changeControlsStyle()"
+        >
+            <nuxt @closedrawer="layerDrawer = false" />
+        </v-navigation-drawer>
+
+        <v-main class="pa-0">
+            <Map
+
+            />
+        </v-main>
+
+        <BaseAlert /> -->
+    </v-app>
 </template>
 
-<script>
-export default {
-  data () {
-    return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
-        }
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js'
+<i18n>
+{
+    "en": {
+        "tooltip": "Search menu",
+        "welcome": "Welcome,"
+    },
+    "pt-br": {
+        "tooltip": "Search menu",
+        "welcome": "Bem vindo,"
     }
-  }
+}
+</i18n>
+
+<script>
+import { mapState } from 'vuex'
+
+import Map from '@/components/map/Map'
+import BaseAlert from '@/components/base/BaseAlert'
+
+export default {
+    name: 'App',
+
+    components: {
+        Map,
+        BaseAlert,
+    },
+
+    async fetch() {
+        // if (!this.$store.state.userProfile.user) {
+        //     await this.$store.dispatch('userProfile/getUserData')
+        // }
+    },
+
+    data: () => ({
+        layerDrawer: false,
+        leafletRightControl: null,
+        snackbar: true,
+        timeout: 3000,
+    }),
+
+    computed: {
+        ...mapState('userProfile', ['user']),
+    },
+
+    watch: {
+        user() {
+            if (this.user && this.user.settings.drawer_open_on_init) {
+                this.layerDrawer = true
+            }
+        },
+    },
+
+    mounted() {
+        this.$nextTick(function () {
+            this.getLeafletControlRef()
+
+            if (this.user && this.user.settings.drawer_open_on_init) {
+                this.layerDrawer = true
+            }
+        })
+    },
+
+    methods: {
+        getLeafletControlRef() {
+            this.leafletRightControl =
+                document.getElementsByClassName('leaflet-right')
+        },
+
+        changeControlsStyle() {
+            if (this.layerDrawer) {
+                Array.from(this.leafletRightControl).forEach((element) => {
+                    element.classList.add('leaflet-right-drawer--offset')
+                })
+            } else {
+                Array.from(this.leafletRightControl).forEach((element) => {
+                    element.classList.remove('leaflet-right-drawer--offset')
+                })
+            }
+        },
+    },
+
+    head: () => ({
+        title: 'Skyviewer',
+    }),
 }
 </script>
+
+<style lang="sass">
+html,
+body,
+.map-container
+    height: 100vh
+    width: 100vw
+    overflow: hidden !important
+    padding: 0
+
+.leaflet-pane
+    z-index: 2 !important
+
+.leaflet-bottom
+    z-index: 3 !important
+
+.leaflet-left,
+.leaflet-right,
+.leaflet-top
+    z-index: 3 !important
+
+.leaflet-right
+    transition: right .2s
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1)
+
+.leaflet-right-drawer--offset
+    right: 420px!important
+
+.tab-header
+    width: 100%
+    min-height: 64px
+    display: flex
+    align-items: center
+    font-size: .9375rem
+    padding: 16px 24px
+    border-bottom: solid 1px rgba(0,0,0,.2)
+    box-shadow: 0px 3px 3px -3px rgba(0, 0, 0, 0.2) !important
+
+.list-separator:not(:first-child)
+    border-top: solid 1px rgba(0,0,0,.12)
+</style>
+
+<style scoped lang="sass">
+.navigation-drawer
+    z-index: 5 !important
+
+.vertical-divider
+    height: 40px
+    min-height: 0
+    margin: 8px -14px 0px 24px
+
+.right-drawer-btn
+    padding: 0 !important
+    width: 34px !important
+    min-width: 34px !important
+    height: 64px !important
+    position: absolute
+    border-radius: 0
+    top: 0
+    z-index: 4
+    right: 0px
+    transition: right .2s
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1)
+
+.drawer-btn-opened
+    right: 420px
+</style>
