@@ -1,7 +1,7 @@
 <template>
     <v-app>
-        TESTE
-        <!-- <v-snackbar v-if="user" v-model="snackbar" :timeout="timeout">
+        <!--TESTE -->
+         <v-snackbar v-if="user" v-model="snackbar" :timeout="timeout">
             {{ $t('welcome') }}
             <span v-if="user.first_name">
                 {{ user.first_name }}
@@ -57,7 +57,7 @@
             />
         </v-main>
 
-        <BaseAlert /> -->
+        <BaseAlert />
     </v-app>
 </template>
 
