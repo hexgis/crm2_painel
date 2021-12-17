@@ -2,24 +2,24 @@
   {
     "name": "login",
     "path": "/login",
-    "component": "/home/renne/workspace/Sistemas/cmr2_painel/pages/login.vue",
+    "component": "/home/gabriel/Documents/Projetos/cmr2_painel/pages/login.vue",
     "chunkName": "pages/login",
-    "_name": "_5f002629"
+    "_name": "_9fdb4bde"
   },
   {
     "name": "index",
     "path": "/",
-    "component": "/home/renne/workspace/Sistemas/cmr2_painel/pages/index.vue",
+    "component": "/home/gabriel/Documents/Projetos/cmr2_painel/pages/index.vue",
     "chunkName": "pages/index",
     "children": [
       {
         "name": "index-support",
         "path": "support",
-        "component": "/home/renne/workspace/Sistemas/cmr2_painel/pages/index/support.vue",
+        "component": "/home/gabriel/Documents/Projetos/cmr2_painel/pages/index/support.vue",
         "chunkName": "pages/index/support",
-        "_name": "_0242c5d2"
+        "_name": "_217691ba"
       }
     ],
-    "_name": "_d54ef9dc"
+    "_name": "_332a920c"
   }
 ]

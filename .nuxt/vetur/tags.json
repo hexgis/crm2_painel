@@ -1,15 +1,36 @@
 {
+  "BaseAlert": {
+    "description": "Auto imported from components/base/BaseAlert.vue"
+  },
+  "BaseDateField": {
+    "description": "Auto imported from components/base/BaseDateField.vue"
+  },
+  "BaseExpandableTitle": {
+    "description": "Auto imported from components/base/BaseExpandableTitle.vue"
+  },
+  "BaseMetadataModal": {
+    "description": "Auto imported from components/base/BaseMetadataModal.vue"
+  },
+  "BaseMetadataPopup": {
+    "description": "Auto imported from components/base/BaseMetadataPopup.vue"
+  },
+  "BaseWmsMetadataPopup": {
+    "description": "Auto imported from components/base/BaseWmsMetadataPopup.vue"
+  },
+  "ConfirmButton": {
+    "description": "Auto imported from components/confirmButton/ConfirmButton.vue"
+  },
   "Map": {
     "description": "Auto imported from components/map/Map.vue"
+  },
+  "Map2": {
+    "description": "Auto imported from components/map/Map2.vue"
   },
   "MapSearch": {
     "description": "Auto imported from components/map/MapSearch.vue"
   },
   "MapZoomToCoords": {
     "description": "Auto imported from components/map/ZoomToCoords.vue"
-  },
-  "ConfirmButton": {
-    "description": "Auto imported from components/confirmButton/ConfirmButton.vue"
   },
   "ProfileMapViewBox": {
     "description": "Auto imported from components/profile/MapViewBox.vue"
@@ -28,24 +49,6 @@
   },
   "ProfilePanelSettingsMap": {
     "description": "Auto imported from components/profile/ProfilePanelSettingsMap.vue"
-  },
-  "BaseAlert": {
-    "description": "Auto imported from components/base/BaseAlert.vue"
-  },
-  "BaseDateField": {
-    "description": "Auto imported from components/base/BaseDateField.vue"
-  },
-  "BaseExpandableTitle": {
-    "description": "Auto imported from components/base/BaseExpandableTitle.vue"
-  },
-  "BaseMetadataModal": {
-    "description": "Auto imported from components/base/BaseMetadataModal.vue"
-  },
-  "BaseMetadataPopup": {
-    "description": "Auto imported from components/base/BaseMetadataPopup.vue"
-  },
-  "BaseWmsMetadataPopup": {
-    "description": "Auto imported from components/base/BaseWmsMetadataPopup.vue"
   },
   "SupportLayerFilters": {
     "description": "Auto imported from components/support/SupportLayerFilters.vue"

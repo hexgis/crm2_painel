@@ -1,21 +1,6 @@
 <template>
     <v-app>
         <!--TESTE -->
-         <v-snackbar v-if="user" v-model="snackbar" :timeout="timeout">
-            {{ $t('welcome') }}
-            <span v-if="user.first_name">
-                {{ user.first_name }}
-            </span>
-            <span v-if="user.last_name">
-                {{ user.last_name + '!' }}
-            </span>
-            <template v-slot:action="{ attrs }">
-                <v-btn v-bind="attrs" @click="snackbar = false" text>
-                    <v-icon> mdi-close </v-icon>
-                </v-btn>
-            </template>
-        </v-snackbar>
-
         <v-btn
             ripple
             class="right-drawer-btn"
@@ -33,7 +18,7 @@
                         }}
                     </v-icon>
                 </template>
-                <span> {{ $t('tooltip') }} </span>
+                <span> {{$t('tooltip')}} </span>
             </v-tooltip>
         </v-btn>
 
@@ -52,12 +37,8 @@
         </v-navigation-drawer>
 
         <v-main class="pa-0">
-            <Map
-
-            />
+            <Map2 />
         </v-main>
-
-        <BaseAlert />
     </v-app>
 </template>
 
@@ -77,22 +58,22 @@
 <script>
 import { mapState } from 'vuex'
 
-import Map from '@/components/map/Map'
+import Map2 from '@/components/map/Map2'
 import BaseAlert from '@/components/base/BaseAlert'
 
 export default {
     name: 'App',
 
     components: {
-        Map,
+        Map2,
         BaseAlert,
     },
 
-    async fetch() {
+    //async fetch() {
         // if (!this.$store.state.userProfile.user) {
         //     await this.$store.dispatch('userProfile/getUserData')
         // }
-    },
+   // },
 
     data: () => ({
         layerDrawer: false,
@@ -101,9 +82,9 @@ export default {
         timeout: 3000,
     }),
 
-    computed: {
+    /*computed: {
         ...mapState('userProfile', ['user']),
-    },
+    },*/
 
     watch: {
         user() {
@@ -143,7 +124,7 @@ export default {
     },
 
     head: () => ({
-        title: 'Skyviewer',
+        title: 'CMR2_PAINEL',
     }),
 }
 </script>
