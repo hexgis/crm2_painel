@@ -1,18 +1,22 @@
 <template>
-  <l-map style="height: 1000px" :zoom="zoom" :center="center">
+  <l-map style="height: 1000px" :zoom="zoom" :center="center" :options="{zoomControl: false}">
     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+    <MapSearch/>
     <l-marker :lat-lng="markerLatLng"></l-marker>
+    <l-control-zoom position="bottomright"  ></l-control-zoom>
   </l-map>
 </template>
 
 <script>
-import {LMap, LTileLayer, LMarker} from 'vue2-leaflet';
+import {LMap, LTileLayer, LMarker, LControlZoom} from 'vue2-leaflet';
+import 'leaflet-minimap/dist/Control.MiniMap.min.css'
 
 export default {
   components: {
     LMap,
     LTileLayer,
-    LMarker
+    LMarker,
+    LControlZoom,
   },
   data () {
     return {
@@ -25,4 +29,7 @@ export default {
     };
   }
 }
+
+
+
 </script>

@@ -39,6 +39,7 @@
         <v-main class="pa-0">
             <Map2 />
         </v-main>
+        <BaseAlert />
     </v-app>
 </template>
 
