@@ -142,11 +142,11 @@
 
                 <SupportLayers />
 
-                <!-- <ImageryLayers v-if="showImagery" :map="map" /> -->
+                <ImageryLayers v-if="showImagery" :map="map" />
 
-                <!-- <CatalogLayers :map="map" /> -->
+                <CatalogLayers :map="map" />
 
-                <!-- <ChangeDetectionLayers :map="map" /> -->
+                <ChangeDetectionLayers :map="map" />
 
                 <FileLoaderLayers
                     :map="map"
@@ -154,12 +154,12 @@
                     @loads="loaded()"
                 />
 
-                <!-- <MonitoringLayers v-if="!monitoringGeoserver" :map="map" /> -->
-                <!-- <MonitoringLayersGeoserver v-else :map="map" /> -->
+                <MonitoringLayers v-if="!monitoringGeoserver" :map="map" />
+                <MonitoringLayersGeoserver v-else :map="map" />
 
-                <!-- <AlgorithmLayers /> -->
+                <AlgorithmLayers />
 
-                <!-- <WebhooksLayers /> -->
+                <WebhooksLayers />
 
                 <BaseWmsMetadataPopup :map="map" />
             </l-map>
@@ -205,12 +205,17 @@ import MapSearch from '@/components/map/MapSearch.vue'
 import ZoomToCoords from '@/components/map/ZoomToCoords.vue'
 import FileLoaderControl from '@/components/map/file-loader/FileLoaderControl.vue'
 import FileLoaderLayers from '@/components/map/file-loader/FileLoaderLayers.vue'
+import ImageryLayers from '@/components/imagery/ImageryLayers'
+import CatalogLayers from '@/components/catalog/CatalogLayers'
+import MonitoringLayers from '@/components/monitoring/MonitoringLayers'
+import MonitoringLayersGeoserver from '@/components/monitoring/MonitoringLayersGeoserver'
 import SupportLayers from '@/components/support/SupportLayers'
+import ChangeDetectionLayers from '@/components/change-detection/ChangeDetectionLayers'
 import BaseWmsMetadataPopup from '@/components/base/BaseWmsMetadataPopup'
-
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-basemaps/L.Control.Basemaps.css'
 import 'leaflet-minimap/dist/Control.MiniMap.min.css'
+
 
 if (typeof window !== 'undefined') {
     require('leaflet-bing-layer')
@@ -222,19 +227,19 @@ export default {
     name: 'Map',
 
     components: {
-        // ImageryLayers,
-        // CatalogLayers,
-        // MonitoringLayers,
-        // MonitoringLayersGeoserver,
+        ImageryLayers,
+        CatalogLayers,
+        MonitoringLayers,
+        MonitoringLayersGeoserver,
         SupportLayers,
         MapSearch,
         ZoomToCoords,
         FileLoaderControl,
         FileLoaderLayers,
-        // ChangeDetectionLayers,
-        // BaseWmsMetadataPopup,
-        // AlgorithmLayers,
-        // WebhooksLayers,
+        ChangeDetectionLayers,
+        BaseWmsMetadataPopup,
+        //AlgorithmLayers,
+        //WebhooksLayers,
     },
 
     data: () => ({

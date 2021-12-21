@@ -17,8 +17,56 @@
   "BaseWmsMetadataPopup": {
     "description": "Auto imported from components/base/BaseWmsMetadataPopup.vue"
   },
+  "CatalogFilter": {
+    "description": "Auto imported from components/catalog/CatalogFilter.vue"
+  },
+  "CatalogLayers": {
+    "description": "Auto imported from components/catalog/CatalogLayers.vue"
+  },
+  "CatalogSceneList": {
+    "description": "Auto imported from components/catalog/CatalogSceneList.vue"
+  },
+  "CatalogSceneListItem": {
+    "description": "Auto imported from components/catalog/CatalogSceneListItem.vue"
+  },
+  "ChangeDetectionFilter": {
+    "description": "Auto imported from components/change-detection/ChangeDetectionFilter.vue"
+  },
+  "ChangeDetectionLayers": {
+    "description": "Auto imported from components/change-detection/ChangeDetectionLayers.vue"
+  },
+  "ChangeDetectionList": {
+    "description": "Auto imported from components/change-detection/ChangeDetectionList.vue"
+  },
+  "ChangeDetectionListItem": {
+    "description": "Auto imported from components/change-detection/ChangeDetectionListItem.vue"
+  },
   "ConfirmButton": {
     "description": "Auto imported from components/confirmButton/ConfirmButton.vue"
+  },
+  "ImageryFilter": {
+    "description": "Auto imported from components/imagery/ImageryFilter.vue"
+  },
+  "ImageryLayers": {
+    "description": "Auto imported from components/imagery/ImageryLayers.vue"
+  },
+  "ImagerySceneImages": {
+    "description": "Auto imported from components/imagery/ImagerySceneImages.vue"
+  },
+  "ImagerySceneImagesCompositionActions": {
+    "description": "Auto imported from components/imagery/ImagerySceneImagesCompositionActions.vue"
+  },
+  "ImagerySceneList": {
+    "description": "Auto imported from components/imagery/ImagerySceneList.vue"
+  },
+  "ImagerySceneListItem": {
+    "description": "Auto imported from components/imagery/ImagerySceneListItem.vue"
+  },
+  "ImagerySceneListItemActions": {
+    "description": "Auto imported from components/imagery/ImagerySceneListItemActions.vue"
+  },
+  "ImagerySceneListItemCard": {
+    "description": "Auto imported from components/imagery/ImagerySceneListItemCard.vue"
   },
   "Map": {
     "description": "Auto imported from components/map/Map.vue"
@@ -31,6 +79,12 @@
   },
   "MapZoomToCoords": {
     "description": "Auto imported from components/map/ZoomToCoords.vue"
+  },
+  "MonitoringLayers": {
+    "description": "Auto imported from components/monitoring/MonitoringLayers.vue"
+  },
+  "MonitoringLayersGeoserver": {
+    "description": "Auto imported from components/monitoring/MonitoringLayersGeoserver.vue"
   },
   "ProfileMapViewBox": {
     "description": "Auto imported from components/profile/MapViewBox.vue"

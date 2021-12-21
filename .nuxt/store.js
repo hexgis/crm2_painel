@@ -18,7 +18,14 @@ let store = {};
   store.modules = store.modules || {}
 
   resolveStoreModules(require('../store/alert.js'), 'alert.js')
+  resolveStoreModules(require('../store/analytics.js'), 'analytics.js')
   resolveStoreModules(require('../store/auth.js'), 'auth.js')
+  resolveStoreModules(require('../store/bookmarks.js'), 'bookmarks.js')
+  resolveStoreModules(require('../store/catalog.js'), 'catalog.js')
+  resolveStoreModules(require('../store/change-detection.js'), 'change-detection.js')
+  resolveStoreModules(require('../store/imagery.js'), 'imagery.js')
+  resolveStoreModules(require('../store/map.js'), 'map.js')
+  resolveStoreModules(require('../store/monitoring.js'), 'monitoring.js')
   resolveStoreModules(require('../store/supportLayers.js'), 'supportLayers.js')
   resolveStoreModules(require('../store/userProfile.js'), 'userProfile.js')
 
@@ -28,7 +35,14 @@ let store = {};
     // Whenever any Vuex module is updated...
     module.hot.accept([
       '../store/alert.js',
+      '../store/analytics.js',
       '../store/auth.js',
+      '../store/bookmarks.js',
+      '../store/catalog.js',
+      '../store/change-detection.js',
+      '../store/imagery.js',
+      '../store/map.js',
+      '../store/monitoring.js',
       '../store/supportLayers.js',
       '../store/userProfile.js',
     ], () => {

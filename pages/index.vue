@@ -120,51 +120,51 @@ export default {
 
         tabs() {
             return [
-                // {
-                //     name: this.$t('catalog-tab'),
-                //     icon: 'mdi-database',
-                //     route: '/catalog',
-                // },
-                // {
-                //     name: this.$t('imagery-tab'),
-                //     icon: 'mdi-image-multiple',
-                //     route: '/imagery',
-                // },
-                // {
-                //     name: this.$t('search-tab'),
-                //     icon: 'mdi-magnify',
-                //     route: '/monitoring',
-                // },
+                {
+                     name: this.$t('catalog-tab'),
+                     icon: 'mdi-database',
+                     route: '/catalog',
+                },
+                {
+                     name: this.$t('imagery-tab'),
+                     icon: 'mdi-image-multiple',
+                     route: '/imagery',
+                },
+                {
+                     name: this.$t('search-tab'),
+                     icon: 'mdi-magnify',
+                    route: '/monitoring',
+                },
                 {
                     name: this.$t('layers-tab'),
                     icon: 'mdi-layers',
                     route: '/support',
                 },
-                // {
-                //     name: this.$t('change-detection-tab'),
-                //     icon: 'mdi-vector-difference',
-                //     route: '/change-detection',
-                // },
-                // {
-                //     name: this.$t('bookmarks-tab'),
-                //     icon: 'mdi-bookmark-multiple',
-                //     route: '/bookmarks',
-                // },
-                // {
-                //     name: this.$t('analytics-tab'),
-                //     icon: 'mdi-chart-box',
-                //     route: '/analytics',
-                // },
-                // {
-                //     name: this.$t('algorithms-tab'),
-                //     icon: 'mdi-function-variant',
-                //     route: '/algorithms',
-                // },
-                // {
-                //     name: this.$t('webhooks-tab'),
-                //     icon: 'mdi-webhook',
-                //     route: '/webhooks',
-                // },
+                 {
+                     name: this.$t('change-detection-tab'),
+                     icon: 'mdi-vector-difference',
+                     route: '/change-detection',
+                 },
+                 {
+                     name: this.$t('bookmarks-tab'),
+                     icon: 'mdi-bookmark-multiple',
+                     route: '/bookmarks',
+                 },
+                 {
+                     name: this.$t('analytics-tab'),
+                     icon: 'mdi-chart-box',
+                     route: '/analytics',
+                 },
+                 {
+                     name: this.$t('algorithms-tab'),
+                     icon: 'mdi-function-variant',
+                     route: '/algorithms',
+                 },
+                 {
+                     name: this.$t('webhooks-tab'),
+                     icon: 'mdi-webhook',
+                     route: '/webhooks',
+                 },
             ]
         },
 
