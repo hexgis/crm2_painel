@@ -1,6 +1,5 @@
 <template>
     <v-app>
-        <!--TESTE -->
         <v-btn
             ripple
             class="right-drawer-btn"
@@ -59,22 +58,16 @@
 <script>
 import { mapState } from 'vuex'
 
-import Map2 from '@/components/map/Map2'
-import BaseAlert from '@/components/base/BaseAlert'
+import  Map2 from '~/components/map/Map2.vue'
+import BaseAlert from '@/components/base/BaseAlert.vue'
 
 export default {
     name: 'App',
 
     components: {
-        Map2,
         BaseAlert,
+        Map2,
     },
-
-    //async fetch() {
-        // if (!this.$store.state.userProfile.user) {
-        //     await this.$store.dispatch('userProfile/getUserData')
-        // }
-   // },
 
     data: () => ({
         layerDrawer: false,
@@ -83,9 +76,6 @@ export default {
         timeout: 3000,
     }),
 
-    /*computed: {
-        ...mapState('userProfile', ['user']),
-    },*/
 
     watch: {
         user() {

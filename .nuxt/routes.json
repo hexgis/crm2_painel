@@ -2,24 +2,24 @@
   {
     "name": "login",
     "path": "/login",
-    "component": "/home/gabriel/Documents/Projetos/cmr2_painel/pages/login.vue",
+    "component": "/Users/gabrielmoreschi/Documents/Projetos/cmr2_painel/pages/login.vue",
     "chunkName": "pages/login",
-    "_name": "_9fdb4bde"
+    "_name": "_1bb3abd8"
   },
   {
     "name": "index",
     "path": "/",
-    "component": "/home/gabriel/Documents/Projetos/cmr2_painel/pages/index.vue",
+    "component": "/Users/gabrielmoreschi/Documents/Projetos/cmr2_painel/pages/index.vue",
     "chunkName": "pages/index",
     "children": [
       {
         "name": "index-support",
         "path": "support",
-        "component": "/home/gabriel/Documents/Projetos/cmr2_painel/pages/index/support.vue",
+        "component": "/Users/gabrielmoreschi/Documents/Projetos/cmr2_painel/pages/index/support.vue",
         "chunkName": "pages/index/support",
-        "_name": "_217691ba"
+        "_name": "_10f0a286"
       }
     ],
-    "_name": "_332a920c"
+    "_name": "_287e86fd"
   }
 ]

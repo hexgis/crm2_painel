@@ -16,8 +16,6 @@
                 <l-control position="topleft">
                     <div class="pa-1 map-action-buttons">
                         <MapSearch
-                            v-if="user.settings.map_search_button_visible"
-                            :map="map"
                         />
 
                         <div v-if="user.settings.map_zoom_buttons_visible">
@@ -84,54 +82,13 @@
                     class="leaflet-coordinates-control"
                     position="bottomleft"
                 >
-                    <div v-if="user.settings.map_pointer_coordinates_visible">
-                        {{ cursorCoordinates.lat }},
-                        {{ cursorCoordinates.lng }}
-                    </div>
+
                 </l-control>
 
                 <l-control-scale
-                    v-if="user.settings.map_scale_visible"
                     position="bottomleft"
                 />
 
-                <l-control
-                    :key="
-                        'logo-nation-' +
-                        (user.settings.map_scale_visible ? 'first' : 'second')
-                    "
-                    position="bottomleft"
-                    class="leaflet-logo-control"
-                >
-                    <div class="nation-logo-container d-flex mb-1">
-                        <a href="/pt-br"
-                            ><v-img
-                                src="/img/brazil.svg"
-                                class="ml-1 logo-flags"
-                                height="23"
-                                width="35"
-                                contain
-                            >
-                            </v-img>
-                        </a>
-                        <a href="/"
-                            ><v-img
-                                src="/img/usa.png"
-                                class="ml-1 logo-flags"
-                                height="23"
-                                width="38"
-                                contain
-                            >
-                            </v-img>
-                        </a>
-                    </div>
-                    <div>
-                        <v-col class="pa-0 logo-hex">
-                            <v-img contain width="80" src="/img/hex.png">
-                            </v-img>
-                        </v-col>
-                    </div>
-                </l-control>
 
                 <l-geo-json
                     ref="interestArea"
@@ -141,25 +98,6 @@
                 />
 
                 <SupportLayers />
-
-                <ImageryLayers v-if="showImagery" :map="map" />
-
-                <CatalogLayers :map="map" />
-
-                <ChangeDetectionLayers :map="map" />
-
-                <FileLoaderLayers
-                    :map="map"
-                    :files="loadedFiles"
-                    @loads="loaded()"
-                />
-
-                <MonitoringLayers v-if="!monitoringGeoserver" :map="map" />
-                <MonitoringLayersGeoserver v-else :map="map" />
-
-                <AlgorithmLayers />
-
-                <WebhooksLayers />
 
                 <BaseWmsMetadataPopup :map="map" />
             </l-map>
@@ -205,12 +143,7 @@ import MapSearch from '@/components/map/MapSearch.vue'
 import ZoomToCoords from '@/components/map/ZoomToCoords.vue'
 import FileLoaderControl from '@/components/map/file-loader/FileLoaderControl.vue'
 import FileLoaderLayers from '@/components/map/file-loader/FileLoaderLayers.vue'
-import ImageryLayers from '@/components/imagery/ImageryLayers'
-import CatalogLayers from '@/components/catalog/CatalogLayers'
-import MonitoringLayers from '@/components/monitoring/MonitoringLayers'
-import MonitoringLayersGeoserver from '@/components/monitoring/MonitoringLayersGeoserver'
 import SupportLayers from '@/components/support/SupportLayers'
-import ChangeDetectionLayers from '@/components/change-detection/ChangeDetectionLayers'
 import BaseWmsMetadataPopup from '@/components/base/BaseWmsMetadataPopup'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-basemaps/L.Control.Basemaps.css'
@@ -227,19 +160,12 @@ export default {
     name: 'Map',
 
     components: {
-        ImageryLayers,
-        CatalogLayers,
-        MonitoringLayers,
-        MonitoringLayersGeoserver,
         SupportLayers,
         MapSearch,
         ZoomToCoords,
         FileLoaderControl,
         FileLoaderLayers,
-        ChangeDetectionLayers,
         BaseWmsMetadataPopup,
-        //AlgorithmLayers,
-        //WebhooksLayers,
     },
 
     data: () => ({
@@ -325,20 +251,6 @@ export default {
                     zIndex: 1,
                 },
             },
-            // {
-            //     url:
-            //         'https://securewatch.digitalglobe.com/earthservice/wmtsaccess?connectId={connectid}&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&TileMatrixSet=EPSG:3857&LAYER=DigitalGlobe:ImageryTileService&FORMAT=image/jpeg&STYLE=&featureProfile=Vivid_2019&TileMatrix=EPSG:3857:{z}&TILEROW={y}&TILECOL={x}',
-            //     options: {
-            //         connectid: '750ba857-7952-41af-b189-316d907cc12a',
-            //         label: 'MAXAR',
-            //         tag: 'MAXAR',
-            //         attribution:
-            //             'Map data &copy; <a href="https://securewatch.digitalglobe.com">Secure Watch</a> Digital Globe',
-            //         maxZoom: 21,
-            //         maxNativeZoom: 19,
-            //         zIndex: 1,
-            //     },
-            // },
             {
                 url: '//{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
                 options: {
@@ -422,27 +334,11 @@ export default {
             minZoom: 0,
             maxZoom: 18,
         },
-        miniMapOptions: {
-            togglePreview: false,
-            height: 125,
-            width: 125,
-        },
         localBounds: [],
     }),
 
     computed: {
-        minimapVisibleSettings() {
-            return this.user.settings.minimap_visible
-        },
-        initialExtentCoords() {
-            return this.user.settings.initial_extent.coordinates
-                ? this.$L.GeoJSON.coordsToLatLngs(
-                      this.user.settings.initial_extent.coordinates[0]
-                  )
-                : []
-        },
         ...mapState('map', ['bounds', 'boundsZoomed']),
-        ...mapState('userProfile', ['user']),
     },
 
     watch: {
@@ -476,29 +372,7 @@ export default {
             this.createMapLayers()
             this.createCssRefs()
 
-            this.createMiniMap()
-
             this.$emit('mapCreated')
-
-            if (this.bounds) {
-                this.localBounds = this.bounds
-            } else if (
-                this.user &&
-                (this.user.settings.initial_extent ||
-                    this.user.settings.interest_area_zoom_on_init)
-            ) {
-                let areaBounds
-
-                if (this.user.settings.initial_extent) {
-                    areaBounds = this.$L.polygon(this.initialExtentCoords)
-                } else
-                    areaBounds = this.$refs.interestArea.mapObject.getBounds()
-
-                this.map.flyToBounds(areaBounds)
-                this.updateBounds(areaBounds)
-            } else {
-                this.localBounds = this.initialBounds
-            }
         },
 
         createMapLayers() {
@@ -523,9 +397,6 @@ export default {
         },
 
         createBingLayer() {
-            // Bing layer has need to be generated before being inserted
-            // on tileLayers array, and is generated by the Plugin
-            // leaflet-bing-layer
             const bingLayer = this.$L.tileLayer.bing(this.bingKey, {
                 imagerySet: 'AerialWithLabelsOnDemand',
                 maxZoom: 21,
@@ -641,21 +512,6 @@ export default {
 .leaflet-logo-control
     margin-left: 6px !important
     margin-bottom: 15px
-
-.nation-logo-container
-    margin-left: -3px
-
-.logo-flags
-    margin-left: -3px
-    opacity: 0.4
-    transition: all ease 0.1s
-
-.logo-flags:hover
-    opacity: 1
-    transform: scale(1.1)
-
-.logo-hex
-    opacity: 0.4
 
 .basemap.active
     border: 0

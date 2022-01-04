@@ -82,15 +82,11 @@
         "webhooks-tab": "Webhooks"
     },
     "pt-br": {
-        "catalog-tab": "Meu acervo de imagens",
-        "imagery-tab": "Pesquisar e adquirir imagens",
         "search-tab": "Pesquisar dados",
         "layers-tab": "Camadas",
-        "change-detection-tab": "Change detection",
         "bookmarks-tab": "Bookmarks",
         "analytics-tab": "Analytics",
         "compare-tab": "Comparar imagens",
-        "algorithms-tab": "Algoritmos",
         "webhooks-tab": "Webhooks"
     }
 }
@@ -121,30 +117,10 @@ export default {
         tabs() {
             return [
                 {
-                     name: this.$t('catalog-tab'),
-                     icon: 'mdi-database',
-                     route: '/catalog',
-                },
-                {
-                     name: this.$t('imagery-tab'),
-                     icon: 'mdi-image-multiple',
-                     route: '/imagery',
-                },
-                {
-                     name: this.$t('search-tab'),
-                     icon: 'mdi-magnify',
-                    route: '/monitoring',
-                },
-                {
                     name: this.$t('layers-tab'),
                     icon: 'mdi-layers',
                     route: '/support',
                 },
-                 {
-                     name: this.$t('change-detection-tab'),
-                     icon: 'mdi-vector-difference',
-                     route: '/change-detection',
-                 },
                  {
                      name: this.$t('bookmarks-tab'),
                      icon: 'mdi-bookmark-multiple',
@@ -156,19 +132,12 @@ export default {
                      route: '/analytics',
                  },
                  {
-                     name: this.$t('algorithms-tab'),
-                     icon: 'mdi-function-variant',
-                     route: '/algorithms',
-                 },
-                 {
                      name: this.$t('webhooks-tab'),
                      icon: 'mdi-webhook',
                      route: '/webhooks',
                  },
             ]
         },
-
-        // ...mapState('catalog', ['isComparing']),
     },
 
     watch: {
@@ -177,30 +146,7 @@ export default {
         // },
     },
 
-    created() {
-        if (process.env.IMAGERY === 'false') {
-            this.tabs.splice(1, 1)
-        }
-
-        // this.handleCompareTab()
-    },
-
     methods: {
-        handleCompareTab() {
-            // if (this.isComparing) {
-            //     this.tabs.push({
-            //         name: this.$t('compare-tab'),
-            //         icon: 'mdi-compare',
-            //         route: '/catalog/comparator',
-            //     })
-            //     this.compareTabIndex = this.tabs.length - 1
-            //     this.$router.push(this.localePath('/catalog/comparator'))
-            // } else if (this.compareTabIndex) {
-            //     this.tabs.splice(this.compareTabIndex, 1)
-            //     this.compareTabIndex = null
-            // }
-        },
-
         closeRightDrawer() {
             this.$emit('closedrawer')
         },
