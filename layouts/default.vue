@@ -1,45 +1,41 @@
 <template>
-    <v-app>
-        <v-btn
-            ripple
-            class="right-drawer-btn"
-            :class="{ 'drawer-btn-opened': layerDrawer }"
-            color="secondary"
-            @click.stop="layerDrawer = !layerDrawer"
-        >
-            <v-tooltip bottom>
-                <template #activator="{ on }">
-                    <v-icon v-on="on">
-                        {{
-                            layerDrawer
-                                ? 'mdi-chevron-right'
-                                : 'mdi-chevron-left'
-                        }}
-                    </v-icon>
-                </template>
-                <span> {{$t('tooltip')}} </span>
-            </v-tooltip>
-        </v-btn>
+  <v-app>
+    <v-btn
+      ripple
+      class="right-drawer-btn"
+      :class="{ 'drawer-btn-opened': layerDrawer }"
+      color="secondary"
+      @click.stop="layerDrawer = !layerDrawer"
+    >
+      <v-tooltip bottom>
+        <template #activator="{ on }">
+          <v-icon v-on="on">
+            {{ layerDrawer ? "mdi-chevron-right" : "mdi-chevron-left" }}
+          </v-icon>
+        </template>
+        <span> {{ $t("tooltip") }} </span>
+      </v-tooltip>
+    </v-btn>
 
-        <v-navigation-drawer
-            v-model="layerDrawer"
-            absolute
-            right
-            clipped
-            app
-            width="420"
-            disable-resize-watcher
-            class="elevation-4 navigation-drawer"
-            @input="changeControlsStyle()"
-        >
-            <nuxt @closedrawer="layerDrawer = false" />
-        </v-navigation-drawer>
+    <v-navigation-drawer
+      v-model="layerDrawer"
+      absolute
+      right
+      clipped
+      app
+      width="420"
+      disable-resize-watcher
+      class="elevation-4 navigation-drawer"
+      @input="changeControlsStyle()"
+    >
+      <nuxt @closedrawer="layerDrawer = false" />
+    </v-navigation-drawer>
 
-        <v-main class="pa-0">
-            <Map2 />
-        </v-main>
-        <BaseAlert />
-    </v-app>
+    <v-main class="pa-0">
+      <Map2 />
+    </v-main>
+    <BaseAlert />
+  </v-app>
 </template>
 
 <i18n>
@@ -56,68 +52,67 @@
 </i18n>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
 
-import  Map2 from '~/components/map/Map2.vue'
-import BaseAlert from '@/components/base/BaseAlert.vue'
+import Map2 from "~/components/map/Map2.vue";
+import BaseAlert from "@/components/base/BaseAlert.vue";
 
 export default {
-    name: 'App',
+  name: "App",
 
-    components: {
-        BaseAlert,
-        Map2,
+  components: {
+    BaseAlert,
+    Map2,
+  },
+
+  data: () => ({
+    layerDrawer: false,
+    leafletRightControl: null,
+    snackbar: true,
+    timeout: 3000,
+  }),
+
+  watch: {
+    user() {
+      if (this.user && this.user.settings.drawer_open_on_init) {
+        this.layerDrawer = true;
+      }
+    },
+  },
+
+  mounted() {
+    this.$nextTick(function () {
+      this.getLeafletControlRef();
+
+      if (this.user && this.user.settings.drawer_open_on_init) {
+        this.layerDrawer = true;
+      }
+    });
+  },
+
+  methods: {
+    getLeafletControlRef() {
+      this.leafletRightControl =
+        document.getElementsByClassName("leaflet-right");
     },
 
-    data: () => ({
-        layerDrawer: false,
-        leafletRightControl: null,
-        snackbar: true,
-        timeout: 3000,
-    }),
-
-
-    watch: {
-        user() {
-            if (this.user && this.user.settings.drawer_open_on_init) {
-                this.layerDrawer = true
-            }
-        },
+    changeControlsStyle() {
+      if (this.layerDrawer) {
+        Array.from(this.leafletRightControl).forEach((element) => {
+          element.classList.add("leaflet-right-drawer--offset");
+        });
+      } else {
+        Array.from(this.leafletRightControl).forEach((element) => {
+          element.classList.remove("leaflet-right-drawer--offset");
+        });
+      }
     },
+  },
 
-    mounted() {
-        this.$nextTick(function () {
-            this.getLeafletControlRef()
-
-            if (this.user && this.user.settings.drawer_open_on_init) {
-                this.layerDrawer = true
-            }
-        })
-    },
-
-    methods: {
-        getLeafletControlRef() {
-            this.leafletRightControl =
-                document.getElementsByClassName('leaflet-right')
-        },
-
-        changeControlsStyle() {
-            if (this.layerDrawer) {
-                Array.from(this.leafletRightControl).forEach((element) => {
-                    element.classList.add('leaflet-right-drawer--offset')
-                })
-            } else {
-                Array.from(this.leafletRightControl).forEach((element) => {
-                    element.classList.remove('leaflet-right-drawer--offset')
-                })
-            }
-        },
-    },
-
-    head: () => ({
-        title: 'CMR2_PAINEL',
-    }),
-}
+  head: () => ({
+    title: "CMR2_PAINEL",
+  }),
+};
 </script>
 
 <style lang="sass">

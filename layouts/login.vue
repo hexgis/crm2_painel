@@ -1,37 +1,32 @@
 <template>
-    <v-app>
-        <v-main class="pa-0">
-            <v-container fluid fill-height class="background">
-                <nuxt />
-            </v-container>
-        </v-main>
-        <v-footer app absolute>
-            <v-row dense class="justifiy-space-between align-center">
-                <v-col>
-                    <v-img
-                        width="100"
-                        height="40"
-                        contain
-                        src="/img/hexLight.png"
-                    />
-                </v-col>
-                <v-col class="text-center white--text">
-                    Copyright Hex Geospatial Technologies © 2020
-                </v-col>
-                <v-spacer></v-spacer>
-            </v-row>
-        </v-footer>
-    </v-app>
+  <v-app>
+    <v-main class="pa-0">
+      <v-container fluid fill-height class="background">
+        <nuxt />
+      </v-container>
+    </v-main>
+    <v-footer app absolute>
+      <v-row dense class="justifiy-space-between align-center">
+        <v-col>
+          <v-img width="100" height="40" contain src="/img/hexLight.png" />
+        </v-col>
+        <v-col class="text-center white--text">
+          Copyright Hex Geospatial Technologies © 2020
+        </v-col>
+        <v-spacer></v-spacer>
+      </v-row>
+    </v-footer>
+  </v-app>
 </template>
 
 <script>
 export default {
-    name: 'App',
+  name: "App",
 
-    head: () => ({
-        title: 'Skyviewer',
-    }),
-}
+  head: () => ({
+    title: "Skyviewer",
+  }),
+};
 </script>
 
 <style lang="sass" scoped>
