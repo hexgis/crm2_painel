@@ -1,70 +1,64 @@
 <template>
-    <v-tabs
-        v-model="activeTab"
-        vertical
-        optional
-        background-color="secondary"
-        class="right-tabs fill-height"
-    >
-        <div class="top-buttons d-sm-none">
-            <v-btn
-                key="close"
-                class="back-mobile-button"
-                @click.prevent="closeRightDrawer()"
-            >
-                <v-tooltip left>
-                    <template #activator="{ on }">
-                        <v-icon v-on="on"> mdi-close </v-icon>
-                    </template>
-                    <span>Fechar Menu</span>
-                </v-tooltip>
-            </v-btn>
-        </div>
+  <v-tabs
+    v-model="activeTab"
+    vertical
+    optional
+    background-color="secondary"
+    class="right-tabs fill-height"
+  >
+    <div class="top-buttons d-sm-none">
+      <v-btn
+        key="close"
+        class="back-mobile-button"
+        @click.prevent="closeRightDrawer()"
+      >
+        <v-tooltip left>
+          <template #activator="{ on }">
+            <v-icon v-on="on"> mdi-close </v-icon>
+          </template>
+          <span>Fechar Menu</span>
+        </v-tooltip>
+      </v-btn>
+    </div>
 
-        <v-tab
+    <v-tab
+      v-for="(tab, i) in tabs"
+      :key="i"
+      :to="localePath(tab.route)"
+      exact
+      nuxt
+    >
+      <v-tooltip left>
+        <template #activator="{ on }">
+          <v-icon v-on="on">{{ tab.icon }}</v-icon>
+        </template>
+        <span>{{ tab.name }}</span>
+      </v-tooltip>
+    </v-tab>
+
+    <v-tab-item :transition="false" :reverse-transition="false">
+      <nuxt-child keep-alive />
+
+      <div
+        v-if="isIndex"
+        class="info fill-height d-flex flex-column align-content-space-between"
+      >
+        <v-list class="pt-0" dark>
+          <v-list-item
             v-for="(tab, i) in tabs"
             :key="i"
             :to="localePath(tab.route)"
-            exact
-            nuxt
-        >
-            <v-tooltip left>
-                <template #activator="{ on }">
-                    <v-icon v-on="on">{{ tab.icon }}</v-icon>
-                </template>
-                <span>{{ tab.name }}</span>
-            </v-tooltip>
-        </v-tab>
+          >
+            <v-list-item-title class="text-right">
+              {{ tab.name }}
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </div>
+    </v-tab-item>
 
-        <v-tab-item :transition="false" :reverse-transition="false">
-            <nuxt-child keep-alive />
-
-            <div
-                v-if="isIndex"
-                class="
-                    info
-                    fill-height
-                    d-flex
-                    flex-column
-                    align-content-space-between
-                "
-            >
-                <v-list class="pt-0" dark>
-                    <v-list-item
-                        v-for="(tab, i) in tabs"
-                        :key="i"
-                        :to="localePath(tab.route)"
-                    >
-                        <v-list-item-title class="text-right">
-                            {{ tab.name }}
-                        </v-list-item-title>
-                    </v-list-item>
-                </v-list>
-            </div>
-        </v-tab-item>
-
-        <ProfilePanel v-model="settings" />
-    </v-tabs>
+    <ProfilePanel v-model="settings" />
+  </v-tabs>
 </template>
 
 <i18n>
@@ -93,65 +87,65 @@
 </i18n>
 
 <script>
-import { mapState } from 'vuex'
-import ProfilePanel from '@/components/profile/ProfilePanel'
+import { mapState } from "vuex";
+import ProfilePanel from "@/components/profile/ProfilePanel";
 
 export default {
-    name: 'MapLayersPanel',
+  name: "MapLayersPanel",
 
-    components: { ProfilePanel },
+  components: { ProfilePanel },
 
-    transition: 'scroll-y-transition',
+  transition: "scroll-y-transition",
 
-    data: () => ({
-        activeTab: 0,
-        compareTabIndex: null,
-        settings: false,
-    }),
+  data: () => ({
+    activeTab: 0,
+    compareTabIndex: null,
+    settings: false,
+  }),
 
-    computed: {
-        isIndex() {
-            return this.getRouteBaseName() === 'index'
-        },
-
-        tabs() {
-            return [
-                {
-                    name: this.$t('layers-tab'),
-                    icon: 'mdi-layers',
-                    route: '/support',
-                },
-                 {
-                     name: this.$t('bookmarks-tab'),
-                     icon: 'mdi-bookmark-multiple',
-                     route: '/bookmarks',
-                 },
-                 {
-                     name: this.$t('analytics-tab'),
-                     icon: 'mdi-chart-box',
-                     route: '/analytics',
-                 },
-                 {
-                     name: this.$t('webhooks-tab'),
-                     icon: 'mdi-webhook',
-                     route: '/webhooks',
-                 },
-            ]
-        },
+  computed: {
+    isIndex() {
+      return this.getRouteBaseName() === "index";
     },
 
-    watch: {
-        // isComparing() {
-        //     this.handleCompareTab()
-        // },
-    },
-
-    methods: {
-        closeRightDrawer() {
-            this.$emit('closedrawer')
+    tabs() {
+      return [
+        {
+          name: this.$t("layers-tab"),
+          icon: "mdi-layers",
+          route: "/support",
         },
+        {
+          name: this.$t("bookmarks-tab"),
+          icon: "mdi-bookmark-multiple",
+          route: "/bookmarks",
+        },
+        {
+          name: this.$t("analytics-tab"),
+          icon: "mdi-chart-box",
+          route: "/analytics",
+        },
+        {
+          name: this.$t("webhooks-tab"),
+          icon: "mdi-webhook",
+          route: "/webhooks",
+        },
+      ];
     },
-}
+  },
+
+  watch: {
+    // isComparing() {
+    //     this.handleCompareTab()
+    // },
+  },
+
+  methods: {
+    closeRightDrawer() {
+      this.$emit("closedrawer");
+    },
+  },
+};
 </script>
 
 <style lang="sass">

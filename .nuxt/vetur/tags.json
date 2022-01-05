@@ -1,16 +1,4 @@
 {
-  "CatalogFilter": {
-    "description": "Auto imported from components/catalog/CatalogFilter.vue"
-  },
-  "CatalogLayers": {
-    "description": "Auto imported from components/catalog/CatalogLayers.vue"
-  },
-  "CatalogSceneList": {
-    "description": "Auto imported from components/catalog/CatalogSceneList.vue"
-  },
-  "CatalogSceneListItem": {
-    "description": "Auto imported from components/catalog/CatalogSceneListItem.vue"
-  },
   "BaseAlert": {
     "description": "Auto imported from components/base/BaseAlert.vue"
   },
@@ -29,6 +17,18 @@
   "BaseWmsMetadataPopup": {
     "description": "Auto imported from components/base/BaseWmsMetadataPopup.vue"
   },
+  "CatalogFilter": {
+    "description": "Auto imported from components/catalog/CatalogFilter.vue"
+  },
+  "CatalogLayers": {
+    "description": "Auto imported from components/catalog/CatalogLayers.vue"
+  },
+  "CatalogSceneList": {
+    "description": "Auto imported from components/catalog/CatalogSceneList.vue"
+  },
+  "CatalogSceneListItem": {
+    "description": "Auto imported from components/catalog/CatalogSceneListItem.vue"
+  },
   "ConfirmButton": {
     "description": "Auto imported from components/confirmButton/ConfirmButton.vue"
   },
@@ -37,12 +37,6 @@
   },
   "Map2": {
     "description": "Auto imported from components/map/Map2.vue"
-  },
-  "MapSearch": {
-    "description": "Auto imported from components/map/MapSearch.vue"
-  },
-  "MapZoomToCoords": {
-    "description": "Auto imported from components/map/ZoomToCoords.vue"
   },
   "ProfileMapViewBox": {
     "description": "Auto imported from components/profile/MapViewBox.vue"
@@ -76,9 +70,6 @@
   },
   "SupportLayersGroupItem": {
     "description": "Auto imported from components/support/SupportLayersGroupItem.vue"
-  },
-  "MapFileLoaderControl": {
-    "description": "Auto imported from components/map/file-loader/FileLoaderControl.vue"
   },
   "MapFileLoaderLayers": {
     "description": "Auto imported from components/map/file-loader/FileLoaderLayers.vue"

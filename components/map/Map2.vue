@@ -10,18 +10,14 @@
       :attribution="tileProvider.attribution"
       layer-type="base"
     />
-    <l-control position="topleft">
-      <MapSearch />
-      <ZoomToCoords v-if="!$vuetify.breakpoint.mobile" :map="map" />
+    <l-control>
+      <SupportLayers />
     </l-control>
-    <SupportLayers />
   </l-map>
 </template>
 
 <script>
 import { LMap, LTileLayer, LControlLayers } from "vue2-leaflet";
-import MapSearch from "@/components/map/MapSearch.vue";
-import ZoomToCoords from "@/components/map/ZoomToCoords.vue";
 import SupportLayers from "@/components/support/SupportLayers.vue";
 
 export default {
@@ -29,8 +25,6 @@ export default {
     LMap,
     LTileLayer,
     LControlLayers,
-    MapSearch,
-    ZoomToCoords,
     SupportLayers,
   },
   data() {

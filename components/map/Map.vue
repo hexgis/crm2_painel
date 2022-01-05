@@ -139,9 +139,8 @@
 import { mapState, mapMutations } from 'vuex'
 import interestArea from '@/assets/interest_area.json'
 
-import MapSearch from '@/components/map/MapSearch.vue'
-import ZoomToCoords from '@/components/map/ZoomToCoords.vue'
-import FileLoaderControl from '@/components/map/file-loader/FileLoaderControl.vue'
+// import MapSearch from '@/components/map/MapSearch.vue'
+// import ZoomToCoords from '@/components/map/ZoomToCoords.vue'
 import FileLoaderLayers from '@/components/map/file-loader/FileLoaderLayers.vue'
 import SupportLayers from '@/components/support/SupportLayers'
 import BaseWmsMetadataPopup from '@/components/base/BaseWmsMetadataPopup'
@@ -161,9 +160,8 @@ export default {
 
     components: {
         SupportLayers,
-        MapSearch,
-        ZoomToCoords,
-        FileLoaderControl,
+        // MapSearch,
+        // ZoomToCoords,
         FileLoaderLayers,
         BaseWmsMetadataPopup,
     },
