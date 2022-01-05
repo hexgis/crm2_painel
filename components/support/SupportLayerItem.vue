@@ -57,7 +57,7 @@ export default {
                 filters[label] = value
             })
 
-            return filters
+            
         },
 
         geoserverLayer() {

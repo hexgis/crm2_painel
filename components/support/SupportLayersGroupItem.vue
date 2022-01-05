@@ -4,13 +4,6 @@
         v-model="isOpen"
         append-icon=""
         active-class="active"
-        :disabled="
-            !(
-                layer.layer_filters.length ||
-                (layer.layer_type === 'wms' &&
-                    (layer.visible || layer.wms.has_detail))
-            )
-        "
     >
         <template #activator>
             <v-list-item-avatar
@@ -50,8 +43,7 @@
         </template>
 
         <v-container class="py-0">
-            <SupportLayerFilters :layer="layer" />
-
+            
             <v-row
                 v-if="
                     layer.layer_type === 'wms' &&
@@ -101,13 +93,8 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-
-import SupportLayerFilters from '@/components/support/SupportLayerFilters'
-
 export default {
     name: 'SupportLayersGroupItem',
-
-    components: { SupportLayerFilters },
 
     props: {
         layerId: {
@@ -139,14 +126,14 @@ export default {
             )
         },
 
-        disabledHeatmap() {
-            return (
-                this.layer.layer_filters.length > 0 &&
-                this.layer.layer_type === 'heatmap' &&
-                Object.keys(this.layer.filters).length === 0 &&
-                !this.layer.loading
-            )
-        },
+        // disabledHeatmap() {
+        //     return (
+        //         this.layer.layer_filters.length > 0 &&
+        //         this.layer.layer_type === 'heatmap' &&
+        //         Object.keys(this.layer.filters).length === 0 &&
+        //         !this.layer.loading
+        //     )
+        // },
     },
 
     methods: {
