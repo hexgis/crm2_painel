@@ -119,7 +119,6 @@ import interestArea from "@/assets/interest_area.json";
 // import ZoomToCoords from '@/components/map/ZoomToCoords.vue'
 import FileLoaderLayers from "@/components/map/file-loader/FileLoaderLayers.vue";
 import SupportLayers from "@/components/support/SupportLayers";
-import BaseWmsMetadataPopup from "@/components/base/BaseWmsMetadataPopup";
 import "leaflet/dist/leaflet.css";
 import "leaflet-basemaps/L.Control.Basemaps.css";
 import "leaflet-minimap/dist/Control.MiniMap.min.css";
@@ -135,10 +134,7 @@ export default {
 
   components: {
     SupportLayers,
-    // MapSearch,
-    // ZoomToCoords,
     FileLoaderLayers,
-    BaseWmsMetadataPopup,
   },
 
   data: () => ({

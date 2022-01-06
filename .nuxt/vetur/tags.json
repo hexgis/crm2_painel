@@ -1,7 +1,4 @@
 {
-  "BaseAlert": {
-    "description": "Auto imported from components/base/BaseAlert.vue"
-  },
   "BaseDateField": {
     "description": "Auto imported from components/base/BaseDateField.vue"
   },
@@ -13,9 +10,6 @@
   },
   "BaseMetadataPopup": {
     "description": "Auto imported from components/base/BaseMetadataPopup.vue"
-  },
-  "BaseWmsMetadataPopup": {
-    "description": "Auto imported from components/base/BaseWmsMetadataPopup.vue"
   },
   "CatalogFilter": {
     "description": "Auto imported from components/catalog/CatalogFilter.vue"
@@ -31,6 +25,15 @@
   },
   "ConfirmButton": {
     "description": "Auto imported from components/confirmButton/ConfirmButton.vue"
+  },
+  "Map": {
+    "description": "Auto imported from components/map/Map.vue"
+  },
+  "Map2": {
+    "description": "Auto imported from components/map/Map2.vue"
+  },
+  "PriorityFilter": {
+    "description": "Auto imported from components/priority/PriorityFilter.vue"
   },
   "ProfileMapViewBox": {
     "description": "Auto imported from components/profile/MapViewBox.vue"
@@ -61,12 +64,6 @@
   },
   "SupportLayersGroupItem": {
     "description": "Auto imported from components/support/SupportLayersGroupItem.vue"
-  },
-  "Map": {
-    "description": "Auto imported from components/map/Map.vue"
-  },
-  "Map2": {
-    "description": "Auto imported from components/map/Map2.vue"
   },
   "MapFileLoaderLayers": {
     "description": "Auto imported from components/map/file-loader/FileLoaderLayers.vue"

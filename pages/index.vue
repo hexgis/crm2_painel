@@ -111,7 +111,7 @@ export default {
     tabs() {
       return [
         {
-          name: this.$t("layers-tab"),
+          name: this.$t("Camadas de Apoio"),
           icon: "mdi-layers",
           route: "/support",
         },
@@ -121,7 +121,7 @@ export default {
           route: "/bookmarks",
         },
         {
-          name: this.$t("analytics-tab"),
+          name: this.$t("Estatísticas"),
           icon: "mdi-chart-box",
           route: "/analytics",
         },
@@ -129,6 +129,11 @@ export default {
           name: this.$t("webhooks-tab"),
           icon: "mdi-webhook",
           route: "/webhooks",
+        },
+        {
+          name: this.$t("Polígonos Prioritários"),
+          icon: "mdi-magnify",
+          route: "/priority",
         },
       ];
     },

@@ -34,7 +34,6 @@
     <v-main class="pa-0">
       <Map2 />
     </v-main>
-    <BaseAlert />
   </v-app>
 </template>
 
@@ -55,13 +54,11 @@
 import { mapState } from "vuex";
 
 import Map2 from "~/components/map/Map2.vue";
-import BaseAlert from "@/components/base/BaseAlert.vue";
 
 export default {
   name: "App",
 
   components: {
-    BaseAlert,
     Map2,
   },
 
