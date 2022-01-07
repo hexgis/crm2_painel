@@ -272,13 +272,13 @@ export const actions = {
         }
 
         try {
-            const response = await this.$api.$get('catalog/images', {
+            const response = await this.$api.$get('priority/consolidated/', {
                 params,
             })
             commit('setSceneCount', response.count)
             commit('setScenes', { scenes: response.features, page: 1 })
             commit('setShowFeatures', true)
-            
+
         } finally {
             commit('setLoadingScenes', false)
             commit('setShowFilters', false)
@@ -302,7 +302,7 @@ export const actions = {
             })
             commit('setScenes', { scenes: response.features, page: state.page })
             if (!response.features.length) {
-                
+
             } else {
                 commit('checkPreviousActiveScenes', state.page)
             }

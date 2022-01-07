@@ -135,6 +135,11 @@ export default {
           icon: "mdi-magnify",
           route: "/priority",
         },
+        {
+          name: this.$t("xpto"),
+          icon: "mdi-magnify",
+          route: "/monitoring",
+        },
       ];
     },
   },

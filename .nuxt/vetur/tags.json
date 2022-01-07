@@ -11,6 +11,9 @@
   "BaseMetadataPopup": {
     "description": "Auto imported from components/base/BaseMetadataPopup.vue"
   },
+  "ConfirmButton": {
+    "description": "Auto imported from components/confirmButton/ConfirmButton.vue"
+  },
   "CatalogFilter": {
     "description": "Auto imported from components/catalog/CatalogFilter.vue"
   },
@@ -23,8 +26,8 @@
   "CatalogSceneListItem": {
     "description": "Auto imported from components/catalog/CatalogSceneListItem.vue"
   },
-  "ConfirmButton": {
-    "description": "Auto imported from components/confirmButton/ConfirmButton.vue"
+  "FiltersPriorityFilter": {
+    "description": "Auto imported from components/filters/PriorityFilter.vue"
   },
   "Map": {
     "description": "Auto imported from components/map/Map.vue"
@@ -32,8 +35,8 @@
   "Map2": {
     "description": "Auto imported from components/map/Map2.vue"
   },
-  "PriorityFilter": {
-    "description": "Auto imported from components/priority/PriorityFilter.vue"
+  "PriorityLayers": {
+    "description": "Auto imported from components/priority/PriorityLayers.vue"
   },
   "ProfileMapViewBox": {
     "description": "Auto imported from components/profile/MapViewBox.vue"

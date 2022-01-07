@@ -4,9 +4,10 @@ import { normalizeURL, decode } from 'ufo'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
-const _1bb3abd8 = () => interopDefault(import('../pages/login.vue' /* webpackChunkName: "pages/login" */))
-const _287e86fd = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
-const _10f0a286 = () => interopDefault(import('../pages/index/support.vue' /* webpackChunkName: "pages/index/support" */))
+const _5f002629 = () => interopDefault(import('../pages/login.vue' /* webpackChunkName: "pages/login" */))
+const _d54ef9dc = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
+const _6fed7415 = () => interopDefault(import('../pages/index/monitoring.vue' /* webpackChunkName: "pages/index/monitoring" */))
+const _0242c5d2 = () => interopDefault(import('../pages/index/support.vue' /* webpackChunkName: "pages/index/support" */))
 
 const emptyFn = () => {}
 
@@ -21,15 +22,19 @@ export const routerOptions = {
 
   routes: [{
     path: "/login",
-    component: _1bb3abd8,
+    component: _5f002629,
     name: "login"
   }, {
     path: "/",
-    component: _287e86fd,
+    component: _d54ef9dc,
     name: "index",
     children: [{
+      path: "monitoring",
+      component: _6fed7415,
+      name: "index-monitoring"
+    }, {
       path: "support",
-      component: _10f0a286,
+      component: _0242c5d2,
       name: "index-support"
     }]
   }],

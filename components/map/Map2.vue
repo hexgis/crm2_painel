@@ -13,13 +13,13 @@
     <l-control>
       <SupportLayers />
     </l-control>
+    <l-control> </l-control>
   </l-map>
 </template>
 
 <script>
 import { LMap, LTileLayer, LControlLayers } from "vue2-leaflet";
 import SupportLayers from "@/components/support/SupportLayers.vue";
-import MonitoringLayers from "@/components/monitoring/MonitoringLayers.vue";
 
 export default {
   components: {
@@ -27,7 +27,6 @@ export default {
     LTileLayer,
     LControlLayers,
     SupportLayers,
-    MonitoringLayers
   },
   data() {
     return {

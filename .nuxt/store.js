@@ -21,6 +21,7 @@ let store = {};
   resolveStoreModules(require('../store/auth.js'), 'auth.js')
   resolveStoreModules(require('../store/bookmarks.js'), 'bookmarks.js')
   resolveStoreModules(require('../store/map.js'), 'map.js')
+  resolveStoreModules(require('../store/monitoring.js'), 'monitoring.js')
   resolveStoreModules(require('../store/priority.js'), 'priority.js')
   resolveStoreModules(require('../store/supportLayers.js'), 'supportLayers.js')
   resolveStoreModules(require('../store/userProfile.js'), 'userProfile.js')
@@ -34,6 +35,7 @@ let store = {};
       '../store/auth.js',
       '../store/bookmarks.js',
       '../store/map.js',
+      '../store/monitoring.js',
       '../store/priority.js',
       '../store/supportLayers.js',
       '../store/userProfile.js',
