@@ -1,0 +1,50 @@
+{
+    "aggs": {
+        "graph7": {
+            "aggs": {
+                "area": {
+                    "sum": {
+                        "field": "nu_area_km2",
+                        "missing": 0
+                    }
+                }
+            },
+            "composite": {
+                "size": 56,
+                "sources": [
+                    {
+                        "year": {
+                            "date_histogram": {
+                                "calendar_interval": "year",
+                                "field": "dt_t_um",
+                                "format": "YYYY"
+                            }
+                        }
+                    },
+                    {
+                        "state": {
+                            "terms": {
+                                "field": "sg_uf"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "query": {
+        "bool": {
+            "filter": [
+                {
+                    "range": {
+                        "dt_t_um": {
+                            "gte": "2021-10-01",
+                            "lt": "2021-11-01"
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    "size": 0
+}

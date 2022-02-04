@@ -1,0 +1,9 @@
+FROM node:12-alpine as builder
+
+RUN mkdir /app/
+WORKDIR /app/
+
+RUN npm set progress=false && npm config set depth 0
+RUN npm install
+
+CMD ["npm", "run", "dev"]
