@@ -96,14 +96,14 @@ export default {
         }
     },
 
-    // beforeRouteLeave(to, from, next) {
-    //     this.$store.commit('analytics/setMonthData', [])
-    //     this.$store.commit('analytics/setYearData', [])
-    //     this.$store.commit('analytics/setPreviousMonthData', [])
-    //     this.$store.commit('analytics/setPreviousYearData', [])
-    //     this.$store.commit('analytics/setParams', {})
-    //     next()
-    // },
+    beforeRouteLeave(to, from, next) {
+        this.$store.commit('analytics/setMonthData', [])
+        this.$store.commit('analytics/setYearData', [])
+        this.$store.commit('analytics/setPreviousMonthData', [])
+        this.$store.commit('analytics/setPreviousYearData', [])
+        this.$store.commit('analytics/setParams', {})
+        next()
+    },
 }
 </script>
 

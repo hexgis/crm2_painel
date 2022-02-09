@@ -15,7 +15,7 @@
                     <v-col cols="3">
                         <v-select
                             v-model="filters.type"
-                            :label="$t('type-label')"
+                            :label= "$t('cr-label')"
                             :items="monitoringTypes"
                             item-text="name"
                             item-value="identifier"
@@ -26,7 +26,20 @@
                     <v-col cols="3">
                         <v-select
                             v-model="filters.stage"
-                            :label="$t('class-label')"
+                            :label= "$t('ti-label')"
+                            :items="stageList"
+                            item-text="name"
+                            item-value="identifier"
+                            outlined
+                            height="50"
+                            multiple
+                        >
+                        </v-select>
+                    </v-col>
+                    <v-col cols="3">
+                        <v-select
+                            v-model="filters.stage"
+                            :label= "$t('class-label')"
                             :items="stageList"
                             item-text="name"
                             item-value="identifier"
@@ -87,15 +100,17 @@
 {
     "en": {
         "date-label": "Year/Month",
-        "type-label": "Type",
-        "class-label": "Class",
-        "filter-button": "Filter"
+        "cr-label": "CR",
+        "ti-label": "TI",
+        "filter-button": "Filter",
+        "class-label": "Priority"
     },
     "pt-br": {
         "date-label": "Mês/Ano",
-        "type-label": "Tipo",
-        "class-label": "Classe",
-        "filter-button": "Filtrar"
+        "cr-label": "CR",
+        "ti-label": "TI",
+        "filter-button": "Filtrar",
+        "class-label": "Prioridade"
     }
 }
 </i18n>
