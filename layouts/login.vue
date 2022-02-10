@@ -12,11 +12,11 @@
                         width="100"
                         height="40"
                         contain
-                        src="/img/hexLight.png"
+                        src="/img/logocmr-img.png"
                     />
                 </v-col>
                 <v-col class="text-center white--text">
-                    Copyright Hex Geospatial Technologies © 2020
+                    Copyright Funai-CMR © 2022
                 </v-col>
                 <v-spacer></v-spacer>
             </v-row>
@@ -36,7 +36,7 @@ export default {
 
 <style lang="sass" scoped>
 .background
-    background-image: url('/img/earth.jpg')
+    background-image: url('/img/aldeia.jpg')
     background-size: cover
 
 .inner-title

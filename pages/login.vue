@@ -12,7 +12,7 @@
                             color="accent"
                         />
                         <v-toolbar-title class="flex text-center pa-5">
-                            CMR - {{ appName }}
+                            Polígonos Prioritários
                         </v-toolbar-title>
                     </v-toolbar>
 
