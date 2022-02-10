@@ -38,7 +38,7 @@ export default {
         ],
         datasets: [
           {
-            label: "Data One",
+            label: "Polígonos Prioritários Região 1",
             borderColor: "#FC2525",
             pointBackgroundColor: "white",
             borderWidth: 1,
@@ -47,7 +47,7 @@ export default {
             data: [40, 39, 10, 40, 39, 80, 40]
           },
           {
-            label: "Data Two",
+            label: "Polígonos Prioritários Região 2",
             borderColor: "#05CBE1",
             pointBackgroundColor: "white",
             pointBorderColor: "white",

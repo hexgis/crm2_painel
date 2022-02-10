@@ -1,47 +1,66 @@
 <template>
-    <vue-scrollbar>
-        <v-container
-            fluid
-            class="container"
-            scroll-off-screen
-            scroll-target="#scrolling-techniques"
-        >
-            <v-tabs dark background-color="secondary">
-                <v-tab>
-                    <v-icon>mdi-chart-bar </v-icon>
-                </v-tab>
-                <v-tab>
-                    <v-icon>mdi-file-chart-outline </v-icon>
-                </v-tab>
-                <v-tab-item class="tab-content">
-                    <v-row>
-                        <v-col>
-                            <v-card elevation="6">
-                                <v-card-title>
-                                    Estatísticas Filtradas
-                                </v-card-title>
-                                <v-card-text>
-                                    Dados de acordo com o filtro de polígonos
-                                    prioritários
-                                </v-card-text>
-                            </v-card>
-                        </v-col>
-                    </v-row>
-                </v-tab-item>
-                <v-tab-item class="tab-content">
-                    <AnalyticsFilter />
-                </v-tab-item>
-            </v-tabs>
+    <v-container fluid class="container">
+        <v-tabs dark background-color="secondary">
+            <v-tab>
+                <v-icon>mdi-chart-bar </v-icon>
+            </v-tab>
+            
+            <v-tab-item class="tab-content">
+                <v-row>
+                    <v-col>
+                        <v-card elevation="6">
+                            <v-card-title>
+                                Estatísticas Filtradas
+                            </v-card-title>
+                            <v-card-text>
 
-            <div>
+                               <h3> Dados de acordo com o filtro de polígonos
+                                prioritários
+                                </h3>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                </v-row>
+            </v-tab-item>
+        </v-tabs>
+        
+            <div >
+                <v-row>
+
+                <v-col cols="6">
+                <v-card>
                 <AreaChart />
+                </v-card>
+                </v-col>
+                
+                <v-col cols="6">
+                <v-card>
                 <PieChart />
+                </v-card>
+                </v-col>
+
+                <!-- <v-col cols="6">
+                <v-card>
                 <BarChart />
+                </v-card>
+                </v-col>
+
+                <v-col cols="6">
+                <v-card>
                 <RadarChart />
+                </v-card>
+                </v-col>
+
+                <v-col cols="6">
+                <v-card>
                 <LineChart />
+                </v-card>
+                </v-col> -->
+
+                </v-row>
             </div>
-        </v-container>
-    </vue-scrollbar>
+        
+    </v-container>
 </template>
 
 <script>
@@ -53,7 +72,6 @@ import PieChart from '@/components/graphics/PieChart.vue'
 import BarChart from '@/components/graphics/BarChart.vue'
 import RadarChart from '@/components/graphics/RadarChart.vue'
 import LineChart from '@/components/graphics/LineChart.vue'
-import VueScrollbar from 'vue-scrollbar-simple'
 
 export default {
     name: 'AnalyticsPriorConsolidDashboard',
@@ -67,7 +85,6 @@ export default {
         BarChart,
         RadarChart,
         LineChart,
-        VueScrollbar,
     },
 
     data() {
@@ -90,5 +107,9 @@ export default {
 
 .tab-content {
     padding: 20px;
+}
+
+.small {
+    max-width: 350px;
 }
 </style>
