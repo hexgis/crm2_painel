@@ -22,6 +22,7 @@
             </template>
         </div>
     </v-container>
+    
 </template>
 
 <i18n>

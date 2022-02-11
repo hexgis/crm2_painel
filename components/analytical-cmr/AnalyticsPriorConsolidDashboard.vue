@@ -8,17 +8,7 @@
             <v-tab-item class="tab-content">
                 <v-row>
                     <v-col>
-                        <v-card elevation="6">
-                            <v-card-title>
-                                Estatísticas Filtradas
-                            </v-card-title>
-                            <v-card-text>
-
-                               <h3> Dados de acordo com o filtro de polígonos
-                                prioritários
-                                </h3>
-                            </v-card-text>
-                        </v-card>
+                        
                     </v-col>
                 </v-row>
             </v-tab-item>
@@ -28,34 +18,34 @@
                 <v-row>
 
                 <v-col cols="6">
-                <v-card>
+                <v-card elevation="6">
                 <AreaChart />
                 </v-card>
                 </v-col>
                 
                 <v-col cols="6">
-                <v-card>
+                <v-card elevation="6">
                 <PieChart />
                 </v-card>
                 </v-col>
 
-                <!-- <v-col cols="6">
-                <v-card>
+                <v-col cols="6">
+                <v-card elevation="6">
                 <BarChart />
                 </v-card>
                 </v-col>
 
                 <v-col cols="6">
-                <v-card>
+                <v-card elevation="6">
                 <RadarChart />
                 </v-card>
                 </v-col>
 
                 <v-col cols="6">
-                <v-card>
+                <v-card elevation="6">
                 <LineChart />
                 </v-card>
-                </v-col> -->
+                </v-col>
 
                 </v-row>
             </div>

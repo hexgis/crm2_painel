@@ -73,11 +73,11 @@ export default {
             themes: {
                 light: {
                     primary: '#2A3163',
-                    secondary: '#2196F3',
-                    accent: '#2196F3',
+                    secondary: '#20639E',
+                    accent: '#008A00',
                     error: '#D8573C',
                     warning: '#F5C035',
-                    info: '#FFFFFF',
+                    info: '#9EC6F9',
                     success: '#26A69A',
                 },
             },

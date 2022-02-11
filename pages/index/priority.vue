@@ -44,10 +44,17 @@
                 </v-tabs-items> -->
 
         <v-container>
-            
-                <v-divider></v-divider>
-                <h3>Legenda:</h3>
-                <h5>*em implementação*</h5>
+            <v-divider></v-divider>
+            <h3>Legenda:</h3>
+            <h5>*em implementação*</h5>
+        </v-container>
+
+        <v-container>
+            <v-list-item>
+                <v-list-item-content>
+                    <v-img contain src="/img/logocmr_normal.png" />
+                </v-list-item-content>
+            </v-list-item>
         </v-container>
     </v-container>
 </template>
@@ -88,6 +95,15 @@ export default {
                 !!this.features.features &&
                 this.features.features.length > 0
             )
+        },
+        showFeaturesPriority: {
+            get() {
+                return this.$store.state.funai.showFeatures
+            },
+
+            set(value) {
+                this.$store.commit('funai/setShowFeatures', value)
+            },
         },
         ...mapState('funai', ['showFeatures', 'features']),
     },
