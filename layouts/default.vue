@@ -59,11 +59,9 @@
             @input="changeControlsStyle()"
         >
             <v-list-item>
-                <v-list-item-content width="100%" height="10%">
+                <v-list-item-content >
                     <v-img
                         contain
-                        width="40%"
-                        height="10%"
                         src="/img/logocmr_normal.png"
                     />
                 </v-list-item-content>
