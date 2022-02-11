@@ -58,12 +58,17 @@
             class="elevation-4 navigation-drawer"
             @input="changeControlsStyle()"
         >
-                <v-img
-                    contain
-                    width="500"
-                    height="50"
-                    src="/img/logocmr_normal.png"
-                />
+            <v-list-item>
+                <v-list-item-content width="100%" height="10%">
+                    <v-img
+                        contain
+                        width="40%"
+                        height="10%"
+                        src="/img/logocmr_normal.png"
+                    />
+                </v-list-item-content>
+            </v-list-item>
+            <v-divider></v-divider>
             <nuxt @closedrawer="layerDrawer = false" />
         </v-navigation-drawer>
         <div v-if="$store.state.funai.visualizationStage == 'stage1'">
