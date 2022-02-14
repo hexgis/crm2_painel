@@ -108,42 +108,18 @@
                                 <v-img
                                     contain
                                     width="60"
-                                    src="/img/funai.svg"
+                                    src="/img/logocmr-img.png"
                                 />
                             </a>
-
                             <a href="//funai.gov.br" target="_blank">
                                 <v-img
                                     contain
                                     width="60"
-                                    src="/img/logocmr-img.png"
+                                    src="/img/funai.svg"
                                 />
                             </a>
                         </v-col>
                     </div>
-
-                    <!-- <div class="nation-logo-container d-flex mb-1">
-                        <a href="/pt-br"
-                            ><v-img
-                                src="/img/brazil.svg"
-                                class="ml-1 logo-flags"
-                                height="23"
-                                width="35"
-                                contain
-                            >
-                            </v-img>
-                        </a>
-                        <a href="/"
-                            ><v-img
-                                src="/img/usa.png"
-                                class="ml-1 logo-flags"
-                                height="23"
-                                width="38"
-                                contain
-                            >
-                            </v-img>
-                        </a>
-                    </div> -->
                 </l-control>
 
                 <l-geo-json

@@ -8,12 +8,6 @@
         <v-footer app absolute>
             <v-row dense class="justifiy-space-between align-center">
                 <v-col>
-                    <v-img
-                        width="100"
-                        height="40"
-                        contain
-                        src="/img/logocmr-img.png"
-                    />
                 </v-col>
                 <v-col class="text-center white--text">
                     Copyright Funai-CMR © 2022

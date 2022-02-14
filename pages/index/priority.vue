@@ -19,7 +19,7 @@
 
         <v-tabs
             v-model="tab"
-            background-color="blue accent-2"
+            background-color="accent"
             centered
             dark
             icons-and-text
@@ -35,6 +35,7 @@
                 <v-icon large>mdi-file-chart-outline</v-icon>
             </v-tab>
         </v-tabs>
+
         <!-- <v-tabs-items v-model="tab">
                     <v-tab-item v-for="i in 2" :key="i" :value="'stage' + i">
                         <v-card flat>
@@ -113,12 +114,10 @@ export default {
             this.getFeatures()
         },
         changeVisualizationStage() {
-            // console.log("Resualtado da Tab:", this.tab),
             this.setVisualizationStage(this.tab)
         },
         ...mapActions('funai', ['getFeatures']),
         ...mapMutations('funai', ['setVisualizationStage']),
-        // ...mapGetters('funai', ['featuresLoaded']),
     },
 }
 </script>

@@ -12,7 +12,12 @@
                             color="accent"
                         />
                         <v-toolbar-title class="flex text-center pa-5">
-                            Polígonos Prioritários
+                            <v-img
+                        width="90%"
+                        height="40%"
+                        contain
+                        src="/img/logocmr.png"
+                    />
                         </v-toolbar-title>
                     </v-toolbar>
 
