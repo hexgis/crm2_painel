@@ -77,8 +77,8 @@ export const mutations = {
         state.unitMeasurement = unitMeasurement
     },
     setVisualizationStage(state, visualizationStage) {
-        ;(state.visualizationStage = visualizationStage),
-            console.log('Valor do atribuido: ', visualizationStage)
+        state.visualizationStage = visualizationStage
+        console.log('Valor do atribuido: ', visualizationStage)
     },
     //
 }

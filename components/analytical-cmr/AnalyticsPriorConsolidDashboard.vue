@@ -4,52 +4,47 @@
             <v-tab>
                 <v-icon>mdi-chart-bar </v-icon>
             </v-tab>
-            
+
             <v-tab-item class="tab-content">
                 <v-row>
-                    <v-col>
-                        
-                    </v-col>
+                    <v-col> </v-col>
                 </v-row>
             </v-tab-item>
         </v-tabs>
-        
-            <div >
-                <v-row>
 
+        <div>
+            <v-row>
                 <v-col cols="6">
-                <v-card elevation="6">
-                <AreaChart />
-                </v-card>
-                </v-col>
-                
-                <v-col cols="6">
-                <v-card elevation="6">
-                <PieChart />
-                </v-card>
+                    <v-card elevation="6">
+                        <AreaChart />
+                    </v-card>
                 </v-col>
 
                 <v-col cols="6">
-                <v-card elevation="6">
-                <BarChart />
-                </v-card>
+                    <v-card elevation="6">
+                        <PieChart />
+                    </v-card>
                 </v-col>
 
                 <v-col cols="6">
-                <v-card elevation="6">
-                <RadarChart />
-                </v-card>
+                    <v-card elevation="6">
+                        <BarChart />
+                    </v-card>
                 </v-col>
 
                 <v-col cols="6">
-                <v-card elevation="6">
-                <LineChart />
-                </v-card>
+                    <v-card elevation="6">
+                        <RadarChart />
+                    </v-card>
                 </v-col>
 
-                </v-row>
-            </div>
-        
+                <v-col cols="6">
+                    <v-card elevation="6">
+                        <LineChart />
+                    </v-card>
+                </v-col>
+            </v-row>
+        </div>
     </v-container>
 </template>
 

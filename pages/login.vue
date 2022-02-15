@@ -12,12 +12,14 @@
                             color="accent"
                         />
                         <v-toolbar-title class="flex text-center pa-5">
-                            <v-img
-                        width="90%"
-                        height="40%"
-                        contain
-                        src="/img/logocmr.png"
-                    />
+                            <v-container>
+                                <v-img
+                                    width="90%"
+                                    height="40%"
+                                    contain
+                                    src="/img/logocmr.png"
+                                />
+                            </v-container>
                         </v-toolbar-title>
                     </v-toolbar>
 

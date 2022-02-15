@@ -37,7 +37,7 @@
             </v-tooltip>
         </v-tab>
 
-        <v-tab-item :transition="false" :reverse-transition="false">
+        <v-tab-item :transition="false" :reverse-transition="false ">
             <nuxt-child keep-alive />
 
             <div

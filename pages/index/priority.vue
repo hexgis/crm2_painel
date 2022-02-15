@@ -16,26 +16,27 @@
         <v-container>
             <v-divider></v-divider>
         </v-container>
-
-        <v-tabs
-            v-model="tab"
-            background-color="accent"
-            centered
-            dark
-            icons-and-text
-        >
-            <v-tabs-slider></v-tabs-slider>
-
-            <v-tab href="#stage1" @click="changeVisualizationStage">
-                Mapa
-                <v-icon large>mdi-web</v-icon>
-            </v-tab>
-            <v-tab href="#stage2" @click="changeVisualizationStage">
-                Estatísticas
-                <v-icon large>mdi-file-chart-outline</v-icon>
-            </v-tab>
-        </v-tabs>
-
+        <v-container>
+            <v-row align="center" justify="space-around">
+                <v-btn
+                    depressed
+                    icon
+                    color="accent"
+                    @click="changeVisualizationStage('stage1')"
+                >
+                    <!-- Mapa -->
+                    <v-icon large>mdi-map</v-icon>
+                </v-btn>
+                <v-btn
+                    icon
+                    color="accent"
+                    @click="changeVisualizationStage('stage2')"
+                >
+                    <!-- Estatísticas -->
+                    <v-icon large>mdi-chart-box</v-icon>
+                </v-btn>
+            </v-row>
+        </v-container>
         <!-- <v-tabs-items v-model="tab">
                     <v-tab-item v-for="i in 2" :key="i" :value="'stage' + i">
                         <v-card flat>
@@ -45,17 +46,12 @@
                 </v-tabs-items> -->
 
         <v-container>
-            <v-divider></v-divider>
-            <h3>Legenda:</h3>
-            <h5>*em implementação*</h5>
+        <v-divider></v-divider>
         </v-container>
-
         <v-container>
-            <v-list-item>
-                <v-list-item-content>
-                    <v-img contain src="/img/logocmr_normal.png" />
-                </v-list-item-content>
-            </v-list-item>
+            <v-footer absolute color="white">
+                <v-img contain max-width="60%" src="/img/logocmr_normal.png" />
+            </v-footer>
         </v-container>
     </v-container>
 </template>
@@ -113,8 +109,8 @@ export default {
         search() {
             this.getFeatures()
         },
-        changeVisualizationStage() {
-            this.setVisualizationStage(this.tab)
+        changeVisualizationStage(tab) {
+            this.setVisualizationStage(tab)
         },
         ...mapActions('funai', ['getFeatures']),
         ...mapMutations('funai', ['setVisualizationStage']),

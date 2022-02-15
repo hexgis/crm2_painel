@@ -21,8 +21,18 @@
                 <v-skeleton-loader :key="i" type="text" class="mx-4 my-5" />
             </template>
         </div>
+        <v-container>
+            <v-container>
+                <v-footer absolute color="white">
+                    <v-img
+                        contain
+                        max-width="60%"
+                        src="/img/logocmr_normal.png"
+                    />
+                </v-footer>
+            </v-container>
+        </v-container>
     </v-container>
-    
 </template>
 
 <i18n>

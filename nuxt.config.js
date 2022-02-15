@@ -72,12 +72,12 @@ export default {
             light: true,
             themes: {
                 light: {
-                    primary: '#007ECF',
-                    secondary: '#20639E',
-                    accent: '#008A00',
+                    primary: '#3573B7',
+                    secondary: '#1C4171',
+                    accent: '#165396',
                     error: '#D8573C',
                     warning: '#F5C035',
-                    info: '#036BB7',
+                    info: '#395989',
                     success: '#26A69A',
                 },
             },
