@@ -16,6 +16,54 @@
         <v-container>
             <v-divider></v-divider>
         </v-container>
+
+        <v-container>
+            <v-row>
+                <v-col cols="6">
+                    <h4>Cor</h4>
+                </v-col>
+                <v-col cols="6">
+                    <h4>Prioridade</h4>
+                </v-col>
+                <v-col cols="6">
+                    <v-card color="#ff4000" max-width="30%" align="center">
+                        <v-icon color="#FFFFFF"> mdi-terrain </v-icon>
+                    </v-card>
+                </v-col>
+                <v-col cols="6">
+                    <h4>Alta</h4>
+                </v-col>
+                <v-col cols="6">
+                    <v-card color="#ff751a" max-width="30%" align="center">
+                        <v-icon color="#FFFFFF"> mdi-terrain </v-icon>
+                    </v-card>
+                </v-col>
+                <v-col cols="6">
+                    <h4>Média</h4>
+                </v-col>
+                <v-col cols="6">
+                    <v-card color="#ffff00" max-width="30%" align="center">
+                        <v-icon color="#FFFFFF"> mdi-terrain </v-icon>
+                    </v-card>
+                </v-col>
+                <v-col cols="6">
+                    <h4>Baixa</h4>
+                </v-col>
+                <v-col cols="6">
+                    <v-card color="#00e600" max-width="30%" align="center">
+                        <v-icon color="#FFFFFF"> mdi-terrain </v-icon>
+                    </v-card>
+                </v-col>
+                <v-col cols="6">
+                    <h4>Muito Baixa</h4>
+                </v-col>
+            </v-row>
+        </v-container>
+
+        <v-container>
+            <v-divider></v-divider>
+        </v-container>
+
         <v-container>
             <v-row align="center" justify="space-around">
                 <v-btn
@@ -37,20 +85,10 @@
                 </v-btn>
             </v-row>
         </v-container>
-        <!-- <v-tabs-items v-model="tab">
-                    <v-tab-item v-for="i in 2" :key="i" :value="'stage' + i">
-                        <v-card flat>
-                            <v-card-text>{{ text }}</v-card-text>
-                        </v-card>
-                    </v-tab-item>
-                </v-tabs-items> -->
-
+        <br /><br />
         <v-container>
-        <v-divider></v-divider>
-        </v-container>
-        <v-container>
-            <v-footer absolute color="white">
-                <v-img contain max-width="60%" src="/img/logocmr_normal.png" />
+            <v-footer absolute color="#FFFFFF" elevation="6">
+                <v-img contain class="center" src="/img/logocmr_normal.png" />
             </v-footer>
         </v-container>
     </v-container>
@@ -118,4 +156,12 @@ export default {
 }
 </script>
 
-<style scoped lang="sass"></style>
+<style scoped >
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 70%;
+}
+</style>
+

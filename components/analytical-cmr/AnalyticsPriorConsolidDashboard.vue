@@ -1,50 +1,41 @@
 <template>
-    <v-container fluid class="container">
-        <v-tabs dark background-color="secondary">
-            <v-tab>
-                <v-icon>mdi-chart-bar </v-icon>
-            </v-tab>
+    <v-container fluid class="overflow-auto container-height">
+        <v-toolbar absolute width="100vw" color="secondary">
+            <v-btn icon>
+                <v-icon color="#FFFFFF">mdi-chart-box</v-icon>
+            </v-btn>
+        </v-toolbar>
+        <v-row class="lucas">
+            <v-col cols="6">
+                <v-card elevation="6">
+                    <AreaChart class="py-2 px-2" />
+                </v-card>
+            </v-col>
 
-            <v-tab-item class="tab-content">
-                <v-row>
-                    <v-col> </v-col>
-                </v-row>
-            </v-tab-item>
-        </v-tabs>
+            <v-col cols="6">
+                <v-card elevation="6">
+                    <PieChart class="py-2 px-2" />
+                </v-card>
+            </v-col>
 
-        <div>
-            <v-row>
-                <v-col cols="6">
-                    <v-card elevation="6">
-                        <AreaChart />
-                    </v-card>
-                </v-col>
+            <v-col cols="6">
+                <v-card elevation="6">
+                    <BarChart class="py-2 px-2" />
+                </v-card>
+            </v-col>
 
-                <v-col cols="6">
-                    <v-card elevation="6">
-                        <PieChart />
-                    </v-card>
-                </v-col>
+            <v-col cols="6">
+                <v-card elevation="6">
+                    <RadarChart class="py-2 px-2" />
+                </v-card>
+            </v-col>
 
-                <v-col cols="6">
-                    <v-card elevation="6">
-                        <BarChart />
-                    </v-card>
-                </v-col>
-
-                <v-col cols="6">
-                    <v-card elevation="6">
-                        <RadarChart />
-                    </v-card>
-                </v-col>
-
-                <v-col cols="6">
-                    <v-card elevation="6">
-                        <LineChart />
-                    </v-card>
-                </v-col>
-            </v-row>
-        </div>
+            <v-col cols="6">
+                <v-card elevation="6">
+                    <LineChart class="py-2 px-2" />
+                </v-card>
+            </v-col>
+        </v-row>
     </v-container>
 </template>
 
@@ -85,16 +76,13 @@ export default {
 </script>
 
 <style scoped>
-.container {
-    width: 90%;
-    height: 100%;
+.container-height {
+    max-height: 100vh;
 }
 
-.tab-content {
-    padding: 20px;
+.lucas{
+    margin-top: 90px;
 }
 
-.small {
-    max-width: 350px;
-}
+
 </style>

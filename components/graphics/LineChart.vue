@@ -17,7 +17,7 @@ export default {
         ],
         datasets: [
           {
-            label: "Data 1",
+            label: "Polígonos",
             data: [2, 10, 5, 9, 0, 6, 20],
             backgroundColor: "transparent",
             borderColor: "rgba(1, 116, 188, 0.50)",
@@ -30,7 +30,7 @@ export default {
         maintainAspectRatio: false,
         title: {
           display: true,
-          text: "My Data"
+          text: "Polígonos de Prioridade Média"
         }
       }
     );

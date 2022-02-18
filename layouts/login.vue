@@ -7,8 +7,7 @@
         </v-main>
         <v-footer app absolute>
             <v-row dense class="justifiy-space-between align-center">
-                <v-col>
-                </v-col>
+                <v-col> </v-col>
                 <v-col class="text-center white--text">
                     Copyright Funai-CMR © 2022
                 </v-col>
@@ -30,7 +29,7 @@ export default {
 
 <style lang="sass" scoped>
 .background
-    background-image: url('/img/aldeia.jpg')
+    background-image: url('/img/login.jpg')
     background-size: cover
 
 .inner-title

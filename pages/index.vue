@@ -29,7 +29,7 @@
             exact
             nuxt
         >
-            <v-tooltip left >
+            <v-tooltip left>
                 <template #activator="{ on }">
                     <v-icon v-on="on">{{ tab.icon }}</v-icon>
                 </template>
@@ -37,7 +37,7 @@
             </v-tooltip>
         </v-tab>
 
-        <v-tab-item :transition="false" :reverse-transition="false ">
+        <v-tab-item :transition="false" :reverse-transition="false">
             <nuxt-child keep-alive />
 
             <div
@@ -50,7 +50,7 @@
                     align-content-space-between
                 "
             >
-                <v-list class="pt-0" light>
+                <v-list class="pt-0" dark>
                     <v-list-item
                         v-for="(tab, i) in tabs"
                         :key="i"
@@ -256,7 +256,4 @@ export default {
 
     > .v-btn--icon
         color: whitesmoke
-
-
-
 </style>

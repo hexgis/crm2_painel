@@ -23,10 +23,10 @@
         </div>
         <v-container>
             <v-container>
-                <v-footer absolute color="white">
+                <v-footer absolute color="#FFFFFF" elevation="6">
                     <v-img
                         contain
-                        max-width="60%"
+                        class="center"
                         src="/img/logocmr_normal.png"
                     />
                 </v-footer>
@@ -82,3 +82,12 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 70%;
+}
+</style>

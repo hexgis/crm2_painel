@@ -22,7 +22,7 @@ export default {
         ],
         datasets: [
           {
-            label: "Data One",
+            label: "Polígono: Prioridade Alta",
             backgroundColor: "#f87979",
             data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11]
           }

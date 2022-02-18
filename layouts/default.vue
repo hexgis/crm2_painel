@@ -58,7 +58,6 @@
             class="elevation-4 navigation-drawer"
             @input="changeControlsStyle()"
         >
-            
             <nuxt @closedrawer="layerDrawer = false" />
         </v-navigation-drawer>
         <div v-if="$store.state.funai.visualizationStage == 'stage1'">

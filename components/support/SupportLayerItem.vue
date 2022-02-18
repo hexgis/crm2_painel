@@ -101,7 +101,7 @@ export default {
                 if (this.layer.filters) {
                     wmsUrl =
                         this.layer.wms.geoserver.wms_url +
-                        '&env=opacity:' +
+                        '&env=percentage:' +
                         this.layer.opacity / 100
 
                     if (Object.keys(this.layer.filters).length) {
@@ -115,7 +115,7 @@ export default {
                 } else {
                     wmsUrl =
                         this.layer.wms.geoserver.wms_url +
-                        '&env=opacity:' +
+                        '&env=percentage:' +
                         this.layer.opacity / 100
                 }
 

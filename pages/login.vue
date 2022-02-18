@@ -14,6 +14,7 @@
                         <v-toolbar-title class="flex text-center pa-5">
                             <v-container>
                                 <v-img
+                                    class="center"
                                     width="90%"
                                     height="40%"
                                     contain
@@ -128,10 +129,17 @@ export default {
 }
 </script>
 
-<style scoped lang="sass">
-.progress
-    position: fixed
-    z-index: 100
-    left: 0px
-    top: 0px
+<style scoped>
+.progress {
+    position: fixed;
+    z-index: 100;
+    left: 0px;
+    top: 0px;
+}
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 80%;
+}
 </style>
