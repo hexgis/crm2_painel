@@ -18,51 +18,51 @@
         </v-container>
 
         <v-container>
-            <v-row>
-                <v-col cols="5">
+            <v-row class="center2">
+                <v-col cols="6">
                     <h4>Cor</h4>
                 </v-col>
-                <v-col cols="5">
+                <v-col cols="6">
                     <h4>Classe</h4>
                 </v-col>
-                <v-col cols="5">
-                    <v-card color="#ff4000" max-width="50%" align="center">
+                <v-col cols="6">
+                    <v-card color="#ff4000" align="center">
                         <v-icon color="#FFFFFF"> mdi-terrain </v-icon>
                     </v-card>
                 </v-col>
-                <v-col cols="5">
-                    <v-card max-width="60%" align="center">
-                    <h4>Alta</h4>
+                <v-col cols="6">
+                    <v-card align="center">
+                        <h4>Alta</h4>
                     </v-card>
                 </v-col>
-                <v-col cols="5">
-                    <v-card color="#ff751a" max-width="50%" align="center">
+                <v-col cols="6">
+                    <v-card color="#ff751a" align="center">
                         <v-icon color="#FFFFFF"> mdi-terrain </v-icon>
                     </v-card>
                 </v-col>
-                <v-col cols="5">
-                    <v-card max-width="60%" align="center"> 
-                    <h4>Média</h4>
+                <v-col cols="6">
+                    <v-card align="center">
+                        <h4>Média</h4>
                     </v-card>
                 </v-col>
-                <v-col cols="5">
-                    <v-card color="#ffff00" max-width="50%" align="center">
+                <v-col cols="6">
+                    <v-card color="#ffff00" align="center">
                         <v-icon color="#FFFFFF"> mdi-terrain </v-icon>
                     </v-card>
                 </v-col>
-                <v-col cols="5">
-                    <v-card max-width="60%" align="center">
-                    <h4>Baixa</h4>
+                <v-col cols="6">
+                    <v-card align="center">
+                        <h4>Baixa</h4>
                     </v-card>
                 </v-col>
-                <v-col cols="5">
-                    <v-card color="#00e600" max-width="50%" align="center">
+                <v-col cols="6">
+                    <v-card color="#00e600" align="center">
                         <v-icon color="#FFFFFF"> mdi-terrain </v-icon>
                     </v-card>
                 </v-col>
-                <v-col cols="5">
-                    <v-card max-width="60%" align="center">
-                    <h4>Muito Baixa</h4>
+                <v-col cols="6">
+                    <v-card align="center">
+                        <h4>Muito Baixa</h4>
                     </v-card>
                 </v-col>
             </v-row>
@@ -167,6 +167,11 @@ export default {
 <style scoped >
 .center {
     display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 70%;
+}
+.center2 {
     margin-left: auto;
     margin-right: auto;
     max-width: 70%;
