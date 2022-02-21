@@ -20,7 +20,7 @@
         <v-container>
             <h3>Legenda</h3>
             <br />
-            <v-row>
+            <v-row class="d-flex justify-center">
                 <v-col cols="5">
                     <v-icon color="#e3d212"> mdi-bookmark</v-icon>
                 </v-col>
