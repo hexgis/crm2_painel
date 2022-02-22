@@ -37,7 +37,7 @@
             </v-col>
             <v-col cols="6">
                 <v-card elevation="6">
-                    <DonutChart class="py-2 px-2" />
+                    <DoughnutChart class="py-2 px-2" />
                 </v-card>
             </v-col>
         </v-row>
@@ -53,7 +53,7 @@ import PieChart from '@/components/graphics/PieChart.vue'
 import BarChart from '@/components/graphics/BarChart.vue'
 import RadarChart from '@/components/graphics/RadarChart.vue'
 import LineChart from '@/components/graphics/LineChart.vue'
-import DonutChart from '@/components/graphics/DonutChart.vue'
+import DoughnutChart from '~/components/graphics/DoughnutChart.vue'
 
 export default {
     name: 'AnalyticsPriorConsolidDashboard',
@@ -67,7 +67,7 @@ export default {
         BarChart,
         RadarChart,
         LineChart,
-        DonutChart
+        DoughnutChart
     },
 
     data() {

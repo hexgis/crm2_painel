@@ -19,30 +19,29 @@
 
         <v-container>
             <h3>Legenda</h3>
-            <br />
-            <v-row class="d-flex justify-center">
-                <v-col cols="5">
-                    <v-icon color="#e3d212"> mdi-bookmark</v-icon>
-                </v-col>
-                <v-col cols="5">
+            <v-row >
+                <v-col cols="8" md="3">
+                    <v-icon color="#e3d212"> mdi-square</v-icon>
+                </v-col >
+                <v-col cols="8" >
                     <h4>Baixa</h4>
                 </v-col>
-                <v-col cols="5">
-                    <v-icon color="#29871b"> mdi-bookmark</v-icon>
+                <v-col cols="8" md="3">
+                    <v-icon color="#29871b"> mdi-square</v-icon>
                 </v-col>
-                <v-col cols="5">
+                <v-col cols="8">
                     <h4>Muito Baixa</h4>
                 </v-col>
-                <v-col cols="5">
-                    <v-icon color="#c26219"> mdi-bookmark</v-icon>
+                <v-col cols="8" md="3">
+                    <v-icon color="#c26219"> mdi-square</v-icon>
                 </v-col>
-                <v-col cols="5">
+                <v-col cols="8" >
                     <h4>Média</h4>
                 </v-col>
-                <v-col cols="5">
-                    <v-icon color="#a83232"> mdi-bookmark</v-icon>
+                <v-col cols="8" md="3">
+                    <v-icon color="#a83232"> mdi-square</v-icon>
                 </v-col>
-                <v-col cols="5">
+                <v-col cols="8">
                     <h4>Alta</h4>
                 </v-col>
             </v-row>
