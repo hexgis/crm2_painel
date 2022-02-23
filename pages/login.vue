@@ -12,11 +12,9 @@
                             color="accent"
                         />
                         <v-toolbar-title class="flex text-center pa-5">
-                            <v-container>
+                            <v-container class="d-flex justify-center">
                                 <v-img
-                                    class="center"
-                                    width="90%"
-                                    height="40%"
+                                    max-width="200"
                                     contain
                                     src="/img/logocmr.png"
                                 />
