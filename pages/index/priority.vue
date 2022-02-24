@@ -72,7 +72,7 @@
                 </v-btn>
             </v-row>
         </v-container>
-        <br /><br />
+        <br/>
         <v-container>
             <v-footer
                 absolute

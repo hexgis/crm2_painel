@@ -87,14 +87,14 @@
         "catalog-tab": "Meu acervo de imagens",
         "imagery-tab": "Pesquisar e adquirir imagens",
         "search-tab": "Pesquisar dados",
-        "layers-tab": "Camadas",
+        "layers-tab": "Camadas de Sobreposição",
         "change-detection-tab": "Change detection",
         "bookmarks-tab": "Bookmarks",
         "analytics-tab": "Analytics",
         "compare-tab": "Comparar imagens",
         "algorithms-tab": "Algoritmos",
         "webhooks-tab": "Webhooks",
-        "funai-tab": "Prioritários"
+        "funai-tab": "Polígonos Prioritários"
     }
 }
 </i18n>
