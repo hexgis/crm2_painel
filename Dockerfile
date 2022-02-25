@@ -3,7 +3,7 @@ FROM node:14-alpine as builder
 
 RUN mkdir /app/
 WORKDIR /app/
-COPY package.json package-lock.json /app/
+COPY package.json /app/
 
 RUN apk add --update --no-cache git make python3 g++
 RUN npm set progress=false && npm config set depth 0
