@@ -287,7 +287,7 @@ export const mutations = {
 
 export const actions = {
     async getStages({ commit }) {
-        const stages = await this.$api.$get('monitoring/stages')
+        const stages = await this.$api.$get('monitoring/stages/')
 
         if (stages) {
             commit('setStages', stages)
@@ -412,10 +412,10 @@ export const actions = {
                             parseInt(params.month) === 12
                                 ? `${parseInt(params.year) + 1}-01-01`
                                 : `${params.year}-${(
-                                      parseInt(params.month) + 1
-                                  ).toLocaleString('pt-BR', {
-                                      minimumIntegerDigits: 2,
-                                  })}-01`,
+                                    parseInt(params.month) + 1
+                                ).toLocaleString('pt-BR', {
+                                    minimumIntegerDigits: 2,
+                                })}-01`,
                     },
                 },
             })
@@ -484,10 +484,10 @@ export const actions = {
                             parseInt(params.month) === 12
                                 ? `${parseInt(params.year) + 1}-01-01`
                                 : `${params.year}-${(
-                                      parseInt(params.month) + 1
-                                  ).toLocaleString('pt-BR', {
-                                      minimumIntegerDigits: 2,
-                                  })}-01`,
+                                    parseInt(params.month) + 1
+                                ).toLocaleString('pt-BR', {
+                                    minimumIntegerDigits: 2,
+                                })}-01`,
                     },
                 },
             })
@@ -514,10 +514,10 @@ export const actions = {
                             parseInt(params.month) === 12
                                 ? `${parseInt(params.year) + 1}-01-01`
                                 : `${params.year}-${(
-                                      parseInt(params.month) + 1
-                                  ).toLocaleString('pt-BR', {
-                                      minimumIntegerDigits: 2,
-                                  })}-01`,
+                                    parseInt(params.month) + 1
+                                ).toLocaleString('pt-BR', {
+                                    minimumIntegerDigits: 2,
+                                })}-01`,
                     },
                 },
             })

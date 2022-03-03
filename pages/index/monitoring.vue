@@ -300,7 +300,7 @@ export default {
                 }
                 if (this.filters.currentView) params.in_bbox = this.bbox
 
-                this.totalFeatures = await this.$api.$get('monitoring/total', {
+                this.totalFeatures = await this.$api.$get('monitoring/total/', {
                     params,
                 })
             } catch (exception) {

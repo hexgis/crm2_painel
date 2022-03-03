@@ -15,7 +15,7 @@
                     <v-col cols="3">
                         <v-select
                             v-model="filters.type"
-                            :label= "$t('cr-label')"
+                            :label="$t('cr-label')"
                             :items="monitoringTypes"
                             item-text="name"
                             item-value="identifier"
@@ -26,7 +26,7 @@
                     <v-col cols="3">
                         <v-select
                             v-model="filters.stage"
-                            :label= "$t('ti-label')"
+                            :label="$t('ti-label')"
                             :items="stageList"
                             item-text="name"
                             item-value="identifier"
@@ -39,7 +39,7 @@
                     <v-col cols="3">
                         <v-select
                             v-model="filters.stage"
-                            :label= "$t('class-label')"
+                            :label="$t('class-label')"
                             :items="stageList"
                             item-text="name"
                             item-value="identifier"
@@ -202,7 +202,7 @@ export default {
 
         async getTypes() {
             this.monitoringTypes = await this.$api.$get(
-                'monitoring/stats/types'
+                'monitoring/stats/types/'
             )
         },
 

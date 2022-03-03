@@ -104,7 +104,7 @@ export const actions = {
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
         try {
-            const response = await this.$api.$get('priority/consolidated', {
+            const response = await this.$api.$get('priority/consolidated/', {
                 params,
             })
 
@@ -121,7 +121,7 @@ export const actions = {
                 commit('setShowFeatures', true)
 
                 const total = await this.$api.$get(
-                    'priority/consolidated/total',
+                    'priority/consolidated/total/',
                     {
                         params,
                     }
@@ -146,9 +146,9 @@ export const actions = {
     },
 
     async getFilterOptions({ commit }) {
-        const regional = await this.$api.$get('funai/cr')
+        const regional = await this.$api.$get('funai/cr/')
         const priorities = await this.$api.$get(
-            'priority/consolidated/priorities'
+            'priority/consolidated/priorities/'
         )
 
         const data = {}
@@ -169,7 +169,7 @@ export const actions = {
             co_cr: cr,
         }
 
-        const tis = await this.$api.$get('funai/ti', { params })
+        const tis = await this.$api.$get('funai/ti/', { params })
 
         if (tis)
             commit('setFilterOptions', {

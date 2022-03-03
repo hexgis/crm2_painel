@@ -202,7 +202,7 @@ export const mutations = {
                         if (
                             state.scenesToCompare.leftIndex === index &&
                             state.scenes[newSceneIndex].properties.image ===
-                                state.scenesToCompare.leftImage
+                            state.scenesToCompare.leftImage
                         ) {
                             state.scenesToCompare.leftIndex = newSceneIndex
                             state.scenesToCompare.leftInOtherPage = false
@@ -213,7 +213,7 @@ export const mutations = {
                         if (
                             state.scenesToCompare.rightIndex === index &&
                             state.scenes[newSceneIndex].properties.image ===
-                                state.scenesToCompare.rightImage
+                            state.scenesToCompare.rightImage
                         ) {
                             state.scenesToCompare.rightIndex = newSceneIndex
                             state.scenesToCompare.rightInOtherPage = false
@@ -259,7 +259,7 @@ export const mutations = {
 export const actions = {
     async getSatellites({ commit }) {
         try {
-            const response = await this.$api.$get('catalog/satellites')
+            const response = await this.$api.$get('catalog/satellites/')
 
             commit('setSatellites', response)
         } catch (exception) {
@@ -299,7 +299,7 @@ export const actions = {
         }
 
         try {
-            const response = await this.$api.$get('catalog/images', {
+            const response = await this.$api.$get('catalog/images/', {
                 params,
             })
             commit('setSceneCount', response.count)
@@ -345,7 +345,7 @@ export const actions = {
         }
 
         try {
-            const response = await this.$api.$get('catalog/images', {
+            const response = await this.$api.$get('catalog/images/', {
                 params,
             })
             commit('setScenes', { scenes: response.features, page: state.page })
@@ -398,7 +398,7 @@ export const actions = {
         commit('setFilters', catalogFilters)
 
         try {
-            const response = await this.$api.$get(`catalog/images/changes`, {
+            const response = await this.$api.$get(`catalog/images/changes/`, {
                 params: {
                     date__in: `${t0},${t1}`,
                     locator,

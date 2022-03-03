@@ -127,7 +127,7 @@ export const actions = {
 
         try {
             const response = await this.$apiSkynet.$get(
-                'landsat/changes/list',
+                'landsat/changes/list/',
                 {
                     params,
                 }

@@ -142,7 +142,7 @@ export default {
 
         async getTypes() {
             this.monitoringTypes = await this.$api.$get(
-                'monitoring/stats/types'
+                'monitoring/stats/types/'
             )
         },
 

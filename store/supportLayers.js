@@ -87,7 +87,7 @@ export const actions = {
     async getLayersGroups({ commit }) {
         commit('setLoading', true)
         try {
-            const response = await this.$api.$get('support/layers-groups')
+            const response = await this.$api.$get('support/layers-groups/')
 
             commit('setSupportLayersGroups', response)
             commit('setShowFeatures', true)
@@ -117,7 +117,7 @@ export const actions = {
         commit('setLayerLoading', { id, loading: true })
 
         try {
-            const data = await this.$api.$get('monitoring/heatmap', {
+            const data = await this.$api.$get('monitoring/heatmap/', {
                 params,
             })
 

@@ -62,7 +62,7 @@ export const actions = {
     async getBookmarks({ commit }) {
         commit('setLoading', true)
         try {
-            const response = await this.$api.$get('bookmark')
+            const response = await this.$api.$get('bookmark/')
 
             commit('setBookmarks', response)
         } catch (exception) {

@@ -69,7 +69,7 @@ export const actions = {
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
         try {
-            const response = await this.$api.$get('monitoring', {
+            const response = await this.$api.$get('monitoring/', {
                 params,
             })
 
