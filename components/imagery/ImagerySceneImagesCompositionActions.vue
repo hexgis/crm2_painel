@@ -247,7 +247,7 @@ export default {
         async generateCompositionCatalog() {
             this.loadingCatalog = true
             try {
-                await this.$api.$post('process/catalog', {
+                await this.$api.$post('process/catalog/', {
                     product: this.scene.properties.product,
                     type: this.composition.type,
                     satellite: this.satellite.identifier,
