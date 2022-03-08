@@ -19,11 +19,11 @@
 
         <v-container>
             <h3>Legenda</h3>
-            <v-row >
+            <v-row>
                 <v-col cols="8" md="3">
                     <v-icon color="#e3d212"> mdi-square</v-icon>
-                </v-col >
-                <v-col cols="8" >
+                </v-col>
+                <v-col cols="8">
                     <h4>Baixa</h4>
                 </v-col>
                 <v-col cols="8" md="3">
@@ -35,7 +35,7 @@
                 <v-col cols="8" md="3">
                     <v-icon color="#c26219"> mdi-square</v-icon>
                 </v-col>
-                <v-col cols="8" >
+                <v-col cols="8">
                     <h4>Média</h4>
                 </v-col>
                 <v-col cols="8" md="3">
@@ -70,9 +70,17 @@
                     <!-- Estatísticas -->
                     <v-icon large>mdi-chart-box</v-icon>
                 </v-btn>
+                <v-btn
+                    icon
+                    color="accent"
+                    @click="changeVisualizationStage('stage3')"
+                >
+                    <!-- Tabelas -->
+                    <v-icon large>mdi-table</v-icon>
+                </v-btn>
             </v-row>
         </v-container>
-        <br/>
+        <br />
         <v-container>
             <v-footer
                 absolute
@@ -148,6 +156,4 @@ export default {
 }
 </script>
 
-<style scoped >
-</style>
-
+<style scoped></style>

@@ -67,7 +67,7 @@ export default {
         BarChart,
         RadarChart,
         LineChart,
-        DoughnutChart
+        DoughnutChart,
     },
 
     data() {
@@ -87,9 +87,7 @@ export default {
     max-height: 100vh;
 }
 
-.lucas{
+.lucas {
     margin-top: 90px;
 }
-
-
 </style>

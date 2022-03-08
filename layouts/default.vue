@@ -76,6 +76,11 @@
                 <AnalyticsPCDashboard />
             </v-main>
         </div>
+        <div v-if="$store.state.funai.visualizationStage == 'stage3'">
+            <v-main class="pa-0">
+                <PriorityTable />
+            </v-main>
+        </div>
         <BaseAlert />
     </v-app>
 </template>
@@ -101,6 +106,7 @@ import { mapState } from 'vuex'
 import Map from '@/components/map/Map'
 import BaseAlert from '@/components/base/BaseAlert'
 import AnalyticsPCDashboard from '@/components/analytical-cmr/AnalyticsPriorConsolidDashboard'
+import PriorityTable from '@/components/tables/PriorityTable.vue'
 
 export default {
     name: 'App',
@@ -109,6 +115,7 @@ export default {
         Map,
         BaseAlert,
         AnalyticsPCDashboard,
+        PriorityTable,
     },
 
     fetch() {
