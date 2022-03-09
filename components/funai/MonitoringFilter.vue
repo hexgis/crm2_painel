@@ -13,7 +13,7 @@
                 label="Coordenação Regional"
                 :items="filterOptions.regionalFilters"
                 item-value="co_cr"
-                item-text="no_cr"
+                item-text="ds_cr"
                 hide-details
                 clearable
             >
