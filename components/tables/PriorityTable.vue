@@ -12,13 +12,23 @@
                     <v-card-title>
                         Tabela Polígonos Prioritários
                         <v-spacer></v-spacer>
-                        <v-text-field
-                            v-model="search"
-                            append-icon="mdi-magnify"
-                            label="Search"
-                            single-line
-                            hide-details
-                        ></v-text-field>
+                        <v-btn class="mx-2" small fab>
+                            <v-icon>mdi-download</v-icon>
+                        </v-btn>
+
+                        <v-switch
+                            v-model="switch1"
+                            class="mx-2"
+                            :label="`Agrupar por Data`"
+                        >
+                        </v-switch>
+
+                        <v-switch
+                            v-model="switch1"
+                            class="mx-2"
+                            :label="`Agrupar por TI`"
+                        >
+                        </v-switch>
                     </v-card-title>
                     <v-data-table
                         :headers="headers"
@@ -34,13 +44,23 @@
                     <v-card-title>
                         Tabela Polígonos Prioritários 2
                         <v-spacer></v-spacer>
-                        <v-text-field
-                            v-model="search"
-                            append-icon="mdi-magnify"
-                            label="Search"
-                            single-line
-                            hide-details
-                        ></v-text-field>
+                        <v-btn class="mx-2" small fab>
+                            <v-icon>mdi-download</v-icon>
+                        </v-btn>
+
+                        <v-switch
+                            v-model="switch1"
+                            class="mx-2"
+                            :label="`Agrupar por Data`"
+                        >
+                        </v-switch>
+
+                        <v-switch
+                            v-model="switch1"
+                            class="mx-2"
+                            :label="`Agrupar por TI`"
+                        >
+                        </v-switch>
                     </v-card-title>
                     <v-data-table
                         :headers="headers"
