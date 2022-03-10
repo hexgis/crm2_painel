@@ -5,8 +5,7 @@
                 {{ $t('title') }}
             </h4>
             <v-switch
-                v-if="hasFeatures"
-                v-model="showFeatures"
+                v-model="showFeaturesPriority"
                 class="mt-n1 ml-5"
                 hide-details
             />
