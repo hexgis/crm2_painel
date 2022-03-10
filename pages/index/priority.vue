@@ -13,8 +13,8 @@
 
         <FunaiFilter @onSearch="search()" />
 
-        <div class="px-4">
-            <v-divider class="mt-2"></v-divider>
+        <div v-if="showFeatures" class="px-4">
+            <v-divider class="mt-1"></v-divider>
             <p class="font-weight-regular pt-2">Legenda:</p>
             <v-col>
                 <v-row class="mb-2">

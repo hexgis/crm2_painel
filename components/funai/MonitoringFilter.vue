@@ -82,9 +82,9 @@
             </v-btn>
         </v-row>
 
-        <v-divider v-if="showFeatures" class="mt-10 mb-5" />
+        <v-divider v-if="showFeatures" class="mt-8 mb-5" />
 
-        <v-row v-if="total" class="px-3 py-4">
+        <v-row v-if="total" class="px-3 py-1">
             <v-row v-if="showFeatures && total">
                 <v-col cols="7" class="grey--text text--darken-2">
                     {{ $t('polygon-label') }}:
