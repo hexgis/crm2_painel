@@ -8,7 +8,7 @@
                 <v-icon color="#FFFFFF">mdi-file-chart-outline </v-icon>
             </v-tab>
             <v-tab-item class="tab-content">
-                <v-card elevation="6" outlined>
+                <v-card elevation="12" outlined>
                     <v-card-title>
                         Tabela Polígonos Prioritários
                         <v-spacer></v-spacer>
@@ -40,7 +40,7 @@
                 </v-card>
             </v-tab-item>
             <v-tab-item class="tab-content">
-                <v-card elevation="6" outlined>
+                <v-card elevation="12" outlined>
                     <v-card-title>
                         Tabela Polígonos Prioritários 2
                         <v-spacer></v-spacer>
