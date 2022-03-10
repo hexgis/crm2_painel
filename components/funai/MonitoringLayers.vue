@@ -177,7 +177,6 @@ export default {
                                 case 'Baixa':
                                     return 2
                                 default:
-                                case 'Muito Baixa':
                                     return 1
                             }
                         },

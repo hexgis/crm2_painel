@@ -189,8 +189,4 @@ export default {
 .container-height {
     max-height: 100vh;
 }
-
-.lucas {
-    margin-top: 90px;
-}
 </style>

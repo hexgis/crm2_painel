@@ -7,7 +7,7 @@
             />
         </v-row>
 
-        <v-row class="px-3 pb-2">
+        <v-row class="px-3 pb-1">
             <v-select
                 v-model="filters.cr"
                 label="Coordenação Regional"
@@ -23,7 +23,7 @@
         <v-slide-y-transition>
             <v-row
                 v-if="filters.cr && filterOptions.tiFilters"
-                class="px-3 pb-2"
+                class="px-3 pb-1"
             >
                 <v-select
                     v-model="filters.ti"
@@ -38,7 +38,7 @@
             </v-row>
         </v-slide-y-transition>
 
-        <v-row class="px-3 pb-2">
+        <v-row class="px-3 pb-1">
             <v-select
                 v-model="filters.priority"
                 label="Prioridade"
@@ -50,8 +50,8 @@
             ></v-select>
         </v-row>
 
-        <v-row class="pt-8">
-            <v-col cols="6" class="py-0">
+        <v-row class="pt-1">
+            <v-col class="py-0">
                 <BaseDateField
                     v-model="filters.startDate"
                     :label="$t('start-date-label')"
@@ -60,7 +60,7 @@
                 />
             </v-col>
 
-            <v-col cols="6" class="py-0">
+            <v-col class="py-0">
                 <BaseDateField
                     v-model="filters.endDate"
                     :label="$t('end-date-label')"
@@ -71,7 +71,7 @@
             </v-col>
         </v-row>
 
-        <v-row class="px-3 pt-4">
+        <v-row class="px-3">
             <v-btn
                 block
                 color="accent"

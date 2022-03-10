@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container class="overflow-auto container-height">
         <div class="tab-header flex justify-space-between">
             <h4 class="subtitle-2 text-uppercase font-weight-regular">
                 {{ $t('title') }}
@@ -12,84 +12,72 @@
         </div>
 
         <FunaiFilter @onSearch="search()" />
-        <v-container>
-            <v-divider></v-divider>
-        </v-container>
 
-        <v-container>
-            <h3>Legenda</h3>
-            <v-row>
-                <v-col cols="8" md="3">
-                    <v-icon color="#e3d212"> mdi-square</v-icon>
-                </v-col>
-                <v-col cols="8">
-                    <h4>Baixa</h4>
-                </v-col>
-                <v-col cols="8" md="3">
-                    <v-icon color="#29871b"> mdi-square</v-icon>
-                </v-col>
-                <v-col cols="8">
-                    <h4>Muito Baixa</h4>
-                </v-col>
-                <v-col cols="8" md="3">
-                    <v-icon color="#c26219"> mdi-square</v-icon>
-                </v-col>
-                <v-col cols="8">
-                    <h4>Média</h4>
-                </v-col>
-                <v-col cols="8" md="3">
-                    <v-icon color="#a83232"> mdi-square</v-icon>
-                </v-col>
-                <v-col cols="8">
-                    <h4>Alta</h4>
-                </v-col>
-            </v-row>
-        </v-container>
+        <div class="px-4">
+            <v-divider class="mt-2"></v-divider>
+            <p class="font-weight-regular pt-2">Legenda:</p>
+            <v-col>
+                <v-row class="mb-2">
+                    <v-icon class="mr-2" color="#e3d212">mdi-square</v-icon>
+                    Baixa
+                </v-row>
+                <v-row class="mb-2">
+                    <v-icon class="mr-2" color="#29871b">mdi-square</v-icon>
+                    Muito Baixa
+                </v-row>
+                <v-row class="mb-2">
+                    <v-icon class="mr-2" color="#c26219">mdi-square</v-icon>
+                    Média
+                </v-row>
+                <v-row class="mb-2">
+                    <v-icon class="mr-2" color="#a83232">mdi-square</v-icon>
+                    Alta
+                </v-row>
+                <v-spacer></v-spacer>
+            </v-col>
+        </div>
 
-        <v-container>
-            <v-divider></v-divider>
-        </v-container>
+        <v-footer
+            absolute
+            class="priority-footer"
+            color="#FFFFFF"
+            elevation="4"
+        >
+            <v-col>
+                <v-row align="center" justify="space-around">
+                    <v-btn
+                        depressed
+                        icon
+                        color="accent"
+                        @click="changeVisualizationStage('stage1')"
+                    >
+                        <v-icon large>mdi-map</v-icon>
+                    </v-btn>
+                    <v-btn
+                        icon
+                        color="accent"
+                        @click="changeVisualizationStage('stage2')"
+                    >
+                        <v-icon large>mdi-chart-box</v-icon>
+                    </v-btn>
+                    <v-btn
+                        icon
+                        color="accent"
+                        @click="changeVisualizationStage('stage3')"
+                    >
+                        <v-icon large>mdi-table</v-icon>
+                    </v-btn>
+                </v-row>
 
-        <v-container>
-            <v-row align="center" justify="space-around">
-                <v-btn
-                    depressed
-                    icon
-                    color="accent"
-                    @click="changeVisualizationStage('stage1')"
-                >
-                    <!-- Mapa -->
-                    <v-icon large>mdi-map</v-icon>
-                </v-btn>
-                <v-btn
-                    icon
-                    color="accent"
-                    @click="changeVisualizationStage('stage2')"
-                >
-                    <!-- Estatísticas -->
-                    <v-icon large>mdi-chart-box</v-icon>
-                </v-btn>
-                <v-btn
-                    icon
-                    color="accent"
-                    @click="changeVisualizationStage('stage3')"
-                >
-                    <!-- Tabelas -->
-                    <v-icon large>mdi-table</v-icon>
-                </v-btn>
-            </v-row>
-        </v-container>
-        <br />
-        <v-container>
-            <v-footer
-                absolute
-                color="#FFFFFF"
-                elevation="6"
-                class="d-flex justify-center"
-            >
-                <v-img max-width="200" src="/img/logocmr_normal.png" />
-            </v-footer>
-        </v-container>
+                <v-row class="py-2">
+                    <v-divider></v-divider>
+                </v-row>
+
+                <v-row class="d-flex justify-center">
+                    <v-img max-width="200" src="/img/logocmr_normal.png" />
+                </v-row>
+            </v-col>
+        </v-footer>
     </v-container>
 </template>
 
@@ -155,4 +143,8 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.container-height {
+    max-height: 90vh;
+}
+</style>

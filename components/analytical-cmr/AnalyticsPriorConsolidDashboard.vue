@@ -1,11 +1,11 @@
 <template>
     <v-container fluid class="overflow-auto container-height">
-        <v-toolbar absolute width="100vw" color="secondary">
+        <v-toolbar absolute min-width="100vw" color="secondary">
             <v-btn icon>
                 <v-icon color="#FFFFFF">mdi-chart-box</v-icon>
             </v-btn>
         </v-toolbar>
-        <v-row class="lucas">
+        <v-row class="mt-8 py-8">
             <v-col cols="6">
                 <v-card elevation="6">
                     <AreaChart class="py-2 px-2" />
@@ -85,9 +85,5 @@ export default {
 <style scoped>
 .container-height {
     max-height: 100vh;
-}
-
-.lucas {
-    margin-top: 90px;
 }
 </style>
