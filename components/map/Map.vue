@@ -271,12 +271,12 @@ export default {
 
         baseLayers: [
             {
-                url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+                url: '//{s}.tile.osm.org/{z}/{x}/{y}.png',
                 options: {
                     label: 'Open Street Map',
                     tag: 'OSM',
                     attribution:
-                        '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+                        '&copy; <a href="//www.openstreetmap.org/">OpenStreetMap</a> contributors',
                     maxZoom: 21,
                     maxNativeZoom: 18,
                     zIndex: 1,
@@ -288,7 +288,7 @@ export default {
                     label: 'Google Satellite',
                     tag: 'Google Satellite',
                     attribution:
-                        'Map data &copy; <a href="https://maps.google.com/">Google</a> sattelite imagery',
+                        'Map data &copy; <a href="//maps.google.com/">Google</a> sattelite imagery',
                     maxZoom: 21,
                     maxNativeZoom: 19,
                     subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
@@ -296,12 +296,12 @@ export default {
                 },
             },
             {
-                url: 'http://mt0.google.com/vt/lyrs=r&hl=en&x={x}&y={y}&z={z}',
+                url: '//mt0.google.com/vt/lyrs=r&hl=en&x={x}&y={y}&z={z}',
                 options: {
                     label: 'Google Roadmap',
                     tag: 'Google Roadmap',
                     attribution:
-                        'Map data &copy; <a href="https://maps.google.com/">Google</a> Altered roadmap',
+                        'Map data &copy; <a href="//maps.google.com/">Google</a> Altered roadmap',
                     maxZoom: 21,
                     maxNativeZoom: 19,
                     subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
@@ -309,12 +309,12 @@ export default {
                 },
             },
             {
-                url: 'http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}',
+                url: '//mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}',
                 options: {
                     label: 'Google Hybrid',
                     tag: 'Google Hybrid',
                     attribution:
-                        'Map data &copy; <a href="https://maps.google.com/">Google</a> Hybrid',
+                        'Map data &copy; <a href="//maps.google.com/">Google</a> Hybrid',
                     maxZoom: 21,
                     maxNativeZoom: 19,
                     subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
@@ -323,13 +323,13 @@ export default {
             },
             // {
             //     url:
-            //         'https://securewatch.digitalglobe.com/earthservice/wmtsaccess?connectId={connectid}&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&TileMatrixSet=EPSG:3857&LAYER=DigitalGlobe:ImageryTileService&FORMAT=image/jpeg&STYLE=&featureProfile=Vivid_2019&TileMatrix=EPSG:3857:{z}&TILEROW={y}&TILECOL={x}',
+            //         '//securewatch.digitalglobe.com/earthservice/wmtsaccess?connectId={connectid}&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&TileMatrixSet=EPSG:3857&LAYER=DigitalGlobe:ImageryTileService&FORMAT=image/jpeg&STYLE=&featureProfile=Vivid_2019&TileMatrix=EPSG:3857:{z}&TILEROW={y}&TILECOL={x}',
             //     options: {
             //         connectid: '750ba857-7952-41af-b189-316d907cc12a',
             //         label: 'MAXAR',
             //         tag: 'MAXAR',
             //         attribution:
-            //             'Map data &copy; <a href="https://securewatch.digitalglobe.com">Secure Watch</a> Digital Globe',
+            //             'Map data &copy; <a href="//securewatch.digitalglobe.com">Secure Watch</a> Digital Globe',
             //         maxZoom: 21,
             //         maxNativeZoom: 19,
             //         zIndex: 1,
@@ -341,55 +341,55 @@ export default {
                     label: 'CartoDB',
                     tag: 'CartoDB',
                     attribution:
-                        'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, CartoDB Imagery <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+                        'Map data &copy; <a href="//www.openstreetmap.org/">OpenStreetMap</a> contributors, CartoDB Imagery <a href="//creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
                     maxZoom: 21,
                     maxNativeZoom: 19,
                     zIndex: 1,
                 },
             },
             // {
-            //     url: 'https://view.geoapi-airbusds.com/maps/wmts/52a994d7-f215-4c66-aa10-439221c29ee0/tile/1.0.0/8659bd97-ea52-474d-a3e9-072c335cd6bb/default/3857/{z}/{y}/{x}',
+            //     url: '//view.geoapi-airbusds.com/maps/wmts/52a994d7-f215-4c66-aa10-439221c29ee0/tile/1.0.0/8659bd97-ea52-474d-a3e9-072c335cd6bb/default/3857/{z}/{y}/{x}',
             //     options: {
             //         label: 'AirBus OneAtlas',
             //         tag: 'AirBus OneAtlas',
             //         attribution:
-            //             'GeoAPI Airbus Service; Powered by: <a href="https://oneatlas.airbus.com/">OneAtlas - AIRBUS</a>',
+            //             'GeoAPI Airbus Service; Powered by: <a href="//oneatlas.airbus.com/">OneAtlas - AIRBUS</a>',
             //         maxZoom: 21,
             //         maxNativeZoom: 14,
             //         zIndex: 1,
             //     },
             // },
             // {
-            //     url: 'https://view.geoapi-airbusds.com/maps/wmts/eebb802c-9605-475f-8830-b7c00107cdc8/tile/1.0.0/61476829-d968-4588-821c-b0f9fae6ff8c/default/3857/{z}/{y}/{x}.png',
+            //     url: '//view.geoapi-airbusds.com/maps/wmts/eebb802c-9605-475f-8830-b7c00107cdc8/tile/1.0.0/61476829-d968-4588-821c-b0f9fae6ff8c/default/3857/{z}/{y}/{x}.png',
             //     options: {
             //         label: 'AirBus WorldDEM',
             //         tag: 'AirBus WorldDEM',
             //         attribution:
-            //             'GeoAPI Airbus Service; Powered by: <a href="https://oneatlas.airbus.com/">OneAtlas - AIRBUS</a>',
+            //             'GeoAPI Airbus Service; Powered by: <a href="//oneatlas.airbus.com/">OneAtlas - AIRBUS</a>',
             //         maxZoom: 21,
             //         maxNativeZoom: 14,
             //         zIndex: 1,
             //     },
             // },
             {
-                url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                url: '//server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
                 options: {
                     label: 'ArcMap',
                     tag: 'ArcMap',
                     attribution:
-                        'Map data &copy; <a href="https://desktop.arcgis.com/en/arcmap/">ArcGis Basemap</a>',
+                        'Map data &copy; <a href="//desktop.arcgis.com/en/arcmap/">ArcGis Basemap</a>',
                     maxZoom: 21,
                     maxNativeZoom: 19,
                     zIndex: 1,
                 },
             },
             {
-                url: 'https://tiles.planet.com/basemaps/v1/planet-tiles/planet_medres_visual_2020-10_mosaic/gmap/{z}/{x}/{y}.png?api_key=57cd3a8c44024cfdb7446ac37d8d1fe9',
+                url: '//tiles.planet.com/basemaps/v1/planet-tiles/planet_medres_visual_2020-10_mosaic/gmap/{z}/{x}/{y}.png?api_key=57cd3a8c44024cfdb7446ac37d8d1fe9',
                 options: {
                     label: 'Planet - Out/2020',
                     tag: 'Planet - Out/2020',
                     attribution:
-                        'Map data &copy; <a href="https://www.planet.com/">Planet</a>',
+                        'Map data &copy; <a href="//www.planet.com/">Planet</a>',
                     maxZoom: 21,
                     maxNativeZoom: 15,
                     zIndex: 1,
