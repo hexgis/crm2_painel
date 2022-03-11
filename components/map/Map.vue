@@ -384,7 +384,7 @@ export default {
                 },
             },
             {
-                url: '//tiles.planet.com/basemaps/v1/planet-tiles/planet_medres_visual_2020-10_mosaic/gmap/{z}/{x}/{y}.png?api_key=57cd3a8c44024cfdb7446ac37d8d1fe9',
+                url: 'https://tiles.planet.com/basemaps/v1/planet-tiles/planet_medres_visual_2020-10_mosaic/gmap/{z}/{x}/{y}.png?api_key=57cd3a8c44024cfdb7446ac37d8d1fe9',
                 options: {
                     label: 'Planet - Out/2020',
                     tag: 'Planet - Out/2020',
