@@ -57,31 +57,31 @@ export default {
         style: {
             lowest: {
                 weight: 2.5,
-                color: '#008000', //Green
+                color: '#008000', // Green
                 fill: true,
                 fillOpacity: 1,
             },
             low: {
                 weight: 2.5,
-                color: '#FFD700', //Gold
+                color: '#FFD700', // Gold
                 fill: true,
                 fillOpacity: 1,
             },
             medium: {
                 weight: 2.5,
-                color: '#FF8C00', //DarkOrange
+                color: '#FF8C00', // DarkOrange
                 fill: true,
                 fillOpacity: 1,
             },
             high: {
                 weight: 2.5,
-                color: '#FF0000', //red
+                color: '#FF0000', // red
                 fill: true,
                 fillOpacity: 1,
             },
             highest: {
                 weight: 2.5,
-                color: '#9400D3', //DarkViolet
+                color: '#9400D3', // DarkViolet
                 fill: true,
                 fillOpacity: 1,
             },

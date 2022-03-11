@@ -125,7 +125,7 @@ export default {
             return [
                 {
                     name: this.$t('funai-tab'),
-                    icon: 'mdi-map-search',
+                    icon: 'mdi-alert',
                     route: '/priority',
                 },
                 // {
@@ -138,11 +138,11 @@ export default {
                 //     icon: 'mdi-image-multiple',
                 //     route: '/imagery',
                 // },
-                // {
-                //     name: this.$t('search-tab'),
-                //     icon: 'mdi-magnify',
-                //     route: '/monitoring',
-                // },
+                {
+                    name: this.$t('search-tab'),
+                    icon: 'mdi-map-search',
+                    route: '/monitoring',
+                },
                 {
                     name: this.$t('layers-tab'),
                     icon: 'mdi-layers',

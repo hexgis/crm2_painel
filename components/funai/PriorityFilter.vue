@@ -7,7 +7,7 @@
             />
         </v-row>
 
-        <v-row class="px-3 pb-5">
+        <v-row class="px-3 pb-1">
             <v-select
                 v-model="filters.cr"
                 label="Coordenação Regional"
@@ -16,7 +16,6 @@
                 item-text="ds_cr"
                 hide-details
                 clearable
-                multiple
             >
             </v-select>
         </v-row>
@@ -24,7 +23,7 @@
         <v-slide-y-transition>
             <v-row
                 v-if="filters.cr && filterOptions.tiFilters"
-                class="px-3 pb-5"
+                class="px-3 pb-1"
             >
                 <v-select
                     v-model="filters.ti"
@@ -38,6 +37,18 @@
                 </v-select>
             </v-row>
         </v-slide-y-transition>
+
+        <v-row class="px-3 pb-1">
+            <v-select
+                v-model="filters.priority"
+                label="Prioridade"
+                :items="filterOptions.priority"
+                item-text="no_pr"
+                item-value="co_pr"
+                clearable
+                multiple
+            ></v-select>
+        </v-row>
 
         <v-row class="pt-1">
             <v-col class="py-0">

@@ -97,7 +97,7 @@
 </i18n>
 
 <script>
-import FunaiFilter from '@/components/funai/MonitoringFilter'
+import FunaiFilter from '@/components/funai/PriorityFilter'
 import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
