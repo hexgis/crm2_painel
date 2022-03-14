@@ -73,7 +73,7 @@
     "en": {
         "catalog-tab": "My image database",
         "imagery-tab": "Search and acquire images",
-        "search-tab": "Search",
+        "search-tab": "Monitoring",
         "layers-tab": "Layers",
         "change-detection-tab": "Change detection",
         "bookmarks-tab": "Bookmarks",
@@ -86,7 +86,7 @@
     "pt-br": {
         "catalog-tab": "Meu acervo de imagens",
         "imagery-tab": "Pesquisar e adquirir imagens",
-        "search-tab": "Pesquisar dados",
+        "search-tab": "Monitoramento Diário",
         "layers-tab": "Camadas de Sobreposição",
         "change-detection-tab": "Change detection",
         "bookmarks-tab": "Bookmarks",
@@ -125,7 +125,7 @@ export default {
             return [
                 {
                     name: this.$t('funai-tab'),
-                    icon: 'mdi-alert',
+                    icon: 'mdi-scatter-plot',
                     route: '/priority',
                 },
                 // {
