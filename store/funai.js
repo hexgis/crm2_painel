@@ -21,6 +21,7 @@ export const state = () => ({
 
     opacity: 100,
     total: null,
+    table: {},
 })
 
 export const getters = {
@@ -59,6 +60,10 @@ export const mutations = {
 
     setOpacity(state, opacity) {
         state.opacity = opacity
+    },
+
+    setTable(state, table) {
+        state.table = table
     },
 
     setFilterOptions(state, data) {
@@ -119,13 +124,20 @@ export const actions = {
             } else {
                 commit('setShowFeatures', true)
 
+                const table = await this.$api.$get(
+                    'priority/consolidated/table',
+                    {
+                        params,
+                    }
+                )
+
                 const total = await this.$api.$get(
                     'priority/consolidated/total/',
                     {
                         params,
                     }
                 )
-
+                if (table) commit('setTable', table)
                 if (total) commit('setTotal', total)
             }
         } catch (exception) {
@@ -175,5 +187,19 @@ export const actions = {
                 ...state.filterOptions,
                 tiFilters: tis.sort((a, b) => a.no_ti > b.no_ti),
             })
+    },
+    async getTableData({ commit }, cr, startDate, endDate, currentview) {
+        const params = {
+            co_cr: cr,
+            start_date: startDate,
+            end_date: endDate,
+            currentView: currentview,
+        }
+
+        const table = await this.$api.$get('priority/consolidated/table/', {
+            params,
+        })
+
+        if (table) commit('setTable', table)
     },
 }

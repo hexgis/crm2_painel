@@ -133,6 +133,7 @@ export default {
     methods: {
         search() {
             this.getFeatures()
+            // this.getTableData()
         },
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)
