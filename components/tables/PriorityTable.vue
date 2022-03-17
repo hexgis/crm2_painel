@@ -1,43 +1,42 @@
 <template>
     <v-container fluid class="overflow-auto container-height">
-        <v-tabs absolute width="100vw" dark background-color="secondary">
-            <v-tab icon>
+        <v-toolbar absolute min-width="100vw" color="secondary">
+            <v-btn icon>
                 <v-icon color="#FFFFFF">mdi-table</v-icon>
-            </v-tab>
-            <v-tab>
-                <v-icon color="#FFFFFF">mdi-file-chart-outline </v-icon>
-            </v-tab>
-            <v-tab-item class="tab-content">
-                <v-card elevation="5" outlined>
-                    <v-card-title>
-                        Tabela Polígonos Prioritários
-                        <v-spacer></v-spacer>
-                        <v-btn class="mx-2" small fab>
-                            <v-icon>mdi-download</v-icon>
-                        </v-btn>
+            </v-btn>
+        </v-toolbar>
+        <v-card class="py-8 mt-8">
+            <v-card-title>
+                <v-row>
+                    <v-switch class="mx-2" :label="`Agrupar por Data`">
+                    </v-switch>
 
-                        <v-switch class="mx-2" :label="`Agrupar por Data`">
-                        </v-switch>
+                    <v-switch class="mx-2" :label="`Agrupar por TI`">
+                    </v-switch>
+                    <v-spacer></v-spacer>
+                    <v-btn small fab class="mx-2 my-2" color="secondary">
+                        <v-icon>mdi-download</v-icon>
+                    </v-btn>
+                </v-row>
+            </v-card-title>
 
-                        <v-switch class="mx-2" :label="`Agrupar por TI`">
-                        </v-switch>
-                    </v-card-title>
-
-                    <v-data-table
-                        :headers="headers"
-                        :items-per-page="10"
-                        :items="table"
-                        class="elevation-1 font-weight-regular"
+            <v-data-table
+                :headers="headers"
+                :items-per-page="10"
+                :items="table"
+                class="font-weight-regular"
+                show-expand
+            >
+                <template v-slot:item.prioridade="{ item }">
+                    <v-chip
+                        :color="getColor(item.prioridade)"
+                        :dark="getColor(item.prioridade) !== 'yellow'"
                     >
-                        <template v-slot:item.prioridade="{ item }">
-                            <v-chip :color="getColor(item.prioridade)">
-                                {{ item.prioridade }}
-                            </v-chip>
-                        </template>
-                    </v-data-table>
-                </v-card>
-            </v-tab-item>
-        </v-tabs>
+                        {{ item.prioridade }}
+                    </v-chip>
+                </template>
+            </v-data-table>
+        </v-card>
     </v-container>
 </template>
 
@@ -94,5 +93,8 @@ export default {
 <style scoped>
 .container-height {
     max-height: 100vh;
+}
+.align-right {
+    text-align: right;
 }
 </style>
