@@ -10,12 +10,14 @@
         <v-row class="px-3 pb-1">
             <v-select
                 v-model="filters.cr"
-                label="Coordenação Regional"
+                label="Coordenação Regional (Todas)"
                 :items="filterOptions.regionalFilters"
                 item-value="co_cr"
                 item-text="ds_cr"
                 hide-details
                 clearable
+                multiple
+                required="true"
             >
             </v-select>
         </v-row>
@@ -27,12 +29,13 @@
             >
                 <v-select
                     v-model="filters.ti"
-                    label="Terras Indigenas"
+                    label="Terras Indigenas (Todas)"
                     :items="filterOptions.tiFilters"
                     item-text="no_ti"
                     item-value="co_funai"
                     multiple
                     hide-details
+                    required="true"
                 >
                 </v-select>
             </v-row>
@@ -41,7 +44,7 @@
         <v-row class="px-3 pb-1">
             <v-select
                 v-model="filters.priority"
-                label="Prioridade"
+                label="Prioridade (Todas)"
                 :items="filterOptions.priority"
                 item-text="no_pr"
                 item-value="co_pr"

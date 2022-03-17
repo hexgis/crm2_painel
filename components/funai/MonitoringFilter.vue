@@ -10,7 +10,7 @@
         <v-row class="px-3 pb-5">
             <v-select
                 v-model="filters.cr"
-                label="Coordenação Regional"
+                label="Coordenação Regional (Todas)"
                 :items="filterOptions.regionalFilters"
                 item-value="co_cr"
                 item-text="ds_cr"
@@ -28,7 +28,7 @@
             >
                 <v-select
                     v-model="filters.ti"
-                    label="Terras Indigenas"
+                    label="Terras Indigenas (Todas)"
                     :items="filterOptions.tiFilters"
                     item-text="no_ti"
                     item-value="co_funai"
