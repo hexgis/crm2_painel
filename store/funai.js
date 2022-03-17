@@ -167,7 +167,7 @@ export const actions = {
         const data = {}
 
         if (regional_coordinators) {
-            data.regionalFilters = regional.sort((a, b) => a.ds_cr > b.ds_cr)
+            data.regionalFilters = regional_coordinators.sort((a, b) => a.ds_cr > b.ds_cr)
         }
 
         if (priorities) {
