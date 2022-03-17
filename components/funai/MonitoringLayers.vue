@@ -161,6 +161,7 @@ export default {
                 this.vectorGrid = this.$L.vectorGrid
                     .slicer(this.features, {
                         maxZoom: 21,
+                        zIndex: 3,
                         vectorTileLayerStyles: {
                             sliced: (e) =>
                                 this.vectorGridStyleFunction(e.prioridade),
