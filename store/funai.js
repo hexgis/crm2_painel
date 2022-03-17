@@ -95,15 +95,17 @@ export const actions = {
         const params = {
             start_date: state.filters.startDate,
             end_date: state.filters.endDate,
-            currentView: state.filters.currentView,
-            co_cr: state.filters.cr,
         }
 
         if (state.filters.ti && state.filters.ti.length)
-            params.co_funai = state.filters.ti.join(',')
+            params.co_funai = state.filters.ti.toString()
 
         if (state.filters.priority && state.filters.priority.length)
-            params.priority = state.filters.priority.join(',')
+            params.priority = state.filters.priority.toString()
+
+        if (state.filters.cr && state.filters.cr.length)
+            params.co_cr = state.filters.cr.toString()
+
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
@@ -157,14 +159,14 @@ export const actions = {
     },
 
     async getFilterOptions({ commit }) {
-        const regional = await this.$api.$get('funai/cr/')
+        const regional_coordinators = await this.$api.$get('funai/cr/')
         const priorities = await this.$api.$get(
             'priority/consolidated/priorities/'
         )
 
         const data = {}
 
-        if (regional) {
+        if (regional_coordinators) {
             data.regionalFilters = regional.sort((a, b) => a.ds_cr > b.ds_cr)
         }
 
@@ -177,7 +179,7 @@ export const actions = {
 
     async getTiOptions({ commit, state }, cr) {
         const params = {
-            co_cr: cr,
+            co_cr: cr.toString(),
         }
 
         const tis = await this.$api.$get('funai/ti/', { params })
