@@ -22,14 +22,19 @@
                         <v-switch class="mx-2" :label="`Agrupar por TI`">
                         </v-switch>
                     </v-card-title>
-                    <template>
-                        <v-data-table
-                            :headers="headers"
-                            :items-per-page="10"
-                            :items="table"
-                            class="elevation-1"
-                        ></v-data-table>
-                    </template>
+
+                    <v-data-table
+                        :headers="headers"
+                        :items-per-page="10"
+                        :items="table"
+                        class="elevation-1 font-weight-regular"
+                    >
+                        <template v-slot:item.prioridade="{ item }">
+                            <v-chip :color="getColor(item.prioridade)">
+                                {{ item.prioridade }}
+                            </v-chip>
+                        </template>
+                    </v-data-table>
                 </v-card>
             </v-tab-item>
         </v-tabs>
@@ -37,7 +42,7 @@
 </template>
 
 <script>
-import { mapMutations, mapActions, mapState } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
     name: 'PriorityTable',
@@ -46,12 +51,12 @@ export default {
             headers: [
                 { text: 'Co Funai', value: 'co_funai' },
                 { text: 'No TI', value: 'no_ti' },
-                { text: 'Co CR (g)', value: 'co_cr' },
-                { text: 'Ds CR (%)', value: 'ds_cr' },
+                { text: 'Co CR', value: 'co_cr' },
+                { text: 'Ds CR', value: 'ds_cr' },
                 { text: 'Prioridade', value: 'prioridade' },
-                { text: 'No Estágio (g)', value: 'no_estagio' },
-                { text: 'No Imagem (g)', value: 'no_imagem' },
-                { text: 'Dt Imagem (g)', value: 'dt_imagem' },
+                { text: 'No Estágio', value: 'no_estagio' },
+                { text: 'No Imagem', value: 'no_imagem' },
+                { text: 'Dt Imagem', value: 'dt_imagem' },
                 { text: 'Tempo', value: 'tempo' },
                 {
                     text: 'Id Ciclo de monitoramento',
@@ -75,6 +80,14 @@ export default {
     },
     computed: {
         ...mapState('funai', ['table']),
+    },
+    methods: {
+        getColor(prioridade) {
+            if (prioridade === 'Alta') return 'red'
+            else if (prioridade === 'Média') return 'orange'
+            else if (prioridade === 'Baixa') return 'yellow'
+            else return 'green'
+        },
     },
 }
 </script>
