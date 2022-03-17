@@ -26,6 +26,7 @@
                 :items="table"
                 class="font-weight-regular"
                 :expanded.sync="expanded"
+                item-key="nu_latitude"
                 show-expand
                 :single-expand="singleExpand"
             >
@@ -37,28 +38,23 @@
                         {{ item.prioridade }}
                     </v-chip>
                 </template>
-                <!-- <template v-slot:expanded-item="{ headers, item }">
+                <template v-slot:expanded-item="{ headers, item }">
                     <td :colspan="headers.length">
-                        {{ item.co_cr }}
-                        {{ item.ds_cr }}
-                        {{ item.no_imagem }}
+                        Co CR: {{ item.co_cr }} / Nome CR: {{ item.ds_cr }} / No
+                        Imagem: {{ item.no_imagem }} / Data da IMG :
                         {{ item.dt_imagem }}
-                        {{ item.tempo }}
-                        {{ item.nu_orbita }}
+                        / Tempo: {{ item.tempo }} / Nu Órbita:
+                        {{ item.nu_orbita }} / Ciclo Monitoramento Id:
                         {{ item.tb_ciclo_monitoramento_id }}
-                        {{ item.nu_ponto }}
-                        {{ item.dt_t_zero }}
-                        {{ item.dt_cadastro }}
-                        {{ item.nu_area_km2 }}
-                        {{ item.contribuicao }}
-                        {{ item.velocidade }}
-                        {{ item.contiguidade }}
-                        {{ item.ranking }}
-                        {{ item.nu_latitude }}
-                        {{ item.nu_longitude }}
-                        {{ item.dt_t_um }}
+                        / Nu Ponto: {{ item.nu_ponto }} / Data Inicial:
+                        {{ item.dt_t_zero }} / Data final: {{ item.dt_t_um }} /
+                        Data Cadastro: {{ item.dt_cadastro }} / Nu área Km2:
+                        {{ item.nu_area_km2 }} / Contribuição:
+                        {{ item.contribuicao }} / Velocidade:
+                        {{ item.velocidade }} / Contiguidade:
+                        {{ item.contiguidade }} / Ranking: {{ item.ranking }}
                     </td>
-                </template> -->
+                </template>
             </v-data-table>
         </v-card>
     </v-container>
@@ -72,7 +68,7 @@ export default {
     data() {
         return {
             expanded: [],
-            singleExpand: true,
+            singleExpand: false,
 
             headers: [
                 { text: 'Código Funai', value: 'co_funai' },
