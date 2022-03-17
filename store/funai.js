@@ -125,7 +125,7 @@ export const actions = {
                 commit('setShowFeatures', true)
 
                 const table = await this.$api.$get(
-                    'priority/consolidated/table',
+                    'priority/consolidated/table/',
                     {
                         params,
                     }
@@ -187,19 +187,5 @@ export const actions = {
                 ...state.filterOptions,
                 tiFilters: tis.sort((a, b) => a.no_ti > b.no_ti),
             })
-    },
-    async getTableData({ commit }, cr, startDate, endDate, currentview) {
-        const params = {
-            co_cr: cr,
-            start_date: startDate,
-            end_date: endDate,
-            currentView: currentview,
-        }
-
-        const table = await this.$api.$get('priority/consolidated/table/', {
-            params,
-        })
-
-        if (table) commit('setTable', table)
     },
 }
