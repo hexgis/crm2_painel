@@ -8,7 +8,7 @@ export default {
      */
     head: {
         titleTemplate: '%s - ' + process.env.APP_NAME,
-        title: 'Skyviewer' || '',
+        title: 'CMR' || '',
         meta: [
             { charset: 'utf-8' },
             {
