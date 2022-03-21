@@ -73,7 +73,7 @@
 </i18n>
 
 <script>
-import FunaiFilter from '@/components/funai/MonitoringFilter'
+import FunaiFilter from '@/components/monitoring/MonitoringFilter'
 import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {

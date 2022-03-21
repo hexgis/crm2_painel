@@ -205,7 +205,7 @@ import SupportLayers from '@/components/support/SupportLayers'
 import BaseWmsMetadataPopup from '@/components/base/BaseWmsMetadataPopup'
 // import AlgorithmLayers from '@/components/algorithms/AlgorithmLayers'
 // import WebhooksLayers from '@/components/webhooks/WebhooksLayers'
-import FunaiLayers from '@/components/funai/MonitoringLayers'
+import FunaiLayers from '@/components/monitoring/MonitoringLayers2'
 
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-basemaps/L.Control.Basemaps.css'

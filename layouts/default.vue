@@ -81,6 +81,7 @@
                 <PriorityTable />
             </v-main>
         </div>
+
         <BaseAlert />
     </v-app>
 </template>
@@ -106,7 +107,7 @@ import { mapState } from 'vuex'
 import Map from '@/components/map/Map'
 import BaseAlert from '@/components/base/BaseAlert'
 import AnalyticsPCDashboard from '@/components/analytical-cmr/AnalyticsPriorConsolidDashboard'
-import PriorityTable from '@/components/tables/PriorityTable.vue'
+import PriorityTable from '~/components/priority/PriorityTable.vue'
 
 export default {
     name: 'App',

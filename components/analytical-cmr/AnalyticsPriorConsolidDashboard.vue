@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 import AnalyticsFilter from '@/components/analytics/AnalyticsFilter'
 import AreaChart from '@/components/graphics/AreaChart.vue'
@@ -78,6 +78,9 @@ export default {
                 Newspapers: 10,
             },
         }
+    },
+    computed: {
+        ...mapState('funai', ['table']),
     },
 }
 </script>

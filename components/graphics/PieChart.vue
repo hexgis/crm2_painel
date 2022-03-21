@@ -1,8 +1,12 @@
 <script>
+import { mapState } from 'vuex'
 import { Pie } from 'vue-chartjs'
 
 export default {
     extends: Pie,
+    computed: {
+        ...mapState('funai', ['table']),
+    },
     mounted() {
         this.gradient = this.$refs.canvas
             .getContext('2d')
@@ -20,7 +24,7 @@ export default {
         this.gradient2.addColorStop(1, 'rgba(0, 231, 255, 0)')
         this.renderChart(
             {
-                labels: ['Prioridade Alta', 'Muito Alta', 'Média'],
+                labels: ['Prioridade Alta', 'Média', 'Baixa', 'Muito Baixa'],
                 datasets: [
                     {
                         backgroundColor: [
@@ -28,7 +32,7 @@ export default {
                             this.gradient2,
                             '#00D8FF',
                         ],
-                        data: [40, 20, 10],
+                        data: [10, 20, 30, 40],
                     },
                 ],
             },

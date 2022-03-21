@@ -63,7 +63,10 @@
                     <v-btn
                         icon
                         color="accent"
-                        @click="changeVisualizationStage('stage3')"
+                        @click="
+                            changeVisualizationStage('stage3'),
+                                searchDataTable()
+                        "
                     >
                         <v-icon large>mdi-table</v-icon>
                     </v-btn>
@@ -97,7 +100,7 @@
 </i18n>
 
 <script>
-import FunaiFilter from '@/components/funai/PriorityFilter'
+import FunaiFilter from '@/components/priority/PriorityFilter'
 import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
@@ -127,7 +130,7 @@ export default {
                 this.$store.commit('funai/setShowFeatures', value)
             },
         },
-        ...mapState('funai', ['showFeatures', 'features']),
+        ...mapState('funai', ['showFeatures', 'features', 'params']),
     },
 
     methods: {
@@ -135,10 +138,14 @@ export default {
             this.getFeatures()
             // this.getTableData()
         },
+        searchDataTable() {
+            this.getDataTable()
+            // this.getTableData()
+        },
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)
         },
-        ...mapActions('funai', ['getFeatures']),
+        ...mapActions('funai', ['getFeatures', 'getDataTable']),
         ...mapMutations('funai', ['setVisualizationStage']),
     },
 }

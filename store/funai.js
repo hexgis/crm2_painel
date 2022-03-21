@@ -19,9 +19,10 @@ export const state = () => ({
         priority: null,
     },
 
+    params: null,
     opacity: 100,
     total: null,
-    table: {},
+    table: [],
 })
 
 export const getters = {
@@ -40,6 +41,10 @@ export const mutations = {
             ...state.filters,
             ...filters,
         }
+    },
+
+    setParams(state, params) {
+        state.params = params
     },
 
     setFeatures(state, features) {
@@ -106,7 +111,6 @@ export const actions = {
         if (state.filters.cr && state.filters.cr.length)
             params.co_cr = state.filters.cr.toString()
 
-
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
         try {
@@ -126,12 +130,12 @@ export const actions = {
             } else {
                 commit('setShowFeatures', true)
 
-                const table = await this.$api.$get(
-                    'priority/consolidated/table/',
-                    {
-                        params,
-                    }
-                )
+                // const table = await this.$api.$get(
+                //     'priority/consolidated/table/',
+                //     {
+                //         params,
+                //     }
+                // )
 
                 const total = await this.$api.$get(
                     'priority/consolidated/total/',
@@ -139,7 +143,7 @@ export const actions = {
                         params,
                     }
                 )
-                if (table) commit('setTable', table)
+                // if (table) commit('setTable', table)
                 if (total) commit('setTotal', total)
             }
         } catch (exception) {
@@ -167,7 +171,9 @@ export const actions = {
         const data = {}
 
         if (regional_coordinators) {
-            data.regionalFilters = regional_coordinators.sort((a, b) => a.ds_cr > b.ds_cr)
+            data.regionalFilters = regional_coordinators.sort(
+                (a, b) => a.ds_cr > b.ds_cr
+            )
         }
 
         if (priorities) {
@@ -189,5 +195,28 @@ export const actions = {
                 ...state.filterOptions,
                 tiFilters: tis.sort((a, b) => a.no_ti > b.no_ti),
             })
+    },
+    async getDataTable({ commit, state, rootGetters }) {
+        const params = {
+            start_date: state.filters.startDate,
+            end_date: state.filters.endDate,
+        }
+
+        if (state.filters.ti && state.filters.ti.length)
+            params.co_funai = state.filters.ti.toString()
+
+        if (state.filters.priority && state.filters.priority.length)
+            params.priority = state.filters.priority.toString()
+
+        if (state.filters.cr && state.filters.cr.length)
+            params.co_cr = state.filters.cr.toString()
+
+        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
+
+        const table = await this.$api.$get('priority/consolidated/table/', {
+            params,
+        })
+
+        if (table) commit('setTable', table)
     },
 }
