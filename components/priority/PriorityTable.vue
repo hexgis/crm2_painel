@@ -78,7 +78,7 @@ export default {
         }
     },
     computed: {
-        ...mapState('funai', ['table']),
+        ...mapState('funai', ['table', 'isLoadingDataTable']),
     },
 
     methods: {

@@ -130,12 +130,12 @@ export const actions = {
             } else {
                 commit('setShowFeatures', true)
 
-                // const table = await this.$api.$get(
-                //     'priority/consolidated/table/',
-                //     {
-                //         params,
-                //     }
-                // )
+                const table = await this.$api.$get(
+                    'priority/consolidated/table/',
+                    {
+                        params,
+                    }
+                )
 
                 const total = await this.$api.$get(
                     'priority/consolidated/total/',
@@ -143,7 +143,7 @@ export const actions = {
                         params,
                     }
                 )
-                // if (table) commit('setTable', table)
+                if (table) commit('setTable', table)
                 if (total) commit('setTotal', total)
             }
         } catch (exception) {

@@ -63,10 +63,7 @@
                     <v-btn
                         icon
                         color="accent"
-                        @click="
-                            changeVisualizationStage('stage3'),
-                                searchDataTable()
-                        "
+                        @click="changeVisualizationStage('stage3')"
                     >
                         <v-icon large>mdi-table</v-icon>
                     </v-btn>
@@ -111,6 +108,7 @@ export default {
             tab: null,
             items: ['MapStage', 'AnalytcalStage'],
             text: 'Texto de teste.',
+            timer: '',
         }
     },
     computed: {
@@ -130,17 +128,15 @@ export default {
                 this.$store.commit('funai/setShowFeatures', value)
             },
         },
-        ...mapState('funai', ['showFeatures', 'features', 'params']),
+        ...mapState('funai', ['showFeatures', 'features', 'table']),
     },
 
     methods: {
         search() {
             this.getFeatures()
-            // this.getTableData()
         },
         searchDataTable() {
             this.getDataTable()
-            // this.getTableData()
         },
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)
