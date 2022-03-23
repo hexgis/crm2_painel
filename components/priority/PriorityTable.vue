@@ -13,14 +13,14 @@
                         :href="
                             'http://0.0.0.0:8080/priority/consolidated/table/?&' +
                             params +
-                            '&format=csv/'
+                            '/'
                         "
                         target="_blank"
                     > -->
-                        <v-btn small fab class="mx-2 my-2" color="secondary">
-                            <v-icon>mdi-download</v-icon>
-                        </v-btn>
-                    </a>
+                    <v-btn small fab class="mx-2 my-2" color="secondary">
+                        <v-icon>mdi-download</v-icon>
+                    </v-btn>
+                    <!-- </a> -->
                 </v-row>
             </v-card-title>
 
@@ -88,7 +88,7 @@ export default {
     methods: {
         getColor(prioridade) {
             if (prioridade === 'Alta') return 'red'
-            else if (prioridade === 'Muito Alta') return 'darkviolet'
+            else if (prioridade === 'Muito Alta') return '#9400D3'
             else if (prioridade === 'Media') return 'orange'
             else if (prioridade === 'Baixa') return 'yellow'
             else if (prioridade === 'Muito Baixa') return 'green'

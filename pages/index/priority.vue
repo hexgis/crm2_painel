@@ -18,7 +18,7 @@
             <p class="font-weight-regular pt-2">Legenda:</p>
             <v-col>
                 <v-row class="mb-2">
-                    <v-icon class="mr-2" color="'#9400D3'">mdi-square</v-icon>
+                    <v-icon class="mr-2" color="#9400D3">mdi-square</v-icon>
                     Muito Alta
                 </v-row>
                 <v-row class="mb-2">
