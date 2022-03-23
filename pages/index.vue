@@ -148,11 +148,11 @@ export default {
                     icon: 'mdi-layers',
                     route: '/support',
                 },
-                // {
-                //     name: this.$t('change-detection-tab'),
-                //     icon: 'mdi-vector-difference',
-                //     route: '/change-detection',
-                // },
+                {
+                    name: this.$t('change-detection-tab'),
+                    icon: 'mdi-vector-difference',
+                    route: '/change-detection',
+                },
                 // {
                 //     name: this.$t('bookmarks-tab'),
                 //     icon: 'mdi-bookmark-multiple',

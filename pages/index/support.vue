@@ -24,12 +24,12 @@
         <v-container>
             <v-container>
                 <v-footer
-                absolute
-                color="#FFFFFF"
-                elevation="6"
-                class="d-flex justify-center"
-            >
-                <v-img max-width="200" src="/img/logocmr_normal.png" />
+                    absolute
+                    color="#FFFFFF"
+                    elevation="6"
+                    class="d-flex justify-center"
+                >
+                    <v-img max-width="200" src="/img/logocmr_normal.png" />
                 </v-footer>
             </v-container>
         </v-container>
@@ -84,5 +84,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

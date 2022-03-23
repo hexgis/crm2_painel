@@ -9,13 +9,18 @@
             <v-card-title>
                 <v-row>
                     <v-spacer></v-spacer>
-                    <div>
+                    <!-- <a
+                        :href="
+                            'http://0.0.0.0:8080/priority/consolidated/table/?&' +
+                            params +
+                            '&format=csv/'
+                        "
+                        target="_blank"
+                    > -->
                         <v-btn small fab class="mx-2 my-2" color="secondary">
-                            <v-icon v-show="true" ref="DownloadComp"
-                                >mdi-download</v-icon
-                            >
+                            <v-icon>mdi-download</v-icon>
                         </v-btn>
-                    </div>
+                    </a>
                 </v-row>
             </v-card-title>
 
@@ -24,7 +29,6 @@
                 :items-per-page="10"
                 :items="table"
                 class="font-weight-regular"
-                item-key="nu_latitude"
                 multi-sort
             >
                 <template v-slot:item.prioridade="{ item }">
@@ -41,7 +45,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
     name: 'PriorityTable',
@@ -78,16 +82,19 @@ export default {
         }
     },
     computed: {
-        ...mapState('funai', ['table', 'isLoadingDataTable']),
+        ...mapState('funai', ['table', 'params']),
     },
 
     methods: {
         getColor(prioridade) {
             if (prioridade === 'Alta') return 'red'
-            else if (prioridade === 'Média') return 'orange'
+            else if (prioridade === 'Muito Alta') return 'darkviolet'
+            else if (prioridade === 'Media') return 'orange'
             else if (prioridade === 'Baixa') return 'yellow'
-            else return 'green'
+            else if (prioridade === 'Muito Baixa') return 'green'
         },
+
+        ...mapActions('funai', ['downloadTable']),
     },
 }
 </script>

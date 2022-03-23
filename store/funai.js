@@ -17,9 +17,9 @@ export const state = () => ({
         endDate: null,
         currentView: false,
         priority: null,
+        csv: 'csv',
     },
 
-    params: null,
     opacity: 100,
     total: null,
     table: [],
@@ -69,6 +69,9 @@ export const mutations = {
 
     setTable(state, table) {
         state.table = table
+    },
+    setDownloadTable(state, tableCSV) {
+        state.tableCSV = tableCSV
     },
 
     setFilterOptions(state, data) {
@@ -143,6 +146,7 @@ export const actions = {
                         params,
                     }
                 )
+                commit('setParams', params)
                 if (table) commit('setTable', table)
                 if (total) commit('setTotal', total)
             }
@@ -219,4 +223,27 @@ export const actions = {
 
         if (table) commit('setTable', table)
     },
+    // async downloadTable({ commit, state, rootGetters }) {
+    //     const params = {
+    //         start_date: state.filters.startDate,
+    //         end_date: state.filters.endDate,
+    //         format: state.filters.csv,
+    //     }
+
+    //     if (state.filters.ti && state.filters.ti.length)
+    //         params.co_funai = state.filters.ti.toString()
+
+    //     if (state.filters.priority && state.filters.priority.length)
+    //         params.priority = state.filters.priority.toString()
+
+    //     if (state.filters.cr && state.filters.cr.length)
+    //         params.co_cr = state.filters.cr.toString()
+
+    //     if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
+
+    // const tableCSV = await this.$api.get('priority/consolidated/table/', {
+    //     params,
+    // })
+    //     if (tableCSV) commit('setDownloadTable', tableCSV)
+    // },
 }
