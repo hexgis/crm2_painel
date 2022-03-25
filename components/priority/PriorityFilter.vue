@@ -74,15 +74,22 @@
             </v-col>
         </v-row>
 
-        <v-row class="px-3">
-            <v-btn
-                block
-                color="accent"
-                :loading="isLoadingFeatures"
-                @click="search"
-            >
-                {{ $t('search-label') }}
-            </v-btn>
+        <v-row>
+            <v-col v-if="showFeatures">
+                <v-btn color="accent" :loading="isLoadingFeatures" block>
+                    <v-icon>mdi-download</v-icon>
+                </v-btn>
+            </v-col>
+            <v-col>
+                <v-btn
+                    block
+                    color="accent"
+                    :loading="isLoadingFeatures"
+                    @click="search"
+                >
+                    {{ $t('search-label') }}
+                </v-btn>
+            </v-col>
         </v-row>
 
         <v-divider v-if="showFeatures" class="mt-8 mb-5" />

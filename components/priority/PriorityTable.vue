@@ -9,18 +9,11 @@
             <v-card-title>
                 <v-row>
                     <v-spacer></v-spacer>
-                    <!-- <a
-                        :href="
-                            'http://0.0.0.0:8080/priority/consolidated/table/?&' +
-                            params +
-                            '/'
-                        "
-                        target="_blank"
-                    > -->
-                    <v-btn small fab class="mx-2 my-2" color="secondary">
-                        <v-icon>mdi-download</v-icon>
-                    </v-btn>
-                    <!-- </a> -->
+                    <a>
+                        <v-btn small fab class="mx-2 my-2" color="secondary">
+                            <v-icon>mdi-download</v-icon>
+                        </v-btn>
+                    </a>
                 </v-row>
             </v-card-title>
 
@@ -82,7 +75,7 @@ export default {
         }
     },
     computed: {
-        ...mapState('funai', ['table', 'params']),
+        ...mapState('funai', ['table', 'tableCSV']),
     },
 
     methods: {
@@ -93,7 +86,6 @@ export default {
             else if (prioridade === 'Baixa') return 'yellow'
             else if (prioridade === 'Muito Baixa') return 'green'
         },
-
         ...mapActions('funai', ['downloadTable']),
     },
 }

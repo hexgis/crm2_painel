@@ -18,11 +18,13 @@ export const state = () => ({
         currentView: false,
         priority: null,
         csv: 'csv',
+        _blank: '_blank',
     },
 
     opacity: 100,
     total: null,
     table: [],
+    tableCSV: [],
 })
 
 export const getters = {
@@ -223,27 +225,27 @@ export const actions = {
 
         if (table) commit('setTable', table)
     },
-    // async downloadTable({ commit, state, rootGetters }) {
-    //     const params = {
-    //         start_date: state.filters.startDate,
-    //         end_date: state.filters.endDate,
-    //         format: state.filters.csv,
-    //     }
+    async downloadTable({ commit, state, rootGetters }) {
+        const params = {
+            start_date: state.filters.startDate,
+            end_date: state.filters.endDate,
+            format: state.filters.csv,
+        }
 
-    //     if (state.filters.ti && state.filters.ti.length)
-    //         params.co_funai = state.filters.ti.toString()
+        if (state.filters.ti && state.filters.ti.length)
+            params.co_funai = state.filters.ti.toString()
 
-    //     if (state.filters.priority && state.filters.priority.length)
-    //         params.priority = state.filters.priority.toString()
+        if (state.filters.priority && state.filters.priority.length)
+            params.priority = state.filters.priority.toString()
 
-    //     if (state.filters.cr && state.filters.cr.length)
-    //         params.co_cr = state.filters.cr.toString()
+        if (state.filters.cr && state.filters.cr.length)
+            params.co_cr = state.filters.cr.toString()
 
-    //     if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
+        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
-    // const tableCSV = await this.$api.get('priority/consolidated/table/', {
-    //     params,
-    // })
-    //     if (tableCSV) commit('setDownloadTable', tableCSV)
-    // },
+        const tableCSV = await this.$api.get('priority/consolidated/table/', {
+            params,
+        })
+        if (tableCSV) commit('setDownloadTable', tableCSV)
+    },
 }

@@ -88,8 +88,8 @@
         "imagery-tab": "Pesquisar e adquirir imagens",
         "search-tab": "Monitoramento Diário",
         "layers-tab": "Camadas de Sobreposição",
-        "change-detection-tab": "Change detection",
-        "bookmarks-tab": "Bookmarks",
+        "change-detection-tab": "Alta Resolução e Mosaicos",
+        "bookmarks-tab": "Risco de Fogo e Focos de Calor",
         "analytics-tab": "Analytics",
         "compare-tab": "Comparar imagens",
         "algorithms-tab": "Algoritmos",
@@ -150,14 +150,14 @@ export default {
                 },
                 {
                     name: this.$t('change-detection-tab'),
-                    icon: 'mdi-vector-difference',
-                    route: '/change-detection',
+                    icon: 'mdi-satellite',
+                    route: '',
                 },
-                // {
-                //     name: this.$t('bookmarks-tab'),
-                //     icon: 'mdi-bookmark-multiple',
-                //     route: '/bookmarks',
-                // },
+                {
+                    name: this.$t('bookmarks-tab'),
+                    icon: 'mdi-fire',
+                    route: '',
+                },
                 // {
                 //     name: this.$t('analytics-tab'),
                 //     icon: 'mdi-chart-box',
