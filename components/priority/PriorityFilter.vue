@@ -75,8 +75,8 @@
         </v-row>
 
         <v-row>
-            <v-col v-if="showFeatures">
-                <v-btn color="accent" :loading="isLoadingFeatures" block>
+            <v-col v-show="showFeatures">
+                <v-btn color="accent" :loading="isLoadingFeatures" fab small>
                     <v-icon>mdi-download</v-icon>
                 </v-btn>
             </v-col>
