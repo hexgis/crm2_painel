@@ -76,7 +76,7 @@
 
         <v-row>
             <v-col v-show="showFeatures">
-                <v-btn color="accent" :loading="isLoadingFeatures" fab small>
+                <v-btn color="accent" :loading="isLoadingFeatures" fab small @click='downloadGeoJson()'>
                     <v-icon>mdi-download</v-icon>
                 </v-btn>
             </v-col>
@@ -261,7 +261,7 @@ export default {
             this.$emit('onSearch')
         },
         ...mapMutations('priority', ['setFilters']),
-        ...mapActions('priority', ['getFilterOptions']),
+        ...mapActions('priority', ['getFilterOptions', 'downloadGeoJson']),
     },
 }
 </script>

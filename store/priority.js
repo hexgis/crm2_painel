@@ -18,7 +18,7 @@ export const state = () => ({
         currentView: false,
         priority: null,
         csv: 'csv',
-        _blank: '_blank',
+        json: 'json',
     },
 
     opacity: 100,
@@ -243,23 +243,75 @@ export const actions = {
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
-        const tableCSV = await this.$api.get(
-            'priority/consolidated/table/',
-            {
-                params,
-            },
-            {
-                responseType: 'blob',
+        const tableCSV = await this.$api.get( 'priority/consolidated/table/', { params })
+
+        function saveData(data, fileName, type) {
+            var elementBtn, blob, url;
+
+            elementBtn = document.createElement('a');
+            elementBtn.style = 'display: none';
+            document.body.appendChild(elementBtn);
+            
+            if (type !== 'text/csv'){
+                data = JSON.stringify(data);
             }
-        )
+    
+            blob = new Blob([data], {type: type});
+            url = window.URL.createObjectURL(blob);
 
-        const blob = new Blob([tableCSV.data], {
-            type: 'text/csv;charset=utf-8',
-        })
+            elementBtn.href = url;
+            elementBtn.download = fileName;
+            elementBtn.click();
+            window.URL.revokeObjectURL(url);
+        }
 
-        const obj = window.URL.createObjectURL(blob, 'saida.csv')
-        window.open(obj)
+        saveData(tableCSV.data, 'name.csv', 'text/csv')
 
-        if (tableCSV) commit('setDownloadTable', tableCSV)
     },
+    async downloadGeoJson({ commit, state, rootGetters }) {
+        const params = {
+            start_date: state.filters.startDate,
+            end_date: state.filters.endDate,
+            format: state.filters.csv,
+            format: state.filters.json,
+
+        }
+
+        if (state.filters.ti && state.filters.ti.length)
+            params.co_funai = state.filters.ti.toString()
+
+        if (state.filters.priority && state.filters.priority.length)
+            params.priority = state.filters.priority.toString()
+
+        if (state.filters.cr && state.filters.cr.length)
+            params.co_cr = state.filters.cr.toString()
+
+        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
+
+        const GeoJson = await this.$api.get('priority/consolidated/', { params } )
+
+        function saveData(data, fileName, type) {
+            var elementBtn, blob, url;
+
+            elementBtn = document.createElement('a');
+            elementBtn.style = 'display: none';
+            document.body.appendChild(elementBtn);
+            
+            if (type !== 'text/csv'){
+                data = JSON.stringify(data);
+            }
+    
+            blob = new Blob([data], {type: type});
+            url = window.URL.createObjectURL(blob);
+
+            elementBtn.href = url;
+            elementBtn.download = fileName;
+            elementBtn.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        saveData(GeoJson.data, 'name.json', 'application/json')
+
+    },
+
 }
