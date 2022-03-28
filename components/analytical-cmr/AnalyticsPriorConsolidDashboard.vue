@@ -80,7 +80,7 @@ export default {
         }
     },
     computed: {
-        ...mapState('funai', ['table']),
+        ...mapState('priority', ['table']),
     },
 }
 </script>

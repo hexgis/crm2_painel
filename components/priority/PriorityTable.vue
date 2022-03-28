@@ -75,7 +75,7 @@ export default {
         }
     },
     computed: {
-        ...mapState('funai', ['table', 'tableCSV']),
+        ...mapState('priority', ['table', 'tableCSV']),
     },
 
     methods: {
@@ -86,7 +86,7 @@ export default {
             else if (prioridade === 'Baixa') return 'yellow'
             else if (prioridade === 'Muito Baixa') return 'green'
         },
-        ...mapActions('funai', ['downloadTable']),
+        ...mapActions('priority', ['downloadTable']),
     },
 }
 </script>

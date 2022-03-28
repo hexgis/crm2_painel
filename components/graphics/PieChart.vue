@@ -5,7 +5,7 @@ import { Pie } from 'vue-chartjs'
 export default {
     extends: Pie,
     computed: {
-        ...mapState('funai', ['table']),
+        ...mapState('priority', ['table']),
     },
     mounted() {
         this.gradient = this.$refs.canvas

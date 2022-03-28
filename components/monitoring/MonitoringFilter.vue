@@ -201,23 +201,23 @@ export default {
     computed: {
         opacity: {
             get() {
-                return this.$store.state.funai.opacity
+                return this.$store.state.priority.opacity
             },
             set(value) {
-                this.$store.commit('funai/setOpacity', value)
+                this.$store.commit('priority/setOpacity', value)
             },
         },
 
         heatMap: {
             get() {
-                return this.$store.state.funai.heatMap
+                return this.$store.state.priority.heatMap
             },
             set(value) {
-                this.$store.commit('funai/setHeatMap', value)
+                this.$store.commit('priority/setHeatMap', value)
             },
         },
 
-        ...mapState('funai', [
+        ...mapState('priority', [
             'isLoadingFeatures',
             'filterOptions',
             'showFeatures',
@@ -231,7 +231,7 @@ export default {
 
     methods: {
         populateTiOptions(cr) {
-            if (cr) this.$store.dispatch('funai/getTiOptions', cr)
+            if (cr) this.$store.dispatch('priority/getTiOptions', cr)
             else this.filters.ti = null
         },
 
@@ -239,8 +239,8 @@ export default {
             this.setFilters(this.filters)
             this.$emit('onSearch')
         },
-        ...mapMutations('funai', ['setFilters']),
-        ...mapActions('funai', ['getFilterOptions']),
+        ...mapMutations('priority', ['setFilters']),
+        ...mapActions('priority', ['getFilterOptions']),
     },
 }
 </script>

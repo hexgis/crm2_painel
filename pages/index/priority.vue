@@ -125,14 +125,14 @@ export default {
         },
         showFeaturesPriority: {
             get() {
-                return this.$store.state.funai.showFeatures
+                return this.$store.state.priority.showFeatures
             },
 
             set(value) {
-                this.$store.commit('funai/setShowFeatures', value)
+                this.$store.commit('priority/setShowFeatures', value)
             },
         },
-        ...mapState('funai', ['showFeatures', 'features', 'table']),
+        ...mapState('priority', ['showFeatures', 'features', 'table']),
     },
 
     methods: {
@@ -145,8 +145,8 @@ export default {
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)
         },
-        ...mapActions('funai', ['getFeatures', 'getDataTable']),
-        ...mapMutations('funai', ['setVisualizationStage']),
+        ...mapActions('priority', ['getFeatures', 'getDataTable']),
+        ...mapMutations('priority', ['setVisualizationStage']),
     },
 }
 </script>

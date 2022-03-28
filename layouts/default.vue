@@ -60,7 +60,7 @@
         >
             <nuxt @closedrawer="layerDrawer = false" />
         </v-navigation-drawer>
-        <div v-if="$store.state.funai.visualizationStage == 'stage1'">
+        <div v-if="$store.state.priority.visualizationStage == 'stage1'">
             <v-main class="pa-0">
                 <Map
                     v-if="!$fetchState.pending && $store.state.userProfile.user"
@@ -71,12 +71,12 @@
                 />
             </v-main>
         </div>
-        <div v-if="$store.state.funai.visualizationStage == 'stage2'">
+        <div v-if="$store.state.priority.visualizationStage == 'stage2'">
             <v-main class="pa-0">
                 <AnalyticsPCDashboard />
             </v-main>
         </div>
-        <div v-if="$store.state.funai.visualizationStage == 'stage3'">
+        <div v-if="$store.state.priority.visualizationStage == 'stage3'">
             <v-main class="pa-0">
                 <PriorityTable />
             </v-main>
@@ -137,7 +137,7 @@ export default {
             return this.user && (this.user.first_name || this.user.last_name)
         },
         ...mapState('userProfile', ['user']),
-        ...mapState('funai', ['visualizationStage']),
+        ...mapState('priority', ['visualizationStage']),
     },
 
     watch: {

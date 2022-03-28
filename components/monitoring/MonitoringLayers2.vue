@@ -89,7 +89,7 @@ export default {
     }),
 
     computed: {
-        ...mapState('funai', [
+        ...mapState('priority', [
             'showFeatures',
             'features',
             'opacity',
@@ -261,7 +261,7 @@ export default {
             this.heatmapLayer.addTo(this.$refs.priorityHeat.mapObject)
         },
 
-        ...mapGetters('funai', ['featuresLoaded']),
+        ...mapGetters('priority', ['featuresLoaded']),
     },
 }
 </script>
