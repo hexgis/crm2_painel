@@ -10,7 +10,13 @@
                 <v-row>
                     <v-spacer></v-spacer>
                     <a>
-                        <v-btn small fab class="mx-2 my-2" color="secondary">
+                        <v-btn
+                            small
+                            fab
+                            class="mx-2 my-2"
+                            color="secondary"
+                            @click="downloadTable()"
+                        >
                             <v-icon>mdi-download</v-icon>
                         </v-btn>
                     </a>
@@ -38,7 +44,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
     name: 'PriorityTable',

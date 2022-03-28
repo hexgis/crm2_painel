@@ -243,9 +243,23 @@ export const actions = {
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
-        const tableCSV = await this.$api.get('priority/consolidated/table/', {
-            params,
+        const tableCSV = await this.$api.get(
+            'priority/consolidated/table/',
+            {
+                params,
+            },
+            {
+                responseType: 'blob',
+            }
+        )
+
+        const blob = new Blob([tableCSV.data], {
+            type: 'text/csv;charset=utf-8',
         })
+
+        const obj = window.URL.createObjectURL(blob, 'saida.csv')
+        window.open(obj)
+
         if (tableCSV) commit('setDownloadTable', tableCSV)
     },
 }
