@@ -16,6 +16,7 @@
                             class="mx-2 my-2"
                             color="secondary"
                             @click="downloadTable()"
+                            :loading="isLoadingCSV"
                         >
                             <v-icon>mdi-download</v-icon>
                         </v-btn>
@@ -81,7 +82,7 @@ export default {
         }
     },
     computed: {
-        ...mapState('priority', ['table', 'tableCSV']),
+        ...mapState('priority', ['table', 'tableCSV', 'isLoadingCSV']),
     },
 
     methods: {

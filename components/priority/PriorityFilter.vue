@@ -76,7 +76,7 @@
 
         <v-row>
             <v-col v-show="showFeatures">
-                <v-btn color="accent" :loading="isLoadingFeatures" fab small @click='downloadGeoJson()'>
+                <v-btn color="accent" :loading="isLoadingGeoJson" fab small @click='downloadGeoJson()'>
                     <v-icon>mdi-download</v-icon>
                 </v-btn>
             </v-col>
@@ -239,6 +239,7 @@ export default {
         },
 
         ...mapState('priority', [
+            'isLoadingGeoJson',
             'isLoadingFeatures',
             'filterOptions',
             'showFeatures',

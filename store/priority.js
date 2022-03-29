@@ -3,6 +3,8 @@ export const state = () => ({
     showFeatures: false,
     heatMap: true,
     isLoadingFeatures: false,
+    isLoadingGeoJson: false,
+    isLoadingCSV: false,
     unitMeasurement: [],
     // displayAnalitcs: null, // responsável por exibir qual dos 4 Dashboards será exibido na tela: Filtro Aplicado; CR; TI; Municípios. Também encaminhar o filtro aplicado.
     visualizationStage: 'stage1',
@@ -59,6 +61,12 @@ export const mutations = {
 
     clearFeatures(state) {
         state.features = null
+    },
+    setLoadingCSV(state, payload) {
+        state.isLoadingCSV = payload
+    },
+    setLoadingGeoJson(state, payload) {
+        state.isLoadingGeoJson = payload
     },
 
     setShowFeatures(state, showFeatures) {
@@ -226,6 +234,8 @@ export const actions = {
         if (table) commit('setTable', table)
     },
     async downloadTable({ commit, state, rootGetters }) {
+        commit('setLoadingCSV', true)
+
         const params = {
             start_date: state.filters.startDate,
             end_date: state.filters.endDate,
@@ -265,10 +275,18 @@ export const actions = {
             window.URL.revokeObjectURL(url);
         }
 
-        saveData(tableCSV.data, 'name.csv', 'text/csv')
+        try{
+            saveData(tableCSV.data, 't_poligono-prioritario_guilherme.micas_20220329.csv', 'text/csv')
+            }
+            finally {
+                commit('setLoadingCSV', false)
+    
+        }
 
     },
     async downloadGeoJson({ commit, state, rootGetters }) {
+        commit('setLoadingGeoJson', true)
+
         const params = {
             start_date: state.filters.startDate,
             end_date: state.filters.endDate,
@@ -310,7 +328,13 @@ export const actions = {
             window.URL.revokeObjectURL(url);
         }
 
-        saveData(GeoJson.data, 'name.json', 'application/json')
+        try{
+            saveData(GeoJson.data, 'p_poligono-prioritario_guilherme.micas_20220329.json', 'application/json')
+            }
+            finally {
+                commit('setLoadingGeoJson', false)
+    
+        }
 
     },
 
