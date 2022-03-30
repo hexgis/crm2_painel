@@ -143,13 +143,6 @@ export const actions = {
             } else {
                 commit('setShowFeatures', true)
 
-                const table = await this.$api.$get(
-                    'priority/consolidated/table/',
-                    {
-                        params,
-                    }
-                )
-
                 const total = await this.$api.$get(
                     'priority/consolidated/total/',
                     {
@@ -157,7 +150,6 @@ export const actions = {
                     }
                 )
                 commit('setParams', params)
-                if (table) commit('setTable', table)
                 if (total) commit('setTotal', total)
             }
         } catch (exception) {
@@ -232,6 +224,11 @@ export const actions = {
         })
 
         if (table) commit('setTable', table)
+
+        const total = await this.$api.$get('priority/consolidated/total/', {
+            params,
+        })
+        if (total) commit('setTotal', total)
     },
     async downloadTable({ commit, state, rootGetters }) {
         commit('setLoadingCSV', true)
@@ -253,36 +250,39 @@ export const actions = {
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
-        const tableCSV = await this.$api.get( 'priority/consolidated/table/', { params })
+        const tableCSV = await this.$api.get('priority/consolidated/table/', {
+            params,
+        })
 
         function saveData(data, fileName, type) {
-            var elementBtn, blob, url;
+            var elementBtn, blob, url
 
-            elementBtn = document.createElement('a');
-            elementBtn.style = 'display: none';
-            document.body.appendChild(elementBtn);
-            
-            if (type !== 'text/csv'){
-                data = JSON.stringify(data);
+            elementBtn = document.createElement('a')
+            elementBtn.style = 'display: none'
+            document.body.appendChild(elementBtn)
+
+            if (type !== 'text/csv') {
+                data = JSON.stringify(data)
             }
-    
-            blob = new Blob([data], {type: type});
-            url = window.URL.createObjectURL(blob);
 
-            elementBtn.href = url;
-            elementBtn.download = fileName;
-            elementBtn.click();
-            window.URL.revokeObjectURL(url);
+            blob = new Blob([data], { type: type })
+            url = window.URL.createObjectURL(blob)
+
+            elementBtn.href = url
+            elementBtn.download = fileName
+            elementBtn.click()
+            window.URL.revokeObjectURL(url)
         }
 
-        try{
-            saveData(tableCSV.data, 't_poligono-prioritario_guilherme.micas_20220329.csv', 'text/csv')
-            }
-            finally {
-                commit('setLoadingCSV', false)
-    
+        try {
+            saveData(
+                tableCSV.data,
+                't_poligono-prioritario_guilherme.micas_20220329.csv',
+                'text/csv'
+            )
+        } finally {
+            commit('setLoadingCSV', false)
         }
-
     },
     async downloadGeoJson({ commit, state, rootGetters }) {
         commit('setLoadingGeoJson', true)
@@ -292,7 +292,6 @@ export const actions = {
             end_date: state.filters.endDate,
             format: state.filters.csv,
             format: state.filters.json,
-
         }
 
         if (state.filters.ti && state.filters.ti.length)
@@ -306,36 +305,38 @@ export const actions = {
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
-        const GeoJson = await this.$api.get('priority/consolidated/', { params } )
+        const GeoJson = await this.$api.get('priority/consolidated/', {
+            params,
+        })
 
         function saveData(data, fileName, type) {
-            var elementBtn, blob, url;
+            var elementBtn, blob, url
 
-            elementBtn = document.createElement('a');
-            elementBtn.style = 'display: none';
-            document.body.appendChild(elementBtn);
-            
-            if (type !== 'text/csv'){
-                data = JSON.stringify(data);
+            elementBtn = document.createElement('a')
+            elementBtn.style = 'display: none'
+            document.body.appendChild(elementBtn)
+
+            if (type !== 'text/csv') {
+                data = JSON.stringify(data)
             }
-    
-            blob = new Blob([data], {type: type});
-            url = window.URL.createObjectURL(blob);
 
-            elementBtn.href = url;
-            elementBtn.download = fileName;
-            elementBtn.click();
-            window.URL.revokeObjectURL(url);
+            blob = new Blob([data], { type: type })
+            url = window.URL.createObjectURL(blob)
+
+            elementBtn.href = url
+            elementBtn.download = fileName
+            elementBtn.click()
+            window.URL.revokeObjectURL(url)
         }
 
-        try{
-            saveData(GeoJson.data, 'p_poligono-prioritario_guilherme.micas_20220329.json', 'application/json')
-            }
-            finally {
-                commit('setLoadingGeoJson', false)
-    
+        try {
+            saveData(
+                GeoJson.data,
+                'p_poligono-prioritario_guilherme.micas_20220329.json',
+                'application/json'
+            )
+        } finally {
+            commit('setLoadingGeoJson', false)
         }
-
     },
-
 }

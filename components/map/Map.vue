@@ -210,6 +210,9 @@ import FunaiLayers from '@/components/monitoring/MonitoringLayers2'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-basemaps/L.Control.Basemaps.css'
 import 'leaflet-minimap/dist/Control.MiniMap.min.css'
+// import * as L from 'leaflet'
+// import {SimpleMapScreenshoter} from 'leaflet-simple-map-screenshoter'
+// // new SimpleMapScreenshoter().addTo(this.map)
 
 if (typeof window !== 'undefined') {
     require('leaflet-bing-layer')
