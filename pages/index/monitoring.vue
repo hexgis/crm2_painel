@@ -11,7 +11,7 @@
             />
         </div>
 
-        <FunaiFilter @onSearch="search()" />
+        <MonitoringFilter @onSearch="search()" />
 
         <v-footer
             absolute
@@ -73,11 +73,11 @@
 </i18n>
 
 <script>
-import FunaiFilter from '@/components/monitoring/MonitoringFilter'
+import MonitoringFilter from '@/components/monitoring/MonitoringFilter'
 import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
-    components: { FunaiFilter },
+    components: { MonitoringFilter },
 
     data() {
         return {

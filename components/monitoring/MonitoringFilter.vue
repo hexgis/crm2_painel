@@ -172,7 +172,7 @@ import { mapMutations, mapState, mapActions } from 'vuex'
 import legend from '@/assets/legend.png'
 
 export default {
-    name: 'FunaiFilter',
+    name: 'MonitoringFilter',
 
     components: { BaseDateField },
 

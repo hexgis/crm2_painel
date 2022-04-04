@@ -53,7 +53,9 @@
                         depressed
                         icon
                         color="accent"
-                        @click="changeVisualizationStage('stage1'), getFeatures()"
+                        @click="
+                            changeVisualizationStage('stage1'), getFeatures()
+                        "
                     >
                         <v-icon large>mdi-map</v-icon>
                     </v-btn>
@@ -67,7 +69,9 @@
                     <v-btn
                         icon
                         color="accent"
-                        @click="changeVisualizationStage('stage3'), getDataTable()"
+                        @click="
+                            changeVisualizationStage('stage3'), getDataTable()
+                        "
                     >
                         <v-icon large>mdi-table</v-icon>
                     </v-btn>
@@ -132,7 +136,14 @@ export default {
                 this.$store.commit('priority/setShowFeatures', value)
             },
         },
-        ...mapState('priority', ['showFeatures', 'features', 'table', 'visualizationStage']),
+        ...mapState('priority', [
+            'showFeatures',
+            'features',
+            'table',
+            'visualizationStage',
+            'response',
+            'params',
+        ]),
     },
 
     methods: {

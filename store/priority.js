@@ -125,12 +125,10 @@ export const actions = {
             params.co_cr = state.filters.cr.toString()
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
-
         try {
             const response = await this.$api.$get('priority/consolidated/', {
                 params,
             })
-
             commit('setFeatures', response)
 
             if (!response.features || !response.features.length) {
@@ -149,7 +147,6 @@ export const actions = {
                         params,
                     }
                 )
-                commit('setParams', params)
                 if (total) commit('setTotal', total)
             }
         } catch (exception) {
@@ -165,6 +162,7 @@ export const actions = {
             )
         } finally {
             commit('setLoadingFeatures', false)
+            commit('setParams', params)
         }
     },
 
