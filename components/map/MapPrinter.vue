@@ -21,18 +21,19 @@
                     <v-col>
                         <MapForPrint />
                     </v-col>
-                    <v-col class="mt-2 ">
+                    <v-col class="mt-2">
                         <div>
-                            <v-col class="pa-2 logo-hex d-inline-flex justify-center">
-                                <a href="//cmr.funai.gov.br" target="_blank">
+                            <v-col class="pa-2 d-inline-flex justify-center">
+                                <a target="_blank" class="mt-5">
                                     <v-img
                                         contain
-                                        width="60"
-                                        src="/img/logocmr-img.png"
+                                        width="100"
+                                        src="/img/logocmr_normal_min.png"
                                     />
                                 </a>
-                                <a href="//funai.gov.br" target="_blank">
+                                <a>
                                     <v-img
+                                        class="mx-4"
                                         contain
                                         width="60"
                                         src="/img/funai.svg"
@@ -41,15 +42,30 @@
                             </v-col>
                         </div>
                         <br />
-                        <h6 class="text-center d-inline-flex justify-center pa-2">
+                        <h6
+                            class="
+                                text-center
+                                d-inline-flex
+                                justify-center
+                                pa-2
+                            "
+                        >
                             Centro de Monitoramento Remoto - Fundação Nacional
                             do Índio
                         </h6>
                         <br />
-                        <h6 class="text-center d-inline-flex justify-center pa-2">
+                        <h6
+                            class="
+                                text-center
+                                d-inline-flex
+                                justify-center
+                                pa-2
+                            "
+                        >
                             SISTEMA DE INTEGRAÇÃO DE DADOS GEOESPACIAIS DAS
                             TERRAS INDÍGENAS
                         </h6>
+                        <v-divider></v-divider>
                     </v-col>
                 </v-row>
                 <v-divider></v-divider>
