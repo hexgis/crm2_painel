@@ -1,6 +1,6 @@
 <template>
     <client-only>
-        <div class="map-container">
+        <div class="map-container3">
             <l-map
                 ref="map"
                 :zoom="zoom"
@@ -14,69 +14,11 @@
             >
                 <l-control position="topleft">
                     <div class="pa-1 map-action-buttons">
-                        <MapSearch
-                            v-if="user.settings.map_search_button_visible"
-                            :map="map"
-                        />
-
-                        <div v-if="user.settings.map_zoom_buttons_visible">
-                            <div class="d-flex">
-                                <v-tooltip right>
-                                    <template #activator="{ on }">
-                                        <v-btn
-                                            fab
-                                            ripple
-                                            height="36"
-                                            width="36"
-                                            class="mt-3"
-                                            v-on="on"
-                                            @click.stop="
-                                                map.setZoom(map.getZoom() + 1)
-                                            "
-                                        >
-                                            <v-icon medium> mdi-plus </v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <span> {{ $t('zoom-in') }} </span>
-                                </v-tooltip>
-                            </div>
-
-                            <div class="d-flex">
-                                <v-tooltip right>
-                                    <template #activator="{ on }">
-                                        <v-btn
-                                            fab
-                                            ripple
-                                            height="36"
-                                            width="36"
-                                            class="mt-3"
-                                            v-on="on"
-                                            @click.stop="
-                                                map.setZoom(map.getZoom() - 1)
-                                            "
-                                        >
-                                            <v-icon medium> mdi-minus </v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <span> {{ $t('zoom-out') }} </span>
-                                </v-tooltip>
-                            </div>
-                        </div>
+                        <div
+                            v-if="user.settings.map_zoom_buttons_visible"
+                        ></div>
 
                         <div class="div-spacer" />
-
-                        <ZoomToCoords
-                            v-if="!$vuetify.breakpoint.mobile"
-                            :map="map"
-                        />
-
-                        <FileLoaderControl
-                            :map="map"
-                            :files="loadedFiles"
-                            @loading="isLoading()"
-                            @loads="loaded()"
-                        />
-                        <MapPrinter />
                     </div>
                 </l-control>
 
@@ -95,34 +37,6 @@
                     position="bottomleft"
                 />
 
-                <l-control
-                    :key="
-                        'logo-nation-' +
-                        (user.settings.map_scale_visible ? 'first' : 'second')
-                    "
-                    position="bottomleft"
-                    class="leaflet-logo-control"
-                >
-                    <div>
-                        <v-col class="pa-0 logo-hex">
-                            <a href="//cmr.funai.gov.br" target="_blank">
-                                <v-img
-                                    contain
-                                    width="60"
-                                    src="/img/logocmr-img.png"
-                                />
-                            </a>
-                            <a href="//funai.gov.br" target="_blank">
-                                <v-img
-                                    contain
-                                    width="60"
-                                    src="/img/funai.svg"
-                                />
-                            </a>
-                        </v-col>
-                    </div>
-                </l-control>
-
                 <l-geo-json
                     ref="interestArea"
                     :geojson="interestArea"
@@ -132,24 +46,7 @@
 
                 <SupportLayers />
 
-                <!-- <ImageryLayers v-if="showImagery" :map="map" /> -->
-
-                <!-- <CatalogLayers :map="map" /> -->
-
-                <!-- <ChangeDetectionLayers :map="map" /> -->
-
-                <FileLoaderLayers
-                    :map="map"
-                    :files="loadedFiles"
-                    @loads="loaded()"
-                />
-
                 <MonitoringLayers v-if="!monitoringGeoserver" :map="map" />
-                <!-- <MonitoringLayersGeoserver v-else :map="map" /> -->
-
-                <!-- <AlgorithmLayers /> -->
-
-                <!-- <WebhooksLayers /> -->
 
                 <BaseWmsMetadataPopup :map="map" />
 
@@ -220,7 +117,7 @@ if (typeof window !== 'undefined') {
 }
 
 export default {
-    name: 'Map',
+    name: 'MiniMapForPrint',
 
     components: {
         // ImageryLayers,
@@ -251,12 +148,8 @@ export default {
         mapOptions: {
             zoomControl: false,
         },
-        areaBounds: null,
-        initialBounds: [
-            [-33.8689056, -73.9830625],
-            [5.2842873, -28.6341164],
-        ],
-
+        areaBounds: 'localBounds',
+        initialBounds: ['bounds'],
         loadedFiles: [],
         mapLoading: false,
 
@@ -285,45 +178,45 @@ export default {
                     zIndex: 1,
                 },
             },
-            {
-                url: '//{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
-                options: {
-                    label: 'Google Satellite',
-                    tag: 'Google Satellite',
-                    attribution:
-                        'Map data &copy; <a href="//maps.google.com/">Google</a> sattelite imagery',
-                    maxZoom: 21,
-                    maxNativeZoom: 19,
-                    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-                    zIndex: 1,
-                },
-            },
-            {
-                url: '//mt0.google.com/vt/lyrs=r&hl=en&x={x}&y={y}&z={z}',
-                options: {
-                    label: 'Google Roadmap',
-                    tag: 'Google Roadmap',
-                    attribution:
-                        'Map data &copy; <a href="//maps.google.com/">Google</a> Altered roadmap',
-                    maxZoom: 21,
-                    maxNativeZoom: 19,
-                    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-                    zIndex: 1,
-                },
-            },
-            {
-                url: '//mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}',
-                options: {
-                    label: 'Google Hybrid',
-                    tag: 'Google Hybrid',
-                    attribution:
-                        'Map data &copy; <a href="//maps.google.com/">Google</a> Hybrid',
-                    maxZoom: 21,
-                    maxNativeZoom: 19,
-                    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-                    zIndex: 1,
-                },
-            },
+            // {
+            //     url: '//{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+            //     options: {
+            //         label: 'Google Satellite',
+            //         tag: 'Google Satellite',
+            //         attribution:
+            //             'Map data &copy; <a href="//maps.google.com/">Google</a> sattelite imagery',
+            //         maxZoom: 21,
+            //         maxNativeZoom: 19,
+            //         subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+            //         zIndex: 1,
+            //     },
+            // },
+            // {
+            //     url: '//mt0.google.com/vt/lyrs=r&hl=en&x={x}&y={y}&z={z}',
+            //     options: {
+            //         label: 'Google Roadmap',
+            //         tag: 'Google Roadmap',
+            //         attribution:
+            //             'Map data &copy; <a href="//maps.google.com/">Google</a> Altered roadmap',
+            //         maxZoom: 21,
+            //         maxNativeZoom: 19,
+            //         subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+            //         zIndex: 1,
+            //     },
+            // },
+            // {
+            //     url: '//mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}',
+            //     options: {
+            //         label: 'Google Hybrid',
+            //         tag: 'Google Hybrid',
+            //         attribution:
+            //             'Map data &copy; <a href="//maps.google.com/">Google</a> Hybrid',
+            //         maxZoom: 21,
+            //         maxNativeZoom: 19,
+            //         subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+            //         zIndex: 1,
+            //     },
+            // },
             // {
             //     url:
             //         '//securewatch.digitalglobe.com/earthservice/wmtsaccess?connectId={connectid}&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&TileMatrixSet=EPSG:3857&LAYER=DigitalGlobe:ImageryTileService&FORMAT=image/jpeg&STYLE=&featureProfile=Vivid_2019&TileMatrix=EPSG:3857:{z}&TILEROW={y}&TILECOL={x}',
@@ -338,18 +231,18 @@ export default {
             //         zIndex: 1,
             //     },
             // },
-            {
-                url: '//{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
-                options: {
-                    label: 'CartoDB',
-                    tag: 'CartoDB',
-                    attribution:
-                        'Map data &copy; <a href="//www.openstreetmap.org/">OpenStreetMap</a> contributors, CartoDB Imagery <a href="//creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-                    maxZoom: 21,
-                    maxNativeZoom: 19,
-                    zIndex: 1,
-                },
-            },
+            // {
+            //     url: '//{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+            //     options: {
+            //         label: 'CartoDB',
+            //         tag: 'CartoDB',
+            //         attribution:
+            //             'Map data &copy; <a href="//www.openstreetmap.org/">OpenStreetMap</a> contributors, CartoDB Imagery <a href="//creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+            //         maxZoom: 21,
+            //         maxNativeZoom: 19,
+            //         zIndex: 1,
+            //     },
+            // },
             // {
             //     url: '//view.geoapi-airbusds.com/maps/wmts/52a994d7-f215-4c66-aa10-439221c29ee0/tile/1.0.0/8659bd97-ea52-474d-a3e9-072c335cd6bb/default/3857/{z}/{y}/{x}',
             //     options: {
@@ -374,30 +267,30 @@ export default {
             //         zIndex: 1,
             //     },
             // },
-            {
-                url: '//server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-                options: {
-                    label: 'ArcMap',
-                    tag: 'ArcMap',
-                    attribution:
-                        'Map data &copy; <a href="//desktop.arcgis.com/en/arcmap/">ArcGis Basemap</a>',
-                    maxZoom: 21,
-                    maxNativeZoom: 19,
-                    zIndex: 1,
-                },
-            },
-            {
-                url: 'https://tiles.planet.com/basemaps/v1/planet-tiles/planet_medres_visual_2020-10_mosaic/gmap/{z}/{x}/{y}.png?api_key=57cd3a8c44024cfdb7446ac37d8d1fe9',
-                options: {
-                    label: 'Planet - Out/2020',
-                    tag: 'Planet - Out/2020',
-                    attribution:
-                        'Map data &copy; <a href="//www.planet.com/">Planet</a>',
-                    maxZoom: 21,
-                    maxNativeZoom: 15,
-                    zIndex: 1,
-                },
-            },
+            // {
+            //     url: '//server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+            //     options: {
+            //         label: 'ArcMap',
+            //         tag: 'ArcMap',
+            //         attribution:
+            //             'Map data &copy; <a href="//desktop.arcgis.com/en/arcmap/">ArcGis Basemap</a>',
+            //         maxZoom: 21,
+            //         maxNativeZoom: 19,
+            //         zIndex: 1,
+            //     },
+            // },
+            // {
+            //     url: 'https://tiles.planet.com/basemaps/v1/planet-tiles/planet_medres_visual_2020-10_mosaic/gmap/{z}/{x}/{y}.png?api_key=57cd3a8c44024cfdb7446ac37d8d1fe9',
+            //     options: {
+            //         label: 'Planet - Out/2020',
+            //         tag: 'Planet - Out/2020',
+            //         attribution:
+            //             'Map data &copy; <a href="//www.planet.com/">Planet</a>',
+            //         maxZoom: 21,
+            //         maxNativeZoom: 15,
+            //         zIndex: 1,
+            //     },
+            // },
         ],
         bingKey:
             'AuhiCJHlGzhg93IqUH_oCpl_-ZUrIE6SPftlyGYUvr9Amx5nzA-WqGcPquyFZl4L',
@@ -476,8 +369,6 @@ export default {
             this.createMapLayers()
             this.createCssRefs()
 
-            this.createMiniMap()
-
             this.$emit('mapCreated')
 
             if (this.bounds) {
@@ -527,24 +418,6 @@ export default {
                 })
             )
         },
-
-        createBingLayer() {
-            // Bing layer has need to be generated before being inserted
-            // on tileLayers array, and is generated by the Plugin
-            // leaflet-bing-layer
-            const bingLayer = this.$L.tileLayer.bing(this.bingKey, {
-                imagerySet: 'AerialWithLabelsOnDemand',
-                maxZoom: 21,
-                maxNativeZoom: 16,
-            })
-            bingLayer.options.attribution = 'Map data &copy; Bing contributors'
-            bingLayer.options.iconURL = '/img/bing.png'
-            bingLayer.options.label = 'Bing'
-            bingLayer.options.tag = 'Bing'
-
-            return bingLayer
-        },
-
         createMiniMap() {
             const osm = this.baseLayers[0]
 
@@ -561,6 +434,23 @@ export default {
             if (this.minimapVisibleSettings) {
                 this.miniMap.addTo(this.map)
             }
+        },
+
+        createBingLayer() {
+            // Bing layer has need to be generated before being inserted
+            // on tileLayers array, and is generated by the Plugin
+            // leaflet-bing-layer
+            const bingLayer = this.$L.tileLayer.bing(this.bingKey, {
+                imagerySet: 'AerialWithLabelsOnDemand',
+                maxZoom: 21,
+                maxNativeZoom: 16,
+            })
+            bingLayer.options.attribution = 'Map data &copy; Bing contributors'
+            bingLayer.options.iconURL = '/img/bing.png'
+            bingLayer.options.label = 'Bing'
+            bingLayer.options.tag = 'Bing'
+
+            return bingLayer
         },
 
         createCssRefs() {
@@ -595,11 +485,7 @@ export default {
             this.cursorCoordinates.lat = event.latlng.lat.toFixed(4)
             this.cursorCoordinates.lng = event.latlng.lng.toFixed(4)
         },
-        ...mapMutations('map', [
-            'setBounds',
-            'setMapLoading',
-            'setLocalBounds',
-        ]),
+        ...mapMutations('map', ['setBounds', 'setMapLoading']),
     },
 }
 </script>
@@ -653,6 +539,12 @@ export default {
 
 .nation-logo-container
     margin-left: -3px
+
+.map-container3
+    height: 30vh
+    width: 18vw
+    overflow: hidden !important
+    padding: 0
 
 .logo-flags
     margin-left: -3px

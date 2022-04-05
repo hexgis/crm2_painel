@@ -148,11 +148,8 @@ export default {
         mapOptions: {
             zoomControl: false,
         },
-        areaBounds: null,
-        initialBounds: [
-            [-33.8689056, -73.9830625],
-            [5.2842873, -28.6341164],
-        ],
+        areaBounds: 'localBounds',
+        initialBounds: ['bounds'],
 
         loadedFiles: [],
         mapLoading: false,
@@ -333,7 +330,12 @@ export default {
                   )
                 : []
         },
-        ...mapState('map', ['bounds', 'boundsZoomed', 'loading']),
+        ...mapState('map', [
+            'bounds',
+            'boundsZoomed',
+            'loading',
+            'localBounds',
+        ]),
         ...mapState('userProfile', ['user']),
     },
 

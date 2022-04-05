@@ -3,6 +3,7 @@ export const state = () => ({
     boundsZoomed: false,
     fileList: [],
     loading: false,
+    localBounds: [],
 })
 
 export const getters = {
@@ -24,6 +25,8 @@ export const getters = {
 
 export const mutations = {
     setBounds: (state, bounds) => (state.bounds = bounds),
+
+    setLocalBounds: (state, localBounds) => (state.localBounds = localBounds),
 
     toggleBoundsZoomed: (state) => (state.boundsZoomed = !state.boundsZoomed),
 
@@ -53,11 +56,11 @@ export const actions = {
     changeStyle({ commit, state }, { fileIndex, color, opacity }) {
         const file = {
             ...state.fileList[fileIndex],
-            color: color,
-            opacity: opacity,
+            color,
+            opacity,
         }
 
         commit('removeFileFromMap', fileIndex)
-        commit('addFileToSpecificIndex', {file, fileIndex})
+        commit('addFileToSpecificIndex', { file, fileIndex })
     },
 }

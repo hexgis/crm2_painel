@@ -65,7 +65,9 @@
                             SISTEMA DE INTEGRAÇÃO DE DADOS GEOESPACIAIS DAS
                             TERRAS INDÍGENAS
                         </h6>
+
                         <v-divider></v-divider>
+                        <MiniMapForPrint />
                     </v-col>
                 </v-row>
                 <v-divider></v-divider>
@@ -85,11 +87,12 @@
 
 <script>
 import MapForPrint from '@/components/map/MapForPrint.vue'
+import MiniMapForPrint from '@/components/map/MiniMapForPrint.vue'
 
 export default {
     name: 'MapPrinter',
 
-    components: { MapForPrint },
+    components: { MapForPrint, MiniMapForPrint },
 
     data() {
         return {
