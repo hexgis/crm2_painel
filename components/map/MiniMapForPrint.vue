@@ -111,7 +111,6 @@ import 'leaflet-basemaps/L.Control.Basemaps.css'
 import 'leaflet-minimap/dist/Control.MiniMap.min.css'
 
 if (typeof window !== 'undefined') {
-    require('leaflet-bing-layer')
     require('leaflet-basemaps')
     require('leaflet-minimap')
 }
@@ -147,9 +146,19 @@ export default {
         ],
         mapOptions: {
             zoomControl: false,
+            // dragging: false,
+            boxZoom: false,
+            // scrollWheelZoom: false,
+            // doubleClickZoom: false,
+            // touchZoom: false,
+            keyboard: false,
+            attributionControl: false,
+            height: 125,
+            
         },
-        areaBounds: 'localBounds',
-        initialBounds: ['bounds'],
+        areaBounds: null,
+        initialBounds: [[-33.8689056, -73.9830625],
+            [5.2842873, -28.6341164],],
         loadedFiles: [],
         mapLoading: false,
 
@@ -178,119 +187,7 @@ export default {
                     zIndex: 1,
                 },
             },
-            // {
-            //     url: '//{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
-            //     options: {
-            //         label: 'Google Satellite',
-            //         tag: 'Google Satellite',
-            //         attribution:
-            //             'Map data &copy; <a href="//maps.google.com/">Google</a> sattelite imagery',
-            //         maxZoom: 21,
-            //         maxNativeZoom: 19,
-            //         subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-            //         zIndex: 1,
-            //     },
-            // },
-            // {
-            //     url: '//mt0.google.com/vt/lyrs=r&hl=en&x={x}&y={y}&z={z}',
-            //     options: {
-            //         label: 'Google Roadmap',
-            //         tag: 'Google Roadmap',
-            //         attribution:
-            //             'Map data &copy; <a href="//maps.google.com/">Google</a> Altered roadmap',
-            //         maxZoom: 21,
-            //         maxNativeZoom: 19,
-            //         subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-            //         zIndex: 1,
-            //     },
-            // },
-            // {
-            //     url: '//mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}',
-            //     options: {
-            //         label: 'Google Hybrid',
-            //         tag: 'Google Hybrid',
-            //         attribution:
-            //             'Map data &copy; <a href="//maps.google.com/">Google</a> Hybrid',
-            //         maxZoom: 21,
-            //         maxNativeZoom: 19,
-            //         subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-            //         zIndex: 1,
-            //     },
-            // },
-            // {
-            //     url:
-            //         '//securewatch.digitalglobe.com/earthservice/wmtsaccess?connectId={connectid}&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&TileMatrixSet=EPSG:3857&LAYER=DigitalGlobe:ImageryTileService&FORMAT=image/jpeg&STYLE=&featureProfile=Vivid_2019&TileMatrix=EPSG:3857:{z}&TILEROW={y}&TILECOL={x}',
-            //     options: {
-            //         connectid: '750ba857-7952-41af-b189-316d907cc12a',
-            //         label: 'MAXAR',
-            //         tag: 'MAXAR',
-            //         attribution:
-            //             'Map data &copy; <a href="//securewatch.digitalglobe.com">Secure Watch</a> Digital Globe',
-            //         maxZoom: 21,
-            //         maxNativeZoom: 19,
-            //         zIndex: 1,
-            //     },
-            // },
-            // {
-            //     url: '//{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
-            //     options: {
-            //         label: 'CartoDB',
-            //         tag: 'CartoDB',
-            //         attribution:
-            //             'Map data &copy; <a href="//www.openstreetmap.org/">OpenStreetMap</a> contributors, CartoDB Imagery <a href="//creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-            //         maxZoom: 21,
-            //         maxNativeZoom: 19,
-            //         zIndex: 1,
-            //     },
-            // },
-            // {
-            //     url: '//view.geoapi-airbusds.com/maps/wmts/52a994d7-f215-4c66-aa10-439221c29ee0/tile/1.0.0/8659bd97-ea52-474d-a3e9-072c335cd6bb/default/3857/{z}/{y}/{x}',
-            //     options: {
-            //         label: 'AirBus OneAtlas',
-            //         tag: 'AirBus OneAtlas',
-            //         attribution:
-            //             'GeoAPI Airbus Service; Powered by: <a href="//oneatlas.airbus.com/">OneAtlas - AIRBUS</a>',
-            //         maxZoom: 21,
-            //         maxNativeZoom: 14,
-            //         zIndex: 1,
-            //     },
-            // },
-            // {
-            //     url: '//view.geoapi-airbusds.com/maps/wmts/eebb802c-9605-475f-8830-b7c00107cdc8/tile/1.0.0/61476829-d968-4588-821c-b0f9fae6ff8c/default/3857/{z}/{y}/{x}.png',
-            //     options: {
-            //         label: 'AirBus WorldDEM',
-            //         tag: 'AirBus WorldDEM',
-            //         attribution:
-            //             'GeoAPI Airbus Service; Powered by: <a href="//oneatlas.airbus.com/">OneAtlas - AIRBUS</a>',
-            //         maxZoom: 21,
-            //         maxNativeZoom: 14,
-            //         zIndex: 1,
-            //     },
-            // },
-            // {
-            //     url: '//server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-            //     options: {
-            //         label: 'ArcMap',
-            //         tag: 'ArcMap',
-            //         attribution:
-            //             'Map data &copy; <a href="//desktop.arcgis.com/en/arcmap/">ArcGis Basemap</a>',
-            //         maxZoom: 21,
-            //         maxNativeZoom: 19,
-            //         zIndex: 1,
-            //     },
-            // },
-            // {
-            //     url: 'https://tiles.planet.com/basemaps/v1/planet-tiles/planet_medres_visual_2020-10_mosaic/gmap/{z}/{x}/{y}.png?api_key=57cd3a8c44024cfdb7446ac37d8d1fe9',
-            //     options: {
-            //         label: 'Planet - Out/2020',
-            //         tag: 'Planet - Out/2020',
-            //         attribution:
-            //             'Map data &copy; <a href="//www.planet.com/">Planet</a>',
-            //         maxZoom: 21,
-            //         maxNativeZoom: 15,
-            //         zIndex: 1,
-            //     },
-            // },
+
         ],
         bingKey:
             'AuhiCJHlGzhg93IqUH_oCpl_-ZUrIE6SPftlyGYUvr9Amx5nzA-WqGcPquyFZl4L',
@@ -333,7 +230,6 @@ export default {
             'bounds',
             'boundsZoomed',
             'loading',
-            'localBounds',
         ]),
         ...mapState('userProfile', ['user']),
     },
@@ -406,9 +302,6 @@ export default {
                 tileLayers.push(tileLayer)
             }
 
-            const bingLayer = this.createBingLayer()
-            tileLayers.push(bingLayer)
-
             this.map.addControl(
                 this.$L.control.basemaps({
                     basemaps: tileLayers,
@@ -434,23 +327,6 @@ export default {
             if (this.minimapVisibleSettings) {
                 this.miniMap.addTo(this.map)
             }
-        },
-
-        createBingLayer() {
-            // Bing layer has need to be generated before being inserted
-            // on tileLayers array, and is generated by the Plugin
-            // leaflet-bing-layer
-            const bingLayer = this.$L.tileLayer.bing(this.bingKey, {
-                imagerySet: 'AerialWithLabelsOnDemand',
-                maxZoom: 21,
-                maxNativeZoom: 16,
-            })
-            bingLayer.options.attribution = 'Map data &copy; Bing contributors'
-            bingLayer.options.iconURL = '/img/bing.png'
-            bingLayer.options.label = 'Bing'
-            bingLayer.options.tag = 'Bing'
-
-            return bingLayer
         },
 
         createCssRefs() {
@@ -481,10 +357,6 @@ export default {
             this.setBounds(latLngBounds)
         },
 
-        refreshCoordinates(event) {
-            this.cursorCoordinates.lat = event.latlng.lat.toFixed(4)
-            this.cursorCoordinates.lng = event.latlng.lng.toFixed(4)
-        },
         ...mapMutations('map', ['setBounds', 'setMapLoading']),
     },
 }
@@ -541,7 +413,7 @@ export default {
     margin-left: -3px
 
 .map-container3
-    height: 30vh
+    height: 15vh
     width: 18vw
     overflow: hidden !important
     padding: 0

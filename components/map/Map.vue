@@ -440,7 +440,6 @@ export default {
             'bounds',
             'boundsZoomed',
             'loading',
-            'localBounds',
         ]),
         ...mapState('userProfile', ['user']),
     },

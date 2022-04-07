@@ -43,43 +43,65 @@
                         </div>
                         <br />
                         <h6
-                            class="
-                                text-center
-                                d-inline-flex
-                                justify-center
-                                pa-2
-                            "
+                            class="text-center d-inline-flex justify-center pa-2"
                         >
                             Centro de Monitoramento Remoto - Fundação Nacional
                             do Índio
                         </h6>
                         <br />
                         <h6
-                            class="
-                                text-center
-                                d-inline-flex
-                                justify-center
-                                pa-2
-                            "
+                            class="text-center d-inline-flex justify-center pa-2"
                         >
                             SISTEMA DE INTEGRAÇÃO DE DADOS GEOESPACIAIS DAS
                             TERRAS INDÍGENAS
                         </h6>
 
-                        <v-divider></v-divider>
                         <MiniMapForPrint />
+                        
+
+                        <v-divider></v-divider>
+                        <h6 class="mt-2">Legenda:</h6>
+                        <div class="mt-2">
+                            <h6>teste</h6>
+                            <h6>teste</h6>
+                            <h6>teste</h6>
+                            <h6>teste</h6>
+                            <h6>teste</h6>
+                            <h6>teste</h6>
+                            <h6>teste</h6>
+                            <h6>teste</h6>
+                        </div>
+                        <br />
+                        <v-divider></v-divider>
+
+                        <h6 class="mt-2">Bases Cartográficas:</h6>
+                        <div class="mt-2 mb-6">
+                            <h6>teste</h6>
+                            <h6>teste</h6>
+                            <h6>teste</h6>
+                            <h6>teste</h6>
+                        </div>
+                        <v-divider></v-divider>
+                        <h6 class="mt-2">
+                            CENTRO DE MONITORAMENTO REMOTO -
+                            https://cmr.funai.gov.br
+                        </h6>
+                        
                     </v-col>
                 </v-row>
+
                 <v-divider></v-divider>
-                <v-card-actions>
+                <v-footer>
                     <v-spacer></v-spacer>
-                    <v-btn color="secondary" text @click="dialog = false">
-                        CANCELAR
-                    </v-btn>
-                    <v-btn color="secondary" text @click="dialog = false">
-                        SALVAR
-                    </v-btn>
-                </v-card-actions>
+                    <v-card-actions>
+                        <v-btn  text @click="dialog = false">
+                            CANCELAR
+                        </v-btn>
+                        <v-btn  text @click="dialog = false">
+                            SALVAR
+                        </v-btn>
+                    </v-card-actions>
+                </v-footer>
             </v-card>
         </v-dialog>
     </div>
