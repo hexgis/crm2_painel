@@ -414,7 +414,7 @@ export default {
 
 .map-container3
     height: 15vh
-    width: 18vw
+    width: 26vw
     overflow: hidden !important
     padding: 0
 

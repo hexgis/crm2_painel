@@ -87,7 +87,7 @@
 </i18n>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import interestArea from '@/assets/interest_area.json'
 import MapPrinter from '@/components/map/MapPrinter.vue'
 
@@ -253,7 +253,7 @@ export default {
 
             this.createMapLayers()
             this.createCssRefs()
-
+            this.zoomToBounds(this.bounds)
             this.$emit('mapCreated')
 
             if (this.bounds) {
@@ -351,6 +351,7 @@ export default {
             this.cursorCoordinates.lng = event.latlng.lng.toFixed(4)
         },
         ...mapMutations('map', ['setBounds', 'setMapLoading']),
+        ...mapActions('map', ['zoomToBounds']),
     },
 }
 </script>
@@ -406,7 +407,7 @@ export default {
     margin-left: -3px
 
 .map-container2
-    height: 70vh
+    height: 90vh
     width: 40vw
     overflow: hidden !important
     padding: 0

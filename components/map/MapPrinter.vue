@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex mt-3">
-        <v-dialog v-model="dialog" persistent max-width="1100">
+        <v-dialog v-model="dialog" persistent max-width="1100" max-height="600">
             <template v-slot:activator="{ on, attrs }">
                 <v-btn
                     fab
@@ -13,7 +13,7 @@
                     <v-icon> mdi-printer </v-icon>
                 </v-btn>
             </template>
-            <v-card height="800">
+            <v-card max-height="800">
                 <v-card-title class="text-h8" absolute color="secondary">
                     IMPRESSÃO DO MAPA DE POLÍGONS PRIORITÁRIOS
                 </v-card-title>
