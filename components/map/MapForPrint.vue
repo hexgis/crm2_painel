@@ -252,6 +252,7 @@ export default {
             this.map.addEventListener('mousemove', this.refreshCoordinates)
 
             this.createMapLayers()
+            this.createMiniMap()
             this.createCssRefs()
             this.zoomToBounds(this.bounds)
             this.$emit('mapCreated')
