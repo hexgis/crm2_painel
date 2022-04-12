@@ -49,7 +49,7 @@
                                 </v-col>
                             </div>
                             <br />
-                            <h6
+                            <h5
                                 class="
                                     text-center
                                     d-inline-flex
@@ -59,7 +59,7 @@
                             >
                                 Centro de Monitoramento Remoto - Fundação
                                 Nacional do Índio
-                            </h6>
+                            </h5>
                             <br />
                             <h6
                                 class="
@@ -115,18 +115,21 @@
                             <br />
                             <v-divider></v-divider>
 
-                            <h6 class="mt-2">Bases Cartográficas:</h6>
-                            <div class="mt-2 mb-6">
-                                <h6>teste</h6>
-                                <h6>teste</h6>
-                                <h6>teste</h6>
-                                <h6>teste</h6>
+                            <h4 class="font-weight-regular pt-2 px-4">
+                                Bases Cartográficas:
+                            </h4>
+                            <div class="mt-2 mb-8 px-4">
+                                <h5 class="font-weight-regular pt-2">
+                                    Polígonos Prioritários presentes no
+                                    território Brasileiro. Fonte: Banco de Dados
+                                    Funai - 2022
+                                </h5>
                             </div>
                             <v-divider></v-divider>
-                            <h6 class="mt-2">
+                            <h5 class="font-weight-regular pt-2 px-4">
                                 CENTRO DE MONITORAMENTO REMOTO -
                                 https://cmr.funai.gov.br
-                            </h6>
+                            </h5>
                         </v-card>
                     </v-col>
                 </v-row>
