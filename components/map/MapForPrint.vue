@@ -408,7 +408,7 @@ export default {
     margin-left: -3px
 
 .map-container2
-    height: 90vh
+    height: 75vh
     width: 40vw
     overflow: hidden !important
     padding: 0
