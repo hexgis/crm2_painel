@@ -436,11 +436,7 @@ export default {
                   )
                 : []
         },
-        ...mapState('map', [
-            'bounds',
-            'boundsZoomed',
-            'loading',
-        ]),
+        ...mapState('map', ['bounds', 'boundsZoomed', 'loading']),
         ...mapState('userProfile', ['user']),
     },
 

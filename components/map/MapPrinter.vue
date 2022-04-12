@@ -22,7 +22,7 @@
                 <v-row>
                     <v-col>
                         <v-card>
-                        <MapForPrint />
+                            <MapForPrint />
                         </v-card>
                     </v-col>
                     <v-col>

@@ -139,7 +139,7 @@ export default {
     data: () => ({
         map: null,
         zoom: 4,
-        minZoom: 2,
+        minZoom: 9,
         maxBounds: [
             [-90, -280],
             [90, 280],
@@ -148,10 +148,7 @@ export default {
             zoomControl: false,
         },
         areaBounds: null,
-        initialBounds: [
-            [-33.8689056, -73.9830625],
-            [5.2842873, -28.6341164],
-        ],
+        initialBounds: [],
 
         loadedFiles: [],
         mapLoading: false,
@@ -254,7 +251,7 @@ export default {
             this.createMapLayers()
             this.createMiniMap()
             this.createCssRefs()
-            this.zoomToBounds(this.bounds)
+
             this.$emit('mapCreated')
 
             if (this.bounds) {
