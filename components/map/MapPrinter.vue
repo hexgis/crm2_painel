@@ -73,7 +73,7 @@
                                 TERRAS INDÍGENAS
                             </h6>
 
-                            <!-- <MiniMapForPrint /> -->
+                            <MiniMapForPrint />
 
                             <v-divider></v-divider>
                             <div class="px-4">

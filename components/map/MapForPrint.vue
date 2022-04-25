@@ -249,7 +249,7 @@ export default {
             this.map.addEventListener('mousemove', this.refreshCoordinates)
 
             this.createMapLayers()
-            this.createMiniMap()
+            // this.createMiniMap()
             this.createCssRefs()
 
             this.$emit('mapCreated')

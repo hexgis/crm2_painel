@@ -139,26 +139,27 @@ export default {
     data: () => ({
         map: null,
         zoom: 4,
-        minZoom: 2,
+        minZoom: 6,
         maxBounds: [
             [-90, -280],
             [90, 280],
         ],
         mapOptions: {
             zoomControl: false,
-            // dragging: false,
+            dragging: false,
             boxZoom: false,
-            // scrollWheelZoom: false,
-            // doubleClickZoom: false,
-            // touchZoom: false,
+            scrollWheelZoom: false,
+            doubleClickZoom: false,
+            touchZoom: false,
             keyboard: false,
             attributionControl: false,
             height: 125,
-            
         },
         areaBounds: null,
-        initialBounds: [[-33.8689056, -73.9830625],
-            [5.2842873, -28.6341164],],
+        initialBounds: [
+            [-33.8689056, -73.9830625],
+            [5.2842873, -28.6341164],
+        ],
         loadedFiles: [],
         mapLoading: false,
 
@@ -187,7 +188,6 @@ export default {
                     zIndex: 1,
                 },
             },
-
         ],
         bingKey:
             'AuhiCJHlGzhg93IqUH_oCpl_-ZUrIE6SPftlyGYUvr9Amx5nzA-WqGcPquyFZl4L',
@@ -226,11 +226,7 @@ export default {
                   )
                 : []
         },
-        ...mapState('map', [
-            'bounds',
-            'boundsZoomed',
-            'loading',
-        ]),
+        ...mapState('map', ['bounds', 'boundsZoomed', 'loading']),
         ...mapState('userProfile', ['user']),
     },
 
@@ -413,8 +409,8 @@ export default {
     margin-left: -3px
 
 .map-container3
-    height: 15vh
-    width: 26vw
+    height: 13vh
+    width: 15vw
     overflow: hidden !important
     padding: 0
 
