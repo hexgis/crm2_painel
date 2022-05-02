@@ -11,7 +11,7 @@
             />
         </div>
 
-        <MonitoringFilter @onSearch="search(), getFeatures()" />
+        <MonitoringFilter @onSearch="search(), getFeatures(), getDataTableMonitoring()" />
 
         <v-footer
             absolute
@@ -26,7 +26,7 @@
                         icon
                         color="accent"
                         @click="
-                            changeVisualizationStage('stage1'), getFeatures()
+                            changeVisualizationStage('stage1')
                         "
                     >
                         <v-icon large>mdi-map</v-icon>
@@ -42,8 +42,8 @@
                         icon
                         color="accent"
                         @click="
-                            changeVisualizationStage('stage4'),
-                                getDataTableMonitoring()
+                            changeVisualizationStage('stage4')
+                                
                         "
                     >
                         <v-icon large>mdi-table</v-icon>
