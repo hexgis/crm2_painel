@@ -81,6 +81,11 @@
                 <PriorityTable />
             </v-main>
         </div>
+        <div v-if="$store.state.priority.visualizationStage == 'stage4'">
+            <v-main class="pa-0">
+                <MonitoringTable />
+            </v-main>
+        </div>
 
         <BaseAlert />
     </v-app>
@@ -108,6 +113,8 @@ import Map from '@/components/map/Map'
 import BaseAlert from '@/components/base/BaseAlert'
 import AnalyticsPCDashboard from '@/components/analytical-cmr/AnalyticsPriorConsolidDashboard'
 import PriorityTable from '~/components/priority/PriorityTable.vue'
+import MonitoringTable from '~/components/monitoring/MonitoringTable.vue'
+
 
 export default {
     name: 'App',
@@ -117,6 +124,7 @@ export default {
         BaseAlert,
         AnalyticsPCDashboard,
         PriorityTable,
+        MonitoringTable
     },
 
     fetch() {

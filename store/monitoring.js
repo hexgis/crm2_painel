@@ -1,6 +1,8 @@
 export const state = () => ({
     features: null,
     showFeatures: false,
+    visualizationStage: 'stage1',
+    isLoadingCSV: false,
 
     isLoadingFeatures: false,
     filterOptions: {
@@ -14,6 +16,8 @@ export const state = () => ({
     opacity: 100,
     heatMap: true,
     total: null,
+    tableMonitoring: [],
+    tableCSVMonitoring: []
 })
 
 export const getters = {
@@ -42,6 +46,9 @@ export const mutations = {
     setTotal(state, total) {
         state.total = total
     },
+    setVisualizationStage(state, visualizationStage) {
+        state.visualizationStage = visualizationStage
+    },
 
     setLoadingFeatures(state, payload) {
         state.isLoadingFeatures = payload
@@ -53,9 +60,18 @@ export const mutations = {
     setOpacity(state, opacity) {
         state.opacity = opacity
     },
+    setDownloadTable(state, tableCSVMonitoring) {
+        state.tableCSVMonitoring = tableCSVMonitoring
+    },
 
     setHeatMap(state, heatMap) {
         state.heatMap = heatMap
+    },
+    setLoadingCSV(state, payload) {
+        state.isLoadingCSVMonitoring = payload
+    },
+    setTable(state, tableMonitoring) {
+        state.tableMonitoring = tableMonitoring
     },
 
     setFilters(state, filters) {
@@ -130,5 +146,87 @@ export const actions = {
         }
 
         commit('setFilterOptions', data)
+    },
+    async getDataTableMonitoring({ commit, state, rootGetters }) {
+        const params = {
+            start_date: state.filters.startDate,
+            end_date: state.filters.endDate,
+        }
+
+        if (state.filters.ti && state.filters.ti.length)
+            params.co_funai = state.filters.ti.toString()
+
+        if (state.filters.priority && state.filters.priority.length)
+            params.priority = state.filters.priority.toString()
+
+        if (state.filters.cr && state.filters.cr.length)
+            params.co_cr = state.filters.cr.toString()
+
+        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
+
+        const tableMonitoring = await this.$api.$get('monitoring/consolidated/table/', {
+            params,
+        })
+
+        if (tableMonitoring) commit('setTable', tableMonitoring)
+
+        const total = await this.$api.$get('monitoring/consolidated/total/', {
+            params,
+        })
+        if (total) commit('setTotal', total)
+    },
+    async downloadTableMonitoring({ commit, state, rootGetters }) {
+        commit('setLoadingCSV', true)
+
+        const params = {
+            start_date: state.filters.startDate,
+            end_date: state.filters.endDate,
+            format: state.filters.csv,
+        }
+
+        if (state.filters.ti && state.filters.ti.length)
+            params.co_funai = state.filters.ti.toString()
+
+        if (state.filters.priority && state.filters.priority.length)
+            params.priority = state.filters.priority.toString()
+
+        if (state.filters.cr && state.filters.cr.length)
+            params.co_cr = state.filters.cr.toString()
+
+        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
+
+        const tableCSVMonitoring = await this.$api.get('monitoring/consolidated/table/', {
+            params,
+        })
+
+        function saveData(data, fileName, type) {
+            var elementBtn, blob, url
+
+            elementBtn = document.createElement('a')
+            elementBtn.style = 'display: none'
+            document.body.appendChild(elementBtn)
+
+            if (type !== 'text/csv') {
+                data = JSON.stringify(data)
+            }
+
+            blob = new Blob([data], { type: type })
+            url = window.URL.createObjectURL(blob)
+
+            elementBtn.href = url
+            elementBtn.download = fileName
+            elementBtn.click()
+            window.URL.revokeObjectURL(url)
+        }
+
+        try {
+            saveData(
+                tableCSVMonitoring.data,
+                't_poligono-prioritario_guilherme.micas_20220329.csv',
+                'text/csv'
+            )
+        } finally {
+            commit('setLoadingCSV', false)
+        }
     },
 }

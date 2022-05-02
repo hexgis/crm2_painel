@@ -5,13 +5,13 @@
                 {{ $t('title') }}
             </h4>
             <v-switch
-                v-model="showFeaturesMonitoring                                 "
+                v-model="showFeaturesMonitoring"
                 class="mt-n1 ml-5"
                 hide-details
             />
         </div>
 
-        <MonitoringFilter @onSearch="search()" />
+        <MonitoringFilter @onSearch="search(), getFeatures()" />
 
         <v-footer
             absolute
@@ -25,7 +25,9 @@
                         depressed
                         icon
                         color="accent"
-                        @click="changeVisualizationStage('stage1')"
+                        @click="
+                            changeVisualizationStage('stage1'), getFeatures()
+                        "
                     >
                         <v-icon large>mdi-map</v-icon>
                     </v-btn>
@@ -39,7 +41,10 @@
                     <v-btn
                         icon
                         color="accent"
-                        @click="changeVisualizationStage('stage3')"
+                        @click="
+                            changeVisualizationStage('stage4'),
+                                getDataTableMonitoring()
+                        "
                     >
                         <v-icon large>mdi-table</v-icon>
                     </v-btn>
@@ -108,12 +113,14 @@ export default {
 
     methods: {
         search() {
-            this.getFeatures()
+            if (this.visualizationStage == 'stage1') this.getFeatures()
+            if (this.visualizationStage == 'stage4')
+                this.getDataTableMonitoring()
         },
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)
         },
-        ...mapActions('monitoring', ['getFeatures']),
+        ...mapActions('monitoring', ['getFeatures', 'getDataTableMonitoring']),
         ...mapMutations('priority', ['setVisualizationStage']),
     },
 }
