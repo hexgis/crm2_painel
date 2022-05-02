@@ -145,7 +145,7 @@
                 />
 
                 <MonitoringLayers v-if="!monitoringGeoserver" :map="map" />
-                <!-- <MonitoringLayersGeoserver v-else :map="map" /> -->
+                <MonitoringLayersGeoserver v-else :map="map" />
 
                 <!-- <AlgorithmLayers /> -->
 

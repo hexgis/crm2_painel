@@ -21,24 +21,6 @@
             </v-select>
         </v-row>
 
-        <v-slide-y-transition>
-            <v-row
-                v-if="filters.cr && filterOptions.tiFilters"
-                class="px-3 pb-5"
-            >
-                <v-select
-                    v-model="filters.ti"
-                    label="Terras Indigenas (Todas)"
-                    :items="filterOptions.tiFilters"
-                    item-text="no_ti"
-                    item-value="co_funai"
-                    multiple
-                    hide-details
-                >
-                </v-select>
-            </v-row>
-        </v-slide-y-transition>
-
         <v-row class="pt-1">
             <v-col class="py-0">
                 <BaseDateField
@@ -73,7 +55,7 @@
 
         <v-divider v-if="showFeatures" class="mt-8 mb-5" />
 
-        <v-row v-if="total" class="px-3 py-1">
+        <!-- <v-row v-if="total" class="px-3 py-1"> -->
             <v-row v-if="showFeatures && total">
                 <v-col cols="7" class="grey--text text--darken-2">
                     {{ $t('polygon-label') }}:
@@ -96,7 +78,7 @@
                     ha
                 </v-col>
             </v-row>
-        </v-row>
+        <!-- </v-row> -->
 
         <v-row v-if="showFeatures" align="center">
             <v-col cols="4" class="grey--text text--darken-2">
@@ -148,9 +130,9 @@
             "opacity-label": "Opacity",
             "current-view-label": "Search in current area?",
             "start-date-label": "Start Date",
-            "total-area-label": "Total area",
+            "total-area-label": "Total Area",
             "heat-map-label": "Heat map",
-            "polygon-label": "Total polygon count",
+            "polygon-label": "Total polygon",
             "end-date-label": "End Date"
         },
         "pt-br": {
@@ -187,37 +169,31 @@ export default {
                 currentView: false,
                 priority: null,
                 cr: null,
-                ti: null,
             },
             isLoadingTotal: false,
             legendData: legend,
         }
     },
-    watch: {
-        'filters.cr'(value) {
-            this.populateTiOptions(value)
-        },
-    },
     computed: {
         opacity: {
             get() {
-                return this.$store.state.priority.opacity
+                return this.$store.state.monitoring.opacity
             },
             set(value) {
-                this.$store.commit('priority/setOpacity', value)
+                this.$store.commit('monitoring/setOpacity', value)
             },
         },
 
         heatMap: {
             get() {
-                return this.$store.state.priority.heatMap
+                return this.$store.state.monitoring.heatMap
             },
             set(value) {
-                this.$store.commit('priority/setHeatMap', value)
+                this.$store.commit('monitoring/setHeatMap', value)
             },
         },
 
-        ...mapState('priority', [
+        ...mapState('monitoring', [
             'isLoadingFeatures',
             'filterOptions',
             'showFeatures',
@@ -230,17 +206,13 @@ export default {
     },
 
     methods: {
-        populateTiOptions(cr) {
-            if (cr) this.$store.dispatch('priority/getTiOptions', cr)
-            else this.filters.ti = null
-        },
 
         search() {
             this.setFilters(this.filters)
             this.$emit('onSearch')
         },
-        ...mapMutations('priority', ['setFilters']),
-        ...mapActions('priority', ['getFilterOptions']),
+        ...mapMutations('monitoring', ['setFilters']),
+        ...mapActions('monitoring', ['getFilterOptions']),
     },
 }
 </script>

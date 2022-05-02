@@ -5,7 +5,7 @@
                 {{ $t('title') }}
             </h4>
             <v-switch
-                v-model="showFeaturesPriority"
+                v-model="showFeaturesMonitoring                                 "
                 class="mt-n1 ml-5"
                 hide-details
             />
@@ -94,16 +94,16 @@ export default {
                 this.features.features.length > 0
             )
         },
-        showFeaturesPriority: {
+        showFeaturesMonitoring: {
             get() {
-                return this.$store.state.priority.showFeatures
+                return this.$store.state.monitoring.showFeatures
             },
 
             set(value) {
-                this.$store.commit('priority/setShowFeatures', value)
+                this.$store.commit('monitoring/setShowFeatures', value)
             },
         },
-        ...mapState('priority', ['showFeatures', 'features']),
+        ...mapState('monitoring', ['showFeatures', 'features']),
     },
 
     methods: {
@@ -113,7 +113,7 @@ export default {
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)
         },
-        ...mapActions('priority', ['getFeatures']),
+        ...mapActions('monitoring', ['getFeatures']),
         ...mapMutations('priority', ['setVisualizationStage']),
     },
 }

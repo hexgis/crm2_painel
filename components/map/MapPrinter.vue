@@ -13,13 +13,12 @@
                     <v-icon> mdi-printer </v-icon>
                 </v-btn>
             </template>
-
             <v-card max-height="800" min-height="">
                 <v-card-title class="text-h8" absolute color="secondary">
                     IMPRESSÃO DO MAPA DE POLÍGONS PRIORITÁRIOS
                 </v-card-title>
 
-                <v-row>
+                <v-row id="PDF">
                     <v-col>
                         <v-card>
                             <MapForPrint />
@@ -139,7 +138,7 @@
                     <v-spacer></v-spacer>
                     <v-card-actions>
                         <v-btn text @click="dialog = false"> CANCELAR </v-btn>
-                        <v-btn text @click="dialog = false"> SALVAR </v-btn>
+                        <v-btn text onclick="window.print()"> SALVAR </v-btn>
                     </v-card-actions>
                 </v-footer>
             </v-card>
@@ -160,6 +159,27 @@ export default {
         return {
             dialog: false,
         }
+    },
+
+    methods: {
+        Baixar() {
+
+            //     var style = "<style>";
+            // style = style + "table {width: 100%;font: 20px Calibri;}";
+            // style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
+            // style = style + "padding: 2px 3px;text-align: center;}";
+            // style = style + "</style>";
+
+            // win.document.write('<html><head>');
+            // win.document.write('<title>Polígonos Prioritários</title>');
+            // win.document.write('</head>');
+            // win.document.write();
+            // win.document.write('<body>');
+            // win.document.write('</body></html>');
+
+
+            window.print()
+        },
     },
 }
 </script>

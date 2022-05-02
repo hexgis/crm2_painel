@@ -3,6 +3,9 @@ export const state = () => ({
     showFeatures: false,
 
     isLoadingFeatures: false,
+    filterOptions: {
+        regionalFilters: [],
+    },
     filters: {
         startDate: null,
         endDate: null,
@@ -10,12 +13,13 @@ export const state = () => ({
 
     opacity: 100,
     heatMap: true,
+    total: null,
 })
 
 export const getters = {
     featuresLoaded(state) {
         return (
-            state.features &&
+           state.features &&
             state.features.features &&
             state.features.features.length > 0
         )
@@ -35,9 +39,15 @@ export const mutations = {
     clearFeatures(state) {
         state.features = null
     },
+    setTotal(state, total) {
+        state.total = total
+    },
 
     setLoadingFeatures(state, payload) {
         state.isLoadingFeatures = payload
+    },
+    setFilterOptions(state, data) {
+        state.filterOptions = data
     },
 
     setOpacity(state, opacity) {
@@ -68,8 +78,11 @@ export const actions = {
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
+        if (state.filters.cr && state.filters.cr.length)
+            params.co_cr = state.filters.cr.toString()
+        
         try {
-            const response = await this.$api.$get('monitoring/', {
+            const response = await this.$api.$get('monitoring/consolidated/', {
                 params,
             })
 
@@ -82,6 +95,13 @@ export const actions = {
             } else {
                 commit('setFeatures', response)
                 commit('setShowFeatures', true)
+                const total = await this.$api.$get(
+                    'monitoring/consolidated/stats/',
+                    {
+                        params,
+                    }
+                )
+                if (total) commit('setTotal', total)
             }
         } catch (exception) {
             commit(
@@ -97,5 +117,18 @@ export const actions = {
         } finally {
             commit('setLoadingFeatures', false)
         }
+    },
+    async getFilterOptions({ commit }) {
+        const regional_coordinators = await this.$api.$get('funai/cr/')
+
+        const data = {}
+
+        if (regional_coordinators) {
+            data.regionalFilters = regional_coordinators.sort(
+                (a, b) => a.ds_cr > b.ds_cr
+            )
+        }
+
+        commit('setFilterOptions', data)
     },
 }

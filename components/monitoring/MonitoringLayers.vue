@@ -200,7 +200,7 @@ export default {
 
             try {
                 this.selectedMonitoringFeature = await this.$api.$get(
-                    'monitoring/detail/' + featureId + '/'
+                    'monitoring/consolidated/detail/' + featureId + '/'
                 )
 
                 // this.$nextTick(() => {
@@ -230,9 +230,9 @@ export default {
             const heatData = []
             this.features.features.forEach((feature) => {
                 heatData.push([
-                    feature.properties.latitude,
-                    feature.properties.longitude,
-                    feature.properties.area_ha / maxArea, // normalize by maximum area
+                    feature.properties.nu_latitude,
+                    feature.properties.nu_longitude,
+                    feature.properties.nu_area_km2 / maxArea, // normalize by maximum area
                 ])
             })
 
@@ -248,7 +248,6 @@ export default {
                 blur: 15,
                 zIndex: 4,
             })
-
             this.heatmapLayer.addTo(this.$refs.monitoringHeat.mapObject)
         },
     },
