@@ -43,6 +43,18 @@
         </v-row>
 
         <v-row class="px-3">
+            <v-col v-show="showFeatures">
+                <v-btn
+                    color="accent"
+                    :loading="isLoadingGeoJson"
+                    fab
+                    small
+                    @click="downloadGeoJsonMonitoring()"
+                >
+                    <v-icon>mdi-download</v-icon>
+                </v-btn>
+            </v-col>
+            <v-col>
             <v-btn
                 block
                 color="accent"
@@ -51,6 +63,7 @@
             >
                 {{ $t('search-label') }}
             </v-btn>
+            </v-col>
         </v-row>
 
         <v-divider v-if="showFeatures" class="mt-8 mb-5" />
@@ -212,7 +225,7 @@ export default {
             this.$emit('onSearch')
         },
         ...mapMutations('monitoring', ['setFilters']),
-        ...mapActions('monitoring', ['getFilterOptions']),
+        ...mapActions('monitoring', ['getFilterOptions', 'downloadGeoJsonMonitoring']),
     },
 }
 </script>

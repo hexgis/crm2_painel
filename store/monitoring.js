@@ -3,7 +3,7 @@ export const state = () => ({
     showFeatures: false,
     visualizationStage: 'stage1',
     isLoadingCSV: false,
-
+    isLoadingGeoJson: false,
     isLoadingFeatures: false,
     filterOptions: {
         regionalFilters: [],
@@ -11,8 +11,10 @@ export const state = () => ({
     filters: {
         startDate: null,
         endDate: null,
+        csv: 'csv',
+        json: 'json',
     },
-
+    
     opacity: 100,
     heatMap: true,
     total: null,
@@ -38,6 +40,10 @@ export const mutations = {
 
     setShowFeatures(state, showFeatures) {
         state.showFeatures = showFeatures
+    },
+
+    setLoadingGeoJson(state, payload) {
+        state.isLoadingGeoJson = payload
     },
 
     clearFeatures(state) {
@@ -222,11 +228,66 @@ export const actions = {
         try {
             saveData(
                 tableCSVMonitoring.data,
-                't_poligono-prioritario_guilherme.micas_20220329.csv',
+                't_poligono-prioritario.csv',
                 'text/csv'
             )
         } finally {
             commit('setLoadingCSV', false)
+        }
+    },
+    async downloadGeoJsonMonitoring({ commit, state, rootGetters }) {
+        commit('setLoadingGeoJson', true)
+
+        const params = {
+            start_date: state.filters.startDate,
+            end_date: state.filters.endDate,
+            format: state.filters.csv,
+            format: state.filters.json,
+        }
+
+        if (state.filters.ti && state.filters.ti.length)
+            params.co_funai = state.filters.ti.toString()
+
+        if (state.filters.priority && state.filters.priority.length)
+            params.priority = state.filters.priority.toString()
+
+        if (state.filters.cr && state.filters.cr.length)
+            params.co_cr = state.filters.cr.toString()
+
+        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
+
+        const GeoJson = await this.$api.get('monitoring/consolidated/', {
+            params,
+        })
+
+        function saveData(data, fileName, type) {
+            var elementBtn, blob, url
+
+            elementBtn = document.createElement('a')
+            elementBtn.style = 'display: none'
+            document.body.appendChild(elementBtn)
+
+            if (type !== 'text/csv') {
+                data = JSON.stringify(data)
+            }
+
+            blob = new Blob([data], { type: type })
+            url = window.URL.createObjectURL(blob)
+
+            elementBtn.href = url
+            elementBtn.download = fileName
+            elementBtn.click()
+            window.URL.revokeObjectURL(url)
+        }
+
+        try {
+            saveData(
+                GeoJson.data,
+                'p_poligono-Monitoring.json',
+                'application/json'
+            )
+        } finally {
+            commit('setLoadingGeoJson', false)
         }
     },
 }
