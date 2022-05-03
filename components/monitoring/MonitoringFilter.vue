@@ -46,7 +46,7 @@
             <v-col v-show="showFeatures">
                 <v-btn
                     color="accent"
-                    :loading="isLoadingGeoJson"
+                    :loading="isLoadingFeatures"
                     fab
                     small
                     @click="downloadGeoJsonMonitoring()"
