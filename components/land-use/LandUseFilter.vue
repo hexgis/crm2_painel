@@ -1,7 +1,5 @@
 <template>
     <v-col class="px-4">
-        
-
         <v-row class="px-3 py-1">
             <v-select
                 v-model="filters.cr"
@@ -18,6 +16,7 @@
 
         <v-slide-y-transition>
             <v-row
+                v-if="filters.cr && filterOptions.tiFilters"
                 class="px-3 pb-1"
             >
                 <v-select
@@ -50,12 +49,7 @@
                 </v-btn>
             </v-col>
             <v-col>
-                <v-btn
-                    block
-                    color="accent"
-                    :loading="isLoadingFeatures"
-                    
-                >
+                <v-btn block color="accent" :loading="isLoadingFeatures">
                     {{ $t('search-label') }}
                 </v-btn>
             </v-col>
