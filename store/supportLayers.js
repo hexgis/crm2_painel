@@ -4,8 +4,9 @@ export const state = () => ({
     showFeatures: false,
     supportLayersGroups: {},
     supportLayers: {},
-
+    supportCategoryGroups : {},
     loading: false,
+    supportLayersCategory : {}
 })
 
 export const getters = {
@@ -54,6 +55,36 @@ export const mutations = {
         }
     },
 
+
+    setSupportCategoryGroups(state, categoryGroups) {
+        state.supportCategoryGroups = {}
+        state.supportLayersCategory = {}
+
+        for (const group of categoryGroups) {
+            const layers = group.layers
+            group.layers = []
+
+            for (const layer of layers) {
+                layer.visible = false
+
+                if (layer.layer_type === 'wms' && layer.wms.default_opacity) {
+                    layer.opacity = layer.wms.default_opacity
+                } else {
+                    layer.opacity = 100
+                }
+
+                layer.loading = false
+                layer.filters = []
+                layer.data = []
+
+                group.layers.push(layer.id)
+                Vue.set(state.supportLayersCategory, layer.id, layer)
+            }
+
+            Vue.set(state.supportCategoryGroups, group.id, group)
+        }
+    },
+
     setLayerFilters(state, { id, filters }) {
         state.supportLayers[id].filters = {
             ...state.supportLayers[id].filters,
@@ -90,6 +121,28 @@ export const actions = {
             const response = await this.$api.$get('support/layers-groups/')
 
             commit('setSupportLayersGroups', response)
+            commit('setShowFeatures', true)
+        } catch (exception) {
+            commit(
+                'alert/addAlert',
+                {
+                    message: this.$i18n.t('default-error', {
+                        action: this.$i18n.t('retrieve'),
+                        resource: this.$i18n.tc('layer', 2),
+                    }),
+                },
+                { root: true }
+            )
+        } finally {
+            commit('setLoading', false)
+        }
+    },
+    async getCategoryGroups({ commit }) {
+        commit('setLoading', true)
+        try {
+            const response = await this.$api.$get('support/categorys-groups/')
+
+            commit('setSupportCategoryGroups', response)
             commit('setShowFeatures', true)
         } catch (exception) {
             commit(

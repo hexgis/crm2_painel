@@ -77,7 +77,7 @@
         "layers-tab": "Layers",
         "high-resolution-mosaics-tab": "High Resolution and Mosaics",
         "support-fire-tab": "Fire Hazard and Hot Spots",
-        "analytics-tab": "Analytics",
+        "landuse-tab": "Land Use And Occupation",
         "compare-tab": "Compare images",
         "algorithms-tab": "Algorithms",
         "webhooks-tab": "Webhooks",
@@ -90,7 +90,7 @@
         "layers-tab": "Camadas de Sobreposição",
         "high-resolution-mosaics-tab": "Alta Resolução e Mosaicos",
         "support-fire-tab": "Risco de Fogo e Focos de Calor",
-        "analytics-tab": "Analytics",
+        "landuse-tab": "Uso e Ocupação do Solo",
         "compare-tab": "Comparar imagens",
         "algorithms-tab": "Algoritmos",
         "webhooks-tab": "Webhooks",
@@ -125,7 +125,7 @@ export default {
             return [
                 {
                     name: this.$t('funai-tab'),
-                    icon: 'mdi-scatter-plot',
+                    icon: 'mdi-map-marker-alert',
                     route: '/priority',
                 },
                 // {
@@ -150,7 +150,7 @@ export default {
                 },
                 {
                     name: this.$t('high-resolution-mosaics-tab'),
-                    icon: 'mdi-satellite',
+                    icon: 'mdi-book-open-page-variant',
                     route: '',
                 },
                 {
@@ -158,11 +158,11 @@ export default {
                     icon: 'mdi-fire',
                     route: '',
                 },
-                // {
-                //     name: this.$t('analytics-tab'),
-                //     icon: 'mdi-chart-box',
-                //     route: '/',
-                // },
+                {
+                    name: this.$t('landuse-tab'),
+                    icon: 'mdi-sprout',
+                    route: '/land-use',
+                },
                 // {
                 //     name: this.$t('algorithms-tab'),
                 //     icon: 'mdi-function-variant',
