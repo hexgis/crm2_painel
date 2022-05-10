@@ -13,7 +13,10 @@
         <v-container class="py-0">
             <v-list expand>
                 <template v-for="layer in orderedSupportLayers">
-                    <SupportLayersGroupItemFire :key="layer" :layer-id="layer" />
+                    <SupportLayersGroupItemFire
+                        :key="layer"
+                        :layer-id="layer"
+                    />
                 </template>
             </v-list>
         </v-container>

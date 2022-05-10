@@ -13,7 +13,7 @@
 
         <LandUseFilter @onSearch="search()" />
 
-        <div v-if="showFeatures" class="px-4">
+        <!-- <div v-if="showFeatures" class="px-4">
             <v-divider class="mt-1"></v-divider>
             <p class="font-weight-regular pt-2">Legenda:</p>
             <v-col>
@@ -39,7 +39,7 @@
                 </v-row>
                 <v-spacer></v-spacer>
             </v-col>
-        </div>
+        </div> -->
 
         <v-footer
             absolute

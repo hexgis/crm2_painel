@@ -24,6 +24,11 @@ export default {
         SupportLayerItem,
     },
 
-    computed: mapState('supportLayers', ['supportLayers', 'showFeatures', 'supportLayersCategoryFire','supportLayersCategoryRaster']),
+    computed: mapState('supportLayers', [
+        'supportLayers',
+        'showFeatures',
+        'supportLayersCategoryFire',
+        'supportLayersCategoryRaster',
+    ]),
 }
 </script>
