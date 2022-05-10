@@ -13,7 +13,7 @@
         <v-container class="py-0">
             <v-list expand>
                 <template v-for="layer in orderedSupportLayers">
-                    <SupportLayersGroupItem :key="layer" :layer-id="layer" />
+                    <SupportLayersGroupItemFire :key="layer" :layer-id="layer" />
                 </template>
             </v-list>
         </v-container>
@@ -26,12 +26,12 @@
 import { mapState } from 'vuex'
 import _ from 'lodash'
 
-import SupportLayersGroupItem from '@/components/support/SupportLayersGroupItem'
+import SupportLayersGroupItemFire from '@/components/support/SupportLayersGroupItemFire'
 
 export default {
     name: 'SupportLayersGroupFire',
 
-    components: { SupportLayersGroupItem },
+    components: { SupportLayersGroupItemFire },
 
     props: {
         group: {

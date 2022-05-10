@@ -31,6 +31,24 @@ export const getters = {
         }
         return activeLayerIds
     },
+    activeLayerIds(state) {
+        const activeLayerIds = []
+        for (const layer of Object.values(state.supportLayersCategoryRaster)) {
+            if (layer.visible) {
+                activeLayerIds.push(layer.id)
+            }
+        }
+        return activeLayerIds
+    },
+    activeLayerIds(state) {
+        const activeLayerIds = []
+        for (const layer of Object.values(state.supportLayersCategoryFire)) {
+            if (layer.visible) {
+                activeLayerIds.push(layer.id)
+            }
+        }
+        return activeLayerIds
+    },
 }
 
 export const mutations = {
@@ -70,7 +88,7 @@ export const mutations = {
 
     setSupportCategoryGroupsFire(state, categoryGroups) {
         state.supportCategoryGroupsFire = {}
-        state.supportLayers = {}
+        state.supportLayersCategoryFire = {}
 
         for (const group of categoryGroups) {
             const layers = group.layers
@@ -90,7 +108,7 @@ export const mutations = {
                 layer.data = []
 
                 group.layers.push(layer.id)
-                Vue.set(state.supportLayers, layer.id, layer)
+                Vue.set(state.supportLayersCategoryFire, layer.id, layer)
             }
 
             Vue.set(state.supportCategoryGroupsFire, group.id, group)
@@ -98,7 +116,7 @@ export const mutations = {
     },
     setSupportCategoryGroupsRaster(state, categoryGroups) {
         state.supportCategoryGroupsRaster = {}
-        state.supportLayers = {}
+        state.supportLayersCategoryRaster = {}
 
         for (const group of categoryGroups) {
             const layers = group.layers
@@ -118,7 +136,7 @@ export const mutations = {
                 layer.data = []
 
                 group.layers.push(layer.id)
-                Vue.set(state.supportLayers, layer.id, layer)
+                Vue.set(state.supportLayersCategoryRaster, layer.id, layer)
             }
 
             Vue.set(state.supportCategoryGroupsRaster, group.id, group)
@@ -160,22 +178,60 @@ export const mutations = {
             ...filters,
         }
     },
+    setLayerFiltersRaster(state, { id, filters }) {
+        state.supportLayersCategoryRaster[id].filters = {
+            ...state.supportLayersCategoryRaster[id].filters,
+            ...filters,
+        }
+    },
+    setLayerFiltersFire(state, { id, filters }) {
+        state.supportLayersCategoryFire[id].filters = {
+            ...state.supportLayersCategoryFire[id].filters,
+            ...filters,
+        }
+    },
 
     toggleLayerVisibility(state, { id, visible }) {
         state.supportLayers[id].visible = visible
+    },
+    toggleLayerVisibilityFire(state, { id, visible }) {
+        state.supportLayersCategoryFire[id].visible = visible
+    },
+    toggleLayerVisibilityRaster(state, { id, visible }) {
+        state.supportLayersCategoryRaster[id].visible = visible
     },
 
     setLayerOpacity(state, { id, opacity }) {
         state.supportLayers[id].opacity = opacity
     },
+    setLayerOpacityRaster(state, { id, opacity }) {
+        state.supportLayersCategoryRaster[id].opacity = opacity
+    },
+    setLayerOpacityFire(state, { id, opacity }) {
+        state.supportLayersCategoryFire[id].opacity = opacity
+    },
 
     setLayerLoading(state, { id, loading }) {
         state.supportLayers[id].loading = loading
+    },
+    setLayerLoadingFire(state, { id, loading }) {
+        state.supportLayersCategoryFire[id].loading = loading
+    },
+    setLayerLoadingRaster(state, { id, loading }) {
+        state.supportLayersCategoryRaster[id].loading = loading
     },
 
     setHeatLayerData(state, { id, data }) {
         state.supportLayers[id].data = data
         state.supportLayers[id].visible = true
+    },
+    setHeatLayerDataRaster(state, { id, data }) {
+        state.supportLayersCategoryRaster[id].data = data
+        state.supportLayersCategoryRaster[id].visible = true
+    },
+    setHeatLayerDataFire(state, { id, data }) {
+        state.supportLayersCategoryFire[id].data = data
+        state.supportLayersCategoryFire[id].visible = true
     },
 
     setLoading(state, loading) {
@@ -307,6 +363,66 @@ export const actions = {
 
             commit('setHeatLayerData', { id, data })
             commit('setLayerLoading', { id, loading: false })
+            commit('setShowFeatures', true)
+        } catch (exception) {
+            commit(
+                'alert/addAlert',
+                {
+                    message: this.$i18n.t('default-error', {
+                        action: this.$i18n.t('retrieve'),
+                        resource: this.$i18n.tc('layer', 1),
+                    }),
+                },
+                { root: true }
+            )
+        }
+    },
+    async getHeatMapLayerRaster({ state, commit }, { id, filters }) {
+        const heatLayer = state.supportLayersCategoryRaster[id]
+        const params = {
+            ...filters,
+            type: heatLayer.heatmap.heatmap_type.identifier,
+        }
+
+        commit('setLayerLoadingRaster', { id, loading: true })
+
+        try {
+            const data = await this.$api.$get('monitoring/heatmap/', {
+                params,
+            })
+
+            commit('setHeatLayerDataRaster', { id, data })
+            commit('setLayerLoadingRaster', { id, loading: false })
+            commit('setShowFeatures', true)
+        } catch (exception) {
+            commit(
+                'alert/addAlert',
+                {
+                    message: this.$i18n.t('default-error', {
+                        action: this.$i18n.t('retrieve'),
+                        resource: this.$i18n.tc('layer', 1),
+                    }),
+                },
+                { root: true }
+            )
+        }
+    },
+    async getHeatMapLayerFire({ state, commit }, { id, filters }) {
+        const heatLayer = state.supportLayersCategoryFire[id]
+        const params = {
+            ...filters,
+            type: heatLayer.heatmap.heatmap_type.identifier,
+        }
+
+        commit('setLayerLoadingFire', { id, loading: true })
+
+        try {
+            const data = await this.$api.$get('monitoring/heatmap/', {
+                params,
+            })
+
+            commit('setHeatLayerDataFire', { id, data })
+            commit('setLayerLoadingFire', { id, loading: false })
             commit('setShowFeatures', true)
         } catch (exception) {
             commit(
