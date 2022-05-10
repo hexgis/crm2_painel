@@ -33,11 +33,19 @@
         </v-slide-y-transition>
 
         <v-row class="pt-1 px-3">
-            <v-select label="Ano"></v-select>
+            <v-select
+                label="Ano"
+                v-model="filters.year"
+                :items="filterOptions.year"
+                item-text="year_map"
+                item-value="year_map"
+                clearable
+                multiple
+            ></v-select>
         </v-row>
 
         <v-row>
-            <v-col v-show="showFeatures">
+            <!-- <v-col v-show="showFeatures">
                 <v-btn
                     color="accent"
                     :loading="isLoadingGeoJson"
@@ -47,7 +55,7 @@
                 >
                     <v-icon>mdi-download</v-icon>
                 </v-btn>
-            </v-col>
+            </v-col> -->
             <v-col>
                 <v-btn block color="accent" :loading="isLoadingFeatures">
                     {{ $t('search-label') }}
@@ -57,7 +65,7 @@
 
         <v-divider v-if="showFeatures" class="mt-8 mb-5" />
 
-        <v-row v-if="total" class="px-3 py-1">
+        <!-- <v-row v-if="total" class="px-3 py-1">
             <v-row v-if="showFeatures && total && total.area_ha">
                 <v-col cols="7" class="grey--text text--darken-2">
                     {{ $t('total-area-label') }}:
@@ -71,9 +79,9 @@
                     ha
                 </v-col>
             </v-row>
-        </v-row>
+        </v-row> -->
 
-        <v-row v-if="showFeatures" align="center">
+        <!-- <v-row v-if="showFeatures" align="center">
             <v-col cols="4" class="grey--text text--darken-2">
                 {{ $t('opacity-label') }}
             </v-col>
@@ -85,7 +93,7 @@
                     thumb-label
                 />
             </v-col>
-        </v-row>
+        </v-row> -->
     </v-col>
 
     <!-- <div class="py-11">
@@ -144,10 +152,6 @@ export default {
         return {
             isGeoserver: process.env.MONITORING_GEOSERVER === 'true',
             filters: {
-                startDate: this.$moment()
-                    .subtract(30, 'days')
-                    .format('YYYY-MM-DD'),
-                endDate: this.$moment().format('YYYY-MM-DD'),
                 currentView: false,
                 priority: null,
                 cr: null,
@@ -168,7 +172,7 @@ export default {
                 return this.$store.state.priority.opacity
             },
             set(value) {
-                this.$store.commit('priority/setOpacity', value)
+                this.$store.commit('land-use/setOpacity', value)
             },
         },
 
@@ -177,11 +181,11 @@ export default {
                 return this.$store.state.priority.heatMap
             },
             set(value) {
-                this.$store.commit('priority/setHeatMap', value)
+                this.$store.commit('land-use/setHeatMap', value)
             },
         },
 
-        ...mapState('priority', [
+        ...mapState('land-use', [
             'isLoadingGeoJson',
             'isLoadingFeatures',
             'filterOptions',
@@ -197,7 +201,7 @@ export default {
 
     methods: {
         populateTiOptions(cr) {
-            if (cr) this.$store.dispatch('priority/getTiOptions', cr)
+            if (cr) this.$store.dispatch('land-use/getTiOptions', cr)
             else this.filters.ti = null
         },
 
@@ -205,8 +209,8 @@ export default {
             this.setFilters(this.filters)
             this.$emit('onSearch')
         },
-        ...mapMutations('priority', ['setFilters']),
-        ...mapActions('priority', ['getFilterOptions', 'downloadGeoJson']),
+        ...mapMutations('land-use', ['setFilters']),
+        ...mapActions('land-use', ['getFilterOptions', 'downloadGeoJson']),
     },
 }
 </script>
