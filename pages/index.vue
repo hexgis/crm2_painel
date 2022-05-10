@@ -151,12 +151,12 @@ export default {
                 {
                     name: this.$t('high-resolution-mosaics-tab'),
                     icon: 'mdi-book-open-page-variant',
-                    route: '',
+                    route: '/support-raster',
                 },
                 {
                     name: this.$t('support-fire-tab'),
                     icon: 'mdi-fire',
-                    route: '',
+                    route: '/support-fire',
                 },
                 {
                     name: this.$t('landuse-tab'),

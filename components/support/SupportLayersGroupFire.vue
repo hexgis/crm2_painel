@@ -29,7 +29,7 @@ import _ from 'lodash'
 import SupportLayersGroupItem from '@/components/support/SupportLayersGroupItem'
 
 export default {
-    name: 'SupportLayersGroup',
+    name: 'SupportLayersGroupFire',
 
     components: { SupportLayersGroupItem },
 
@@ -42,14 +42,14 @@ export default {
 
     computed: {
         supportLayers() {
-            return this.supportLayersGroups[this.group.id].layers
+            return this.supportCategoryGroupsFire[this.group.id].layers
         },
 
         orderedSupportLayers() {
             return _.sortBy(this.supportLayers, 'order')
         },
 
-        ...mapState('supportLayers', ['supportLayersGroups']),
+        ...mapState('supportLayers', ['supportCategoryGroupsFire']),
     },
 }
 </script>

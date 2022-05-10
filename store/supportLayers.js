@@ -4,9 +4,21 @@ export const state = () => ({
     showFeatures: false,
     supportLayersGroups: {},
     supportLayers: {},
-    supportCategoryGroups : {},
+    supportCategoryGroupsFire : {},
+    supportCategoryGroupsRaster : {},
+    supportCategoryGroupsBase : {},
     loading: false,
-    supportLayersCategory : {}
+    supportLayersCategoryFire : {},
+    supportLayersCategoryBase : {},
+    supportLayersCategoryRaster : {},
+    filters: {
+        categoryBase: 1,
+        categoryRaster: 3,
+        categoryFire: 2,
+        
+    },
+
+
 })
 
 export const getters = {
@@ -56,9 +68,9 @@ export const mutations = {
     },
 
 
-    setSupportCategoryGroups(state, categoryGroups) {
-        state.supportCategoryGroups = {}
-        state.supportLayersCategory = {}
+    setSupportCategoryGroupsFire(state, categoryGroups) {
+        state.supportCategoryGroupsFire = {}
+        state.supportLayers = {}
 
         for (const group of categoryGroups) {
             const layers = group.layers
@@ -78,12 +90,69 @@ export const mutations = {
                 layer.data = []
 
                 group.layers.push(layer.id)
-                Vue.set(state.supportLayersCategory, layer.id, layer)
+                Vue.set(state.supportLayers, layer.id, layer)
             }
 
-            Vue.set(state.supportCategoryGroups, group.id, group)
+            Vue.set(state.supportCategoryGroupsFire, group.id, group)
         }
     },
+    setSupportCategoryGroupsRaster(state, categoryGroups) {
+        state.supportCategoryGroupsRaster = {}
+        state.supportLayers = {}
+
+        for (const group of categoryGroups) {
+            const layers = group.layers
+            group.layers = []
+
+            for (const layer of layers) {
+                layer.visible = false
+
+                if (layer.layer_type === 'wms' && layer.wms.default_opacity) {
+                    layer.opacity = layer.wms.default_opacity
+                } else {
+                    layer.opacity = 100
+                }
+
+                layer.loading = false
+                layer.filters = []
+                layer.data = []
+
+                group.layers.push(layer.id)
+                Vue.set(state.supportLayers, layer.id, layer)
+            }
+
+            Vue.set(state.supportCategoryGroupsRaster, group.id, group)
+        }
+    },
+    setSupportCategoryGroupsBase(state, categoryGroups) {
+        state.supportCategoryGroupsBase = {}
+        state.supportLayers = {}
+
+        for (const group of categoryGroups) {
+            const layers = group.layers
+            group.layers = []
+
+            for (const layer of layers) {
+                layer.visible = false
+
+                if (layer.layer_type === 'wms' && layer.wms.default_opacity) {
+                    layer.opacity = layer.wms.default_opacity
+                } else {
+                    layer.opacity = 100
+                }
+
+                layer.loading = false
+                layer.filters = []
+                layer.data = []
+
+                group.layers.push(layer.id)
+                Vue.set(state.supportLayers, layer.id, layer)
+            }
+
+            Vue.set(state.supportCategoryGroupsBase, group.id, group)
+        }
+    },
+
 
     setLayerFilters(state, { id, filters }) {
         state.supportLayers[id].filters = {
@@ -117,6 +186,7 @@ export const mutations = {
 export const actions = {
     async getLayersGroups({ commit }) {
         commit('setLoading', true)
+        
         try {
             const response = await this.$api.$get('support/layers-groups/')
 
@@ -137,12 +207,73 @@ export const actions = {
             commit('setLoading', false)
         }
     },
-    async getCategoryGroups({ commit }) {
+    async getCategoryGroupsRasters({ commit }) {
         commit('setLoading', true)
+        const params = {
+            category: 3
+            
+        }
         try {
-            const response = await this.$api.$get('support/categorys-groups/')
+            const response = await this.$api.$get('support/layers-groups/',{
+                params
+            })
 
-            commit('setSupportCategoryGroups', response)
+            commit('setSupportCategoryGroupsRaster', response)
+            commit('setShowFeatures', true)
+        } catch (exception) {
+            commit(
+                'alert/addAlert',
+                {
+                    message: this.$i18n.t('default-error', {
+                        action: this.$i18n.t('retrieve'),
+                        resource: this.$i18n.tc('layer', 2),
+                    }),
+                },
+                { root: true }
+            )
+        } finally {
+            commit('setLoading', false)
+        }
+    },
+    async getCategoryGroupsFire({ commit }) {
+        commit('setLoading', true)
+        const params = {
+            category: 2
+            
+        }
+        try {
+            const response = await this.$api.$get('support/layers-groups/', 
+            {params})
+
+            commit('setSupportCategoryGroupsFire', response)
+            commit('setShowFeatures', true)
+        } catch (exception) {
+            commit(
+                'alert/addAlert',
+                {
+                    message: this.$i18n.t('default-error', {
+                        action: this.$i18n.t('retrieve'),
+                        resource: this.$i18n.tc('layer', 2),
+                    }),
+                },
+                { root: true }
+            )
+        } finally {
+            commit('setLoading', false)
+        }
+    },
+    async getCategoryGroupsBase({ commit }) {
+        commit('setLoading', true)
+        const params = {
+            category: 1
+            
+        }
+        try {
+            const response = await this.$api.$get('support/layers-groups/',{
+                params
+            })
+
+            commit('setSupportCategoryGroupsBase', response)
             commit('setShowFeatures', true)
         } catch (exception) {
             commit(

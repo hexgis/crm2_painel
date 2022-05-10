@@ -13,7 +13,7 @@
         </div>
         <v-list v-if="!$fetchState.pending" expand>
             <template v-for="group in orderedSupportLayersGroups">
-                <SupportLayersGroup :key="group.id" :group="group" />
+                <SupportLayersGroupRaster :key="group.id" :group="group" />
             </template>
         </v-list>
         <div v-if="$fetchState.pending">
@@ -51,24 +51,24 @@
 import { mapState } from 'vuex'
 import _ from 'lodash'
 
-import SupportLayersGroup from '@/components/support/SupportLayersGroup'
+import SupportLayersGroupRaster from '@/components/support/SupportLayersGroupRaster'
 
 export default {
     name: 'SupportRaster',
 
-    components: { SupportLayersGroup },
+    components: { SupportLayersGroupRaster },
 
     transition: 'scroll-y-transition',
 
     async fetch() {
-        if (!Object.keys(this.supportCategoryGroups).length) {
-            await this.$store.dispatch('supportLayers/getCategoryGroups')
+        if (!Object.keys(this.supportCategoryGroupsRaster).length) {
+            await this.$store.dispatch('supportLayers/getCategoryGroupsRasters')
         }
     },
 
     computed: {
         orderedSupportLayersGroups() {
-            return _.sortBy(this.supportCategoryGroups, 'order')
+            return _.sortBy(this.supportCategoryGroupsRaster, 'order')
         },
         showFeatures: {
             get() {
@@ -79,7 +79,7 @@ export default {
             },
         },
 
-        ...mapState('supportLayers', ['supportCategoryGroups', 'loading']),
+        ...mapState('supportLayers', ['supportCategoryGroupsRaster', 'loading']),
     },
 }
 </script>
