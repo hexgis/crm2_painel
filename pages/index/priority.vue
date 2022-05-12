@@ -41,6 +41,8 @@
             </v-col>
         </div>
 
+        <ShowDialog />
+
         <v-footer
             absolute
             class="priority-footer"
@@ -106,10 +108,11 @@
 
 <script>
 import FunaiFilter from '@/components/priority/PriorityFilter'
+import ShowDialog from '@/components/show-dialog/ShowDialog'
 import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
-    components: { FunaiFilter },
+    components: { FunaiFilter, ShowDialog },
 
     data() {
         return {
@@ -117,6 +120,7 @@ export default {
             items: ['MapStage', 'AnalytcalStage'],
             text: 'Texto de teste.',
             timer: '',
+            D: true,
         }
     },
     computed: {
