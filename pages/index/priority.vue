@@ -120,7 +120,6 @@ export default {
             items: ['MapStage', 'AnalytcalStage'],
             text: 'Texto de teste.',
             timer: '',
-            D: true,
         }
     },
     computed: {
