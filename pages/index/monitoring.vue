@@ -11,7 +11,7 @@
             />
         </div>
 
-        <MonitoringFilter @onSearch="search(), getFeatures(), getDataTableMonitoring()" />
+        <MonitoringFilter @onSearch="search()" />
 
         <v-footer
             absolute
@@ -113,9 +113,8 @@ export default {
 
     methods: {
         search() {
-            if (this.visualizationStage == 'stage1') this.getFeatures()
-            if (this.visualizationStage == 'stage4')
-                this.getDataTableMonitoring()
+            this.getFeatures()
+            this.getDataTableMonitoring()
         },
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)

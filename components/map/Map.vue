@@ -152,7 +152,7 @@
                 <!-- <WebhooksLayers /> -->
 
                 <BaseWmsMetadataPopup :map="map" />
-
+                <LandUseLayers :map="map" />
                 <FunaiLayers :map="map" />
             </l-map>
 
@@ -208,6 +208,7 @@ import BaseWmsMetadataPopup from '@/components/base/BaseWmsMetadataPopup'
 // import AlgorithmLayers from '@/components/algorithms/AlgorithmLayers'
 // import WebhooksLayers from '@/components/webhooks/WebhooksLayers'
 import FunaiLayers from '@/components/monitoring/MonitoringLayers2'
+import LandUseLayers from '@/components/land-use/LandUseLayers'
 
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-basemaps/L.Control.Basemaps.css'
@@ -238,6 +239,7 @@ export default {
         // WebhooksLayers,
         FunaiLayers,
         MapPrinter,
+        LandUseLayers,
     },
 
     data: () => ({
