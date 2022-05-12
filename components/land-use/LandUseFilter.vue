@@ -37,8 +37,8 @@
                 label="Ano"
                 v-model="filters.year"
                 :items="filterOptions.year"
-                item-text="year_map"
-                item-value="year_map"
+                item-text="nu_ano"
+                item-value="map_year"
                 clearable
                 multiple
             ></v-select>
@@ -153,7 +153,7 @@ export default {
             isGeoserver: process.env.MONITORING_GEOSERVER === 'true',
             filters: {
                 currentView: false,
-                priority: null,
+                year: null,
                 cr: null,
                 ti: null,
             },
@@ -169,7 +169,7 @@ export default {
     computed: {
         opacity: {
             get() {
-                return this.$store.state.priority.opacity
+                return this.$store.state['land-use'].opacity
             },
             set(value) {
                 this.$store.commit('land-use/setOpacity', value)
@@ -178,7 +178,7 @@ export default {
 
         heatMap: {
             get() {
-                return this.$store.state.priority.heatMap
+                return this.$store.state['land-use'].heatMap
             },
             set(value) {
                 this.$store.commit('land-use/setHeatMap', value)

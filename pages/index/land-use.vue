@@ -5,7 +5,7 @@
                 {{ $t('title') }}
             </h4>
             <v-switch
-                v-model="showFeaturesPriority"
+                v-model="showFeaturesLandUse"
                 class="mt-n1 ml-5"
                 hide-details
             />
@@ -13,33 +13,29 @@
 
         <LandUseFilter @onSearch="search()" />
 
-        <!-- <div v-if="showFeatures" class="px-4">
+        <div v-if="showFeaturesLandUse" class="px-4">
             <v-divider class="mt-1"></v-divider>
             <p class="font-weight-regular pt-2">Legenda:</p>
             <v-col>
                 <v-row class="mb-2">
-                    <v-icon class="mr-2" color="#9400D3">mdi-square</v-icon>
-                    Muito Alta
+                    <v-icon class="mr-2" color="#ffff00">mdi-square</v-icon>
+                    Agropecuária
                 </v-row>
                 <v-row class="mb-2">
-                    <v-icon class="mr-2" color="#FF0000">mdi-square</v-icon>
-                    Alta
+                    <v-icon class="mr-2" color="#66ffff">mdi-square</v-icon>
+                    Massa de Água
                 </v-row>
                 <v-row class="mb-2">
-                    <v-icon class="mr-2" color="#FF8C00">mdi-square</v-icon>
-                    Média
+                    <v-icon class="mr-2" color="#cc9966">mdi-square</v-icon>
+                    Vilarejo
                 </v-row>
                 <v-row class="mb-2">
-                    <v-icon class="mr-2" color="#FFD700">mdi-square</v-icon>
-                    Baixa
-                </v-row>
-                <v-row class="mb-2">
-                    <v-icon class="mr-2" color="#008000">mdi-square</v-icon>
-                    Muito Baixa
+                    <v-icon class="mr-2" color="#00cc00">mdi-square</v-icon>
+                    Vegetação Natural
                 </v-row>
                 <v-spacer></v-spacer>
             </v-col>
-        </div> -->
+        </div>
 
         <v-footer
             absolute
@@ -127,16 +123,16 @@ export default {
                 this.features.features.length > 0
             )
         },
-        showFeaturesPriority: {
+        showFeaturesLandUse: {
             get() {
-                return this.$store.state.priority.showFeatures
+                return this.$store.state['land-use'].showFeatures
             },
 
             set(value) {
-                this.$store.commit('priority/setShowFeatures', value)
+                this.$store.commit('land-use/setShowFeatures', value)
             },
         },
-        ...mapState('priority', [
+        ...mapState('land-use', [
             'showFeatures',
             'features',
             'table',
@@ -157,8 +153,8 @@ export default {
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)
         },
-        ...mapActions('priority', ['getFeatures', 'getDataTable']),
-        ...mapMutations('priority', ['setVisualizationStage']),
+        ...mapActions('land-use', ['getFeatures', 'getDataTable']),
+        ...mapMutations('land-use', ['setVisualizationStage']),
     },
 }
 </script>

@@ -1,0 +1,255 @@
+<template>
+    <l-layer-group name="monitoring" :visible="showFeatures">
+        <l-layer-group ref="LandUseHeat" :visible="heatMap" />
+
+        <l-feature-group ref="landUsePolygons">
+            <l-popup
+                ref="popup"
+                :options="{
+                    minWidth: 500,
+                    className: 'card-popup',
+                }"
+            >
+                <BaseMetadataPopup
+                    ref="popupComponent"
+                    :feature="selectedLandUseFeature"
+                />
+            </l-popup>
+
+            <l-geo-json
+                v-if="!isVectorGrid && featuresLoaded"
+                :geojson="features"
+                :options="{ onEachFeature }"
+                @ready="onLandUseReady"
+            />
+
+            <!-- <BaseMetadataPopup
+                v-show="false"
+                ref="popupComponent"
+                :feature="selectedLandUseFeature"
+            /> -->
+        </l-feature-group>
+    </l-layer-group>
+</template>
+
+<i18n>
+{
+    "en": {
+        "detail-api-error": "Error while retrieving polygon data, contact a system administrator in case it persists."
+    },
+    "pt-br": {
+        "detail-api-error": "Não foi possível resgatar os dados do polígono, entre em contato com um administrador caso persista."
+    }
+}
+</i18n>
+
+<script>
+import { mapState, mapGetters } from 'vuex'
+
+import BaseMetadataPopup from '@/components/base/BaseMetadataPopup'
+
+if (typeof window !== 'undefined') {
+    require('leaflet.vectorgrid')
+    require('leaflet.heat')
+}
+
+export default {
+    name: 'LandUseLayers',
+
+    components: {
+        BaseMetadataPopup,
+    },
+
+    props: {
+        map: {
+            type: Object,
+            default: null,
+        },
+    },
+
+    data: () => ({
+        selectedLandUseFeature: null,
+        heatmapLayer: null,
+
+        isVectorGrid: process.env.MONITORING_VECTOR2TILES === 'true',
+        vectorGrid: null,
+
+        style: {
+            weight: 2.5,
+            color: '#8e391b',
+            fill: true,
+            fillOpacity: 1,
+        },
+    }),
+
+    computed: {
+        ...mapState('land-use', [
+            'features',
+            'opacity',
+            'heatMap',
+            'showFeatures',
+        ]),
+        ...mapGetters('land-use', ['featuresLoaded']),
+    },
+
+    watch: {
+        features() {
+            this.addFeatures()
+        },
+
+        map() {
+            this.addFeatures()
+        },
+
+        opacity() {
+            if (this.isVectorGrid) {
+                this.vectorGrid.setFeatureStyle(1, {
+                    ...this.style,
+                    fillOpacity: this.opacity / 100,
+                })
+            } else {
+                this.$refs.landUsePolygons.mapObject.invoke(
+                    'setStyle',
+                    this.setLandUseStyle
+                )
+            }
+        },
+    },
+
+    methods: {
+        addFeatures() {
+            this.$refs.landUsePolygons.mapObject.clearLayers()
+            if (
+                this.isVectorGrid &&
+                this.features &&
+                this.features.features &&
+                this.features.features.length
+            ) {
+                this.createLandUseHeatLayer()
+
+                this.vectorGrid = this.$L.vectorGrid
+                    .slicer(this.features, {
+                        maxZoom: 21,
+                        vectorTileLayerStyles: {
+                            sliced: () => this.style,
+                        },
+                        interactive: true,
+                        getFeatureId: (_) => {
+                            return 1
+                        },
+                    })
+                    .on('click', (e) => {
+                        this.getFeatureDetails(e.layer.properties.id)
+                        // this.$nextTick(() => {
+                        //     e.layer.bindPopup(
+                        //         () => this.$refs.popupComponent.$el
+                        //     )
+                        // })
+                    })
+                    .addTo(this.$refs.landUsePolygons.mapObject)
+            }
+        },
+
+        onEachFeature(feature, layer) {
+            layer.setStyle(this.setLandUseStyle(feature))
+
+            layer.on('click', () => {
+                this.getFeatureDetails(feature.properties.id)
+            })
+        },
+
+        setLandUseStyle(feature) {
+            const style = this.style
+            style.fillOpacity = this.opacity / 100
+
+            switch (feature.properties.stage) {
+                case 'Agropecuária':
+                    style.color = '#ffff00'
+                    break
+                case 'Massa de Água':
+                    style.color = '#66ffff'
+                    break
+                case 'Vilarejo':
+                    style.color = '#cc9966'
+                    break
+                case 'Vegetação Natural':
+                    style.color = '#00cc00'
+                    break
+            }
+            return style
+        },
+
+        onLandUseReady() {
+            if (this.features.features && this.features.features.length) {
+                this.map.fitBounds(
+                    this.$refs.landUsePolygons.mapObject.getBounds()
+                )
+                this.createLandUseHeatLayer()
+            }
+        },
+
+        async getFeatureDetails(featureId) {
+            this.selectedLandUseFeature = null
+            // this.$nextTick(() => {
+            //     this.$refs.popup.mapObject
+            //         // .bindPopup(
+            //         //     () => this.$refs.popupComponent.$el
+            //         // )
+            //         .setContent(this.$refs.popupComponent.$el.innerHTML)
+            // })
+
+            try {
+                this.selectedLandUseFeature = await this.$api.$get(
+                    'land-use/consolidated/detail/' + featureId + '/'
+                )
+
+                // this.$nextTick(() => {
+                //     // return this.$refs.popupComponent.$el
+                //     // this.$refs.popup.mapObject.unbindPopup()
+
+                //     this.$refs.popup.mapObject
+                //         // .bindPopup(
+                //         //     this.$refs.popupComponent.$el
+                //         // )
+                //         .setContent(this.$refs.popupComponent.$el.innerHTML)
+                // })
+            } catch (exception) {
+                this.$store.commit('alert/addAlert', {
+                    message: this.$t('detail-api-error'),
+                })
+                // return null
+            }
+        },
+
+        createLandUseHeatLayer() {
+            const areas = this.features.features.map(
+                (feature) => feature.properties.area_ha
+            )
+            const maxArea = Math.max.apply(null, areas)
+
+            const heatData = []
+            this.features.features.forEach((feature) => {
+                heatData.push([
+                    feature.properties.nu_latitude,
+                    feature.properties.nu_longitude,
+                    feature.properties.nu_area_km2 / maxArea, // normalize by maximum area
+                ])
+            })
+
+            if (this.heatmapLayer)
+                this.heatmapLayer.removeFrom(
+                    this.$refs.LandUseHeat.mapObject
+                )
+
+            this.heatmapLayer = this.$L.heatLayer(heatData, {
+                minOpacity: 0.5,
+                maxZoom: 18,
+                radius: 20,
+                blur: 15,
+                zIndex: 4,
+            })
+            this.heatmapLayer.addTo(this.$refs.LandUseHeat.mapObject)
+        },
+    },
+}
+</script>

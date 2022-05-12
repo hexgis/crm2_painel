@@ -11,8 +11,6 @@ export const state = () => ({
         tiFilters: [],
     },
     filters: {
-        startDate: null,
-        endDate: null,
         csv: 'csv',
         json: 'json',
     },
@@ -47,7 +45,6 @@ export const mutations = {
     setLoadingGeoJson(state, payload) {
         state.isLoadingGeoJson = payload
     },
-    
 
     clearFeatures(state) {
         state.features = null
@@ -96,19 +93,23 @@ export const actions = {
         commit('setLoadingFeatures', true)
         commit('clearFeatures')
 
+        const params = {}
+
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
         if (state.filters.ti && state.filters.ti.length)
             params.co_funai = state.filters.ti.toString()
 
         if (state.filters.year && state.filters.year.length)
-            params.year_map = state.filters.year.toString()
+            params.map_year = state.filters.year.toString()
 
         if (state.filters.cr && state.filters.cr.length)
             params.co_cr = state.filters.cr.toString()
 
         try {
-            const response = await this.$api.$get('land-use/consolidated/', {})
+            const response = await this.$api.$get('land-use/', {
+                params,
+            })
 
             if (!response.features || !response.features.length) {
                 commit(
@@ -120,7 +121,7 @@ export const actions = {
                 commit('setFeatures', response)
                 commit('setShowFeatures', true)
                 const total = await this.$api.$get(
-                    'land-use/consolidated/stats/',
+                    'land-use/stats/',
                     {
                         params,
                     }
@@ -144,7 +145,7 @@ export const actions = {
     },
     async getFilterOptions({ commit }) {
         const regional_coordinators = await this.$api.$get('funai/cr/')
-        const years = await this.$api.$get('land-use/consolidated/years/')
+        const years = await this.$api.$get('land-use/years/')
         const data = {}
 
         if (regional_coordinators) {
@@ -180,8 +181,8 @@ export const actions = {
         if (state.filters.ti && state.filters.ti.length)
             params.co_funai = state.filters.ti.toString()
 
-        if (state.filters.priority && state.filters.priority.length)
-            params.priority = state.filters.priority.toString()
+        if (state.filters.year && state.filters.year.length)
+            params.map_year = state.filters.year.toString()
 
         if (state.filters.cr && state.filters.cr.length)
             params.co_cr = state.filters.cr.toString()
@@ -189,7 +190,7 @@ export const actions = {
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
         const tableMonitoring = await this.$api.$get(
-            'land-use/consolidated/table/',
+            'land-use/table/',
             {
                 params,
             }
@@ -197,7 +198,7 @@ export const actions = {
 
         if (tableMonitoring) commit('setTable', tableLandUse)
 
-        const total = await this.$api.$get('land-use/consolidated/total/', {
+        const total = await this.$api.$get('land-use/total/', {
             params,
         })
         if (total) commit('setTotal', total)
@@ -214,8 +215,8 @@ export const actions = {
         if (state.filters.ti && state.filters.ti.length)
             params.co_funai = state.filters.ti.toString()
 
-        if (state.filters.priority && state.filters.priority.length)
-            params.priority = state.filters.priority.toString()
+        if (state.filters.year && state.filters.year.length)
+            params.map_year = state.filters.year.toString()
 
         if (state.filters.cr && state.filters.cr.length)
             params.co_cr = state.filters.cr.toString()
@@ -272,8 +273,8 @@ export const actions = {
         if (state.filters.ti && state.filters.ti.length)
             params.co_funai = state.filters.ti.toString()
 
-        if (state.filters.priority && state.filters.priority.length)
-            params.priority = state.filters.priority.toString()
+        if (state.filters.year && state.filters.year.length)
+            params.year_map = state.filters.year.toString()
 
         if (state.filters.cr && state.filters.cr.length)
             params.co_cr = state.filters.cr.toString()
