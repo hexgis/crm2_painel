@@ -11,6 +11,8 @@
             />
         </div>
 
+        <ShowDialog />
+
         <MonitoringFilter @onSearch="search()" />
 
         <v-footer
@@ -25,9 +27,7 @@
                         depressed
                         icon
                         color="accent"
-                        @click="
-                            changeVisualizationStage('stage1')
-                        "
+                        @click="changeVisualizationStage('stage1')"
                     >
                         <v-icon large>mdi-map</v-icon>
                     </v-btn>
@@ -41,10 +41,7 @@
                     <v-btn
                         icon
                         color="accent"
-                        @click="
-                            changeVisualizationStage('stage4')
-                                
-                        "
+                        @click="changeVisualizationStage('stage4')"
                     >
                         <v-icon large>mdi-table</v-icon>
                     </v-btn>
@@ -79,10 +76,11 @@
 
 <script>
 import MonitoringFilter from '@/components/monitoring/MonitoringFilter'
+import ShowDialog from '@/components/show-dialog/ShowDialog'
 import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
-    components: { MonitoringFilter },
+    components: { MonitoringFilter, ShowDialog },
 
     data() {
         return {
