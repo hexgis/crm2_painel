@@ -45,19 +45,19 @@
         </v-row>
 
         <v-row>
-            <!-- <v-col v-show="showFeatures">
+            <v-col v-show="showFeatures">
                 <v-btn
                     color="accent"
                     :loading="isLoadingGeoJson"
                     fab
                     small
-                    @click="downloadGeoJson()"
+                    @click="downloadGeoJsonLandUse()"
                 >
                     <v-icon>mdi-download</v-icon>
                 </v-btn>
-            </v-col> -->
+            </v-col>
             <v-col>
-                <v-btn block color="accent" :loading="isLoadingFeatures">
+                <v-btn block color="accent" :loading="isLoadingFeatures" @click="search()">
                     {{ $t('search-label') }}
                 </v-btn>
             </v-col>
@@ -65,7 +65,7 @@
 
         <v-divider v-if="showFeatures" class="mt-8 mb-5" />
 
-        <!-- <v-row v-if="total" class="px-3 py-1">
+        <v-row v-if="total" class="px-3 py-1">
             <v-row v-if="showFeatures && total && total.area_ha">
                 <v-col cols="7" class="grey--text text--darken-2">
                     {{ $t('total-area-label') }}:
@@ -79,9 +79,9 @@
                     ha
                 </v-col>
             </v-row>
-        </v-row> -->
+        </v-row>
 
-        <!-- <v-row v-if="showFeatures" align="center">
+        <v-row v-if="showFeatures" align="center">
             <v-col cols="4" class="grey--text text--darken-2">
                 {{ $t('opacity-label') }}
             </v-col>
@@ -93,7 +93,17 @@
                     thumb-label
                 />
             </v-col>
-        </v-row> -->
+        </v-row>
+        <v-row v-if="showFeatures" align="center" justify="space-between">
+            <v-col>
+                <span class="grey--text text--darken-2">
+                    {{ $t('heat-map-label') }}
+                </span>
+            </v-col>
+            <v-col cols="3" class="d-flex justify-end">
+                <v-switch v-model="heatMap" class="mt-0 pt-0" hide-details />
+            </v-col>
+        </v-row>
     </v-col>
 
     <!-- <div class="py-11">
@@ -210,7 +220,7 @@ export default {
             this.$emit('onSearch')
         },
         ...mapMutations('land-use', ['setFilters']),
-        ...mapActions('land-use', ['getFilterOptions', 'downloadGeoJson']),
+        ...mapActions('land-use', ['getFilterOptions', 'downloadGeoJsonLandUse']),
     },
 }
 </script>
