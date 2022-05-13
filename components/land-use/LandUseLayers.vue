@@ -237,9 +237,7 @@ export default {
             })
 
             if (this.heatmapLayer)
-                this.heatmapLayer.removeFrom(
-                    this.$refs.LandUseHeat.mapObject
-                )
+                this.heatmapLayer.removeFrom(this.$refs.LandUseHeat.mapObject)
 
             this.heatmapLayer = this.$L.heatLayer(heatData, {
                 minOpacity: 0.5,

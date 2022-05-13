@@ -111,8 +111,9 @@ export default {
 
     methods: {
         search() {
-            this.getFeatures()
-            this.getDataTableMonitoring()
+             this.getFeatures()
+             this.getDataTableMonitoring()
+            
         },
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)

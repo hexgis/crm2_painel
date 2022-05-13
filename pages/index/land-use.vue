@@ -66,7 +66,8 @@
                         icon
                         color="accent"
                         @click="
-                            changeVisualizationStage('stage3'), getDataTable()
+                            changeVisualizationStage('stage5'),
+                                getDataTableLandUse()
                         "
                     >
                         <v-icon large>mdi-table</v-icon>
@@ -144,8 +145,8 @@ export default {
 
     methods: {
         search() {
-            if (this.visualizationStage == 'stage1') this.getFeatures()
-            if (this.visualizationStage == 'stage3') this.getDataTable()
+            this.getFeatures()
+            this.getDataTableLandUse()
         },
         searchDataTable() {
             this.getDataTable()
@@ -153,8 +154,8 @@ export default {
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)
         },
-        ...mapActions('land-use', ['getFeatures', 'getDataTable']),
-        ...mapMutations('land-use', ['setVisualizationStage']),
+        ...mapActions('land-use', ['getFeatures', 'getDataTableLandUse']),
+        ...mapMutations('priority', ['setVisualizationStage']),
     },
 }
 </script>

@@ -86,6 +86,11 @@
                 <MonitoringTable />
             </v-main>
         </div>
+        <div v-if="$store.state.priority.visualizationStage == 'stage5'">
+            <v-main class="pa-0">
+                <LandUseTable />
+            </v-main>
+        </div>
 
         <BaseAlert />
     </v-app>
@@ -114,6 +119,7 @@ import BaseAlert from '@/components/base/BaseAlert'
 import AnalyticsPCDashboard from '@/components/analytical-cmr/AnalyticsPriorConsolidDashboard'
 import PriorityTable from '~/components/priority/PriorityTable.vue'
 import MonitoringTable from '~/components/monitoring/MonitoringTable.vue'
+import LandUseTable from '~/components/land-use/LandUseTable.vue'
 
 
 export default {
@@ -124,7 +130,8 @@ export default {
         BaseAlert,
         AnalyticsPCDashboard,
         PriorityTable,
-        MonitoringTable
+        MonitoringTable,
+        LandUseTable
     },
 
     fetch() {

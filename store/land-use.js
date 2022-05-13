@@ -76,8 +76,8 @@ export const mutations = {
     setLoadingCSV(state, payload) {
         state.isLoadingCSVMonitoring = payload
     },
-    setTable(state, tableMonitoring) {
-        state.tableMonitoring = tableMonitoring
+    setTable(state, tableLandUse) {
+        state.tableLandUse = tableLandUse
     },
 
     setFilters(state, filters) {
