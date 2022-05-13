@@ -37,7 +37,7 @@ import BaseMetadataPopup from '@/components/base/BaseMetadataPopup'
 import { mapState, mapGetters } from 'vuex'
 
 export default {
-    name: 'FunaiLayers',
+    name: 'PriorityLayers',
 
     components: {
         BaseMetadataPopup,

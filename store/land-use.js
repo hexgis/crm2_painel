@@ -18,8 +18,8 @@ export const state = () => ({
     opacity: 100,
     heatMap: true,
     total: null,
-    tableMonitoring: [],
-    tableCSVMonitoring: [],
+    tableLandUse: [],
+    tableCSVLandUse: [],
 })
 
 export const getters = {
@@ -66,8 +66,8 @@ export const mutations = {
     setOpacity(state, opacity) {
         state.opacity = opacity
     },
-    setDownloadTable(state, tableCSVMonitoring) {
-        state.tableCSVMonitoring = tableCSVMonitoring
+    setDownloadTable(state, tableCSVLandUse) {
+        state.tableCSVLandUse = tableCSVLandUse
     },
 
     setHeatMap(state, heatMap) {
@@ -174,8 +174,7 @@ export const actions = {
     },
     async getDataTableLandUse({ commit, state, rootGetters }) {
         const params = {
-            start_date: state.filters.startDate,
-            end_date: state.filters.endDate,
+
         }
 
         if (state.filters.ti && state.filters.ti.length)
@@ -189,26 +188,24 @@ export const actions = {
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
-        const tableMonitoring = await this.$api.$get(
+        const tableLandUse = await this.$api.$get(
             'land-use/table/',
             {
                 params,
             }
         )
 
-        if (tableMonitoring) commit('setTable', tableLandUse)
+        if (tableLandUse) commit('setTable', tableLandUse)
 
         const total = await this.$api.$get('land-use/total/', {
             params,
         })
         if (total) commit('setTotal', total)
     },
-    async downloadTableMonitoring({ commit, state, rootGetters }) {
+    async downloadTableLandUse({ commit, state, rootGetters }) {
         commit('setLoadingCSV', true)
 
         const params = {
-            start_date: state.filters.startDate,
-            end_date: state.filters.endDate,
             format: state.filters.csv,
         }
 
@@ -223,8 +220,8 @@ export const actions = {
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
-        const tableCSVMonitoring = await this.$api.get(
-            'monitoring/consolidated/table/',
+        const tableCSVLandUse = await this.$api.get(
+            'land-use/table/',
             {
                 params,
             }
@@ -252,20 +249,18 @@ export const actions = {
 
         try {
             saveData(
-                tableCSVMonitoring.data,
-                't_poligono-prioritario.csv',
+                tableCSVLandUse.data,
+                'land_use_and_ocupation.csv',
                 'text/csv'
             )
         } finally {
             commit('setLoadingCSV', false)
         }
     },
-    async downloadGeoJsonMonitoring({ commit, state, rootGetters }) {
+    async downloadGeoJsonLandUse({ commit, state, rootGetters }) {
         commit('setLoadingGeoJson', true)
 
         const params = {
-            start_date: state.filters.startDate,
-            end_date: state.filters.endDate,
             format: state.filters.csv,
             format: state.filters.json,
         }
@@ -281,7 +276,7 @@ export const actions = {
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
-        const GeoJson = await this.$api.get('monitoring/consolidated/', {
+        const GeoJson = await this.$api.get('land-use/', {
             params,
         })
 
@@ -308,7 +303,7 @@ export const actions = {
         try {
             saveData(
                 GeoJson.data,
-                'p_poligono-Monitoring.json',
+                'land_use_and_ocupation.json',
                 'application/json'
             )
         } finally {

@@ -50,7 +50,7 @@
 
                 <BaseWmsMetadataPopup :map="map" />
 
-                <FunaiLayers :map="map" />
+                <PriorityLayers :map="map" />
             </l-map>
 
             <div v-if="loading" class="loading-background">
@@ -104,7 +104,7 @@ import SupportLayers from '@/components/support/SupportLayers'
 import BaseWmsMetadataPopup from '@/components/base/BaseWmsMetadataPopup'
 // import AlgorithmLayers from '@/components/algorithms/AlgorithmLayers'
 // import WebhooksLayers from '@/components/webhooks/WebhooksLayers'
-import FunaiLayers from '@/components/monitoring/MonitoringLayers2'
+import PriorityLayers from '@/components/priority/PriorityLayers'
 
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-basemaps/L.Control.Basemaps.css'
@@ -132,8 +132,8 @@ export default {
         BaseWmsMetadataPopup,
         // AlgorithmLayers,
         // WebhooksLayers,
-        FunaiLayers,
         MapPrinter,
+        PriorityLayers
     },
 
     data: () => ({

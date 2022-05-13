@@ -228,7 +228,7 @@ export const actions = {
         try {
             saveData(
                 tableCSVMonitoring.data,
-                't_poligono-prioritario.csv',
+                'poligono_monitoramento.csv',
                 'text/csv'
             )
         } finally {
@@ -283,7 +283,7 @@ export const actions = {
         try {
             saveData(
                 GeoJson.data,
-                'p_poligono-Monitoring.json',
+                'poligono_monitoramento.json',
                 'application/json'
             )
         } finally {
