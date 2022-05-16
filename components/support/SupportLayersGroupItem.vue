@@ -49,7 +49,7 @@
         </template>
 
         <v-container class="py-0">
-            <!-- <SupportLayerFilters :layer="layer" /> -->
+            <SupportLayerFilters :layer="layer" />
 
             <v-row
                 v-if="

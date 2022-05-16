@@ -17,6 +17,10 @@ export const state = () => ({
         categoryFire: 2,
         
     },
+    filterOptions: {
+        regionalFilters: [],
+        tiFilters: [],
+    },
 
 
 })
@@ -114,6 +118,19 @@ export const mutations = {
             Vue.set(state.supportCategoryGroupsFire, group.id, group)
         }
     },
+    async getTiOptions({ commit, state }, cr) {
+        const params = {
+            co_cr: cr.toString(),
+        }
+
+        const tis = await this.$api.$get('funai/ti/', { params })
+
+        if (tis)
+            commit('setFilterOptions', {
+                ...state.filterOptions,
+                tiFilters: tis.sort((a, b) => a.no_ti > b.no_ti),
+            })
+    },
     setSupportCategoryGroupsRaster(state, categoryGroups) {
         state.supportCategoryGroupsRaster = {}
         state.supportLayersCategoryRaster = {}
@@ -183,6 +200,9 @@ export const mutations = {
             ...state.supportLayersCategoryRaster[id].filters,
             ...filters,
         }
+    },
+    setFilterOptions(state, data) {
+        state.filterOptions = data
     },
     setLayerFiltersFire(state, { id, filters }) {
         state.supportLayersCategoryFire[id].filters = {
@@ -436,5 +456,18 @@ export const actions = {
                 { root: true }
             )
         }
+    },
+    async getFilterOptions({ commit }) {
+        const regional_coordinators = await this.$api.$get('funai/cr/')
+
+        const data = {}
+
+        if (regional_coordinators) {
+            data.regionalFilters = regional_coordinators.sort(
+                (a, b) => a.ds_cr > b.ds_cr
+            )
+        }
+
+        commit('setFilterOptions', data)
     },
 }
