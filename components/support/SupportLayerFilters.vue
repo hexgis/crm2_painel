@@ -1,8 +1,8 @@
 <template>
-    <v-form v-if="layer.layer_filters.length" v-model="valid" >
+    <v-form v-if="layer.layer_filters.length" v-model="valid">
         <v-row dense class="my-4">
-            <template v-if="hasDoubleDate" >
-                <v-col cols="6" >
+            <template v-if="hasDoubleDate">
+                <v-col cols="6">
                     <BaseDateField
                         v-model="filters.start_date"
                         :label="$t('start-date-label')"
@@ -11,7 +11,7 @@
                         dense
                     />
                 </v-col>
-                <v-col cols="6" >
+                <v-col cols="6">
                     <BaseDateField
                         v-model="filters.end_date"
                         :label="$t('end-date-label')"
@@ -43,44 +43,46 @@
                 </template>
 
                 <v-col
+                    cols="12"
                     v-if="layer_filter.filter_type === 'Coordenação Regional'"
                     :key="layer_filter.filter_type"
                     class="mb-5"
                 >
-                <v-select
-                v-model="filters[layer_filter.filter_type]"
-                label="Coordenação Regional (Todas)"
-                :items="filterOptions.regionalFilters"
-                item-value="co_cr"
-                item-text="ds_cr"
-                hide-details
-                clearable
-                multiple
-                required="true"
-            >
-            </v-select>
+                    <v-select
+                        v-model="filters[layer_filter.filter_type]"
+                        label="Coordenação Regional (Todas)"
+                        :items="filterOptions.regionalFilters"
+                        item-value="co_cr"
+                        item-text="ds_cr"
+                        hide-details
+                        clearable
+                        multiple
+                        required="true"
+                    >
+                    </v-select>
                 </v-col>
-                
-            </template>
-            <!-- <v-slide-y-transition>
-            <v-row
-                v-if="layer_filter.filter_type === 'Terras Indigenas'"
-                    :key="layer_filter.filter_type"
-            >
-                <v-select
-                    v-model="filters[layer_filter.filter_type]"
-                    label="Terras Indigenas (Todas)"
-                    :items="filterOptions.tiFilters"
-                    item-text="no_ti"
-                    item-value="co_funai"
-                    multiple
-                    hide-details
-                    required="true"
-                >
-                </v-select>
-            </v-row>
-        </v-slide-y-transition> -->
 
+                <v-col
+                    class="mb-5"
+                    cols="12"
+                    v-if="layer_filter.filter_type === 'Terras Indígenas'"
+                    :key="layer_filter.filter_type"
+                >
+                    <v-slide-y-transition>
+                        <v-select
+                            v-model="filters[layer_filter.filter_type]"
+                            label="Terras Indigenas (Todas)"
+                            :items="filterOptions.tiFilters"
+                            item-text="no_ti"
+                            item-value="co_funai"
+                            multiple
+                            hide-details
+                            required="true"
+                        >
+                        </v-select>
+                    </v-slide-y-transition>
+                </v-col>
+            </template>
 
             <v-col cols="12">
                 <v-btn
@@ -135,11 +137,10 @@ export default {
 
     data: () => ({
         valid: false,
-        filters: { },
+        filters: { cr: null, ti: null },
         loading: false,
         hasDoubleDate: false,
     }),
-
 
     created() {
         let hasStartDate = false
@@ -172,11 +173,13 @@ export default {
     mounted() {
         this.getFilterOptions()
     },
+    watch: {
+        'filters.cr'(value) {
+            this.populateTiOptions(value)
+        },
+    },
     computed: {
-        ...mapState('supportLayers', [
-            'filterOptions',
-            
-        ]),
+        ...mapState('supportLayers', ['filterOptions']),
     },
 
     methods: {
@@ -213,10 +216,5 @@ export default {
 
         ...mapActions('supportLayers', ['getHeatMapLayer', 'getFilterOptions']),
     },
-    watch: {
-        'filters.cr'(value) {
-            this.populateTiOptions(value)
-        },
-    }
 }
 </script>

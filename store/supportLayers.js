@@ -118,19 +118,6 @@ export const mutations = {
             Vue.set(state.supportCategoryGroupsFire, group.id, group)
         }
     },
-    async getTiOptions({ commit, state }, cr) {
-        const params = {
-            co_cr: cr.toString(),
-        }
-
-        const tis = await this.$api.$get('funai/ti/', { params })
-
-        if (tis)
-            commit('setFilterOptions', {
-                ...state.filterOptions,
-                tiFilters: tis.sort((a, b) => a.no_ti > b.no_ti),
-            })
-    },
     setSupportCategoryGroupsRaster(state, categoryGroups) {
         state.supportCategoryGroupsRaster = {}
         state.supportLayersCategoryRaster = {}
@@ -282,6 +269,19 @@ export const actions = {
         } finally {
             commit('setLoading', false)
         }
+    },
+    async getTiOptions({ commit, state }, cr) {
+        const params = {
+            co_cr: cr.toString(),
+        }
+
+        const tis = await this.$api.$get('funai/ti/', { params })
+
+        if (tis)
+            commit('setFilterOptions', {
+                ...state.filterOptions,
+                tiFilters: tis.sort((a, b) => a.no_ti > b.no_ti),
+            })
     },
     async getCategoryGroupsRasters({ commit }) {
         commit('setLoading', true)
