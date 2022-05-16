@@ -1,8 +1,8 @@
 <template>
-    <v-form v-if="layer.layer_filters.length" v-model="valid" class="mt-3 mb-4">
-        <v-row dense>
-            <template v-if="hasDoubleDate">
-                <v-col cols="6">
+    <v-form v-if="layer.layer_filters.length" v-model="valid" >
+        <v-row dense class="my-4">
+            <template v-if="hasDoubleDate" >
+                <v-col cols="6" >
                     <BaseDateField
                         v-model="filters.start_date"
                         :label="$t('start-date-label')"
@@ -11,7 +11,7 @@
                         dense
                     />
                 </v-col>
-                <v-col cols="6">
+                <v-col cols="6" >
                     <BaseDateField
                         v-model="filters.end_date"
                         :label="$t('end-date-label')"
@@ -43,25 +43,44 @@
                 </template>
 
                 <v-col
-                    v-if="layer_filter.filter_type === 'cpf_cnpj'"
+                    v-if="layer_filter.filter_type === 'Coordenação Regional'"
                     :key="layer_filter.filter_type"
+                    class="mb-5"
                 >
-                    <v-text-field
-                        v-model="filters[layer_filter.filter_type]"
-                        v-mask="
-                            filters[layer_filter.filter_type] &&
-                            filters[layer_filter.filter_type].length <= 14
-                                ? '###.###.###-###'
-                                : '##.###.###/####-##'
-                        "
-                        :label="$t('cpf-label')"
-                        outlined
-                        dense
-                        :required="true"
-                        @keypress.enter.prevent=""
-                    />
+                <v-select
+                v-model="filters[layer_filter.filter_type]"
+                label="Coordenação Regional (Todas)"
+                :items="filterOptions.regionalFilters"
+                item-value="co_cr"
+                item-text="ds_cr"
+                hide-details
+                clearable
+                multiple
+                required="true"
+            >
+            </v-select>
                 </v-col>
+                
             </template>
+            <!-- <v-slide-y-transition>
+            <v-row
+                v-if="layer_filter.filter_type === 'Terras Indigenas'"
+                    :key="layer_filter.filter_type"
+            >
+                <v-select
+                    v-model="filters[layer_filter.filter_type]"
+                    label="Terras Indigenas (Todas)"
+                    :items="filterOptions.tiFilters"
+                    item-text="no_ti"
+                    item-value="co_funai"
+                    multiple
+                    hide-details
+                    required="true"
+                >
+                </v-select>
+            </v-row>
+        </v-slide-y-transition> -->
+
 
             <v-col cols="12">
                 <v-btn
@@ -96,7 +115,7 @@
 </i18n>
 
 <script>
-import { mapMutations, mapActions } from 'vuex'
+import { mapMutations, mapActions, mapState } from 'vuex'
 
 import BaseDateField from '@/components/base/BaseDateField'
 
@@ -116,41 +135,55 @@ export default {
 
     data: () => ({
         valid: false,
-        filters: {},
+        filters: { },
         loading: false,
         hasDoubleDate: false,
     }),
+
 
     created() {
         let hasStartDate = false
         let hasEndDate = false
 
-        // if (this.layer.layer_filters) {
-        //     this.layer.layer_filters.forEach((layerFilter) => {
-        //         let defaultValue = null
-        //         if (this.layer.active_on_init) {
-        //             defaultValue = this.layer.filters[layerFilter.filter_type]
-        //                 ? this.layer.filters[layerFilter.filter_type]
-        //                 : layerFilter.default
+        if (this.layer.layer_filters) {
+            this.layer.layer_filters.forEach((layerFilter) => {
+                let defaultValue = null
+                if (this.layer.active_on_init) {
+                    defaultValue = this.layer.filters[layerFilter.filter_type]
+                        ? this.layer.filters[layerFilter.filter_type]
+                        : layerFilter.default
 
-        //             this.$set(
-        //                 this.filters,
-        //                 layerFilter.filter_type,
-        //                 defaultValue
-        //             )
-        //         }
-        //         if (layerFilter.filter_type === 'start_date') {
-        //             hasStartDate = true
-        //         } else if (layerFilter.filter_type === 'end_date') {
-        //             hasEndDate = true
-        //         }
-        //     })
+                    this.$set(
+                        this.filters,
+                        layerFilter.filter_type,
+                        defaultValue
+                    )
+                }
+                if (layerFilter.filter_type === 'start_date') {
+                    hasStartDate = true
+                } else if (layerFilter.filter_type === 'end_date') {
+                    hasEndDate = true
+                }
+            })
 
-        //     this.hasDoubleDate = hasStartDate && hasEndDate
-        // }
+            this.hasDoubleDate = hasStartDate && hasEndDate
+        }
+    },
+    mounted() {
+        this.getFilterOptions()
+    },
+    computed: {
+        ...mapState('supportLayers', [
+            'filterOptions',
+            
+        ]),
     },
 
     methods: {
+        populateTiOptions(cr) {
+            if (cr) this.$store.dispatch('supportLayers/getTiOptions', cr)
+            else this.filters.ti = null
+        },
         filterLayer() {
             const filterInfo = {
                 id: this.layer.id,
@@ -178,7 +211,12 @@ export default {
             'toggleLayerVisibility',
         ]),
 
-        ...mapActions('supportLayers', ['getHeatMapLayer']),
+        ...mapActions('supportLayers', ['getHeatMapLayer', 'getFilterOptions']),
     },
+    watch: {
+        'filters.cr'(value) {
+            this.populateTiOptions(value)
+        },
+    }
 }
 </script>
