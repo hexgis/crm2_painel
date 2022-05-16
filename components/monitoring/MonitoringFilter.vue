@@ -4,6 +4,7 @@
             <v-checkbox
                 v-model="filters.currentView"
                 :label="$t('current-view-label')"
+                :error="error"
             />
         </v-row>
 
@@ -17,6 +18,7 @@
                 hide-details
                 clearable
                 multiple
+                :error="error"
             >
             </v-select>
         </v-row>
@@ -55,42 +57,42 @@
                 </v-btn>
             </v-col>
             <v-col>
-            <v-btn
-                block
-                color="accent"
-                :loading="isLoadingFeatures"
-                @click="search"
-            >
-                {{ $t('search-label') }}
-            </v-btn>
+                <v-btn
+                    block
+                    color="accent"
+                    :loading="isLoadingFeatures"
+                    @click="search"
+                >
+                    {{ $t('search-label') }}
+                </v-btn>
             </v-col>
         </v-row>
 
         <v-divider v-if="showFeatures" class="mt-8 mb-5" />
 
         <!-- <v-row v-if="total" class="px-3 py-1"> -->
-            <v-row v-if="showFeatures && total">
-                <v-col cols="7" class="grey--text text--darken-2">
-                    {{ $t('polygon-label') }}:
-                </v-col>
-                <v-col cols="5" class="text-right">
-                    {{ total.total }}
-                </v-col>
-            </v-row>
+        <v-row v-if="showFeatures && total">
+            <v-col cols="7" class="grey--text text--darken-2">
+                {{ $t('polygon-label') }}:
+            </v-col>
+            <v-col cols="5" class="text-right">
+                {{ total.total }}
+            </v-col>
+        </v-row>
 
-            <v-row v-if="showFeatures && total && total.area_ha">
-                <v-col cols="7" class="grey--text text--darken-2">
-                    {{ $t('total-area-label') }}:
-                </v-col>
-                <v-col cols="5" class="text-right">
-                    {{
-                        total.area_ha.toLocaleString($i18n.locale, {
-                            maximumFractionDigits: 2,
-                        })
-                    }}
-                    ha
-                </v-col>
-            </v-row>
+        <v-row v-if="showFeatures && total && total.area_ha">
+            <v-col cols="7" class="grey--text text--darken-2">
+                {{ $t('total-area-label') }}:
+            </v-col>
+            <v-col cols="5" class="text-right">
+                {{
+                    total.area_ha.toLocaleString($i18n.locale, {
+                        maximumFractionDigits: 2,
+                    })
+                }}
+                ha
+            </v-col>
+        </v-row>
         <!-- </v-row> -->
 
         <v-row v-if="showFeatures" align="center">
@@ -175,16 +177,15 @@ export default {
         return {
             isGeoserver: process.env.MONITORING_GEOSERVER === 'true',
             filters: {
-                startDate: this.$moment()
-                    .subtract(30, 'days')
-                    .format('YYYY-MM-DD'),
+                startDate: this.$moment().format('YYYY-MM-DD'),
                 endDate: this.$moment().format('YYYY-MM-DD'),
                 currentView: false,
                 priority: null,
-                cr: null,
+                cr: [],
             },
             isLoadingTotal: false,
             legendData: legend,
+            error: false,
         }
     },
     computed: {
@@ -219,13 +220,27 @@ export default {
     },
 
     methods: {
-
         search() {
-            this.setFilters(this.filters)
-            this.$emit('onSearch')
+            if (
+                (this.filters.currentView !== false &&
+                    this.filters.startDate &&
+                    this.filters.endDate) ||
+                (this.filters.cr.length &&
+                    this.filters.startDate &&
+                    this.filters.endDate)
+            ) {
+                this.error = false
+                this.setFilters(this.filters)
+                this.$emit('onSearch')
+            } else {
+                this.error = true
+            }
         },
         ...mapMutations('monitoring', ['setFilters']),
-        ...mapActions('monitoring', ['getFilterOptions', 'downloadGeoJsonMonitoring']),
+        ...mapActions('monitoring', [
+            'getFilterOptions',
+            'downloadGeoJsonMonitoring',
+        ]),
     },
 }
 </script>
