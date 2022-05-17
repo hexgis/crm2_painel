@@ -27,7 +27,9 @@
                         depressed
                         icon
                         color="accent"
-                        @click="changeVisualizationStage('stage1')"
+                        @click="
+                            changeVisualizationStage('stage1'), getFeatures()
+                        "
                     >
                         <v-icon large>mdi-map</v-icon>
                     </v-btn>
@@ -41,7 +43,10 @@
                     <v-btn
                         icon
                         color="accent"
-                        @click="changeVisualizationStage('stage4')"
+                        @click="
+                            changeVisualizationStage('stage4'),
+                                getDataTableMonitoring()
+                        "
                     >
                         <v-icon large>mdi-table</v-icon>
                     </v-btn>
@@ -107,13 +112,16 @@ export default {
             },
         },
         ...mapState('monitoring', ['showFeatures', 'features']),
+        ...mapState('priority', ['visualizationStage']),
     },
 
     methods: {
         search() {
-             this.getFeatures()
-             this.getDataTableMonitoring()
-            
+            console.log(this.visualizationStage)
+
+            if (this.visualizationStage == 'stage1') this.getFeatures()
+            if (this.visualizationStage == 'stage4')
+                this.getDataTableMonitoring()
         },
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)

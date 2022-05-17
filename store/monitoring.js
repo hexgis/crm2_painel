@@ -14,18 +14,18 @@ export const state = () => ({
         csv: 'csv',
         json: 'json',
     },
-    
+
     opacity: 100,
     heatMap: true,
     total: null,
     tableMonitoring: [],
-    tableCSVMonitoring: []
+    tableCSVMonitoring: [],
 })
 
 export const getters = {
     featuresLoaded(state) {
         return (
-           state.features &&
+            state.features &&
             state.features.features &&
             state.features.features.length > 0
         )
@@ -102,7 +102,7 @@ export const actions = {
 
         if (state.filters.cr && state.filters.cr.length)
             params.co_cr = state.filters.cr.toString()
-        
+
         try {
             const response = await this.$api.$get('monitoring/consolidated/', {
                 params,
@@ -154,6 +154,8 @@ export const actions = {
         commit('setFilterOptions', data)
     },
     async getDataTableMonitoring({ commit, state, rootGetters }) {
+        commit('setLoadingFeatures', true)
+        commit('clearFeatures')
         const params = {
             start_date: state.filters.startDate,
             end_date: state.filters.endDate,
@@ -170,16 +172,37 @@ export const actions = {
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
-        const tableMonitoring = await this.$api.$get('monitoring/consolidated/table/', {
-            params,
-        })
+        try {
+            const tableMonitoring = await this.$api.$get(
+                'monitoring/consolidated/table/',
+                {
+                    params,
+                }
+            )
 
-        if (tableMonitoring) commit('setTable', tableMonitoring)
+            if (tableMonitoring) commit('setTable', tableMonitoring)
 
-        const total = await this.$api.$get('monitoring/consolidated/total/', {
-            params,
-        })
-        if (total) commit('setTotal', total)
+            const total = await this.$api.$get(
+                'monitoring/consolidated/total/',
+                {
+                    params,
+                }
+            )
+            if (total) commit('setTotal', total)
+        } catch (error) {
+            commit(
+                'alert/addAlert',
+                {
+                    message: this.$i18n.t('default-error', {
+                        action: this.$i18n.t('retrieve'),
+                        resource: this.$i18n.t('monitoring'),
+                    }),
+                },
+                { root: true }
+            )
+        } finally {
+            commit('setLoadingFeatures', false)
+        }
     },
     async downloadTableMonitoring({ commit, state, rootGetters }) {
         commit('setLoadingCSV', true)
@@ -201,9 +224,12 @@ export const actions = {
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
-        const tableCSVMonitoring = await this.$api.get('monitoring/consolidated/table/', {
-            params,
-        })
+        const tableCSVMonitoring = await this.$api.get(
+            'monitoring/consolidated/table/',
+            {
+                params,
+            }
+        )
 
         function saveData(data, fileName, type) {
             var elementBtn, blob, url
