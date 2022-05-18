@@ -183,7 +183,7 @@ export const actions = {
             if (tableMonitoring) commit('setTable', tableMonitoring)
 
             const total = await this.$api.$get(
-                'monitoring/consolidated/total/',
+                'monitoring/consolidated/stats/',
                 {
                     params,
                 }

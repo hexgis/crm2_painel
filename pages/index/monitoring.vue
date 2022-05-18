@@ -28,7 +28,7 @@
                         icon
                         color="accent"
                         @click="
-                            changeVisualizationStage('stage1'), getFeatures()
+                            changeVisualizationStage('stage1'), verifyData()
                         "
                     >
                         <v-icon large>mdi-map</v-icon>
@@ -44,8 +44,7 @@
                         icon
                         color="accent"
                         @click="
-                            changeVisualizationStage('stage4'),
-                                getDataTableMonitoring()
+                            changeVisualizationStage('stage4'), verifyData()
                         "
                     >
                         <v-icon large>mdi-table</v-icon>
@@ -111,8 +110,29 @@ export default {
                 this.$store.commit('monitoring/setShowFeatures', value)
             },
         },
-        ...mapState('monitoring', ['showFeatures', 'features']),
+        ...mapState('monitoring', [
+            'showFeatures',
+            'features',
+            'tableMonitoring',
+            'features',
+        ]),
         ...mapState('priority', ['visualizationStage']),
+    },
+    watch: {
+        tableMonitoring(newValue, oldValue) {
+            if (newValue === oldValue) {
+                console.log('tabela não mudou')
+            } else {
+                console.log('atualizou table')
+            }
+        },
+        features(newValue, oldValue) {
+            if (newValue === oldValue) {
+                console.log('features não mudou')
+            } else {
+                console.log('atualizou feature')
+            }
+        },
     },
 
     methods: {
@@ -122,6 +142,13 @@ export default {
             if (this.visualizationStage == 'stage1') this.getFeatures()
             if (this.visualizationStage == 'stage4')
                 this.getDataTableMonitoring()
+        },
+        verifyData() {
+            if (this.tableMonitoring.length) this.getFeatures()
+
+            console.log(this.features)
+
+            if (this.features != null) this.getDataTableMonitoring()
         },
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)
