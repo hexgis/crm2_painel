@@ -48,7 +48,7 @@
             <v-col v-show="showFeatures">
                 <v-btn
                     color="accent"
-                    :loading="isLoadingFeatures"
+                    :loading="isLoadingGeoJson"
                     fab
                     small
                     @click="downloadGeoJsonMonitoring()"
@@ -212,6 +212,7 @@ export default {
             'filterOptions',
             'showFeatures',
             'total',
+            'isLoadingGeoJson',
         ]),
     },
 

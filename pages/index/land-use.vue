@@ -50,7 +50,7 @@
                         icon
                         color="accent"
                         @click="
-                            changeVisualizationStage('stage1'), getFeatures()
+                            changeVisualizationStage('stage1'), verifyFeatures()
                         "
                     >
                         <v-icon large>mdi-map</v-icon>
@@ -67,7 +67,7 @@
                         color="accent"
                         @click="
                             changeVisualizationStage('stage5'),
-                                getDataTableLandUse()
+                                verifyTableLandUse()
                         "
                     >
                         <v-icon large>mdi-table</v-icon>
@@ -136,7 +136,7 @@ export default {
         ...mapState('land-use', [
             'showFeatures',
             'features',
-            'table',
+            'tableLandUse',
             'visualizationStage',
             'response',
             'params',
@@ -145,8 +145,15 @@ export default {
 
     methods: {
         search() {
-            this.getFeatures()
-            this.getDataTableLandUse()
+            if (this.visualizationStage === 'stage1') this.getFeatures()
+
+            if (this.visualizationStage === 'stage5') this.getDataTableLandUse()
+        },
+        verifyFeatures() {
+            if (this.tableLandUse.length) this.getFeatures()
+        },
+        verifyTableLandUse() {
+            if (this.features != null) this.getDataTableLandUse()
         },
         searchDataTable() {
             this.getDataTable()

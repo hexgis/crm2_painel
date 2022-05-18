@@ -74,7 +74,7 @@ export const mutations = {
         state.heatMap = heatMap
     },
     setLoadingCSV(state, payload) {
-        state.isLoadingCSVMonitoring = payload
+        state.isLoadingCSV = payload
     },
     setTable(state, tableMonitoring) {
         state.tableMonitoring = tableMonitoring
@@ -90,6 +90,7 @@ export const mutations = {
 
 export const actions = {
     async getFeatures({ state, commit, rootGetters }) {
+        commit('setLoadingGeoJson', true)
         commit('setLoadingFeatures', true)
         commit('clearFeatures')
 
@@ -138,6 +139,7 @@ export const actions = {
             )
         } finally {
             commit('setLoadingFeatures', false)
+            commit('setLoadingGeoJson', false)
         }
     },
     async getFilterOptions({ commit }) {
@@ -154,6 +156,7 @@ export const actions = {
         commit('setFilterOptions', data)
     },
     async getDataTableMonitoring({ commit, state, rootGetters }) {
+        commit('setLoadingGeoJson', true)
         commit('setLoadingFeatures', true)
         commit('clearFeatures')
         const params = {
@@ -202,6 +205,7 @@ export const actions = {
             )
         } finally {
             commit('setLoadingFeatures', false)
+            commit('setLoadingGeoJson', false)
         }
     },
     async downloadTableMonitoring({ commit, state, rootGetters }) {

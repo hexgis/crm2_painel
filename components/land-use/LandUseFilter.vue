@@ -7,9 +7,11 @@
                 :items="filterOptions.regionalFilters"
                 item-value="co_cr"
                 item-text="ds_cr"
+                multiple
                 hide-details
                 clearable
                 required="true"
+                :error="errorRegional"
             >
             </v-select>
         </v-row>
@@ -41,6 +43,7 @@
                 item-value="map_year"
                 clearable
                 multiple
+                :error="errorAno"
             ></v-select>
         </v-row>
 
@@ -57,7 +60,12 @@
                 </v-btn>
             </v-col>
             <v-col>
-                <v-btn block color="accent" :loading="isLoadingFeatures" @click="search()">
+                <v-btn
+                    block
+                    color="accent"
+                    :loading="isLoadingFeatures"
+                    @click="search()"
+                >
                     {{ $t('search-label') }}
                 </v-btn>
             </v-col>
@@ -163,12 +171,14 @@ export default {
             isGeoserver: process.env.MONITORING_GEOSERVER === 'true',
             filters: {
                 currentView: false,
-                year: null,
-                cr: null,
+                year: [],
+                cr: [],
                 ti: null,
             },
             isLoadingTotal: false,
             legendData: legend,
+            errorRegional: false,
+            errorAno: false,
         }
     },
     watch: {
@@ -216,11 +226,30 @@ export default {
         },
 
         search() {
-            this.setFilters(this.filters)
-            this.$emit('onSearch')
+            if (this.filters.cr.length > 0 && this.filters.year.length === 0) {
+                this.errorRegional = false
+                this.errorAno = true
+            } else if (
+                this.filters.cr.length === 0 &&
+                this.filters.year.length > 0
+            ) {
+                this.errorRegional = true
+                this.errorAno = false
+            } else if (this.filters.cr.length && this.filters.year.length) {
+                this.errorRegional = false
+                this.errorAno = false
+                this.setFilters(this.filters)
+                this.$emit('onSearch')
+            } else {
+                this.errorRegional = true
+                this.errorAno = true
+            }
         },
         ...mapMutations('land-use', ['setFilters']),
-        ...mapActions('land-use', ['getFilterOptions', 'downloadGeoJsonLandUse']),
+        ...mapActions('land-use', [
+            'getFilterOptions',
+            'downloadGeoJsonLandUse',
+        ]),
     },
 }
 </script>

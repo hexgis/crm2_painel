@@ -56,7 +56,7 @@
                         icon
                         color="accent"
                         @click="
-                            changeVisualizationStage('stage1'), getFeatures()
+                            changeVisualizationStage('stage1'), verifyFeatures()
                         "
                     >
                         <v-icon large>mdi-map</v-icon>
@@ -72,7 +72,7 @@
                         icon
                         color="accent"
                         @click="
-                            changeVisualizationStage('stage3'), getDataTable()
+                            changeVisualizationStage('stage3'), verifyTable()
                         "
                     >
                         <v-icon large>mdi-table</v-icon>
@@ -153,6 +153,12 @@ export default {
         search() {
             if (this.visualizationStage == 'stage1') this.getFeatures()
             if (this.visualizationStage == 'stage3') this.getDataTable()
+        },
+        verifyFeatures() {
+            if (this.table.length) this.getFeatures()
+        },
+        verifyTable() {
+            if (this.features != null) this.getDataTable()
         },
         searchDataTable() {
             this.getDataTable()

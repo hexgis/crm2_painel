@@ -107,6 +107,7 @@ export const mutations = {
 
 export const actions = {
     async getFeatures({ state, commit, rootGetters }) {
+        commit('setLoadingGeoJson', true)
         commit('setLoadingFeatures', true)
         commit('clearFeatures')
 
@@ -163,6 +164,7 @@ export const actions = {
         } finally {
             commit('setLoadingFeatures', false)
             commit('setParams', params)
+            commit('setLoadingGeoJson', false)
         }
     },
 
@@ -201,6 +203,9 @@ export const actions = {
             })
     },
     async getDataTable({ commit, state, rootGetters }) {
+        commit('setLoadingFeatures', true)
+        commit('clearFeatures')
+
         const params = {
             start_date: state.filters.startDate,
             end_date: state.filters.endDate,
@@ -217,16 +222,31 @@ export const actions = {
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
-        const table = await this.$api.$get('priority/consolidated/table/', {
-            params,
-        })
+        try {
+            const table = await this.$api.$get('priority/consolidated/table/', {
+                params,
+            })
 
-        if (table) commit('setTable', table)
+            if (table) commit('setTable', table)
 
-        const total = await this.$api.$get('priority/consolidated/total/', {
-            params,
-        })
-        if (total) commit('setTotal', total)
+            const total = await this.$api.$get('priority/consolidated/total/', {
+                params,
+            })
+            if (total) commit('setTotal', total)
+        } catch (error) {
+            commit(
+                'alert/addAlert',
+                {
+                    message: this.$i18n.t('default-error', {
+                        action: this.$i18n.t('retrieve'),
+                        resource: this.$i18n.t('monitoring'),
+                    }),
+                },
+                { root: true }
+            )
+        } finally {
+            commit('setLoadingFeatures', false)
+        }
     },
     async downloadTable({ commit, state, rootGetters }) {
         commit('setLoadingCSV', true)

@@ -28,7 +28,7 @@
                         icon
                         color="accent"
                         @click="
-                            changeVisualizationStage('stage1'), verifyData()
+                            changeVisualizationStage('stage1'), verifyFeatures()
                         "
                     >
                         <v-icon large>mdi-map</v-icon>
@@ -44,7 +44,7 @@
                         icon
                         color="accent"
                         @click="
-                            changeVisualizationStage('stage4'), verifyData()
+                            changeVisualizationStage('stage4'), verifyTable()
                         "
                     >
                         <v-icon large>mdi-table</v-icon>
@@ -114,40 +114,20 @@ export default {
             'showFeatures',
             'features',
             'tableMonitoring',
-            'features',
         ]),
         ...mapState('priority', ['visualizationStage']),
-    },
-    watch: {
-        tableMonitoring(newValue, oldValue) {
-            if (newValue === oldValue) {
-                console.log('tabela não mudou')
-            } else {
-                console.log('atualizou table')
-            }
-        },
-        features(newValue, oldValue) {
-            if (newValue === oldValue) {
-                console.log('features não mudou')
-            } else {
-                console.log('atualizou feature')
-            }
-        },
     },
 
     methods: {
         search() {
-            console.log(this.visualizationStage)
-
             if (this.visualizationStage == 'stage1') this.getFeatures()
             if (this.visualizationStage == 'stage4')
                 this.getDataTableMonitoring()
         },
-        verifyData() {
+        verifyFeatures() {
             if (this.tableMonitoring.length) this.getFeatures()
-
-            console.log(this.features)
-
+        },
+        verifyTable() {
             if (this.features != null) this.getDataTableMonitoring()
         },
         changeVisualizationStage(tab) {

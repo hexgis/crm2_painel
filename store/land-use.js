@@ -74,7 +74,7 @@ export const mutations = {
         state.heatMap = heatMap
     },
     setLoadingCSV(state, payload) {
-        state.isLoadingCSVMonitoring = payload
+        state.isLoadingCSV = payload
     },
     setTable(state, tableLandUse) {
         state.tableLandUse = tableLandUse
@@ -90,6 +90,7 @@ export const mutations = {
 
 export const actions = {
     async getFeatures({ state, commit, rootGetters }) {
+        commit('setLoadingGeoJson', true)
         commit('setLoadingFeatures', true)
         commit('clearFeatures')
 
@@ -120,12 +121,9 @@ export const actions = {
             } else {
                 commit('setFeatures', response)
                 commit('setShowFeatures', true)
-                const total = await this.$api.$get(
-                    'land-use/stats/',
-                    {
-                        params,
-                    }
-                )
+                const total = await this.$api.$get('land-use/stats/', {
+                    params,
+                })
                 if (total) commit('setTotal', total)
             }
         } catch (exception) {
@@ -141,6 +139,7 @@ export const actions = {
             )
         } finally {
             commit('setLoadingFeatures', false)
+            commit('setLoadingGeoJson', false)
         }
     },
     async getFilterOptions({ commit }) {
@@ -173,9 +172,7 @@ export const actions = {
             })
     },
     async getDataTableLandUse({ commit, state, rootGetters }) {
-        const params = {
-
-        }
+        const params = {}
 
         if (state.filters.ti && state.filters.ti.length)
             params.co_funai = state.filters.ti.toString()
@@ -188,12 +185,9 @@ export const actions = {
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
-        const tableLandUse = await this.$api.$get(
-            'land-use/table/',
-            {
-                params,
-            }
-        )
+        const tableLandUse = await this.$api.$get('land-use/table/', {
+            params,
+        })
 
         if (tableLandUse) commit('setTable', tableLandUse)
 
@@ -220,12 +214,9 @@ export const actions = {
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
-        const tableCSVLandUse = await this.$api.get(
-            'land-use/table/',
-            {
-                params,
-            }
-        )
+        const tableCSVLandUse = await this.$api.get('land-use/table/', {
+            params,
+        })
 
         function saveData(data, fileName, type) {
             var elementBtn, blob, url
