@@ -188,14 +188,14 @@ export const actions = {
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
-        const tableLandUse = await this.$api.$get('land-use/table/', {
-            params,
-        })
-
         try {
+            const tableLandUse = await this.$api.$get('land-use/table/', {
+                params,
+            })
+
             if (tableLandUse) commit('setTable', tableLandUse)
 
-            const total = await this.$api.$get('land-use/total/', {
+            const total = await this.$api.$get('land-use/stats/', {
                 params,
             })
             if (total) commit('setTotal', total)

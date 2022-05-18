@@ -137,17 +137,19 @@ export default {
             'showFeatures',
             'features',
             'tableLandUse',
-            'visualizationStage',
             'response',
             'params',
         ]),
+        ...mapState('priority', ['visualizationStage']),
     },
 
     methods: {
         search() {
-            if (this.visualizationStage === 'stage1') this.getFeatures()
+            if (this.visualizationStage == 'stage1') this.getFeatures()
 
-            if (this.visualizationStage === 'stage5') this.getDataTableLandUse()
+            if (this.visualizationStage == 'stage5') this.getDataTableLandUse()
+
+            console.log(this.visualizationStage)
         },
         verifyFeatures() {
             if (this.tableLandUse.length) this.getFeatures()

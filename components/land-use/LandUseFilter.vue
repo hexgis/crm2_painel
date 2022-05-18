@@ -76,6 +76,12 @@
         <v-row v-if="total" class="px-3 py-1">
             <v-row v-if="showFeatures && total && total.area_ha">
                 <v-col cols="7" class="grey--text text--darken-2">
+                    {{ $t('polygon-label') }}:
+                </v-col>
+                <v-col cols="5" class="text-right">
+                    {{ total.total }}
+                </v-col>
+                <v-col cols="7" class="grey--text text--darken-2">
                     {{ $t('total-area-label') }}:
                 </v-col>
                 <v-col cols="5" class="text-right">
@@ -140,7 +146,7 @@
             "start-date-label": "Start Date",
             "total-area-label": "Total area",
             "heat-map-label": "Heat map",
-            "polygon-label": "Total polygon count",
+            "polygon-label": "Total polygons count",
             "end-date-label": "End Date"
         },
         "pt-br": {
