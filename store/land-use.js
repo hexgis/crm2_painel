@@ -172,6 +172,9 @@ export const actions = {
             })
     },
     async getDataTableLandUse({ commit, state, rootGetters }) {
+        commit('setLoadingGeoJson', true)
+        commit('setLoadingFeatures', true)
+
         const params = {}
 
         if (state.filters.ti && state.filters.ti.length)
@@ -189,12 +192,28 @@ export const actions = {
             params,
         })
 
-        if (tableLandUse) commit('setTable', tableLandUse)
+        try {
+            if (tableLandUse) commit('setTable', tableLandUse)
 
-        const total = await this.$api.$get('land-use/total/', {
-            params,
-        })
-        if (total) commit('setTotal', total)
+            const total = await this.$api.$get('land-use/total/', {
+                params,
+            })
+            if (total) commit('setTotal', total)
+        } catch (error) {
+            commit(
+                'alert/addAlert',
+                {
+                    message: this.$i18n.t('default-error', {
+                        action: this.$i18n.t('retrieve'),
+                        resource: this.$i18n.t('monitoring'),
+                    }),
+                },
+                { root: true }
+            )
+        } finally {
+            commit('setLoadingGeoJson', false)
+            commit('setLoadingFeatures', false)
+        }
     },
     async downloadTableLandUse({ commit, state, rootGetters }) {
         commit('setLoadingCSV', true)

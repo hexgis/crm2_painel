@@ -204,6 +204,7 @@ export const actions = {
     },
     async getDataTable({ commit, state, rootGetters }) {
         commit('setLoadingFeatures', true)
+        commit('setLoadingGeoJson', true)
         commit('clearFeatures')
 
         const params = {
@@ -246,6 +247,7 @@ export const actions = {
             )
         } finally {
             commit('setLoadingFeatures', false)
+            commit('setLoadingGeoJson', false)
         }
     },
     async downloadTable({ commit, state, rootGetters }) {
