@@ -5,6 +5,7 @@
                 {{ $t('title') }}
             </h4>
             <v-switch
+                v-if="features"
                 v-model="showFeaturesLandUse"
                 class="mt-n1 ml-5"
                 hide-details

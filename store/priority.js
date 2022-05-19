@@ -129,7 +129,6 @@ export const actions = {
             const response = await this.$api.$get('priority/consolidated/', {
                 params,
             })
-            commit('setFeatures', response)
 
             if (!response.features || !response.features.length) {
                 commit('setShowFeatures', false)
@@ -140,6 +139,7 @@ export const actions = {
                 )
             } else {
                 commit('setShowFeatures', true)
+                commit('setFeatures', response)
 
                 const total = await this.$api.$get(
                     'priority/consolidated/total/',

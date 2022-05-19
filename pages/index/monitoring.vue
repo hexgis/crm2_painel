@@ -5,6 +5,7 @@
                 {{ $t('title') }}
             </h4>
             <v-switch
+                v-if="features"
                 v-model="showFeaturesMonitoring"
                 class="mt-n1 ml-5"
                 hide-details
@@ -111,9 +112,8 @@ export default {
 
     methods: {
         search() {
-             this.getFeatures()
-             this.getDataTableMonitoring()
-            
+            this.getFeatures()
+            this.getDataTableMonitoring()
         },
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)
