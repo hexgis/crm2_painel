@@ -49,7 +49,7 @@
                     class="mb-5"
                 >
                     <v-select
-                        v-model="filters[layer_filter.filter_type]"
+                        v-model="filters.co_cr"
                         label="Coordenação Regional (Todas)"
                         :items="filterOptions.regionalFilters"
                         item-value="co_cr"
@@ -70,7 +70,7 @@
                 >
                     <v-slide-y-transition>
                         <v-select
-                            v-model="filters[layer_filter.filter_type]"
+                            v-model="filters.co_funai"
                             label="Terras Indigenas (Todas)"
                             :items="filterOptions.tiFilters"
                             item-text="no_ti"
@@ -137,7 +137,7 @@ export default {
 
     data: () => ({
         valid: false,
-        filters: { cr: null, ti: null },
+        filters: {},
         loading: false,
         hasDoubleDate: false,
     }),
@@ -174,7 +174,7 @@ export default {
         this.getFilterOptions()
     },
     watch: {
-        'filters.cr'(value) {
+        'filters.co_cr'(value) {
             this.populateTiOptions(value)
         },
     },
@@ -192,7 +192,7 @@ export default {
                 id: this.layer.id,
                 filters: this.filters,
             }
-
+            console.log(this.filters)
             if (this.layer.layer_type === 'heatmap') {
                 this.loading = true
                 this.setLayerFilters(filterInfo)

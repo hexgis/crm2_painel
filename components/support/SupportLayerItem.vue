@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import { filter } from 'jszip'
 import { mapMutations, mapActions } from 'vuex'
 
 if (typeof window !== 'undefined') {
@@ -104,12 +105,39 @@ export default {
                         '&env=percentage:' +
                         this.layer.opacity / 100
 
-                    if (Object.keys(this.layer.filters).length) {
-                        wmsUrl += '&viewparams='
+                    const filters = this.layer.filters
+                    const keys = Object.keys(filters)
+                    let data = []
 
-                        for (const filter in this.layer.filters) {
-                            wmsUrl +=
-                                filter + ':' + this.layer.filters[filter] + ';'
+                    keys.map(function(code, key){
+                        for (let index = 0; index < filters[code].length; index++) {
+                            const element = filters[code][index];
+                            let obj = {};
+                            obj[code] = element
+                            data.push(obj)
+                        }
+                    })
+
+
+                    if (data.length) {
+                        wmsUrl += '&CQL_FILTER='
+
+                        for (let index = 0; index < data.length; index++) {
+                            const element = data[index];
+                            const prop_key = Object.keys(element)[0] 
+                            const prop_data = element[prop_key]
+
+                            if (index < data.length - 10){
+                                wmsUrl += prop_key + '=' + String(prop_data) + ' AND '
+                            }
+                            else if (index < data.length - 1){
+                                wmsUrl += prop_key + '=' + String(prop_data) + ' OR '
+
+                            }
+                            
+                            else {
+                                wmsUrl += prop_key + '=' + String(prop_data)
+                            }
                         }
                     }
                 } else {
@@ -123,7 +151,9 @@ export default {
                     this.$refs.wmsLayer.mapObject.setUrl(wmsUrl)
                 })
             }
+
             return wmsUrl
+            
         },
     },
 
@@ -170,8 +200,8 @@ export default {
             const heatData = []
             this.layer.data.forEach((data) => {
                 heatData.push([
-                    data.latitude,
-                    data.longitude,
+                    data.nu_latitude,
+                    data.nu_longitude,
                     data.area_ha / maxArea, // normalize by maximum area
                 ])
             })
