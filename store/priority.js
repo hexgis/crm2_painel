@@ -7,7 +7,7 @@ export const state = () => ({
     isLoadingCSV: false,
     unitMeasurement: [],
     // displayAnalitcs: null, // responsável por exibir qual dos 4 Dashboards será exibido na tela: Filtro Aplicado; CR; TI; Municípios. Também encaminhar o filtro aplicado.
-    visualizationStage: 'stage1',
+    visualizationStage: 'map',
     filterOptions: {
         regionalFilters: [],
         tiFilters: [],

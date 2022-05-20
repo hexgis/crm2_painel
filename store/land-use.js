@@ -1,7 +1,7 @@
 export const state = () => ({
     features: null,
     showFeatures: false,
-    visualizationStage: 'stage1',
+    visualizationStage: 'map',
     isLoadingCSV: false,
     isLoadingGeoJson: false,
     isLoadingFeatures: false,
