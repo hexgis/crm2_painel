@@ -39,11 +39,7 @@
                     >
                         <v-icon large>mdi-chart-box</v-icon>
                     </v-btn>
-                    <v-btn
-                        icon
-                        color="accent"
-                        @click="changeVisualizationStage('stage4')"
-                    >
+                    <v-btn icon color="accent" @click="showTableDialog(true)">
                         <v-icon large>mdi-table</v-icon>
                     </v-btn>
                 </v-row>
@@ -107,19 +103,34 @@ export default {
                 this.$store.commit('monitoring/setShowFeatures', value)
             },
         },
-        ...mapState('monitoring', ['showFeatures', 'features']),
+        ...mapState('monitoring', [
+            'showFeatures',
+            'features',
+            'tableDialog',
+            'visualizationStage',
+            'isLoadingTable',
+            'tableDialog',
+        ]),
     },
 
     methods: {
         search() {
-            this.getFeatures()
-            this.getDataTableMonitoring()
+            if (this.tableDialog === true) this.getDataTableMonitoring()
+            else {
+                this.getFeatures()
+            }
+            // if (this.visualizationStage == 'stage1') this.getFeatures()
         },
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)
         },
+        showTableDialog(tab) {
+            this.setTableDialog(tab)
+            this.getDataTableMonitoring()
+        },
         ...mapActions('monitoring', ['getFeatures', 'getDataTableMonitoring']),
         ...mapMutations('priority', ['setVisualizationStage']),
+        ...mapMutations('monitoring', ['setTableDialog', 'setLoadingTable']),
     },
 }
 </script>

@@ -46,7 +46,7 @@
                 <span> {{ $t('tooltip') }} </span>
             </v-tooltip>
         </v-btn>
-
+        <v-overlay :value="tableDialog"></v-overlay>
         <v-navigation-drawer
             v-model="layerDrawer"
             absolute
@@ -71,6 +71,11 @@
                 />
             </v-main>
         </div>
+        <div v-if="$store.state.monitoring.tableDialog === true">
+            <v-main class="pa-0">
+                <MonitoringTable />
+            </v-main>
+        </div>
         <div v-if="$store.state.priority.visualizationStage == 'stage2'">
             <v-main class="pa-0">
                 <AnalyticsPCDashboard />
@@ -81,11 +86,7 @@
                 <PriorityTable />
             </v-main>
         </div>
-        <div v-if="$store.state.priority.visualizationStage == 'stage4'">
-            <v-main class="pa-0">
-                <MonitoringTable />
-            </v-main>
-        </div>
+
         <div v-if="$store.state.priority.visualizationStage == 'stage5'">
             <v-main class="pa-0">
                 <LandUseTable />
@@ -121,7 +122,6 @@ import PriorityTable from '~/components/priority/PriorityTable.vue'
 import MonitoringTable from '~/components/monitoring/MonitoringTable.vue'
 import LandUseTable from '~/components/land-use/LandUseTable.vue'
 
-
 export default {
     name: 'App',
 
@@ -131,7 +131,7 @@ export default {
         AnalyticsPCDashboard,
         PriorityTable,
         MonitoringTable,
-        LandUseTable
+        LandUseTable,
     },
 
     fetch() {
@@ -153,6 +153,10 @@ export default {
         },
         ...mapState('userProfile', ['user']),
         ...mapState('priority', ['visualizationStage']),
+        ...mapState('monitoring', [
+            'visualizationStageMonitoring',
+            'tableDialog',
+        ]),
     },
 
     watch: {

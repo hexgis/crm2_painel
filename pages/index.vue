@@ -28,6 +28,7 @@
             :to="localePath(tab.route)"
             exact
             nuxt
+            :disabled="tableDialog"
         >
             <v-tooltip left>
                 <template #activator="{ on }">
@@ -177,6 +178,7 @@ export default {
         },
 
         ...mapState('catalog', ['isComparing']),
+        ...mapState('monitoring', ['tableDialog']),
     },
 
     watch: {

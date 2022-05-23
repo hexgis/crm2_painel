@@ -1,5 +1,64 @@
 <template>
-    <v-container fluid class="overflow-auto container-height">
+    <v-row>
+        <v-dialog
+            v-model="tableDialog"
+            transition="dialog-bottom-transition"
+            persistent
+            no-click-animation
+            hide-overlay
+            width="75vw"
+        >
+            <v-card>
+                <v-toolbar dark color="primary">
+                    <h3>Table</h3>
+                    <v-spacer></v-spacer>
+                    <v-btn icon @click="setTableDialog(false)">
+                        <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                </v-toolbar>
+                <a v-if="isLoadingTable === false">
+                    <v-btn
+                        small
+                        fab
+                        class="mx-2 my-2"
+                        color="secondary"
+                        @click="downloadTableMonitoring()"
+                        :loading="isLoadingCSVMonitoring"
+                    >
+                        <v-icon>mdi-download</v-icon>
+                    </v-btn>
+                </a>
+                <!-- <v-card-title v-if="isLoadingTable === false">
+                    <v-row>
+                        <v-spacer></v-spacer>
+                        
+                    </v-row>
+                </v-card-title> -->
+            </v-card>
+
+            <v-container fluid white>
+                <v-skeleton-loader
+                    v-if="isLoadingTable"
+                    type="table-row-divider@8"
+                ></v-skeleton-loader>
+
+                <v-card v-if="isLoadingTable === false">
+                    <v-data-table
+                        :headers="headers"
+                        :items-per-page="15"
+                        :items="tableMonitoring"
+                        class="font-weight-regular"
+                        multi-sort
+                        fixed-header
+                        height="65vh"
+                    >
+                    </v-data-table>
+                </v-card>
+            </v-container>
+        </v-dialog>
+    </v-row>
+
+    <!-- <v-container fluid class="overflow-auto container-height">
         <v-toolbar absolute min-width="100vw" color="secondary">
             <v-btn icon>
                 <v-icon color="#FFFFFF">mdi-table</v-icon>
@@ -31,21 +90,13 @@
                 class="font-weight-regular"
                 multi-sort
             >
-                <!-- <template v-slot:item.prioridade="{ item }">
-                    <v-chip
-                        :color="getColor(item.prioridade)"
-                        :dark="getColor(item.prioridade) !== 'yellow'"
-                    >
-                        {{ item.prioridade }}
-                    </v-chip>
-                </template> -->
             </v-data-table>
         </v-card>
-    </v-container>
+    </v-container> -->
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
     name: 'MonitoringTable',
@@ -82,7 +133,13 @@ export default {
         }
     },
     computed: {
-        ...mapState('monitoring', ['tableMonitoring', 'tableCSVMonitoring', 'isLoadingCSVMonitoring']),
+        ...mapState('monitoring', [
+            'tableMonitoring',
+            'tableCSVMonitoring',
+            'isLoadingCSVMonitoring',
+            'tableDialog',
+            'isLoadingTable',
+        ]),
     },
 
     methods: {
@@ -94,6 +151,7 @@ export default {
             else if (prioridade === 'Muito Baixa') return 'green'
         },
         ...mapActions('monitoring', ['downloadTableMonitoring']),
+        ...mapMutations('monitoring', ['setTableDialog']),
     },
 }
 </script>
@@ -103,5 +161,11 @@ export default {
 }
 .align-right {
     text-align: right;
+}
+
+.v-dialog__content {
+    justify-content: flex-start;
+    margin: 0 0.5%;
+    height: 100vh;
 }
 </style>
