@@ -9,14 +9,14 @@
             width="75vw"
         >
             <v-card>
-                <v-toolbar dark color="primary">
+                <v-toolbar class="background__toolbar" dark color="primary">
                     <h3>Table</h3>
                     <v-spacer></v-spacer>
-                    <v-btn icon @click="setTableDialog(false)">
+                    <v-btn icon @click="checkUpdate()">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                 </v-toolbar>
-                <a v-if="isLoadingTable === false">
+                <!-- <a class="d-flex justify-end" v-if="isLoadingTable === false">
                     <v-btn
                         small
                         fab
@@ -27,7 +27,7 @@
                     >
                         <v-icon>mdi-download</v-icon>
                     </v-btn>
-                </a>
+                </a> -->
                 <!-- <v-card-title v-if="isLoadingTable === false">
                     <v-row>
                         <v-spacer></v-spacer>
@@ -43,6 +43,21 @@
                 ></v-skeleton-loader>
 
                 <v-card v-if="isLoadingTable === false">
+                    <a
+                        class="d-flex justify-end"
+                        v-if="isLoadingTable === false"
+                    >
+                        <v-btn
+                            small
+                            fab
+                            class="mx-2 my-2"
+                            color="secondary"
+                            @click="downloadTableMonitoring()"
+                            :loading="isLoadingCSVMonitoring"
+                        >
+                            <v-icon>mdi-download</v-icon>
+                        </v-btn>
+                    </a>
                     <v-data-table
                         :headers="headers"
                         :items-per-page="15"
@@ -139,19 +154,25 @@ export default {
             'isLoadingCSVMonitoring',
             'tableDialog',
             'isLoadingTable',
+            'features',
+            'total',
         ]),
     },
 
     methods: {
-        getColor(prioridade) {
-            if (prioridade === 'Alta') return 'red'
-            else if (prioridade === 'Muito Alta') return '#9400D3'
-            else if (prioridade === 'Media') return 'orange'
-            else if (prioridade === 'Baixa') return 'yellow'
-            else if (prioridade === 'Muito Baixa') return 'green'
-        },
-        ...mapActions('monitoring', ['downloadTableMonitoring']),
+        ...mapActions('monitoring', ['downloadTableMonitoring', 'getFeatures']),
         ...mapMutations('monitoring', ['setTableDialog']),
+
+        checkUpdate() {
+            if (this.features.features.length === this.total.total) {
+                console.log('1º:' + this.features.length, this.total)
+                this.setTableDialog(false)
+            } else {
+                console.log(this.features.features.length, this.total.total)
+                this.setTableDialog(false)
+                this.getFeatures()
+            }
+        },
     },
 }
 </script>
@@ -166,6 +187,52 @@ export default {
 .v-dialog__content {
     justify-content: flex-start;
     margin: 0 0.5%;
-    height: 100vh;
+    height: 96vh;
+}
+
+@media (max-width: 900px) {
+    .v-dialog__content {
+        justify-content: center;
+    }
+}
+
+@media (min-width: 901px) {
+    .v-dialog__content {
+        width: 55%;
+    }
+}
+
+@media (min-width: 1000px) {
+    .v-dialog__content {
+        width: 60%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .v-dialog__content {
+        width: 66%;
+    }
+}
+
+@media (min-width: 1264px) {
+    .v-dialog__content {
+        width: 70%;
+    }
+}
+
+@media (min-width: 1600px) {
+    .v-dialog__content {
+        width: 75%;
+    }
+}
+
+@media (min-width: 1920px) {
+    .v-dialog__content {
+        width: 100%;
+    }
+}
+
+.background__toolbar {
+    background: linear-gradient(to bottom, rgb(30, 33, 50), rgb(44, 54, 73));
 }
 </style>

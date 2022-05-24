@@ -124,9 +124,11 @@ export default {
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)
         },
-        showTableDialog(tab) {
-            this.setTableDialog(tab)
-            this.getDataTableMonitoring()
+        showTableDialog(value) {
+            if (this.features) {
+                this.setTableDialog(value)
+                this.getDataTableMonitoring()
+            }
         },
         ...mapActions('monitoring', ['getFeatures', 'getDataTableMonitoring']),
         ...mapMutations('priority', ['setVisualizationStage']),

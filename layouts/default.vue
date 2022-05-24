@@ -46,7 +46,7 @@
                 <span> {{ $t('tooltip') }} </span>
             </v-tooltip>
         </v-btn>
-        <v-overlay :value="tableDialog"></v-overlay>
+        <v-overlay :value="tableDialog || tablePriority"></v-overlay>
         <v-navigation-drawer
             v-model="layerDrawer"
             absolute
@@ -81,7 +81,7 @@
                 <AnalyticsPCDashboard />
             </v-main>
         </div>
-        <div v-if="$store.state.priority.visualizationStage == 'stage3'">
+        <div v-if="$store.state.priority.tablePriority === true">
             <v-main class="pa-0">
                 <PriorityTable />
             </v-main>
@@ -152,7 +152,7 @@ export default {
             return this.user && (this.user.first_name || this.user.last_name)
         },
         ...mapState('userProfile', ['user']),
-        ...mapState('priority', ['visualizationStage']),
+        ...mapState('priority', ['visualizationStage', 'tablePriority']),
         ...mapState('monitoring', [
             'visualizationStageMonitoring',
             'tableDialog',

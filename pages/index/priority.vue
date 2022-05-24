@@ -69,13 +69,7 @@
                     >
                         <v-icon large>mdi-chart-box</v-icon>
                     </v-btn>
-                    <v-btn
-                        icon
-                        color="accent"
-                        @click="
-                            changeVisualizationStage('stage3'), getDataTable()
-                        "
-                    >
+                    <v-btn icon color="accent" @click="showTablePriority(true)">
                         <v-icon large>mdi-table</v-icon>
                     </v-btn>
                 </v-row>
@@ -147,13 +141,16 @@ export default {
             'visualizationStage',
             'response',
             'params',
+            'tablePriority',
         ]),
     },
 
     methods: {
         search() {
-            if (this.visualizationStage == 'stage1') this.getFeatures()
-            if (this.visualizationStage == 'stage3') this.getDataTable()
+            if (this.tablePriority === true) this.getDataTable()
+            else {
+                this.getFeatures()
+            }
         },
         searchDataTable() {
             this.getDataTable()
@@ -161,8 +158,17 @@ export default {
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)
         },
+        showTablePriority(value) {
+            if (this.features) {
+                this.setTablePriority(value)
+                this.getDataTable()
+            }
+        },
         ...mapActions('priority', ['getFeatures', 'getDataTable']),
-        ...mapMutations('priority', ['setVisualizationStage']),
+        ...mapMutations('priority', [
+            'setVisualizationStage',
+            'setTablePriority',
+        ]),
     },
 }
 </script>

@@ -1,5 +1,87 @@
 <template>
-    <v-container fluid class="overflow-auto container-height">
+    <v-row>
+        <v-dialog
+            v-model="tablePriority"
+            transition="dialog-bottom-transition"
+            persistent
+            no-click-animation
+            hide-overlay
+            width="75vw"
+        >
+            <v-card>
+                <v-toolbar class="background__toolbar" dark color="primary">
+                    <h3>{{ $t('name-table') }}</h3>
+                    <v-spacer></v-spacer>
+                    <v-btn icon @click="checkUpdate()">
+                        <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                </v-toolbar>
+                <!-- <a class="d-flex justify-end" v-if="isLoadingTable === false">
+                    <v-btn
+                        small
+                        fab
+                        class="mx-2 my-2"
+                        color="secondary"
+                        @click="downloadTableMonitoring()"
+                        :loading="isLoadingCSVMonitoring"
+                    >
+                        <v-icon>mdi-download</v-icon>
+                    </v-btn>
+                </a> -->
+                <!-- <v-card-title v-if="isLoadingTable === false">
+                    <v-row>
+                        <v-spacer></v-spacer>
+                        
+                    </v-row>
+                </v-card-title> -->
+            </v-card>
+
+            <v-container fluid white>
+                <v-skeleton-loader
+                    v-if="isLoadingTable"
+                    type="table-row-divider@8"
+                ></v-skeleton-loader>
+
+                <v-card v-if="isLoadingTable === false">
+                    <a
+                        class="d-flex justify-end"
+                        v-if="isLoadingTable === false"
+                    >
+                        <v-btn
+                            small
+                            fab
+                            class="mx-2 my-2"
+                            color="secondary"
+                            @click="downloadTable()"
+                            :loading="isLoadingCSV"
+                        >
+                            <v-icon>mdi-download</v-icon>
+                        </v-btn>
+                    </a>
+                    <v-data-table
+                        :headers="headers"
+                        :items-per-page="15"
+                        :items="table"
+                        :key="table.id"
+                        class="font-weight-regular"
+                        multi-sort
+                        fixed-header
+                        height="65vh"
+                    >
+                        <template v-slot:[`item.prioridade`]="{ item }">
+                            <v-chip
+                                :color="getColor(item.prioridade)"
+                                :dark="getColor(item.prioridade) !== 'yellow'"
+                            >
+                                {{ item.prioridade }}
+                            </v-chip>
+                        </template>
+                    </v-data-table>
+                </v-card>
+            </v-container>
+        </v-dialog>
+    </v-row>
+    <!-- <v-container fluid class="overflow-auto container-height">
         <v-toolbar absolute min-width="100vw" color="secondary">
             <v-btn icon>
                 <v-icon color="#FFFFFF">mdi-table</v-icon>
@@ -41,11 +123,24 @@
                 </template>
             </v-data-table>
         </v-card>
-    </v-container>
+    </v-container> -->
 </template>
 
+<i18n>
+{
+    "en": {
+        "name-table": "Priority Table"
+
+    },
+    "pt-br": {
+        "name-table": "Tabela de Prioridade"
+
+    }
+}
+</i18n>
+
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
     name: 'PriorityTable',
@@ -82,7 +177,15 @@ export default {
         }
     },
     computed: {
-        ...mapState('priority', ['table', 'tableCSV', 'isLoadingCSV']),
+        ...mapState('priority', [
+            'table',
+            'total',
+            'tableCSV',
+            'isLoadingCSV',
+            'isLoadingTable',
+            'tablePriority',
+            'features',
+        ]),
     },
 
     methods: {
@@ -93,7 +196,16 @@ export default {
             else if (prioridade === 'Baixa') return 'yellow'
             else if (prioridade === 'Muito Baixa') return 'green'
         },
-        ...mapActions('priority', ['downloadTable']),
+        checkUpdate() {
+            if (this.features.features.length === this.total.total) {
+                this.setTablePriority(false)
+            } else {
+                this.setTablePriority(false)
+                this.getFeatures()
+            }
+        },
+        ...mapActions('priority', ['downloadTable', 'getFeatures']),
+        ...mapMutations('priority', ['setTablePriority']),
     },
 }
 </script>
@@ -103,5 +215,56 @@ export default {
 }
 .align-right {
     text-align: right;
+}
+
+.v-dialog__content {
+    justify-content: flex-start;
+    margin: 0 0.5%;
+    height: 96vh;
+}
+
+@media (max-width: 900px) {
+    .v-dialog__content {
+        justify-content: center;
+    }
+}
+
+@media (min-width: 901px) {
+    .v-dialog__content {
+        width: 55%;
+    }
+}
+
+@media (min-width: 1000px) {
+    .v-dialog__content {
+        width: 60%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .v-dialog__content {
+        width: 66%;
+    }
+}
+
+@media (min-width: 1264px) {
+    .v-dialog__content {
+        width: 70%;
+    }
+}
+
+@media (min-width: 1600px) {
+    .v-dialog__content {
+        width: 75%;
+    }
+}
+
+@media (min-width: 1920px) {
+    .v-dialog__content {
+        width: 100%;
+    }
+}
+.background__toolbar {
+    background: linear-gradient(to bottom, rgb(30, 33, 50), rgb(44, 54, 73));
 }
 </style>

@@ -2,6 +2,8 @@ export const state = () => ({
     features: null,
     showFeatures: false,
     heatMap: true,
+    tablePriority: false,
+    isLoadingTable: true,
     isLoadingFeatures: false,
     isLoadingGeoJson: false,
     isLoadingCSV: false,
@@ -53,6 +55,14 @@ export const mutations = {
 
     setFeatures(state, features) {
         state.features = features
+    },
+
+    setTablePriority(state, tablePriority) {
+        state.tablePriority = tablePriority
+    },
+
+    setLoadingTable(state, loadingTable) {
+        state.isLoadingTable = loadingTable
     },
 
     setLoadingFeatures(state, payload) {
@@ -201,6 +211,7 @@ export const actions = {
             })
     },
     async getDataTable({ commit, state, rootGetters }) {
+        commit('setLoadingTable', true)
         const params = {
             start_date: state.filters.startDate,
             end_date: state.filters.endDate,
@@ -217,16 +228,31 @@ export const actions = {
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
-        const table = await this.$api.$get('priority/consolidated/table/', {
-            params,
-        })
+        try {
+            const table = await this.$api.$get('priority/consolidated/table/', {
+                params,
+            })
 
-        if (table) commit('setTable', table)
+            if (table) commit('setTable', table)
 
-        const total = await this.$api.$get('priority/consolidated/total/', {
-            params,
-        })
-        if (total) commit('setTotal', total)
+            const total = await this.$api.$get('priority/consolidated/total/', {
+                params,
+            })
+            if (total) commit('setTotal', total)
+        } catch (error) {
+            commit(
+                'alert/addAlert',
+                {
+                    message: this.$i18n.t('default-error', {
+                        action: this.$i18n.t('retrieve'),
+                        resource: this.$i18n.t('monitoring'),
+                    }),
+                },
+                { root: true }
+            )
+        } finally {
+            commit('setLoadingTable', false)
+        }
     },
     async downloadTable({ commit, state, rootGetters }) {
         commit('setLoadingCSV', true)
