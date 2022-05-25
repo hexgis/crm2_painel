@@ -63,14 +63,7 @@
                     >
                         <v-icon large>mdi-chart-box</v-icon>
                     </v-btn>
-                    <v-btn
-                        icon
-                        color="accent"
-                        @click="
-                            changeVisualizationStage('stage5'),
-                                getDataTableLandUse()
-                        "
-                    >
+                    <v-btn icon color="accent" @click="showTableLand(true)">
                         <v-icon large>mdi-table</v-icon>
                     </v-btn>
                 </v-row>
@@ -137,8 +130,9 @@ export default {
         ...mapState('land-use', [
             'showFeatures',
             'features',
-            'table',
+            'tableLandUse',
             'visualizationStage',
+            'tableLand',
             'response',
             'params',
         ]),
@@ -146,8 +140,11 @@ export default {
 
     methods: {
         search() {
-            this.getFeatures()
-            this.getDataTableLandUse()
+            if (this.tableLand === true) {
+                this.getDataTableLandUse()
+            } else {
+                this.getFeatures()
+            }
         },
         searchDataTable() {
             this.getDataTable()
@@ -155,8 +152,15 @@ export default {
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)
         },
+        showTableLand(tab) {
+            if (this.features) {
+                this.setTableLand(tab)
+                this.getDataTableLandUse()
+            }
+        },
         ...mapActions('land-use', ['getFeatures', 'getDataTableLandUse']),
         ...mapMutations('priority', ['setVisualizationStage']),
+        ...mapMutations('land-use', ['setTableLand']),
     },
 }
 </script>

@@ -46,7 +46,9 @@
                 <span> {{ $t('tooltip') }} </span>
             </v-tooltip>
         </v-btn>
-        <v-overlay :value="tableDialog || tablePriority"></v-overlay>
+        <v-overlay
+            :value="tableDialog || tablePriority || tableLand"
+        ></v-overlay>
         <v-navigation-drawer
             v-model="layerDrawer"
             absolute
@@ -87,7 +89,7 @@
             </v-main>
         </div>
 
-        <div v-if="$store.state.priority.visualizationStage == 'stage5'">
+        <div v-if="$store.state['land-use'].tableLand === true">
             <v-main class="pa-0">
                 <LandUseTable />
             </v-main>
@@ -157,6 +159,7 @@ export default {
             'visualizationStageMonitoring',
             'tableDialog',
         ]),
+        ...mapState('land-use', ['tableLand']),
     },
 
     watch: {

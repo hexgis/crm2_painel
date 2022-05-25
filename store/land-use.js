@@ -2,6 +2,8 @@ export const state = () => ({
     features: null,
     showFeatures: false,
     visualizationStage: 'stage1',
+    tableLand: false,
+    isLoadingTable: true,
     isLoadingCSV: false,
     isLoadingGeoJson: false,
     isLoadingFeatures: false,
@@ -42,6 +44,10 @@ export const mutations = {
         state.showFeatures = showFeatures
     },
 
+    setLoadingTable(state, payload) {
+        state.isLoadingTable = payload
+    },
+
     setLoadingGeoJson(state, payload) {
         state.isLoadingGeoJson = payload
     },
@@ -54,6 +60,10 @@ export const mutations = {
     },
     setVisualizationStage(state, visualizationStage) {
         state.visualizationStage = visualizationStage
+    },
+
+    setTableLand(state, payload) {
+        state.tableLand = payload
     },
 
     setLoadingFeatures(state, payload) {
@@ -120,12 +130,9 @@ export const actions = {
             } else {
                 commit('setFeatures', response)
                 commit('setShowFeatures', true)
-                const total = await this.$api.$get(
-                    'land-use/stats/',
-                    {
-                        params,
-                    }
-                )
+                const total = await this.$api.$get('land-use/stats/', {
+                    params,
+                })
                 if (total) commit('setTotal', total)
             }
         } catch (exception) {
@@ -173,9 +180,9 @@ export const actions = {
             })
     },
     async getDataTableLandUse({ commit, state, rootGetters }) {
-        const params = {
+        commit('setLoadingTable', true)
 
-        }
+        const params = {}
 
         if (state.filters.ti && state.filters.ti.length)
             params.co_funai = state.filters.ti.toString()
@@ -188,19 +195,31 @@ export const actions = {
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
-        const tableLandUse = await this.$api.$get(
-            'land-use/table/',
-            {
+        try {
+            const tableLandUse = await this.$api.$get('land-use/table/', {
                 params,
-            }
-        )
+            })
 
-        if (tableLandUse) commit('setTable', tableLandUse)
+            if (tableLandUse) commit('setTable', tableLandUse)
 
-        const total = await this.$api.$get('land-use/total/', {
-            params,
-        })
-        if (total) commit('setTotal', total)
+            const total = await this.$api.$get('land-use/stats/', {
+                params,
+            })
+            if (total) commit('setTotal', total)
+        } catch (error) {
+            commit(
+                'alert/addAlert',
+                {
+                    message: this.$i18n.t('default-error', {
+                        action: this.$i18n.t('retrieve'),
+                        resource: this.$i18n.t('monitoring'),
+                    }),
+                },
+                { root: true }
+            )
+        } finally {
+            commit('setLoadingTable', false)
+        }
     },
     async downloadTableLandUse({ commit, state, rootGetters }) {
         commit('setLoadingCSV', true)
@@ -220,12 +239,9 @@ export const actions = {
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
-        const tableCSVLandUse = await this.$api.get(
-            'land-use/table/',
-            {
-                params,
-            }
-        )
+        const tableCSVLandUse = await this.$api.get('land-use/table/', {
+            params,
+        })
 
         function saveData(data, fileName, type) {
             var elementBtn, blob, url
