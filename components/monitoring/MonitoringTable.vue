@@ -10,7 +10,7 @@
         >
             <v-card>
                 <v-toolbar class="background__toolbar" dark color="primary">
-                    <h3>Table</h3>
+                    <h3>{{ $t('name-table') }}</h3>
                     <v-spacer></v-spacer>
                     <v-btn icon @click="checkUpdate()">
                         <v-icon>mdi-close</v-icon>
@@ -110,6 +110,19 @@
     </v-container> -->
 </template>
 
+<i18n>
+{
+    "en": {
+        "name-table": "Monitoring Table"
+
+    },
+    "pt-br": {
+        "name-table": "Tabela de Monitoramento"
+
+    }
+}
+</i18n>
+
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
 
@@ -165,10 +178,8 @@ export default {
 
         checkUpdate() {
             if (this.features.features.length === this.total.total) {
-                console.log('1º:' + this.features.length, this.total)
                 this.setTableDialog(false)
             } else {
-                console.log(this.features.features.length, this.total.total)
                 this.setTableDialog(false)
                 this.getFeatures()
             }
