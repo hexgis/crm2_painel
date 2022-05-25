@@ -10,6 +10,7 @@
                 hide-details
                 clearable
                 required="true"
+                multiple
             >
             </v-select>
         </v-row>
@@ -27,6 +28,7 @@
                     item-value="co_funai"
                     hide-details
                     required="true"
+                    multiple
                 >
                 </v-select>
             </v-row>
@@ -57,7 +59,12 @@
                 </v-btn>
             </v-col>
             <v-col>
-                <v-btn block color="accent" :loading="isLoadingFeatures" @click="search()">
+                <v-btn
+                    block
+                    color="accent"
+                    :loading="isLoadingFeatures"
+                    @click="search()"
+                >
                     {{ $t('search-label') }}
                 </v-btn>
             </v-col>
@@ -220,7 +227,10 @@ export default {
             this.$emit('onSearch')
         },
         ...mapMutations('land-use', ['setFilters']),
-        ...mapActions('land-use', ['getFilterOptions', 'downloadGeoJsonLandUse']),
+        ...mapActions('land-use', [
+            'getFilterOptions',
+            'downloadGeoJsonLandUse',
+        ]),
     },
 }
 </script>
