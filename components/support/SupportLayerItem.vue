@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import { filter } from 'jszip'
 import { mapMutations, mapActions } from 'vuex'
 
 if (typeof window !== 'undefined') {
@@ -104,13 +105,22 @@ export default {
                         '&env=percentage:' +
                         this.layer.opacity / 100
 
-                    if (Object.keys(this.layer.filters).length) {
-                        wmsUrl += '&viewparams='
+                    const filters = this.layer.filters
+                    const keys = Object.keys(filters)
 
-                        for (const filter in this.layer.filters) {
-                            wmsUrl +=
-                                filter + ':' + this.layer.filters[filter] + ';'
-                        }
+                    if (keys.length) {
+                        wmsUrl += '&CQL_FILTER='
+
+                        keys.forEach(element => {
+                            let el = ''
+                            if (Array.isArray(filters[element])){
+                                el = JSON.stringify(filters[element]).slice(1, -1)
+                            } else {
+                                el = filters[element]
+                            }
+                            wmsUrl += element + ' IN (' + el + ') AND '  
+                        });
+                        wmsUrl = wmsUrl.slice(0, -4)
                     }
                 } else {
                     wmsUrl =
@@ -123,7 +133,9 @@ export default {
                     this.$refs.wmsLayer.mapObject.setUrl(wmsUrl)
                 })
             }
+
             return wmsUrl
+            
         },
     },
 
@@ -170,8 +182,8 @@ export default {
             const heatData = []
             this.layer.data.forEach((data) => {
                 heatData.push([
-                    data.latitude,
-                    data.longitude,
+                    data.nu_latitude,
+                    data.nu_longitude,
                     data.area_ha / maxArea, // normalize by maximum area
                 ])
             })
