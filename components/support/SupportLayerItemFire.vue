@@ -39,7 +39,7 @@ if (typeof window !== 'undefined') {
 }
 
 export default {
-    name: 'SupportLayerItem',
+    name: 'SupportLayerItemFire',
 
     props: {
         layer: {
@@ -107,24 +107,16 @@ export default {
 
                     const filters = this.layer.filters
                     const keys = Object.keys(filters)
-                    
-                    if (filters.co_cr && filters.co_funai) {
+
+                    console.log(keys)
+                    console.log(filters)
+
+                    if (keys.length) {
                         wmsUrl += '&CQL_FILTER='
-                    wmsUrl += `co_cr IN (${filters.co_cr}) AND co_funai IN (${filters.co_funai}) `
-                    return wmsUrl
-                    
+                            wmsUrl += `dt_foco_calor >= ${filters.startDate} AND dt_foco_calor <= ${filters.endDate}` 
+            
                     }
-                    if (filters.co_cr) {
-                        wmsUrl += '&CQL_FILTER='
-                    wmsUrl += `co_cr IN (${filters.co_cr}) `
-                    return wmsUrl
-                } 
-                if (filters.co_funai) {
-                        wmsUrl += '&CQL_FILTER='
-                    wmsUrl += `co_funai IN (${filters.co_funai}) `
-                    return wmsUrl
-                }
-                else {
+                } else {
                     wmsUrl =
                         this.layer.wms.geoserver.wms_url +
                         '&env=percentage:' +
@@ -135,11 +127,10 @@ export default {
                     this.$refs.wmsLayer.mapObject.setUrl(wmsUrl)
                 })
             }
-            }
 
             return wmsUrl
             
-        }
+        },
     },
 
     watch: {
@@ -162,12 +153,12 @@ export default {
                 })
             } else {
                 if (this.layer.layer_type === 'wms') {
-                    this.setLayerFilters({
+                    this.setLayerFiltersFire({
                         id: this.layer.id,
                         filters: this.defaultFilters,
                     })
                 }
-                this.toggleLayerVisibility({
+                this.toggleLayerVisibilityFire({
                     id: this.layer.id,
                     visible: true,
                 })
@@ -202,8 +193,8 @@ export default {
         },
 
         ...mapMutations('supportLayers', [
-            'setLayerFilters',
-            'toggleLayerVisibility',
+            'setLayerFiltersFire',
+            'toggleLayerVisibilityFire',
         ]),
 
         ...mapActions('supportLayers', ['getHeatMapLayer']),

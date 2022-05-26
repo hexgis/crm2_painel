@@ -49,7 +49,7 @@
         </template>
 
         <v-container class="py-0">
-            <SupportLayerFilters :layer="layer" />
+            <SupportLayerFiltersFire :layer="layer" />
 
             <v-row
                 v-if="
@@ -102,12 +102,12 @@
 import { mapState, mapMutations } from 'vuex'
 import tmsLegend from '@/assets/tmsLegend.png'
 
-import SupportLayerFilters from '@/components/support/SupportLayerFilters'
+import SupportLayerFiltersFire from '@/components/support/SupportLayerFiltersFire'
 
 export default {
     name: 'SupportLayersGroupItemFire',
 
-    components: { SupportLayerFilters },
+    components: { SupportLayerFiltersFire },
 
     props: {
         layerId: {

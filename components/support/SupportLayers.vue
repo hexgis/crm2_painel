@@ -4,7 +4,7 @@
             <SupportLayerItem :key="layer.id" :layer="layer" />
         </template>
         <template v-for="layer in supportLayersCategoryFire">
-            <SupportLayerItem :key="layer.id" :layer="layer" />
+            <SupportLayerItemFire :key="layer.id" :layer="layer" />
         </template>
         <template v-for="layer in supportLayersCategoryRaster">
             <SupportLayerItem :key="layer.id" :layer="layer" />
@@ -16,12 +16,15 @@
 import { mapState } from 'vuex'
 
 import SupportLayerItem from './SupportLayerItem'
+import SupportLayerItemFire from './SupportLayerItemFire'
+
 
 export default {
     name: 'SupportLayers',
 
+
     components: {
-        SupportLayerItem,
+        SupportLayerItem,SupportLayerItemFire
     },
 
     computed: mapState('supportLayers', [
