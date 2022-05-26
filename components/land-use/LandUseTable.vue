@@ -10,20 +10,18 @@
         >
             <v-card>
                 <v-toolbar class="background__toolbar" dark color="primary">
-                    <h3>{{ $t('name-table') }}</h3>
+                    <h3>{{ $t('table-name') }}</h3>
                     <v-spacer></v-spacer>
                     <v-btn icon @click="checkUpdate()">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                 </v-toolbar>
             </v-card>
-
             <v-container fluid white>
                 <v-skeleton-loader
                     v-if="isLoadingTable"
                     type="table-row-divider@8"
                 ></v-skeleton-loader>
-
                 <v-card v-if="isLoadingTable === false">
                     <a
                         class="d-flex justify-end"
@@ -54,59 +52,19 @@
             </v-container>
         </v-dialog>
     </v-row>
-    <!-- <v-container fluid class="overflow-auto container-height">
-        <v-toolbar absolute min-width="100vw" color="secondary">
-            <v-btn icon>
-                <v-icon color="#FFFFFF">mdi-table</v-icon>
-            </v-btn>
-        </v-toolbar>
-        <v-card class="py-8 mt-8">
-            <v-card-title>
-                <v-row>
-                    <v-spacer></v-spacer>
-                    <a>
-                        <v-btn
-                            small
-                            fab
-                            class="mx-2 my-2"
-                            color="secondary"
-                            @click="downloadTableLandUse()"
-                            :loading="isLoadingCSV"
-                        >
-                            <v-icon>mdi-download</v-icon>
-                        </v-btn>
-                    </a>
-                </v-row>
-            </v-card-title>
-
-            <v-data-table
-                :headers="headers"
-                :items-per-page="10"
-                :items="tableLandUse"
-                class="font-weight-regular"
-                multi-sort
-            >
-            </v-data-table>
-        </v-card>
-    </v-container> -->
 </template>
-
 <i18n>
 {
     "en": {
-        "name-table": "Land Use Table"
-
+        "table-name": "Land Use Table"
     },
     "pt-br": {
-        "name-table": "Uso e Ocupação do Solo"
-
+        "table-name": "Tabela de Uso e Ocupação do Solo"
     }
 }
 </i18n>
-
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
-
 export default {
     name: 'LandUseTable',
     data() {
@@ -151,7 +109,6 @@ export default {
             'total',
         ]),
     },
-
     methods: {
         ...mapActions('land-use', ['downloadTableLandUse', 'getFeatures']),
         ...mapMutations('land-use', ['setTableLand']),

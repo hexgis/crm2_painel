@@ -10,43 +10,20 @@
         >
             <v-card>
                 <v-toolbar class="background__toolbar" dark color="primary">
-                    <h3>{{ $t('name-table') }}</h3>
+                    <h3>{{ $t('table-name') }}</h3>
                     <v-spacer></v-spacer>
                     <v-btn icon @click="checkUpdate()">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                 </v-toolbar>
-                <!-- <a class="d-flex justify-end" v-if="isLoadingTable === false">
-                    <v-btn
-                        small
-                        fab
-                        class="mx-2 my-2"
-                        color="secondary"
-                        @click="downloadTableMonitoring()"
-                        :loading="isLoadingCSVMonitoring"
-                    >
-                        <v-icon>mdi-download</v-icon>
-                    </v-btn>
-                </a> -->
-                <!-- <v-card-title v-if="isLoadingTable === false">
-                    <v-row>
-                        <v-spacer></v-spacer>
-                        
-                    </v-row>
-                </v-card-title> -->
             </v-card>
-
             <v-container fluid white>
                 <v-skeleton-loader
                     v-if="isLoadingTable"
                     type="table-row-divider@8"
                 ></v-skeleton-loader>
-
-                <v-card v-if="isLoadingTable === false">
-                    <a
-                        class="d-flex justify-end"
-                        v-if="isLoadingTable === false"
-                    >
+                <v-card v-if="!isLoadingTable">
+                    <a class="d-flex justify-end" v-if="!isLoadingTable">
                         <v-btn
                             small
                             fab
@@ -72,60 +49,19 @@
             </v-container>
         </v-dialog>
     </v-row>
-
-    <!-- <v-container fluid class="overflow-auto container-height">
-        <v-toolbar absolute min-width="100vw" color="secondary">
-            <v-btn icon>
-                <v-icon color="#FFFFFF">mdi-table</v-icon>
-            </v-btn>
-        </v-toolbar>
-        <v-card class="py-8 mt-8">
-            <v-card-title>
-                <v-row>
-                    <v-spacer></v-spacer>
-                    <a>
-                        <v-btn
-                            small
-                            fab
-                            class="mx-2 my-2"
-                            color="secondary"
-                            @click="downloadTableMonitoring()"
-                            :loading="isLoadingCSVMonitoring"
-                        >
-                            <v-icon>mdi-download</v-icon>
-                        </v-btn>
-                    </a>
-                </v-row>
-            </v-card-title>
-
-            <v-data-table
-                :headers="headers"
-                :items-per-page="10"
-                :items="tableMonitoring"
-                class="font-weight-regular"
-                multi-sort
-            >
-            </v-data-table>
-        </v-card>
-    </v-container> -->
 </template>
-
 <i18n>
 {
     "en": {
-        "name-table": "Monitoring Table"
-
+        "table-name": "Monitoring Table"
     },
     "pt-br": {
-        "name-table": "Tabela de Monitoramento"
-
+        "table-name": "Tabela de Monitoramento"
     }
 }
 </i18n>
-
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
-
 export default {
     name: 'MonitoringTable',
     data() {
@@ -171,7 +107,6 @@ export default {
             'total',
         ]),
     },
-
     methods: {
         ...mapActions('monitoring', ['downloadTableMonitoring', 'getFeatures']),
         ...mapMutations('monitoring', ['setTableDialog']),
