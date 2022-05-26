@@ -147,10 +147,8 @@ export default {
 
     methods: {
         search() {
-            if (this.tablePriority === true) this.getDataTable()
-            else {
-                this.getFeatures()
-            }
+            if (this.tablePriority) this.getDataTable()
+            if (!this.tablePriority) this.getFeatures()
         },
         searchDataTable() {
             this.getDataTable()

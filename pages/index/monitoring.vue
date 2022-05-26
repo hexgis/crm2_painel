@@ -115,11 +115,8 @@ export default {
 
     methods: {
         search() {
-            if (this.tableDialog === true) this.getDataTableMonitoring()
-            else {
-                this.getFeatures()
-            }
-            // if (this.visualizationStage == 'stage1') this.getFeatures()
+            if (this.tableDialog) this.getDataTableMonitoring()
+            if (!this.tableDialog) this.getFeatures()
         },
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)

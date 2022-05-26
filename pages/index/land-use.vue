@@ -140,11 +140,8 @@ export default {
 
     methods: {
         search() {
-            if (this.tableLand === true) {
-                this.getDataTableLandUse()
-            } else {
-                this.getFeatures()
-            }
+            if (this.tableLand) this.getDataTableLandUse()
+            if (!this.tableLand) this.getFeatures()
         },
         searchDataTable() {
             this.getDataTable()

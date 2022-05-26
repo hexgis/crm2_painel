@@ -73,7 +73,7 @@
                 />
             </v-main>
         </div>
-        <div v-if="$store.state.monitoring.tableDialog === true">
+        <div v-if="$store.state.monitoring.tableDialog">
             <v-main class="pa-0">
                 <MonitoringTable />
             </v-main>
@@ -83,13 +83,13 @@
                 <AnalyticsPCDashboard />
             </v-main>
         </div>
-        <div v-if="$store.state.priority.tablePriority === true">
+        <div v-if="$store.state.priority.tablePriority">
             <v-main class="pa-0">
                 <PriorityTable />
             </v-main>
         </div>
 
-        <div v-if="$store.state['land-use'].tableLand === true">
+        <div v-if="$store.state['land-use'].tableLand">
             <v-main class="pa-0">
                 <LandUseTable />
             </v-main>
