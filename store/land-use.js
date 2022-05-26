@@ -1,7 +1,6 @@
 export const state = () => ({
     features: null,
     showFeatures: false,
-    visualizationStage: 'stage1',
     tableLand: false,
     isLoadingTable: true,
     isLoadingCSV: false,
