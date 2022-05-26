@@ -12,6 +12,7 @@
                 clearable
                 required="true"
                 :error="errorRegional"
+                multiple
             >
             </v-select>
         </v-row>
@@ -29,6 +30,7 @@
                     item-value="co_funai"
                     hide-details
                     required="true"
+                    multiple
                 >
                 </v-select>
             </v-row>

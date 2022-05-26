@@ -76,6 +76,7 @@
                             item-text="no_ti"
                             item-value="co_funai"
                             multiple
+                            clearable
                             hide-details
                             required="true"
                         >

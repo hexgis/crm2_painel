@@ -200,7 +200,7 @@ export default {
 
             try {
                 this.selectedLandUseFeature = await this.$api.$get(
-                    'land-use/consolidated/detail/' + featureId + '/'
+                    'land-use/detail/' + featureId + '/'
                 )
 
                 // this.$nextTick(() => {

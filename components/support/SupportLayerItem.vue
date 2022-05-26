@@ -107,38 +107,20 @@ export default {
 
                     const filters = this.layer.filters
                     const keys = Object.keys(filters)
-                    let data = []
 
-                    keys.map(function(code, key){
-                        for (let index = 0; index < filters[code].length; index++) {
-                            const element = filters[code][index];
-                            let obj = {};
-                            obj[code] = element
-                            data.push(obj)
-                        }
-                    })
-
-
-                    if (data.length) {
+                    if (keys.length) {
                         wmsUrl += '&CQL_FILTER='
 
-                        for (let index = 0; index < data.length; index++) {
-                            const element = data[index];
-                            const prop_key = Object.keys(element)[0] 
-                            const prop_data = element[prop_key]
-
-                            if (index < data.length - 10){
-                                wmsUrl += prop_key + '=' + String(prop_data) + ' AND '
+                        keys.forEach(element => {
+                            let el = ''
+                            if (Array.isArray(filters[element])){
+                                el = JSON.stringify(filters[element]).slice(1, -1)
+                            } else {
+                                el = filters[element]
                             }
-                            else if (index < data.length - 1){
-                                wmsUrl += prop_key + '=' + String(prop_data) + ' OR '
-
-                            }
-                            
-                            else {
-                                wmsUrl += prop_key + '=' + String(prop_data)
-                            }
-                        }
+                            wmsUrl += element + ' IN (' + el + ') AND '  
+                        });
+                        wmsUrl = wmsUrl.slice(0, -4)
                     }
                 } else {
                     wmsUrl =
