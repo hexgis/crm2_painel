@@ -42,6 +42,18 @@
                     <v-btn icon color="accent" @click="showTableDialog(true)">
                         <v-icon large>mdi-table</v-icon>
                     </v-btn>
+                    <div class="d-none" v-if="tableDialogMonitoring">
+                        <TableDialog
+                            :table="tableDialogMonitoring"
+                            :headers="headers"
+                            :value="tableMonitoring"
+                            :loadingTable="isLoadingTableMonitoring"
+                            :loadingCSV="isLoadingCSVMonitoring"
+                            :fDownloadCSV="downloadTableMonitoring"
+                            :tableName="$t('table-name')"
+                            :fCloseTable="closeTable"
+                        />
+                    </div>
                 </v-row>
 
                 <v-row class="py-2">
@@ -61,12 +73,14 @@
         "en": {
             "title": "Monitoring",
             "analytics-label": "Analytics",
-            "map-label": "Map"
+            "map-label": "Map",
+            "table-name": "Monitoring Table"
         },
         "pt-br": {
             "title": "Monitoramento Diário",
             "analytics-label": "Analytics",
-            "map-label": "Mapa"
+            "map-label": "Mapa",
+            "table-name": "Tabela de Monitoramento"
         }
     }
 </i18n>
@@ -74,16 +88,45 @@
 <script>
 import MonitoringFilter from '@/components/monitoring/MonitoringFilter'
 import ShowDialog from '@/components/show-dialog/ShowDialog'
+import TableDialog from '@/components/table-dialog/TableDialog.vue'
 import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
-    components: { MonitoringFilter, ShowDialog },
+    components: { MonitoringFilter, ShowDialog, TableDialog },
 
     data() {
         return {
             tab: null,
             items: ['MapStage', 'AnalytcalStage'],
             text: 'Texto de teste.',
+            headers: [
+                { text: 'Código Funai', value: 'co_funai' },
+                { text: 'Terra Indígena', value: 'no_ti' },
+                // { text: 'Co CR', value: 'co_cr' },
+                { text: 'Coordenação Regional', value: 'ds_cr' },
+                // { text: 'Prioridade', value: 'prioridade' },
+                { text: 'Classe', value: 'no_estagio' },
+                // { text: 'No Imagem', value: 'no_imagem' },
+                { text: 'Data da Imagem', value: 'dt_imagem' },
+                // { text: 'Tempo', value: 'tempo' },
+                // {
+                //     text: 'Id Ciclo de monitoramento',
+                //     value: 'tb_ciclo_monitoramento_id',
+                // },
+                // { text: 'Nu Órbita', value: 'nu_orbita' },
+                // { text: 'Nu Ponto', value: 'nu_ponto' },
+                // { text: 'Data Inicial', value: 'dt_t_zero' },
+                // { text: 'Data Final', value: 'dt_t_um' },
+                // { text: 'Data Cadastro', value: 'dt_cadastro' },
+                // { text: 'Nu Área Km2', value: 'nu_area_km2' },
+                { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
+                // { text: 'Contribuição', value: 'contribuicao' },
+                // { text: 'Velocidade', value: 'velocidade' },
+                // { text: 'Contiguidade', value: 'contiguidade' },
+                // { text: 'Ranking', value: 'ranking' },
+                { text: 'Latitude', value: 'nu_latitude' },
+                { text: 'Longitude', value: 'nu_longitude' },
+            ],
         }
     },
     computed: {
@@ -106,30 +149,50 @@ export default {
         ...mapState('monitoring', [
             'showFeatures',
             'features',
-            'tableDialog',
+            'total',
             'visualizationStage',
-            'isLoadingTable',
-            'tableDialog',
+            'isLoadingTableMonitoring',
+            'tableDialogMonitoring',
+            'tableMonitoring',
+            'isLoadingCSVMonitoring',
         ]),
     },
-
     methods: {
         search() {
-            if (this.tableDialog) this.getDataTableMonitoring()
-            if (!this.tableDialog) this.getFeatures()
+            if (this.tableDialogMonitoring) this.getDataTableMonitoring()
+            if (!this.tableDialogMonitoring) this.getFeatures()
         },
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)
         },
         showTableDialog(value) {
             if (this.features) {
-                this.setTableDialog(value)
+                this.settableDialogMonitoring(value)
+                this.setshowTableDialog(value)
                 this.getDataTableMonitoring()
             }
         },
-        ...mapActions('monitoring', ['getFeatures', 'getDataTableMonitoring']),
+        closeTable(value) {
+            if (this.features.features.length === this.total.total) {
+                this.settableDialogMonitoring(value)
+                this.setshowTableDialog(value)
+            } else {
+                this.settableDialogMonitoring(value)
+                this.setshowTableDialog(value)
+                this.getFeatures()
+            }
+        },
+        ...mapActions('monitoring', [
+            'getFeatures',
+            'getDataTableMonitoring',
+            'downloadTableMonitoring',
+        ]),
         ...mapMutations('priority', ['setVisualizationStage']),
-        ...mapMutations('monitoring', ['setTableDialog', 'setLoadingTable']),
+        ...mapMutations('tableDialog', ['setshowTableDialog']),
+        ...mapMutations('monitoring', [
+            'settableDialogMonitoring',
+            'setLoadingTable',
+        ]),
     },
 }
 </script>

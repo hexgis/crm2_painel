@@ -2,11 +2,11 @@ export const state = () => ({
     features: null,
     showFeatures: false,
     visualizationStage: 'stage1',
-    tableDialog: false,
-    isLoadingCSV: false,
+    tableDialogMonitoring: false,
+    isLoadingCSVMonitoring: false,
     isLoadingGeoJson: false,
     isLoadingFeatures: false,
-    isLoadingTable: true,
+    isLoadingTableMonitoring: true,
     filterOptions: {
         regionalFilters: [],
     },
@@ -54,15 +54,15 @@ export const mutations = {
     setTotal(state, total) {
         state.total = total
     },
-    setTableDialog(state, tableDialog) {
-        state.tableDialog = tableDialog
+    settableDialogMonitoring(state, tableDialogMonitoring) {
+        state.tableDialogMonitoring = tableDialogMonitoring
     },
 
     setLoadingFeatures(state, payload) {
         state.isLoadingFeatures = payload
     },
-    setLoadingTable(state, payload) {
-        state.isLoadingTable = payload
+    setLoadingTableMonitoring(state, payload) {
+        state.isLoadingTableMonitoring = payload
     },
     setFilterOptions(state, data) {
         state.filterOptions = data
@@ -159,7 +159,7 @@ export const actions = {
         commit('setFilterOptions', data)
     },
     async getDataTableMonitoring({ commit, state, rootGetters }) {
-        commit('setLoadingTable', true)
+        commit('setLoadingTableMonitoring', true)
 
         const params = {
             start_date: state.filters.startDate,
@@ -206,7 +206,7 @@ export const actions = {
                 { root: true }
             )
         } finally {
-            commit('setLoadingTable', false)
+            commit('setLoadingTableMonitoring', false)
         }
     },
     async downloadTableMonitoring({ commit, state, rootGetters }) {

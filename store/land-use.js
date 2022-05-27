@@ -1,7 +1,7 @@
 export const state = () => ({
     features: null,
     showFeatures: false,
-    tableLand: false,
+    tableDialogLand: false,
     isLoadingTable: true,
     isLoadingCSV: false,
     isLoadingGeoJson: false,
@@ -61,8 +61,8 @@ export const mutations = {
         state.visualizationStage = visualizationStage
     },
 
-    setTableLand(state, payload) {
-        state.tableLand = payload
+    settableDialogLand(state, tableDialogLand) {
+        state.tableDialogLand = tableDialogLand
     },
 
     setLoadingFeatures(state, payload) {

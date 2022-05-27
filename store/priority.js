@@ -2,7 +2,7 @@ export const state = () => ({
     features: null,
     showFeatures: false,
     heatMap: true,
-    tablePriority: false,
+    tableDialogPriority: false,
     isLoadingTable: true,
     isLoadingFeatures: false,
     isLoadingGeoJson: false,
@@ -57,8 +57,8 @@ export const mutations = {
         state.features = features
     },
 
-    setTablePriority(state, tablePriority) {
-        state.tablePriority = tablePriority
+    settableDialogPriority(state, tableDialogPriority) {
+        state.tableDialogPriority = tableDialogPriority
     },
 
     setLoadingTable(state, loadingTable) {

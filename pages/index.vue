@@ -28,7 +28,7 @@
             :to="localePath(tab.route)"
             exact
             nuxt
-            :disabled="tableDialog || tablePriority || tableLand"
+            :disabled="showTableDialog"
         >
             <v-tooltip left>
                 <template #activator="{ on }">
@@ -178,9 +178,7 @@ export default {
         },
 
         ...mapState('catalog', ['isComparing']),
-        ...mapState('monitoring', ['tableDialog']),
-        ...mapState('priority', ['tablePriority']),
-        ...mapState('land-use', ['tableLand']),
+        ...mapState('tableDialog', ['showTableDialog']),
     },
 
     watch: {

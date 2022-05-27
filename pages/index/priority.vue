@@ -72,6 +72,18 @@
                     <v-btn icon color="accent" @click="showTablePriority(true)">
                         <v-icon large>mdi-table</v-icon>
                     </v-btn>
+                    <div class="d-none" v-if="tableDialogPriority">
+                        <TableDialog
+                            :table="tableDialogPriority"
+                            :value="table"
+                            :headers="headers"
+                            :loadingTable="isLoadingTable"
+                            :loadingCSV="isLoadingCSV"
+                            :fDownloadCSV="downloadTable"
+                            :fCloseTable="closeTable"
+                            :tableName="$t('table-name')"
+                        />
+                    </div>
                 </v-row>
 
                 <v-row class="py-2">
@@ -91,12 +103,14 @@
         "en": {
             "title": "Priority Polygons",
             "analytics-label": "Analytics",
-            "map-label": "Map"
+            "map-label": "Map",
+            "table-name": "Priority Table"
         },
         "pt-br": {
             "title": "Polígonos Prioritários",
             "analytics-label": "Analytics",
-            "map-label": "Mapa"
+            "map-label": "Mapa",
+            "table-name": "Tabela de Prioridade"
         }
     }
 </i18n>
@@ -104,10 +118,11 @@
 <script>
 import FunaiFilter from '@/components/priority/PriorityFilter'
 import ShowDialog from '@/components/show-dialog/ShowDialog'
+import TableDialog from '@/components/table-dialog/TableDialog.vue'
 import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
-    components: { FunaiFilter, ShowDialog },
+    components: { FunaiFilter, ShowDialog, TableDialog },
 
     data() {
         return {
@@ -115,6 +130,34 @@ export default {
             items: ['MapStage', 'AnalytcalStage'],
             text: 'Texto de teste.',
             timer: '',
+            headers: [
+                { text: 'Código Funai', value: 'co_funai' },
+                { text: 'Terra Indígena', value: 'no_ti' },
+                // { text: 'Co CR', value: 'co_cr' },
+                { text: 'Coordenação Regional', value: 'ds_cr' },
+                { text: 'Prioridade', value: 'prioridade' },
+                { text: 'Classe', value: 'no_estagio' },
+                // { text: 'No Imagem', value: 'no_imagem' },
+                { text: 'Data da Imagem', value: 'dt_imagem' },
+                // { text: 'Tempo', value: 'tempo' },
+                // {
+                //     text: 'Id Ciclo de monitoramento',
+                //     value: 'tb_ciclo_monitoramento_id',
+                // },
+                // { text: 'Nu Órbita', value: 'nu_orbita' },
+                // { text: 'Nu Ponto', value: 'nu_ponto' },
+                // { text: 'Data Inicial', value: 'dt_t_zero' },
+                // { text: 'Data Final', value: 'dt_t_um' },
+                // { text: 'Data Cadastro', value: 'dt_cadastro' },
+                // { text: 'Nu Área Km2', value: 'nu_area_km2' },
+                { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
+                // { text: 'Contribuição', value: 'contribuicao' },
+                // { text: 'Velocidade', value: 'velocidade' },
+                // { text: 'Contiguidade', value: 'contiguidade' },
+                // { text: 'Ranking', value: 'ranking' },
+                { text: 'Latitude', value: 'nu_latitude' },
+                { text: 'Longitude', value: 'nu_longitude' },
+            ],
         }
     },
     computed: {
@@ -139,16 +182,17 @@ export default {
             'features',
             'table',
             'visualizationStage',
-            'response',
-            'params',
-            'tablePriority',
+            'tableDialogPriority',
+            'isLoadingTable',
+            'isLoadingCSV',
+            'total',
         ]),
     },
 
     methods: {
         search() {
-            if (this.tablePriority) this.getDataTable()
-            if (!this.tablePriority) this.getFeatures()
+            if (this.tableDialogPriority) this.getDataTable()
+            if (!this.tableDialogPriority) this.getFeatures()
         },
         searchDataTable() {
             this.getDataTable()
@@ -158,14 +202,31 @@ export default {
         },
         showTablePriority(value) {
             if (this.features) {
-                this.setTablePriority(value)
+                this.settableDialogPriority(value)
+                this.setshowTableDialog(value)
                 this.getDataTable()
             }
         },
-        ...mapActions('priority', ['getFeatures', 'getDataTable']),
+        closeTable(value) {
+            if (this.features.features.length === this.total.total) {
+                this.settableDialogPriority(value)
+                this.setshowTableDialog(value)
+            } else {
+                this.settableDialogPriority(value)
+                this.setshowTableDialog(value)
+                this.getFeatures()
+            }
+        },
+        ...mapActions('priority', [
+            'getFeatures',
+            'getDataTable',
+            'downloadTable',
+        ]),
+        ...mapMutations('tableDialog', ['setshowTableDialog']),
+
         ...mapMutations('priority', [
             'setVisualizationStage',
-            'setTablePriority',
+            'settableDialogPriority',
         ]),
     },
 }
