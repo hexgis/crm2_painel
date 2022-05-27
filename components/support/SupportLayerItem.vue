@@ -107,23 +107,28 @@ export default {
 
                     const filters = this.layer.filters
                     const keys = Object.keys(filters)
-                    
-                    if (filters.co_cr && filters.co_funai) {
+                    if(keys.length){
                         wmsUrl += '&CQL_FILTER='
+                    if (filters.co_cr.length && filters.co_funai.length) {
+                        
                     wmsUrl += `co_cr IN (${filters.co_cr}) AND co_funai IN (${filters.co_funai}) `
-                    return wmsUrl
+                    
                     
                     }
-                    if (filters.co_cr) {
-                        wmsUrl += '&CQL_FILTER='
+                    if (filters.co_cr.length && filters.co_funai.length == 0) {
+                        
                     wmsUrl += `co_cr IN (${filters.co_cr}) `
-                    return wmsUrl
+                    
+
+                    
                 } 
-                if (filters.co_funai) {
-                        wmsUrl += '&CQL_FILTER='
+                if (filters.co_funai.length && filters.co_cr.length == 0) {
+                        
                     wmsUrl += `co_funai IN (${filters.co_funai}) `
-                    return wmsUrl
+                    
+                    
                 }
+                    }
                 else {
                     wmsUrl =
                         this.layer.wms.geoserver.wms_url +
