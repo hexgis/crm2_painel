@@ -138,7 +138,7 @@ export default {
 
     data: () => ({
         valid: false,
-        filters: {},
+        filters: [],
         loading: false,
         hasDoubleDate: false,
     }),

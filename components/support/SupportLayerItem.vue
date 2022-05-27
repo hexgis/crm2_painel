@@ -107,44 +107,46 @@ export default {
 
                     const filters = this.layer.filters
                     const keys = Object.keys(filters)
-                    if(keys.length){
-                        wmsUrl += '&CQL_FILTER='
-                    if (filters.co_cr.length && filters.co_funai.length) {
-                        
-                    wmsUrl += `co_cr IN (${filters.co_cr}) AND co_funai IN (${filters.co_funai}) `
-                    
-                    
+                    if (keys.length) {
+                        if (filters.co_cr.length && filters.co_funai.length) {
+                            wmsUrl += '&CQL_FILTER='
+                            wmsUrl += `co_cr IN (${filters.co_cr}) AND co_funai IN (${filters.co_funai}) `
+                        }
+                        if (
+                            filters.co_cr.length &&
+                            filters.co_funai.length == 0
+                        ) {
+                            wmsUrl += '&CQL_FILTER='
+                            wmsUrl += `co_cr IN (${filters.co_cr}) `
+                        }
+                        if (
+                            filters.co_funai.length &&
+                            filters.co_cr.length == 0
+                        ) {
+                            wmsUrl += '&CQL_FILTER='
+                            wmsUrl += `co_funai IN (${filters.co_funai}) `
+                        }
+                        // else {
+                        //     wmsUrl =
+                        //         this.layer.wms.geoserver.wms_url +
+                        //         '&env=percentage:' +
+                        //         this.layer.opacity / 100
+                        // }
+                    } else {
+                        wmsUrl =
+                            this.layer.wms.geoserver.wms_url +
+                            '&env=percentage:' +
+                            this.layer.opacity / 100
                     }
-                    if (filters.co_cr.length && filters.co_funai.length == 0) {
-                        
-                    wmsUrl += `co_cr IN (${filters.co_cr}) `
-                    
 
-                    
-                } 
-                if (filters.co_funai.length && filters.co_cr.length == 0) {
-                        
-                    wmsUrl += `co_funai IN (${filters.co_funai}) `
-                    
-                    
+                    this.$nextTick(() => {
+                        this.$refs.wmsLayer.mapObject.setUrl(wmsUrl)
+                    })
                 }
-                    }
-                else {
-                    wmsUrl =
-                        this.layer.wms.geoserver.wms_url +
-                        '&env=percentage:' +
-                        this.layer.opacity / 100
-                }
-
-                this.$nextTick(() => {
-                    this.$refs.wmsLayer.mapObject.setUrl(wmsUrl)
-                })
             }
-            }
-
+            console.log(wmsUrl)
             return wmsUrl
-            
-        }
+        },
     },
 
     watch: {
