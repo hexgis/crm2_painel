@@ -3,8 +3,11 @@
         <v-row dense class="my-4">
             <template v-for="layer_filter in layer.layer_filters">
                 <template>
-                    <v-col v-if="layer_filter.filter_type === 'start_date'"
-                    :key="layer_filter.filter_type" cols="6">
+                    <v-col
+                        v-if="layer_filter.filter_type === 'start_date'"
+                        :key="layer_filter.filter_type"
+                        cols="6"
+                    >
                         <BaseDateField
                             v-model="filters.startDate"
                             :label="$t('end-date-label')"
@@ -13,9 +16,13 @@
                             dense
                         />
                     </v-col>
-                    <v-col v-if="layer_filter.filter_type === 'end_date'" :key="layer_filter.filter_type" cols="6">
+                    <v-col
+                        v-if="layer_filter.filter_type === 'end_date'"
+                        :key="layer_filter.filter_type"
+                        cols="6"
+                    >
                         <BaseDateField
-                            v-model="	filters.endDate"
+                            v-model="filters.endDate"
                             :label="$t('end-date-label')"
                             :required="true"
                             outlined
@@ -120,7 +127,7 @@ export default {
 
     data: () => ({
         valid: false,
-        filters: {},
+        filters: [],
         loading: false,
     }),
 

@@ -107,6 +107,7 @@ export default {
 
                     const filters = this.layer.filters
                     const keys = Object.keys(filters)
+
                     if(keys.length){
                         wmsUrl += '&CQL_FILTER='
                         if (typeof filters.co_cr !== "undefined" && typeof filters.co_funai !== "undefined") {
@@ -142,6 +143,7 @@ export default {
             }
             return wmsUrl
         }
+
     },
 
     watch: {
