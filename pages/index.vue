@@ -79,6 +79,7 @@
         "support-fire-tab": "Fire Hazard and Hot Spots",
         "landuse-tab": "Land Use And Occupation",
         "compare-tab": "Compare images",
+        "prodes-tab": "PRODES (INPE)",
         "algorithms-tab": "Algorithms",
         "webhooks-tab": "Webhooks",
         "funai-tab": "Priorities"
@@ -92,6 +93,7 @@
         "support-fire-tab": "Risco de Fogo e Focos de Calor",
         "landuse-tab": "Uso e Ocupação do Solo",
         "compare-tab": "Comparar imagens",
+        "prodes-tab": "PRODES (INPE)",
         "algorithms-tab": "Algoritmos",
         "webhooks-tab": "Webhooks",
         "funai-tab": "Polígonos Prioritários"
@@ -162,6 +164,11 @@ export default {
                     name: this.$t('landuse-tab'),
                     icon: 'mdi-sprout',
                     route: '/land-use',
+                },
+                {
+                    name: this.$t('prodes-tab'),
+                    icon: 'mdi-view-dashboard',
+                    route: '/support-prodes',
                 },
                 // {
                 //     name: this.$t('algorithms-tab'),

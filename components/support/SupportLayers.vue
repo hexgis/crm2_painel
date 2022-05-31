@@ -9,6 +9,9 @@
         <template v-for="layer in supportLayersCategoryRaster">
             <SupportLayerItem :key="layer.id" :layer="layer" />
         </template>
+        <template v-for="layer in supportLayersCategoryProdes">
+            <SupportLayerItem :key="layer.id" :layer="layer" />
+        </template>
     </l-layer-group>
 </template>
 
