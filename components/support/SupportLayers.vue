@@ -32,6 +32,7 @@ export default {
         'showFeatures',
         'supportLayersCategoryFire',
         'supportLayersCategoryRaster',
+        'supportLayersCategoryProdes',
     ]),
 }
 </script>
