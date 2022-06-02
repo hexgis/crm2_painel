@@ -50,7 +50,7 @@
                         icon
                         color="accent"
                         @click="
-                            changeVisualizationStage('map'), verifyFeatures()
+                            changeVisualizationStage('map'), checkFeatures()
                         "
                     >
                         <v-icon large>mdi-map</v-icon>
@@ -66,8 +66,8 @@
                         icon
                         color="accent"
                         @click="
-                            changeVisualizationStage('tableLand'),
-                                verifyTableLandUse()
+                            changeVisualizationStage('tableLandUse'),
+                                checkTableLandUse()
                         "
                     >
                         <v-icon large>mdi-table</v-icon>
@@ -150,10 +150,10 @@ export default {
             if (this.visualizationStage == 'tableLand')
                 this.getDataTableLandUse()
         },
-        verifyFeatures() {
+        checkFeatures() {
             if (this.tableLandUse.length) this.getFeatures()
         },
-        verifyTableLandUse() {
+        checkTableLandUse() {
             if (this.features != null) this.getDataTableLandUse()
         },
         searchDataTable() {

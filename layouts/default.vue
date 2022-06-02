@@ -88,7 +88,7 @@
                 <MonitoringTable />
             </v-main>
         </div>
-        <div v-if="$store.state.priority.visualizationStage == 'tableLand'">
+        <div v-if="$store.state.priority.visualizationStage == 'tableLandUse'">
             <v-main class="pa-0">
                 <LandUseTable />
             </v-main>

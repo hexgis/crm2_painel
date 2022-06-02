@@ -234,24 +234,25 @@ export default {
         },
 
         search() {
-            if (this.filters.cr.length > 0 && this.filters.year.length === 0) {
-                this.errorRegional = false
-                this.errorAno = true
-            } else if (
-                this.filters.cr.length === 0 &&
-                this.filters.year.length > 0
-            ) {
-                this.errorRegional = true
-                this.errorAno = false
-            } else if (this.filters.cr.length && this.filters.year.length) {
-                this.errorRegional = false
-                this.errorAno = false
-                this.setFilters(this.filters)
-                this.$emit('onSearch')
-            } else {
+            if (!this.filters.cr.length && !this.filters.year.length) {
                 this.errorRegional = true
                 this.errorAno = true
+                return
             }
+            if (!this.filters.cr.length && this.filters.year.length) {
+                this.errorRegional = true
+                this.errorAno = false
+                return
+            }
+            if (this.filters.cr.length && !this.filters.year.length) {
+                this.errorRegional = false
+                this.errorAno = true
+                return
+            }
+            this.errorRegional = false
+            this.errorAno = false
+            this.setFilters(this.filters)
+            this.$emit('onSearch')
         },
         ...mapMutations('land-use', ['setFilters']),
         ...mapActions('land-use', [

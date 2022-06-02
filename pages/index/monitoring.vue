@@ -28,7 +28,7 @@
                         icon
                         color="accent"
                         @click="
-                            changeVisualizationStage('map'), verifyFeatures()
+                            changeVisualizationStage('map'), checkFeatures()
                         "
                     >
                         <v-icon large>mdi-map</v-icon>
@@ -45,7 +45,7 @@
                         color="accent"
                         @click="
                             changeVisualizationStage('tableMonitoring'),
-                                verifyTable()
+                                checkTable()
                         "
                     >
                         <v-icon large>mdi-table</v-icon>
@@ -125,10 +125,10 @@ export default {
             if (this.visualizationStage == 'tableMonitoring')
                 this.getDataTableMonitoring()
         },
-        verifyFeatures() {
+        checkFeatures() {
             if (this.tableMonitoring.length) this.getFeatures()
         },
-        verifyTable() {
+        checkTable() {
             if (this.features != null) this.getDataTableMonitoring()
         },
         changeVisualizationStage(tab) {
