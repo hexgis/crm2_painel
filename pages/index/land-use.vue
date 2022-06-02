@@ -151,6 +151,7 @@ export default {
                 // { text: 'Latitude', value: 'nu_latitude' },
                 // { text: 'Longitude', value: 'nu_longitude' },
             ],
+            checkNewFilters: false,
         }
     },
     computed: {
@@ -186,7 +187,10 @@ export default {
 
     methods: {
         search() {
-            if (this.tableDialogLand) this.getDataTableLandUse()
+            if (this.tableDialogLand) {
+                this.checkNewFilters = true
+                this.getDataTableLandUse()
+            }
             if (!this.tableDialogLand) this.getFeatures()
         },
         searchDataTable() {
@@ -203,13 +207,14 @@ export default {
             }
         },
         closeTable(value) {
-            if (this.features.features.length === this.total.total) {
+            if (!this.checkNewFilters) {
                 this.settableDialogLand(value)
                 this.setshowTableDialog(value)
             } else {
                 this.settableDialogLand(value)
                 this.setshowTableDialog(value)
                 this.getFeatures()
+                this.checkNewFilters = false
             }
         },
         ...mapActions('land-use', [

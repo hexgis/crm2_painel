@@ -127,6 +127,7 @@ export default {
                 { text: 'Latitude', value: 'nu_latitude' },
                 { text: 'Longitude', value: 'nu_longitude' },
             ],
+            checkNewFilters: false,
         }
     },
     computed: {
@@ -159,7 +160,10 @@ export default {
     },
     methods: {
         search() {
-            if (this.tableDialogMonitoring) this.getDataTableMonitoring()
+            if (this.tableDialogMonitoring) {
+                this.checkNewFilters = true
+                this.getDataTableMonitoring()
+            }
             if (!this.tableDialogMonitoring) this.getFeatures()
         },
         changeVisualizationStage(tab) {
@@ -173,13 +177,14 @@ export default {
             }
         },
         closeTable(value) {
-            if (this.features.features.length === this.total.total) {
+            if (!this.checkNewFilters) {
                 this.settableDialogMonitoring(value)
                 this.setshowTableDialog(value)
             } else {
                 this.settableDialogMonitoring(value)
                 this.setshowTableDialog(value)
                 this.getFeatures()
+                this.checkNewFilters = false
             }
         },
         ...mapActions('monitoring', [
