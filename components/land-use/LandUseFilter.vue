@@ -12,7 +12,6 @@
                 clearable
                 required="true"
                 :error="errorRegional"
-                multiple
             >
             </v-select>
         </v-row>
