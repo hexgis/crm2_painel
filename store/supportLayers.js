@@ -35,6 +35,7 @@ export const getters = {
         }
         return activeLayerIds
     },
+
     activeLayerIds(state) {
         const activeLayerIds = []
         for (const layer of Object.values(state.supportLayersCategoryRaster)) {
@@ -44,6 +45,7 @@ export const getters = {
         }
         return activeLayerIds
     },
+
     activeLayerIds(state) {
         const activeLayerIds = []
         for (const layer of Object.values(state.supportLayersCategoryFire)) {
@@ -53,6 +55,7 @@ export const getters = {
         }
         return activeLayerIds
     },
+
     activeLayerIds(state) {
         const activeLayerIds = []
         for (const layer of Object.values(

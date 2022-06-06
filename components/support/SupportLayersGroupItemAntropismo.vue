@@ -30,15 +30,6 @@
                     </span>
                 </v-list-item-title>
             </v-list-item-content>
-
-            <!-- <v-list-item-action v-if="disabledHeatmap">
-                <v-switch
-                    :input-value="layer.visible"
-                    :disabled="true"
-                    :loading="layer.loading"
-                    @change="toggleLayer"
-                />
-            </v-list-item-action> -->
             <v-list-item-action @click.stop="">
                 <v-switch
                     :input-value="layer.visible"

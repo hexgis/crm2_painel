@@ -14,17 +14,6 @@
         <ShowDialog />
 
         <v-container class="pa-0">
-            <!-- <div class="tab-header justify-space-between">
-                <h4 class="subtitle-2 text-uppercase font-weight-regular">
-                    {{ $t('title') }}
-                </h4>
-                <v-switch
-                    v-show="!loading"
-                    v-model="showFeaturesAntropismo"
-                    class="mt-n1 ml-5"
-                    hide-details
-                />
-            </div> -->
             <v-list v-if="!$fetchState.pending" expand>
                 <template v-for="group in orderedSupportLayersGroups">
                     <SupportLayersGroupAntropismo
@@ -38,18 +27,6 @@
                     <v-skeleton-loader :key="i" type="text" class="mx-4 my-5" />
                 </template>
             </div>
-            <!-- <v-container>
-                <v-container>
-                    <v-footer
-                        absolute
-                        color="#FFFFFF"
-                        elevation="6"
-                        class="d-flex justify-center"
-                    >
-                        <v-img max-width="200" src="/img/logocmr_normal.png" />
-                    </v-footer>
-                </v-container>
-            </v-container> -->
         </v-container>
         <v-divider />
         <MonitoringFilter @onSearch="search()" />
@@ -146,6 +123,7 @@ export default {
                 this.features.features.length > 0
             )
         },
+
         showFeaturesMonitoring: {
             get() {
                 return this.$store.state.monitoring.showFeatures
@@ -155,9 +133,11 @@ export default {
                 this.$store.commit('monitoring/setShowFeatures', value)
             },
         },
+
         orderedSupportLayersGroups() {
             return _.sortBy(this.supportCategoryGroupsAntropismo, 'order')
         },
+
         showFeaturesAntropismo: {
             get() {
                 return this.$store.state.supportLayers.showFeatures
@@ -179,9 +159,11 @@ export default {
             this.getFeatures()
             this.getDataTableMonitoring()
         },
+
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)
         },
+
         ...mapActions('monitoring', ['getFeatures', 'getDataTableMonitoring']),
         ...mapMutations('priority', ['setVisualizationStage']),
     },

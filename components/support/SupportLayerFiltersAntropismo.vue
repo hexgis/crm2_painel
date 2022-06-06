@@ -6,7 +6,7 @@
                     <BaseDateField
                         v-model="filters.start_date"
                         :label="$t('start-date-label')"
-                        :required="true"
+                        required
                         outlined
                         dense
                     />
@@ -15,7 +15,7 @@
                     <BaseDateField
                         v-model="filters.end_date"
                         :label="$t('end-date-label')"
-                        :required="true"
+                        required
                         :min-date="filters.start_date"
                         outlined
                         dense
@@ -35,7 +35,7 @@
                         <BaseDateField
                             v-model="filters[layer_filter.filter_type]"
                             :label="$t('start-date-label')"
-                            :required="true"
+                            required
                             outlined
                             dense
                         />
@@ -57,7 +57,7 @@
                         hide-details
                         clearable
                         multiple
-                        required="true"
+                        required
                     >
                     </v-select>
                 </v-col>
@@ -78,7 +78,7 @@
                             multiple
                             clearable
                             hide-details
-                            required="true"
+                            required
                         >
                         </v-select>
                     </v-slide-y-transition>
@@ -171,14 +171,17 @@ export default {
             this.hasDoubleDate = hasStartDate && hasEndDate
         }
     },
+
     mounted() {
         this.getFilterOptions()
     },
+
     watch: {
         'filters.co_cr'(value) {
             this.populateTiOptions(value)
         },
     },
+
     computed: {
         ...mapState('supportLayers', ['filterOptions']),
     },
@@ -188,12 +191,12 @@ export default {
             if (cr) this.$store.dispatch('supportLayers/getTiOptions', cr)
             else this.filters.ti = null
         },
+
         filterLayer() {
             const filterInfo = {
                 id: this.layer.id,
                 filters: this.filters,
             }
-            console.log(this.filters)
             if (this.layer.layer_type === 'heatmap') {
                 this.loading = true
                 this.setLayerFiltersAntropismo(filterInfo)
