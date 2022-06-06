@@ -98,9 +98,6 @@ import { mapState } from 'vuex'
 import Map from '@/components/map/Map'
 import BaseAlert from '@/components/base/BaseAlert'
 import AnalyticsPCDashboard from '@/components/analytical-cmr/AnalyticsPriorConsolidDashboard'
-import PriorityTable from '~/components/priority/PriorityTable.vue'
-import MonitoringTable from '~/components/monitoring/MonitoringTable.vue'
-import LandUseTable from '~/components/land-use/LandUseTable.vue'
 
 export default {
     name: 'App',
@@ -108,9 +105,6 @@ export default {
         Map,
         BaseAlert,
         AnalyticsPCDashboard,
-        PriorityTable,
-        MonitoringTable,
-        LandUseTable,
     },
 
     fetch() {

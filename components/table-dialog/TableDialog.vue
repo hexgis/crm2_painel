@@ -23,7 +23,7 @@
                     type="table-row-divider@8"
                 ></v-skeleton-loader>
                 <v-card v-if="!loadingTable">
-                    <a class="d-flex justify-end" v-if="!loadingTable">
+                    <a class="d-flex justify-end">
                         <v-btn
                             small
                             fab
@@ -104,11 +104,25 @@ export default {
     }),
     methods: {
         getColor(prioridade) {
-            if (prioridade === 'Alta') return 'red'
-            else if (prioridade === 'Muito Alta') return '#9400D3'
-            else if (prioridade === 'Media') return 'orange'
-            else if (prioridade === 'Baixa') return 'yellow'
-            else if (prioridade === 'Muito Baixa') return 'green'
+            switch (prioridade) {
+                case 'Muito Alta':
+                    return '#9400D3'
+                    break
+                case 'Alta':
+                    return 'red'
+                    break
+                case 'Media':
+                    return 'orange'
+                    break
+                case 'Baixa':
+                    return 'yellow'
+                    break
+                case 'Muito Baixa':
+                    return 'green'
+                    break
+                default:
+                    break
+            }
         },
     },
 }

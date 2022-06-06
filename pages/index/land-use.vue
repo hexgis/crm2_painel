@@ -126,30 +126,10 @@ export default {
             headers: [
                 { text: 'Código Funai', value: 'co_funai' },
                 { text: 'Terra Indígena', value: 'no_ti' },
-                // { text: 'Co CR', value: 'co_cr' },
                 { text: 'Coordenação Regional', value: 'ds_cr' },
-                // { text: 'Prioridade', value: 'prioridade' },
-                // { text: 'Classe', value: 'no_estagio' },
-                // { text: 'No Imagem', value: 'no_imagem' },
-                // { text: 'Data da Imagem', value: 'dt_imagem' },
-                // { text: 'Tempo', value: 'tempo' },
-                // {
-                //     text: 'Id Ciclo de monitoramento',
-                //     value: 'tb_ciclo_monitoramento_id',
-                // },
-                // { text: 'Nu Órbita', value: 'nu_orbita' },
-                // { text: 'Nu Ponto', value: 'nu_ponto' },
-                // { text: 'Data Inicial', value: 'dt_t_zero' },
-                // { text: 'Data Final', value: 'dt_t_um' },
                 { text: 'Data Cadastro', value: 'dt_cadastro' },
                 { text: 'Nu Área Km2', value: 'nu_area_km2' },
                 { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
-                // { text: 'Contribuição', value: 'contribuicao' },
-                // { text: 'Velocidade', value: 'velocidade' },
-                // { text: 'Contiguidade', value: 'contiguidade' },
-                // { text: 'Ranking', value: 'ranking' },
-                // { text: 'Latitude', value: 'nu_latitude' },
-                // { text: 'Longitude', value: 'nu_longitude' },
             ],
             checkNewFilters: false,
         }
@@ -193,12 +173,15 @@ export default {
             }
             if (!this.tableDialogLand) this.getFeatures()
         },
+
         searchDataTable() {
             this.getDataTable()
         },
+
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)
         },
+
         showTableLand(value) {
             if (this.features) {
                 this.settableDialogLand(value)
@@ -206,6 +189,7 @@ export default {
                 this.getDataTableLandUse()
             }
         },
+
         closeTable(value) {
             if (!this.checkNewFilters) {
                 this.settableDialogLand(value)
@@ -217,11 +201,13 @@ export default {
                 this.checkNewFilters = false
             }
         },
+
         ...mapActions('land-use', [
             'getFeatures',
             'getDataTableLandUse',
             'downloadTableLandUse',
         ]),
+
         ...mapMutations('tableDialog', ['setshowTableDialog']),
         ...mapMutations('priority', ['setVisualizationStage']),
         ...mapMutations('land-use', ['settableDialogLand']),

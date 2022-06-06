@@ -51,9 +51,11 @@ export const mutations = {
     clearFeatures(state) {
         state.features = null
     },
+
     setTotal(state, total) {
         state.total = total
     },
+
     settableDialogMonitoring(state, tableDialogMonitoring) {
         state.tableDialogMonitoring = tableDialogMonitoring
     },
@@ -61,9 +63,11 @@ export const mutations = {
     setLoadingFeatures(state, payload) {
         state.isLoadingFeatures = payload
     },
+
     setLoadingTableMonitoring(state, payload) {
         state.isLoadingTableMonitoring = payload
     },
+
     setFilterOptions(state, data) {
         state.filterOptions = data
     },
@@ -71,6 +75,7 @@ export const mutations = {
     setOpacity(state, opacity) {
         state.opacity = opacity
     },
+
     setDownloadTable(state, tableCSVMonitoring) {
         state.tableCSVMonitoring = tableCSVMonitoring
     },
@@ -78,9 +83,11 @@ export const mutations = {
     setHeatMap(state, heatMap) {
         state.heatMap = heatMap
     },
+
     setLoadingCSV(state, payload) {
         state.isLoadingCSVMonitoring = payload
     },
+
     setTable(state, tableMonitoring) {
         state.tableMonitoring = tableMonitoring
     },
