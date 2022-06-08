@@ -195,7 +195,6 @@ export default {
                 this.settableDialogPriority(value)
                 this.setshowTableDialog(value)
                 this.getDataTable()
-                console.log(value)
             }
         },
 
