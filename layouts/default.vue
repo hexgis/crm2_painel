@@ -60,7 +60,7 @@
         >
             <nuxt @closedrawer="layerDrawer = false" />
         </v-navigation-drawer>
-        <div v-if="$store.state.priority.visualizationStage == 'stage1'">
+        <div v-if="$store.state.priority.visualizationStage == 'map'">
             <v-main class="pa-0">
                 <Map
                     v-if="!$fetchState.pending && $store.state.userProfile.user"
@@ -71,22 +71,24 @@
                 />
             </v-main>
         </div>
-        <div v-if="$store.state.priority.visualizationStage == 'stage2'">
+        <div v-if="$store.state.priority.visualizationStage == 'chart'">
             <v-main class="pa-0">
                 <AnalyticsPCDashboard />
             </v-main>
         </div>
-        <div v-if="$store.state.priority.visualizationStage == 'stage3'">
+        <div v-if="$store.state.priority.visualizationStage == 'tablePriority'">
             <v-main class="pa-0">
                 <PriorityTable />
             </v-main>
         </div>
-        <div v-if="$store.state.priority.visualizationStage == 'stage4'">
+        <div
+            v-if="$store.state.priority.visualizationStage == 'tableMonitoring'"
+        >
             <v-main class="pa-0">
                 <MonitoringTable />
             </v-main>
         </div>
-        <div v-if="$store.state.priority.visualizationStage == 'stage5'">
+        <div v-if="$store.state.priority.visualizationStage == 'tableLandUse'">
             <v-main class="pa-0">
                 <LandUseTable />
             </v-main>
@@ -121,7 +123,6 @@ import PriorityTable from '~/components/priority/PriorityTable.vue'
 import MonitoringTable from '~/components/monitoring/MonitoringTable.vue'
 import LandUseTable from '~/components/land-use/LandUseTable.vue'
 
-
 export default {
     name: 'App',
 
@@ -131,7 +132,7 @@ export default {
         AnalyticsPCDashboard,
         PriorityTable,
         MonitoringTable,
-        LandUseTable
+        LandUseTable,
     },
 
     fetch() {

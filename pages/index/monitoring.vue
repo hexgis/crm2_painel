@@ -27,21 +27,26 @@
                         depressed
                         icon
                         color="accent"
-                        @click="changeVisualizationStage('stage1')"
+                        @click="
+                            changeVisualizationStage('map'), checkFeatures()
+                        "
                     >
                         <v-icon large>mdi-map</v-icon>
                     </v-btn>
                     <v-btn
                         icon
                         color="accent"
-                        @click="changeVisualizationStage('stage2')"
+                        @click="changeVisualizationStage('chart')"
                     >
                         <v-icon large>mdi-chart-box</v-icon>
                     </v-btn>
                     <v-btn
                         icon
                         color="accent"
-                        @click="changeVisualizationStage('stage4')"
+                        @click="
+                            changeVisualizationStage('tableMonitoring'),
+                                checkTable()
+                        "
                     >
                         <v-icon large>mdi-table</v-icon>
                     </v-btn>
@@ -106,14 +111,25 @@ export default {
                 this.$store.commit('monitoring/setShowFeatures', value)
             },
         },
-        ...mapState('monitoring', ['showFeatures', 'features']),
+        ...mapState('monitoring', [
+            'showFeatures',
+            'features',
+            'tableMonitoring',
+        ]),
+        ...mapState('priority', ['visualizationStage']),
     },
 
     methods: {
         search() {
-             this.getFeatures()
-             this.getDataTableMonitoring()
-            
+            if (this.visualizationStage == 'map') this.getFeatures()
+            if (this.visualizationStage == 'tableMonitoring')
+                this.getDataTableMonitoring()
+        },
+        checkFeatures() {
+            if (this.tableMonitoring.length) this.getFeatures()
+        },
+        checkTable() {
+            if (this.features != null) this.getDataTableMonitoring()
         },
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)

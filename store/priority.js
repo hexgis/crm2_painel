@@ -7,7 +7,7 @@ export const state = () => ({
     isLoadingCSV: false,
     unitMeasurement: [],
     // displayAnalitcs: null, // responsável por exibir qual dos 4 Dashboards será exibido na tela: Filtro Aplicado; CR; TI; Municípios. Também encaminhar o filtro aplicado.
-    visualizationStage: 'stage1',
+    visualizationStage: 'map',
     filterOptions: {
         regionalFilters: [],
         tiFilters: [],
@@ -107,6 +107,7 @@ export const mutations = {
 
 export const actions = {
     async getFeatures({ state, commit, rootGetters }) {
+        commit('setLoadingGeoJson', true)
         commit('setLoadingFeatures', true)
         commit('clearFeatures')
 
@@ -163,6 +164,7 @@ export const actions = {
         } finally {
             commit('setLoadingFeatures', false)
             commit('setParams', params)
+            commit('setLoadingGeoJson', false)
         }
     },
 
@@ -201,6 +203,10 @@ export const actions = {
             })
     },
     async getDataTable({ commit, state, rootGetters }) {
+        commit('setLoadingFeatures', true)
+        commit('setLoadingGeoJson', true)
+        commit('clearFeatures')
+
         const params = {
             start_date: state.filters.startDate,
             end_date: state.filters.endDate,
@@ -217,16 +223,32 @@ export const actions = {
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
-        const table = await this.$api.$get('priority/consolidated/table/', {
-            params,
-        })
+        try {
+            const table = await this.$api.$get('priority/consolidated/table/', {
+                params,
+            })
 
-        if (table) commit('setTable', table)
+            if (table) commit('setTable', table)
 
-        const total = await this.$api.$get('priority/consolidated/total/', {
-            params,
-        })
-        if (total) commit('setTotal', total)
+            const total = await this.$api.$get('priority/consolidated/total/', {
+                params,
+            })
+            if (total) commit('setTotal', total)
+        } catch (error) {
+            commit(
+                'alert/addAlert',
+                {
+                    message: this.$i18n.t('default-error', {
+                        action: this.$i18n.t('retrieve'),
+                        resource: this.$i18n.t('monitoring'),
+                    }),
+                },
+                { root: true }
+            )
+        } finally {
+            commit('setLoadingFeatures', false)
+            commit('setLoadingGeoJson', false)
+        }
     },
     async downloadTable({ commit, state, rootGetters }) {
         commit('setLoadingCSV', true)

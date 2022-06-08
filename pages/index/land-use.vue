@@ -50,7 +50,7 @@
                         icon
                         color="accent"
                         @click="
-                            changeVisualizationStage('stage1'), getFeatures()
+                            changeVisualizationStage('map'), checkFeatures()
                         "
                     >
                         <v-icon large>mdi-map</v-icon>
@@ -58,7 +58,7 @@
                     <v-btn
                         icon
                         color="accent"
-                        @click="changeVisualizationStage('stage2')"
+                        @click="changeVisualizationStage('chart')"
                     >
                         <v-icon large>mdi-chart-box</v-icon>
                     </v-btn>
@@ -66,8 +66,8 @@
                         icon
                         color="accent"
                         @click="
-                            changeVisualizationStage('stage5'),
-                                getDataTableLandUse()
+                            changeVisualizationStage('tableLandUse'),
+                                checkTableLandUse()
                         "
                     >
                         <v-icon large>mdi-table</v-icon>
@@ -136,17 +136,25 @@ export default {
         ...mapState('land-use', [
             'showFeatures',
             'features',
-            'table',
-            'visualizationStage',
+            'tableLandUse',
             'response',
             'params',
         ]),
+        ...mapState('priority', ['visualizationStage']),
     },
 
     methods: {
         search() {
-            this.getFeatures()
-            this.getDataTableLandUse()
+            if (this.visualizationStage == 'map') this.getFeatures()
+
+            if (this.visualizationStage == 'tableLand')
+                this.getDataTableLandUse()
+        },
+        checkFeatures() {
+            if (this.tableLandUse.length) this.getFeatures()
+        },
+        checkTableLandUse() {
+            if (this.features != null) this.getDataTableLandUse()
         },
         searchDataTable() {
             this.getDataTable()

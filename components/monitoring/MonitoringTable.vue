@@ -16,7 +16,7 @@
                             class="mx-2 my-2"
                             color="secondary"
                             @click="downloadTableMonitoring()"
-                            :loading="isLoadingCSVMonitoring"
+                            :loading="isLoadingCSV"
                         >
                             <v-icon>mdi-download</v-icon>
                         </v-btn>
@@ -82,7 +82,11 @@ export default {
         }
     },
     computed: {
-        ...mapState('monitoring', ['tableMonitoring', 'tableCSVMonitoring', 'isLoadingCSVMonitoring']),
+        ...mapState('monitoring', [
+            'tableMonitoring',
+            'tableCSVMonitoring',
+            'isLoadingCSV',
+        ]),
     },
 
     methods: {

@@ -48,7 +48,7 @@
             <v-col v-show="showFeatures">
                 <v-btn
                     color="accent"
-                    :loading="isLoadingFeatures"
+                    :loading="isLoadingGeoJson"
                     fab
                     small
                     @click="downloadGeoJsonMonitoring()"
@@ -212,6 +212,7 @@ export default {
             'filterOptions',
             'showFeatures',
             'total',
+            'isLoadingGeoJson',
         ]),
     },
 
@@ -222,7 +223,7 @@ export default {
     methods: {
         search() {
             if (
-                (this.filters.currentView !== false &&
+                (this.filters.currentView &&
                     this.filters.startDate &&
                     this.filters.endDate) ||
                 (this.filters.cr.length &&
@@ -232,9 +233,9 @@ export default {
                 this.error = false
                 this.setFilters(this.filters)
                 this.$emit('onSearch')
-            } else {
-                this.error = true
+                return
             }
+            this.error = true
         },
         ...mapMutations('monitoring', ['setFilters']),
         ...mapActions('monitoring', [
