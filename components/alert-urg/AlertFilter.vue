@@ -1,13 +1,6 @@
 <template>
     <v-col class="px-4">
-        <v-row class="px-3">
-            <v-checkbox
-                v-model="filters.currentView"
-                :label="$t('current-view-label')"
-            />
-        </v-row>
-
-        <v-row class="px-3 pb-1">
+        <v-row class="px-3 pb-1 py-3">
             <v-select
                 v-model="filters.cr"
                 label="Coordenação Regional (Todas)"
@@ -41,7 +34,7 @@
             </v-row>
         </v-slide-y-transition>
 
-        <v-row class="pt-4">
+        <v-row class="pt-5">
             <v-col class="py-0">
                 <BaseDateField
                     v-model="filters.startDate"
@@ -199,7 +192,6 @@ export default {
                     .subtract(30, 'days')
                     .format('YYYY-MM-DD'),
                 endDate: this.$moment().format('YYYY-MM-DD'),
-                currentView: false,
                 cr: null,
                 ti: null,
             },

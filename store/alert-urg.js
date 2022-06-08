@@ -18,8 +18,6 @@ export const state = () => ({
     filters: {
         startDate: null,
         endDate: null,
-        currentView: false,
-        priority: null,
         csv: 'csv',
         json: 'json',
     },
