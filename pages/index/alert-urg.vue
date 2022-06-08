@@ -99,16 +99,16 @@
 <i18n>
     {
         "en": {
-            "title": "Priority Polygons",
+            "title": "Alert Urgent",
             "analytics-label": "Analytics",
             "map-label": "Map",
-            "table-name": "Priority Table"
+            "table-name": "Table Alert Urgent"
         },
         "pt-br": {
-            "title": "Polígonos Prioritários",
+            "title": "Alerta Urgente",
             "analytics-label": "Analytics",
             "map-label": "Mapa",
-            "table-name": "Tabela de Prioridade"
+            "table-name": "Tabela de Alerta Urgente"
         }
     }
 </i18n>

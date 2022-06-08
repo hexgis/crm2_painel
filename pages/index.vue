@@ -166,7 +166,7 @@ export default {
                 },
                 {
                     name: this.$t('alert-urg-tab'),
-                    icon: 'mdi-function-variant',
+                    icon: 'mdi-alert-octagram',
                     route: '/alert-urg',
                 },
                 // {
