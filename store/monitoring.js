@@ -122,6 +122,7 @@ export const actions = {
             })
 
             if (!response.features || !response.features.length) {
+                commit('setShowFeatures', false)
                 commit(
                     'alert/addAlert',
                     { message: this.$i18n.t('no-result') },

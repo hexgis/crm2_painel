@@ -50,9 +50,7 @@
                         depressed
                         icon
                         color="accent"
-                        @click="
-                            changeVisualizationStage('map'), checkFeatures()
-                        "
+                        @click="changeVisualizationStage('map')"
                     >
                         <v-icon large>mdi-map</v-icon>
                     </v-btn>

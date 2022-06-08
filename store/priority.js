@@ -305,11 +305,7 @@ export const actions = {
         }
 
         try {
-            saveData(
-                tableCSV.data,
-                't_poligono-prioritario_guilherme.micas_20220329.csv',
-                'text/csv'
-            )
+            saveData(tableCSV.data, 't_poligono-prioritario.csv', 'text/csv')
         } finally {
             commit('setLoadingCSV', false)
         }
@@ -362,7 +358,7 @@ export const actions = {
         try {
             saveData(
                 GeoJson.data,
-                'p_poligono-prioritario_guilherme.micas_20220329.json',
+                'p_poligono-prioritario.json',
                 'application/json'
             )
         } finally {
