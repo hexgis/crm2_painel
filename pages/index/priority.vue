@@ -5,6 +5,7 @@
                 {{ $t('title') }}
             </h4>
             <v-switch
+                v-if="features"
                 v-model="showFeaturesPriority"
                 class="mt-n1 ml-5"
                 hide-details
@@ -55,9 +56,7 @@
                         depressed
                         icon
                         color="accent"
-                        @click="
-                            changeVisualizationStage('map'), checkFeatures()
-                        "
+                        @click="changeVisualizationStage('map')"
                     >
                         <v-icon large>mdi-map</v-icon>
                     </v-btn>
@@ -68,16 +67,21 @@
                     >
                         <v-icon large>mdi-chart-box</v-icon>
                     </v-btn>
-                    <v-btn
-                        icon
-                        color="accent"
-                        @click="
-                            changeVisualizationStage('tablePriority'),
-                                checkTable()
-                        "
-                    >
+                    <v-btn icon color="accent" @click="showTablePriority(true)">
                         <v-icon large>mdi-table</v-icon>
                     </v-btn>
+                    <div class="d-none" v-if="tableDialogPriority">
+                        <TableDialog
+                            :table="tableDialogPriority"
+                            :value="table"
+                            :headers="headers"
+                            :loadingTable="isLoadingTable"
+                            :loadingCSV="isLoadingCSV"
+                            :fDownloadCSV="downloadTable"
+                            :fCloseTable="closeTable"
+                            :tableName="$t('table-name')"
+                        />
+                    </div>
                 </v-row>
 
                 <v-row class="py-2">
@@ -97,12 +101,14 @@
         "en": {
             "title": "Priority Polygons",
             "analytics-label": "Analytics",
-            "map-label": "Map"
+            "map-label": "Map",
+            "table-name": "Priority Table"
         },
         "pt-br": {
             "title": "Polígonos Prioritários",
             "analytics-label": "Analytics",
-            "map-label": "Mapa"
+            "map-label": "Mapa",
+            "table-name": "Tabela de Prioridade"
         }
     }
 </i18n>
@@ -110,10 +116,11 @@
 <script>
 import FunaiFilter from '@/components/priority/PriorityFilter'
 import ShowDialog from '@/components/show-dialog/ShowDialog'
+import TableDialog from '@/components/table-dialog/TableDialog.vue'
 import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
-    components: { FunaiFilter, ShowDialog },
+    components: { FunaiFilter, ShowDialog, TableDialog },
 
     data() {
         return {
@@ -121,6 +128,18 @@ export default {
             items: ['MapStage', 'AnalytcalStage'],
             text: 'Texto de teste.',
             timer: '',
+            headers: [
+                { text: 'Código Funai', value: 'co_funai' },
+                { text: 'Terra Indígena', value: 'no_ti' },
+                { text: 'Coordenação Regional', value: 'ds_cr' },
+                { text: 'Prioridade', value: 'prioridade' },
+                { text: 'Classe', value: 'no_estagio' },
+                { text: 'Data da Imagem', value: 'dt_imagem' },
+                { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
+                { text: 'Latitude', value: 'nu_latitude' },
+                { text: 'Longitude', value: 'nu_longitude' },
+            ],
+            checkNewFilters: false,
         }
     },
     computed: {
@@ -145,30 +164,61 @@ export default {
             'features',
             'table',
             'visualizationStage',
-            'response',
-            'params',
+            'tableDialogPriority',
+            'isLoadingTable',
+            'isLoadingCSV',
+            'total',
         ]),
     },
 
     methods: {
         search() {
-            if (this.visualizationStage == 'map') this.getFeatures()
-            if (this.visualizationStage == 'tablePriority') this.getDataTable()
+            if (this.tableDialogPriority) {
+                this.checkNewFilters = true
+                this.getDataTable()
+            }
+            if (!this.tableDialogPriority) this.getFeatures()
         },
-        checkFeatures() {
-            if (this.table.length) this.getFeatures()
-        },
-        checkTable() {
-            if (this.features != null) this.getDataTable()
-        },
+
         searchDataTable() {
             this.getDataTable()
         },
+
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)
         },
-        ...mapActions('priority', ['getFeatures', 'getDataTable']),
-        ...mapMutations('priority', ['setVisualizationStage']),
+
+        showTablePriority(value) {
+            if (this.features) {
+                this.settableDialogPriority(value)
+                this.setshowTableDialog(value)
+                this.getDataTable()
+            }
+        },
+
+        closeTable(value) {
+            if (!this.checkNewFilters) {
+                this.settableDialogPriority(value)
+                this.setshowTableDialog(value)
+            } else {
+                this.settableDialogPriority(value)
+                this.setshowTableDialog(value)
+                this.getFeatures()
+                this.checkNewFilters = false
+            }
+        },
+
+        ...mapActions('priority', [
+            'getFeatures',
+            'getDataTable',
+            'downloadTable',
+        ]),
+
+        ...mapMutations('tableDialog', ['setshowTableDialog']),
+        ...mapMutations('priority', [
+            'setVisualizationStage',
+            'settableDialogPriority',
+        ]),
     },
 }
 </script>

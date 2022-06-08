@@ -1,10 +1,12 @@
 export const state = () => ({
     features: null,
     showFeatures: false,
-    visualizationStage: 'map',
-    isLoadingCSV: false,
+    visualizationStage: 'stage1',
+    tableDialogMonitoring: false,
+    isLoadingCSVMonitoring: false,
     isLoadingGeoJson: false,
     isLoadingFeatures: false,
+    isLoadingTableMonitoring: true,
     filterOptions: {
         regionalFilters: [],
     },
@@ -49,16 +51,23 @@ export const mutations = {
     clearFeatures(state) {
         state.features = null
     },
+
     setTotal(state, total) {
         state.total = total
     },
-    setVisualizationStage(state, visualizationStage) {
-        state.visualizationStage = visualizationStage
+
+    settableDialogMonitoring(state, tableDialogMonitoring) {
+        state.tableDialogMonitoring = tableDialogMonitoring
     },
 
     setLoadingFeatures(state, payload) {
         state.isLoadingFeatures = payload
     },
+
+    setLoadingTableMonitoring(state, payload) {
+        state.isLoadingTableMonitoring = payload
+    },
+
     setFilterOptions(state, data) {
         state.filterOptions = data
     },
@@ -66,6 +75,7 @@ export const mutations = {
     setOpacity(state, opacity) {
         state.opacity = opacity
     },
+
     setDownloadTable(state, tableCSVMonitoring) {
         state.tableCSVMonitoring = tableCSVMonitoring
     },
@@ -73,9 +83,11 @@ export const mutations = {
     setHeatMap(state, heatMap) {
         state.heatMap = heatMap
     },
+
     setLoadingCSV(state, payload) {
-        state.isLoadingCSV = payload
+        state.isLoadingCSVMonitoring = payload
     },
+
     setTable(state, tableMonitoring) {
         state.tableMonitoring = tableMonitoring
     },
@@ -110,6 +122,7 @@ export const actions = {
             })
 
             if (!response.features || !response.features.length) {
+                commit('setShowFeatures', false)
                 commit(
                     'alert/addAlert',
                     { message: this.$i18n.t('no-result') },
@@ -158,7 +171,8 @@ export const actions = {
     async getDataTableMonitoring({ commit, state, rootGetters }) {
         commit('setLoadingGeoJson', true)
         commit('setLoadingFeatures', true)
-        commit('clearFeatures')
+        commit('setLoadingTableMonitoring', true)
+
         const params = {
             start_date: state.filters.startDate,
             end_date: state.filters.endDate,
@@ -206,6 +220,7 @@ export const actions = {
         } finally {
             commit('setLoadingFeatures', false)
             commit('setLoadingGeoJson', false)
+            commit('setLoadingTableMonitoring', false)
         }
     },
     async downloadTableMonitoring({ commit, state, rootGetters }) {
