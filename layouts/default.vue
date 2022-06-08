@@ -46,7 +46,7 @@
                 <span> {{ $t('tooltip') }} </span>
             </v-tooltip>
         </v-btn>
-
+        <v-overlay :value="showTableDialog"></v-overlay>
         <v-navigation-drawer
             v-model="layerDrawer"
             absolute
@@ -76,28 +76,9 @@
                 <AnalyticsPCDashboard />
             </v-main>
         </div>
-        <div v-if="$store.state.priority.visualizationStage == 'tablePriority'">
-            <v-main class="pa-0">
-                <PriorityTable />
-            </v-main>
-        </div>
-        <div
-            v-if="$store.state.priority.visualizationStage == 'tableMonitoring'"
-        >
-            <v-main class="pa-0">
-                <MonitoringTable />
-            </v-main>
-        </div>
-        <div v-if="$store.state.priority.visualizationStage == 'tableLandUse'">
-            <v-main class="pa-0">
-                <LandUseTable />
-            </v-main>
-        </div>
-
         <BaseAlert />
     </v-app>
 </template>
-
 <i18n>
 {
     "en": {
@@ -112,27 +93,18 @@
     }
 }
 </i18n>
-
 <script>
 import { mapState } from 'vuex'
-
 import Map from '@/components/map/Map'
 import BaseAlert from '@/components/base/BaseAlert'
 import AnalyticsPCDashboard from '@/components/analytical-cmr/AnalyticsPriorConsolidDashboard'
-import PriorityTable from '~/components/priority/PriorityTable.vue'
-import MonitoringTable from '~/components/monitoring/MonitoringTable.vue'
-import LandUseTable from '~/components/land-use/LandUseTable.vue'
 
 export default {
     name: 'App',
-
     components: {
         Map,
         BaseAlert,
         AnalyticsPCDashboard,
-        PriorityTable,
-        MonitoringTable,
-        LandUseTable,
     },
 
     fetch() {
@@ -154,8 +126,9 @@ export default {
         },
         ...mapState('userProfile', ['user']),
         ...mapState('priority', ['visualizationStage']),
+        ...mapState('monitoring', ['visualizationStageMonitoring']),
+        ...mapState('tableDialog', ['showTableDialog']),
     },
-
     watch: {
         user() {
             if (this.user && this.user.settings.drawer_open_on_init) {
@@ -163,7 +136,6 @@ export default {
             }
         },
     },
-
     mounted() {
         this.$nextTick(function () {
             this.getLeafletControlRef()
@@ -173,7 +145,6 @@ export default {
             }
         })
     },
-
     methods: {
         getLeafletControlRef() {
             this.leafletRightControl =
@@ -192,7 +163,6 @@ export default {
             }
         },
     },
-
     head: () => ({
         title: 'Skyviewer',
     }),

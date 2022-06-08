@@ -5,6 +5,7 @@
                 {{ $t('title') }}
             </h4>
             <v-switch
+                v-if="features"
                 v-model="showFeaturesLandUse"
                 class="mt-n1 ml-5"
                 hide-details
@@ -62,16 +63,21 @@
                     >
                         <v-icon large>mdi-chart-box</v-icon>
                     </v-btn>
-                    <v-btn
-                        icon
-                        color="accent"
-                        @click="
-                            changeVisualizationStage('tableLandUse'),
-                                checkTableLandUse()
-                        "
-                    >
+                    <v-btn icon color="accent" @click="showTableLand(true)">
                         <v-icon large>mdi-table</v-icon>
                     </v-btn>
+                    <div class="d-none" v-if="tableDialogLand">
+                        <TableDialog
+                            :table="tableDialogLand"
+                            :headers="headers"
+                            :value="tableLandUse"
+                            :loadingTable="isLoadingTable"
+                            :loadingCSV="isLoadingCSV"
+                            :tableName="$t('table-name')"
+                            :fDownloadCSV="downloadTableLandUse"
+                            :fCloseTable="closeTable"
+                        />
+                    </div>
                 </v-row>
 
                 <v-row class="py-2">
@@ -91,22 +97,25 @@
         "en": {
             "title": "Land Use And Ocupation",
             "analytics-label": "Analytics",
-            "map-label": "Map"
+            "map-label": "Map",
+            "table-name": "Land Use Table"
         },
         "pt-br": {
             "title": "Uso e Ocupação Do Solo",
             "analytics-label": "Analytics",
-            "map-label": "Mapa"
+            "map-label": "Mapa",
+            "table-name": "Tabela de Uso e Ocupação do Solo"
         }
     }
 </i18n>
 
 <script>
 import LandUseFilter from '@/components/land-use/LandUseFilter'
+import TableDialog from '@/components/table-dialog/TableDialog.vue'
 import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
-    components: { LandUseFilter },
+    components: { LandUseFilter, TableDialog },
 
     data() {
         return {
@@ -114,6 +123,15 @@ export default {
             items: ['MapStage', 'AnalytcalStage'],
             text: 'Texto de teste.',
             timer: '',
+            headers: [
+                { text: 'Código Funai', value: 'co_funai' },
+                { text: 'Terra Indígena', value: 'no_ti' },
+                { text: 'Coordenação Regional', value: 'ds_cr' },
+                { text: 'Data Cadastro', value: 'dt_cadastro' },
+                { text: 'Nu Área Km2', value: 'nu_area_km2' },
+                { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
+            ],
+            checkNewFilters: false,
         }
     },
     computed: {
@@ -136,34 +154,64 @@ export default {
         ...mapState('land-use', [
             'showFeatures',
             'features',
+            'total',
             'tableLandUse',
+            'visualizationStage',
+            'tableDialogLand',
             'response',
             'params',
+            'isLoadingTable',
+            'isLoadingCSV',
         ]),
         ...mapState('priority', ['visualizationStage']),
     },
 
     methods: {
         search() {
-            if (this.visualizationStage == 'map') this.getFeatures()
-
-            if (this.visualizationStage == 'tableLand')
+            if (this.tableDialogLand) {
+                this.checkNewFilters = true
                 this.getDataTableLandUse()
+            }
+            if (!this.tableDialogLand) this.getFeatures()
         },
-        checkFeatures() {
-            if (this.tableLandUse.length) this.getFeatures()
-        },
-        checkTableLandUse() {
-            if (this.features != null) this.getDataTableLandUse()
-        },
+
         searchDataTable() {
             this.getDataTable()
         },
+
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)
         },
-        ...mapActions('land-use', ['getFeatures', 'getDataTableLandUse']),
+
+        showTableLand(value) {
+            if (this.features) {
+                this.settableDialogLand(value)
+                this.setshowTableDialog(value)
+                this.getDataTableLandUse()
+            }
+        },
+
+        closeTable(value) {
+            if (!this.checkNewFilters) {
+                this.settableDialogLand(value)
+                this.setshowTableDialog(value)
+            } else {
+                this.settableDialogLand(value)
+                this.setshowTableDialog(value)
+                this.getFeatures()
+                this.checkNewFilters = false
+            }
+        },
+
+        ...mapActions('land-use', [
+            'getFeatures',
+            'getDataTableLandUse',
+            'downloadTableLandUse',
+        ]),
+
+        ...mapMutations('tableDialog', ['setshowTableDialog']),
         ...mapMutations('priority', ['setVisualizationStage']),
+        ...mapMutations('land-use', ['settableDialogLand']),
     },
 }
 </script>

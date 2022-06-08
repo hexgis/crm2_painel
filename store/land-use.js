@@ -1,7 +1,8 @@
 export const state = () => ({
     features: null,
     showFeatures: false,
-    visualizationStage: 'map',
+    tableDialogLand: false,
+    isLoadingTable: true,
     isLoadingCSV: false,
     isLoadingGeoJson: false,
     isLoadingFeatures: false,
@@ -42,6 +43,10 @@ export const mutations = {
         state.showFeatures = showFeatures
     },
 
+    setLoadingTable(state, payload) {
+        state.isLoadingTable = payload
+    },
+
     setLoadingGeoJson(state, payload) {
         state.isLoadingGeoJson = payload
     },
@@ -54,6 +59,10 @@ export const mutations = {
     },
     setVisualizationStage(state, visualizationStage) {
         state.visualizationStage = visualizationStage
+    },
+
+    settableDialogLand(state, tableDialogLand) {
+        state.tableDialogLand = tableDialogLand
     },
 
     setLoadingFeatures(state, payload) {
@@ -174,6 +183,7 @@ export const actions = {
     async getDataTableLandUse({ commit, state, rootGetters }) {
         commit('setLoadingGeoJson', true)
         commit('setLoadingFeatures', true)
+        commit('setLoadingTable', true)
 
         const params = {}
 
@@ -213,6 +223,7 @@ export const actions = {
         } finally {
             commit('setLoadingGeoJson', false)
             commit('setLoadingFeatures', false)
+            commit('setLoadingTable', false)
         }
     },
     async downloadTableLandUse({ commit, state, rootGetters }) {

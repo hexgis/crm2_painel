@@ -2,6 +2,8 @@ export const state = () => ({
     features: null,
     showFeatures: false,
     heatMap: true,
+    tableDialogPriority: false,
+    isLoadingTable: true,
     isLoadingFeatures: false,
     isLoadingGeoJson: false,
     isLoadingCSV: false,
@@ -53,6 +55,14 @@ export const mutations = {
 
     setFeatures(state, features) {
         state.features = features
+    },
+
+    settableDialogPriority(state, tableDialogPriority) {
+        state.tableDialogPriority = tableDialogPriority
+    },
+
+    setLoadingTable(state, loadingTable) {
+        state.isLoadingTable = loadingTable
     },
 
     setLoadingFeatures(state, payload) {
@@ -130,7 +140,6 @@ export const actions = {
             const response = await this.$api.$get('priority/consolidated/', {
                 params,
             })
-            commit('setFeatures', response)
 
             if (!response.features || !response.features.length) {
                 commit('setShowFeatures', false)
@@ -141,6 +150,7 @@ export const actions = {
                 )
             } else {
                 commit('setShowFeatures', true)
+                commit('setFeatures', response)
 
                 const total = await this.$api.$get(
                     'priority/consolidated/total/',
@@ -205,8 +215,7 @@ export const actions = {
     async getDataTable({ commit, state, rootGetters }) {
         commit('setLoadingFeatures', true)
         commit('setLoadingGeoJson', true)
-        commit('clearFeatures')
-
+        commit('setLoadingTable', true)
         const params = {
             start_date: state.filters.startDate,
             end_date: state.filters.endDate,
@@ -248,6 +257,7 @@ export const actions = {
         } finally {
             commit('setLoadingFeatures', false)
             commit('setLoadingGeoJson', false)
+            commit('setLoadingTable', false)
         }
     },
     async downloadTable({ commit, state, rootGetters }) {
