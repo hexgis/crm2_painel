@@ -14,34 +14,6 @@
 
         <AlertFilter @onSearch="search()" />
 
-        <div v-if="showFeatures" class="px-4">
-            <v-divider class="mt-1"></v-divider>
-            <p class="font-weight-regular pt-2">Legenda:</p>
-            <v-col>
-                <v-row class="mb-2">
-                    <v-icon class="mr-2" color="#9400D3">mdi-square</v-icon>
-                    Muito Alta
-                </v-row>
-                <v-row class="mb-2">
-                    <v-icon class="mr-2" color="#FF0000">mdi-square</v-icon>
-                    Alta
-                </v-row>
-                <v-row class="mb-2">
-                    <v-icon class="mr-2" color="#FF8C00">mdi-square</v-icon>
-                    Média
-                </v-row>
-                <v-row class="mb-2">
-                    <v-icon class="mr-2" color="#FFD700">mdi-square</v-icon>
-                    Baixa
-                </v-row>
-                <v-row class="mb-2">
-                    <v-icon class="mr-2" color="#008000">mdi-square</v-icon>
-                    Muito Baixa
-                </v-row>
-                <v-spacer></v-spacer>
-            </v-col>
-        </div>
-
         <ShowDialog />
 
         <v-footer
