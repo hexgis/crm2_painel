@@ -246,7 +246,7 @@ export default {
 
             try {
                 this.selectedAlertFeature = await this.$api.$get(
-                    'alert-urg/detail/' + featureId + '/'
+                    'alerts/detail/' + featureId + '/'
                 )
 
                 // this.$nextTick(() => {
