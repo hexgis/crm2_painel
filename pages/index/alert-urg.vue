@@ -105,7 +105,6 @@ export default {
                 { text: 'Terra Indígena', value: 'no_ti' },
                 { text: 'Coordenação Regional', value: 'ds_cr' },
                 { text: 'Classe', value: 'no_estagio' },
-                { text: 'Data da Imagem', value: 'dt_imagem' },
                 { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
                 { text: 'Latitude', value: 'nu_latitude' },
                 { text: 'Longitude', value: 'nu_longitude' },
