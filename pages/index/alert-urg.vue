@@ -104,7 +104,6 @@ export default {
                 { text: 'Código Funai', value: 'co_funai' },
                 { text: 'Terra Indígena', value: 'no_ti' },
                 { text: 'Coordenação Regional', value: 'ds_cr' },
-                { text: 'Prioridade', value: 'prioridade' },
                 { text: 'Classe', value: 'no_estagio' },
                 { text: 'Data da Imagem', value: 'dt_imagem' },
                 { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
@@ -124,7 +123,7 @@ export default {
         },
         showFeaturesAlert: {
             get() {
-                return this.$store.state.alert-urg.showFeatures
+                return this.$store.state['alert-urg'].showFeatures
             },
 
             set(value) {

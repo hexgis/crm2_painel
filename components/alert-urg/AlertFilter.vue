@@ -207,7 +207,7 @@ export default {
     computed: {
         opacity: {
             get() {
-                return this.$store.state.alert - urg.opacity
+                return this.$store.state['alert-urg'].opacity
             },
             set(value) {
                 this.$store.commit('alert-urg/setOpacity', value)
@@ -216,7 +216,7 @@ export default {
 
         heatMap: {
             get() {
-                return this.$store.state.alert - urg.heatMap
+                return this.$store.state['alert-urg'].heatMap
             },
             set(value) {
                 this.$store.commit('alert-urg/setHeatMap', value)
