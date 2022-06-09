@@ -1,8 +1,8 @@
 <template>
-    <l-layer-group name="monitoring" :visible="showFeatures">
-        <l-layer-group ref="monitoringHeat" :visible="heatMap" />
+    <l-layer-group name="alert" :visible="showFeatures">
+        <l-layer-group ref="alertHeat" :visible="heatMap" />
 
-        <l-feature-group ref="monitoringPolygons">
+        <l-feature-group ref="alertPolygons">
             <l-popup
                 ref="popup"
                 :options="{
@@ -12,7 +12,7 @@
             >
                 <BaseMetadataPopup
                     ref="popupComponent"
-                    :feature="selectedMonitoringFeature"
+                    :feature="selectedAlertFeature"
                 />
             </l-popup>
 
@@ -20,7 +20,7 @@
                 v-if="!isVectorGrid && featuresLoaded"
                 :geojson="features"
                 :options="{ onEachFeature }"
-                @ready="onMonitoringReady"
+                @ready="onAlertReady"
             />
 
             <!-- <BaseMetadataPopup
@@ -54,7 +54,7 @@ if (typeof window !== 'undefined') {
 }
 
 export default {
-    name: 'MonitoringLayers',
+    name: 'AlertLayers',
 
     components: {
         BaseMetadataPopup,
@@ -68,28 +68,48 @@ export default {
     },
 
     data: () => ({
-        selectedMonitoringFeature: null,
+        selectedAlertFeature: null,
         heatmapLayer: null,
 
         isVectorGrid: process.env.MONITORING_VECTOR2TILES === 'true',
         vectorGrid: null,
 
-        style: {
-            weight: 2.5,
-            color: '#8e391b',
-            fill: true,
-            fillOpacity: 1,
+         style: {
+            CR: {
+                weight: 2.5,
+                color: '#965213',
+                fill: true,
+                fillOpacity: 1,
+            },
+            DR: {
+                weight: 2.5,
+                color: '#337f1e',
+                fill: true,
+                fillOpacity: 1,
+            },
+            FF: {
+                weight: 2.5,
+                color: '#ba1a1a',
+                fill: true,
+                fillOpacity: 1,
+            },
+            DG: {
+                weight: 2.5,
+                color: '#e0790b', 
+                fill: true,
+                fillOpacity: 1,
+            },
         },
     }),
 
     computed: {
-        ...mapState('monitoring', [
+        ...mapState('alert-urg', [
             'features',
             'opacity',
             'heatMap',
             'showFeatures',
         ]),
-        ...mapGetters('monitoring', ['featuresLoaded']),
+        ...mapGetters('alert-urg', ['featuresLoaded']),
     },
 
     watch: {
@@ -108,7 +128,7 @@ export default {
                     fillOpacity: this.opacity / 100,
                 })
             } else {
-                this.$refs.monitoringPolygons.mapObject.invoke(
+                this.$refs.alertPolygons.mapObject.invoke(
                     'setStyle',
                     this.setMonitoringStyle
                 )
@@ -117,8 +137,21 @@ export default {
     },
 
     methods: {
+        vectorGridStyleFunction(no_estagio) {
+            switch (no_estagio) {
+                case 'CR':
+                    return this.style.CR
+                case 'DR':
+                    return this.style.DR
+                case 'FF':
+                    return this.style.FF
+                case 'DG':
+                    return this.style.DG
+                default:
+            }
+        },
         addFeatures() {
-            this.$refs.monitoringPolygons.mapObject.clearLayers()
+            this.$refs.alertPolygons.mapObject.clearLayers()
             if (
                 this.isVectorGrid &&
                 this.features &&
@@ -130,12 +163,25 @@ export default {
                 this.vectorGrid = this.$L.vectorGrid
                     .slicer(this.features, {
                         maxZoom: 21,
+                        zIndex: 4,
                         vectorTileLayerStyles: {
-                            sliced: () => this.style,
+                            sliced: (e) =>
+                                this.vectorGridStyleFunction(e.no_estagio),
                         },
                         interactive: true,
-                        getFeatureId: (_) => {
-                            return 1
+                        getFeatureId: (e) => {
+                            switch (e.properties.no_estagio) {
+                                case 'CR':
+                                    return 5
+                                case 'DR':
+                                    return 4
+                                case 'FF':
+                                    return 3
+                                case 'DG':
+                                    return 2
+                                default:
+                                    return 1
+                            }
                         },
                     })
                     .on('click', (e) => {
@@ -146,7 +192,7 @@ export default {
                         //     )
                         // })
                     })
-                    .addTo(this.$refs.monitoringPolygons.mapObject)
+                    .addTo(this.$refs.alertPolygons.mapObject)
             }
         },
 
@@ -179,17 +225,17 @@ export default {
             return style
         },
 
-        onMonitoringReady() {
+        onAlertReady() {
             if (this.features.features && this.features.features.length) {
                 this.map.fitBounds(
-                    this.$refs.monitoringPolygons.mapObject.getBounds()
+                    this.$refs.alertPolygons.mapObject.getBounds()
                 )
                 this.createMonitoramentoHeatLayer()
             }
         },
 
         async getFeatureDetails(featureId) {
-            this.selectedMonitoringFeature = null
+            this.selectedAlertFeature = null
             // this.$nextTick(() => {
             //     this.$refs.popup.mapObject
             //         // .bindPopup(
@@ -199,8 +245,8 @@ export default {
             // })
 
             try {
-                this.selectedMonitoringFeature = await this.$api.$get(
-                    'monitoring/consolidated/detail/' + featureId + '/'
+                this.selectedAlertFeature = await this.$api.$get(
+                    'alert-urg/detail/' + featureId + '/'
                 )
 
                 // this.$nextTick(() => {
@@ -238,7 +284,7 @@ export default {
 
             if (this.heatmapLayer)
                 this.heatmapLayer.removeFrom(
-                    this.$refs.monitoringHeat.mapObject
+                    this.$refs.alertHeat.mapObject
                 )
 
             this.heatmapLayer = this.$L.heatLayer(heatData, {
@@ -248,7 +294,7 @@ export default {
                 blur: 15,
                 zIndex: 4,
             })
-            this.heatmapLayer.addTo(this.$refs.monitoringHeat.mapObject)
+            this.heatmapLayer.addTo(this.$refs.alertHeat.mapObject)
         },
     },
 }
