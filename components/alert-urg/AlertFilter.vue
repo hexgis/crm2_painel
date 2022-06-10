@@ -207,7 +207,7 @@ export default {
     computed: {
         opacity: {
             get() {
-                return this.$store.state.alert - urg.opacity
+                return this.$store.state.urgent-alerts.opacity
             },
             set(value) {
                 this.$store.commit('alert-urg/setOpacity', value)
@@ -216,14 +216,14 @@ export default {
 
         heatMap: {
             get() {
-                return this.$store.state.alert - urg.heatMap
+                return this.$store.state.urgent-alerts.heatMap
             },
             set(value) {
-                this.$store.commit('alert-urg/setHeatMap', value)
+                this.$store.commit('urgent-alerts/setHeatMap', value)
             },
         },
 
-        ...mapState('alert-urg', [
+        ...mapState('urgent-alerts', [
             'isLoadingGeoJson',
             'isLoadingFeatures',
             'filterOptions',
