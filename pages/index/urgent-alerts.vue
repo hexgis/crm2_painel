@@ -86,7 +86,7 @@
 </i18n>
 
 <script>
-import AlertFilter from '@/components/alert-urg/AlertFilter.vue'
+import AlertFilter from '@/components/urgent-alerts/AlertFilter.vue'
 import ShowDialog from '@/components/show-dialog/ShowDialog'
 import TableDialog from '@/components/table-dialog/TableDialog.vue'
 import { mapActions, mapMutations, mapState } from 'vuex'
@@ -122,14 +122,14 @@ export default {
         },
         showFeaturesAlert: {
             get() {
-                return this.$store.state['alert-urg'].showFeatures
+                return this.$store.state['urgent-alerts'].showFeatures
             },
 
             set(value) {
-                this.$store.commit('alert-urg/setShowFeatures', value)
+                this.$store.commit('urgent-alerts/setShowFeatures', value)
             },
         },
-        ...mapState('alert-urg', [
+        ...mapState('urgent-alerts', [
             'showFeatures',
             'features',
             'table',
@@ -178,14 +178,14 @@ export default {
             }
         },
 
-        ...mapActions('alert-urg', [
+        ...mapActions('urgent-alerts', [
             'getFeatures',
             'getDataTable',
             'downloadTable',
         ]),
 
         ...mapMutations('tableDialog', ['setshowTableDialog']),
-        ...mapMutations('alert-urg', [
+        ...mapMutations('urgent-alerts', [
             'setVisualizationStage',
             'settableDialogAlert',
         ]),
