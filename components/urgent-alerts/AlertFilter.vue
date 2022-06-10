@@ -207,23 +207,23 @@ export default {
     computed: {
         opacity: {
             get() {
-                return this.$store.state['alert-urg'].opacity
+                return this.$store.state['urgent-alerts'].opacity
             },
             set(value) {
-                this.$store.commit('alert-urg/setOpacity', value)
+                this.$store.commit('urgent-alerts/setOpacity', value)
             },
         },
 
         heatMap: {
             get() {
-                return this.$store.state['alert-urg'].heatMap
+                return this.$store.state['urgent-alerts'].heatMap
             },
             set(value) {
-                this.$store.commit('alert-urg/setHeatMap', value)
+                this.$store.commit('urgent-alerts/setHeatMap', value)
             },
         },
 
-        ...mapState('alert-urg', [
+        ...mapState('urgent-alerts', [
             'isLoadingGeoJson',
             'isLoadingFeatures',
             'filterOptions',
@@ -239,7 +239,7 @@ export default {
 
     methods: {
         populateTiOptions(cr) {
-            if (cr) this.$store.dispatch('alert-urg/getTiOptions', cr)
+            if (cr) this.$store.dispatch('urgent-alerts/getTiOptions', cr)
             else this.filters.ti = null
         },
 
@@ -247,8 +247,8 @@ export default {
             this.setFilters(this.filters)
             this.$emit('onSearch')
         },
-        ...mapMutations('alert-urg', ['setFilters']),
-        ...mapActions('alert-urg', ['getFilterOptions', 'downloadGeoJson']),
+        ...mapMutations('urgent-alerts', ['setFilters']),
+        ...mapActions('urgent-alerts', ['getFilterOptions', 'downloadGeoJson']),
     },
 }
 </script>

@@ -80,7 +80,7 @@
         "support-fire-tab": "Fire Hazard and Hot Spots",
         "landuse-tab": "Land Use And Occupation",
         "compare-tab": "Compare images",
-        "alert-urg-tab": "Alert Urgent",
+        "urgent-alert-tab": "Alert Urgent",
         "webhooks-tab": "Webhooks",
         "funai-tab": "Priorities"
     },
@@ -93,7 +93,7 @@
         "support-fire-tab": "Risco de Fogo e Focos de Calor",
         "landuse-tab": "Uso e Ocupação do Solo",
         "compare-tab": "Comparar imagens",
-        "alert-urg-tab": "Alerta Urgente",
+        "urgent-alert-tab": "Alerta Urgente",
         "webhooks-tab": "Webhooks",
         "funai-tab": "Polígonos Prioritários"
     }
@@ -165,9 +165,9 @@ export default {
                     route: '/land-use',
                 },
                 {
-                    name: this.$t('alert-urg-tab'),
+                    name: this.$t('urgent-alert-tab'),
                     icon: 'mdi-alert-octagram',
-                    route: '/alert-urg',
+                    route: '/urgent-alerts',
                 },
                 // {
                 //     name: this.$t('webhooks-tab'),

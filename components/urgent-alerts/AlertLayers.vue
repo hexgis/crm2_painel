@@ -103,13 +103,13 @@ export default {
     }),
 
     computed: {
-        ...mapState('alert-urg', [
+        ...mapState('urgent-alerts', [
             'features',
             'opacity',
             'heatMap',
             'showFeatures',
         ]),
-        ...mapGetters('alert-urg', ['featuresLoaded']),
+        ...mapGetters('urgent-alerts', ['featuresLoaded']),
     },
 
     watch: {
@@ -202,27 +202,6 @@ export default {
             layer.on('click', () => {
                 this.getFeatureDetails(feature.properties.id)
             })
-        },
-
-        setMonitoringStyle(feature) {
-            const style = this.style
-            style.fillOpacity = this.opacity / 100
-
-            switch (feature.properties.no_estagio) {
-                case 'CR':
-                    style.color = '#965213'
-                    break
-                case 'DR':
-                    style.color = '#337f1e'
-                    break
-                case 'FF':
-                    style.color = '#ba1a1a'
-                    break
-                case 'DG':
-                    style.color = '#e0790b'
-                    break
-            }
-            return style
         },
 
         onAlertReady() {
