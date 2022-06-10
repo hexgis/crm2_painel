@@ -108,27 +108,21 @@ export default {
                     const filters = this.layer.filters
                     const keys = Object.keys(filters)
 
-                    if(keys.length){
+                    if (keys.length) {
                         wmsUrl += '&CQL_FILTER='
-                        if (typeof filters.co_cr !== "undefined" && typeof filters.co_funai !== "undefined") {
-                            if(filters.co_cr.length && filters.co_funai.length){
-                                wmsUrl += `co_cr IN (${filters.co_cr}) AND co_funai IN (${filters.co_funai}) `
-                            }else{
-                                if(filters.co_cr.length){
-                                    wmsUrl += `co_cr IN (${filters.co_cr}) `
-                                }
-                                if(filters.co_funai.length){
-                                    wmsUrl += `co_funai IN (${filters.co_funai}) `
-                                }
-                            }
-                        }else{
-                            if (typeof filters.co_cr !== "undefined") {
-                                wmsUrl += `co_cr IN (${filters.co_cr}) `
-                            }
-                            if (typeof filters.co_funai !== "undefined" ) {
-                                wmsUrl += `co_funai IN (${filters.co_funai}) `
+
+                        for (const filter in this.layer.filters) {
+                            if (this.layer.filters[filter].length) {
+                                wmsUrl +=
+                                    filter +
+                                    ' IN ' +
+                                    '(' +
+                                    this.layer.filters[filter] +
+                                    ')' +
+                                    ' AND '
                             }
                         }
+                        wmsUrl = wmsUrl.slice(0, -4)
                     }
                 } else {
                     wmsUrl =
@@ -142,8 +136,7 @@ export default {
                 })
             }
             return wmsUrl
-        }
-
+        },
     },
 
     watch: {
