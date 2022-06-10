@@ -123,11 +123,24 @@ export default {
 
         opacity() {
             if (this.isVectorGrid) {
-                this.vectorGrid.setFeatureStyle(1, {
-                    ...this.style,
+                this.vectorGrid.setFeatureStyle(2, {
+                    ...this.style.DG,
                     fillOpacity: this.opacity / 100,
                 })
-            } else {
+                this.vectorGrid.setFeatureStyle(3, {
+                    ...this.style.FF,
+                    fillOpacity: this.opacity / 100,
+                })
+                this.vectorGrid.setFeatureStyle(4, {
+                    ...this.style.DR,
+                    fillOpacity: this.opacity / 100,
+                })
+                this.vectorGrid.setFeatureStyle(5, {
+                    ...this.style.CR,
+                    fillOpacity: this.opacity / 100,
+                })
+
+            }else {
                 this.$refs.alertPolygons.mapObject.invoke(
                     'setStyle',
                     this.setMonitoringStyle
@@ -150,6 +163,7 @@ export default {
                 default:
             }
         },
+        
         addFeatures() {
             this.$refs.alertPolygons.mapObject.clearLayers()
             if (
