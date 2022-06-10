@@ -150,7 +150,7 @@ export const actions = {
                 commit('setShowFeatures', true)
                 commit('setFeatures', response)
 
-                const total = await this.$api.$get('alerts/total/', {
+                const total = await this.$api.$get('alerts/stats/', {
                     params,
                 })
                 if (total) commit('setTotal', total)
