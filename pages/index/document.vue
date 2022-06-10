@@ -12,22 +12,76 @@
             />
         </div>
         <v-card-text>
-            What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the
-            printing and typesetting industry. Lorem Ipsum has been the
-            industry's standard dummy text ever since the 1500s, when an unknown
-            printer took a galley of type and scrambled it to make a type
-            specimen book. It has survived not only five centuries, but also the
-            leap into electronic typesetting, remaining essentially unchanged.
-            It was popularised in the 1960s with the release of Letraset sheets
-            containing Lorem Ipsum passages, and more recently with desktop
-            publishing software like Aldus PageMaker including versions of Lorem
-            Ipsum.
+            <p>Ambiente de pesquisa de documentos de acordo com as ações.</p>
+
+            <v-list-item-content style="list-style: circle">
+                <v-list-item-title class="list__text mb-4 font-weight-black"
+                    >Ações Disponíveis:</v-list-item-title
+                >
+                <ul v-for="(item, index) in items" :key="index">
+                    <li>{{ item.value }}</li>
+                </ul>
+            </v-list-item-content>
         </v-card-text>
+
         <v-btn color="accent" class="" @click="showDialog(true)">
             {{ $t('input-label') }}
         </v-btn>
         <div v-if="showDialogDocument">
             <DocumentDialog />
+        </div>
+        <v-divider v-if="showFeatures" class="mt-8 mb-5" />
+        <div>
+            <v-row v-if="total" class="px-3 py-1">
+                <v-row v-if="showFeatures && total">
+                    <v-col cols="7" class="grey--text text--darken-2">
+                        {{ $t('polygon-label') }}:
+                    </v-col>
+                    <v-col cols="5" class="text-right">
+                        {{ total.total }}
+                    </v-col>
+                </v-row>
+                <v-row v-if="showFeatures && total && total.area_ha">
+                    <v-col cols="7" class="grey--text text--darken-2">
+                        {{ $t('total-area-label') }}:
+                    </v-col>
+                    <v-col cols="5" class="text-right">
+                        {{
+                            total.area_ha.toLocaleString($i18n.locale, {
+                                maximumFractionDigits: 2,
+                            })
+                        }}
+                        ha
+                    </v-col>
+                </v-row>
+            </v-row>
+            <v-row v-if="showFeatures" align="center">
+                <v-col cols="4" class="grey--text text--darken-2">
+                    {{ $t('opacity-label') }}
+                </v-col>
+                <v-col cols="8">
+                    <v-slider
+                        v-model="opacity"
+                        class="my-n2"
+                        hide-details
+                        thumb-label
+                    />
+                </v-col>
+            </v-row>
+            <v-row v-if="showFeatures" align="center" justify="space-between">
+                <v-col>
+                    <span class="grey--text text--darken-2">
+                        {{ $t('heat-map-label') }}
+                    </span>
+                </v-col>
+                <v-col cols="3" class="d-flex justify-end">
+                    <v-switch
+                        v-model="heatMap"
+                        class="mt-0 pt-0"
+                        hide-details
+                    />
+                </v-col>
+            </v-row>
         </div>
         <v-footer
             absolute
@@ -69,10 +123,28 @@ import { mapActions, mapMutations, mapState } from 'vuex'
 export default {
     components: { DocumentDialog },
     data() {
-        return {}
+        return {
+            items: [
+                { value: 'Alerta Urgentes' },
+                { value: 'FIP DGM' },
+                { value: 'Fiscalização(2016)' },
+                { value: 'Fiscalização(2017)' },
+                { value: 'Fundo Amazônia' },
+                { value: 'Gestão Territorial e Ambiental' },
+                { value: 'Prevenção (2016)' },
+                { value: 'Prevenção (2017)' },
+                { value: 'Projeto PNUD (TIs Vulveráveis)' },
+                { value: 'Vigilância' },
+            ],
+        }
     },
     computed: {
-        ...mapState('document', ['showDialogDocument']),
+        ...mapState('document', [
+            'showDialogDocument',
+            'showFeatures',
+            'features',
+            'total',
+        ]),
     },
     methods: {
         showDialog(value) {
@@ -84,4 +156,10 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.list__text {
+    font-size: 0.875rem;
+    margin-bottom: 3px;
+    list-style: circle !important;
+}
+</style>

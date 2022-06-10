@@ -1,14 +1,12 @@
 <template>
-    <v-col class="px-4">
+    <v-row>
         <v-dialog
             v-model="showDialogDocument"
             scrollable
             persistent
-            :overlay="false"
-            width="100vw"
-            transition="dialog-transition"
+            max-width="80vw"
         >
-            <v-card>
+            <div class="background__color">
                 <v-toolbar class="background__toolbar" dark color="primary">
                     <h3>{{ $t('dialogName') }}</h3>
                     <v-spacer></v-spacer>
@@ -16,61 +14,129 @@
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                 </v-toolbar>
-                <v-container class="teste">
-                    <v-select
-                        v-model="filters.cr"
-                        label="Coordenação Regional (Todas)"
-                        :items="filterOptions.regionalFilters"
-                        item-value="co_cr"
-                        item-text="ds_cr"
-                        hide-details
-                        clearable
-                        multiple
-                        required="true"
+                <div class="mt-8 ml-6">
+                    <v-card
+                        elevation="4"
+                        style="width: 77vw"
+                        class="d-flex flex-column"
                     >
-                    </v-select>
-                </v-container>
+                        <div class="box__width">
+                            <div
+                                class="d-flex flex-column"
+                                style="margin-left: 1vw; margin-top: 1vh"
+                            >
+                                <div
+                                    class="d-flex"
+                                    style="min-width: 74%; max-width: 74%"
+                                >
+                                    <v-select
+                                        v-model="filters.cr"
+                                        label="Ações"
+                                        item-value="co_cr"
+                                        item-text="ds_cr"
+                                        hide-details
+                                        clearable
+                                        multiple
+                                        required
+                                        class="mr-4"
+                                    >
+                                    </v-select>
+                                    <v-select
+                                        v-model="filters.cr"
+                                        label="Coordenação Regional (Todas)"
+                                        :items="filterOptions.regionalFilters"
+                                        item-value="co_cr"
+                                        item-text="ds_cr"
+                                        hide-details
+                                        clearable
+                                        multiple
+                                        required
+                                        style="min-width: 49%; max-width: 49%"
+                                    >
+                                    </v-select>
+                                </div>
+                                <div class="d-flex mt-5" style="width: 80%">
+                                    <div class="d-flex" style="width: 45%">
+                                        <div class="mr-2">
+                                            <BaseDateField
+                                                v-model="filters.startDate"
+                                                :label="$t('start-date-label')"
+                                                :required="true"
+                                                outlined
+                                            />
+                                        </div>
+                                        <div>
+                                            <BaseDateField
+                                                v-model="filters.endDate"
+                                                :label="$t('end-date-label')"
+                                                :required="true"
+                                                :min-date="filters.startDate"
+                                                flex-row
+                                                outlined
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="ml-4" style="width: 45%">
+                                        <v-slide-y-transition>
+                                            <v-select
+                                                v-model="filters.ti"
+                                                label="Terras Indigenas (Todas)"
+                                                :items="filterOptions.tiFilters"
+                                                item-text="no_ti"
+                                                item-value="co_funai"
+                                                multiple
+                                                clearable
+                                                hide-details
+                                                required
+                                                class="position__input"
+                                            >
+                                            </v-select>
+                                        </v-slide-y-transition>
+                                    </div>
+                                </div>
+                                <div
+                                    class="d-flex align-end mb-4"
+                                    style="width: 36%"
+                                >
+                                    <v-btn
+                                        block
+                                        color="accent"
+                                        :loading="isLoadingFeatures"
+                                        @click="search"
+                                    >
+                                        {{ $t('search-label') }}
+                                    </v-btn>
+                                </div>
+                            </div>
+                        </div>
+                        <v-divider></v-divider>
+                        <div style="width: 77vw">
+                            <v-card-title class="card__width">
+                                <p>
+                                    Terra(s) Indígena(s) sem documentos
+                                    disponíveis para os parâmetros buscados
+                                </p>
+                                <div>
+                                    <v-text-field
+                                        v-model="filter"
+                                        append-icon="mdi-magnify"
+                                        label="Filter"
+                                        single-line
+                                        hide-details
+                                    ></v-text-field>
+                                </div>
+                            </v-card-title>
 
-                <v-slide-y-transition>
-                    <v-container
-                        v-if="filters.cr && filterOptions.tiFilters"
-                        class="px-3 pb-1"
-                    >
-                        <v-select
-                            v-model="filters.ti"
-                            label="Terras Indigenas (Todas)"
-                            :items="filterOptions.tiFilters"
-                            item-text="no_ti"
-                            item-value="co_funai"
-                            multiple
-                            hide-details
-                            required="true"
-                        >
-                        </v-select>
-                    </v-container>
-                </v-slide-y-transition>
-
-                <v-container class="pt-5">
-                    <v-col class="py-0">
-                        <BaseDateField
-                            v-model="filters.startDate"
-                            :label="$t('start-date-label')"
-                            :required="true"
-                            outlined
-                        />
-                    </v-col>
-
-                    <v-col class="py-0">
-                        <BaseDateField
-                            v-model="filters.endDate"
-                            :label="$t('end-date-label')"
-                            :required="true"
-                            :min-date="filters.startDate"
-                            outlined
-                        />
-                    </v-col>
-                </v-container>
-
+                            <v-data-table
+                                :headers="headers"
+                                :items="desserts"
+                                :search="filter"
+                                fixed-header
+                                height="20vh"
+                            ></v-data-table>
+                        </div>
+                    </v-card>
+                </div>
                 <v-container>
                     <v-col v-show="showFeatures">
                         <v-btn
@@ -83,96 +149,10 @@
                             <v-icon>mdi-download</v-icon>
                         </v-btn>
                     </v-col>
-                    <v-col>
-                        <v-btn
-                            block
-                            color="accent"
-                            :loading="isLoadingFeatures"
-                            @click="search"
-                        >
-                            {{ $t('search-label') }}
-                        </v-btn>
-                    </v-col>
                 </v-container>
-
-                <v-divider v-if="showFeatures" class="mt-8 mb-5" />
-
-                <v-row v-if="total" class="px-3 py-1">
-                    <v-row v-if="showFeatures && total">
-                        <v-col cols="7" class="grey--text text--darken-2">
-                            {{ $t('polygon-label') }}:
-                        </v-col>
-                        <v-col cols="5" class="text-right">
-                            {{ total.total }}
-                        </v-col>
-                    </v-row>
-
-                    <v-row v-if="showFeatures && total && total.area_ha">
-                        <v-col cols="7" class="grey--text text--darken-2">
-                            {{ $t('total-area-label') }}:
-                        </v-col>
-                        <v-col cols="5" class="text-right">
-                            {{
-                                total.area_ha.toLocaleString($i18n.locale, {
-                                    maximumFractionDigits: 2,
-                                })
-                            }}
-                            ha
-                        </v-col>
-                    </v-row>
-                </v-row>
-
-                <v-row v-if="showFeatures" align="center">
-                    <v-col cols="4" class="grey--text text--darken-2">
-                        {{ $t('opacity-label') }}
-                    </v-col>
-                    <v-col cols="8">
-                        <v-slider
-                            v-model="opacity"
-                            class="my-n2"
-                            hide-details
-                            thumb-label
-                        />
-                    </v-col>
-                </v-row>
-
-                <v-row
-                    v-if="showFeatures"
-                    align="center"
-                    justify="space-between"
-                >
-                    <v-col>
-                        <span class="grey--text text--darken-2">
-                            {{ $t('heat-map-label') }}
-                        </span>
-                    </v-col>
-                    <v-col cols="3" class="d-flex justify-end">
-                        <v-switch
-                            v-model="heatMap"
-                            class="mt-0 pt-0"
-                            hide-details
-                        />
-                    </v-col>
-                </v-row>
-            </v-card>
+            </div>
         </v-dialog>
-    </v-col>
-
-    <!-- <div class="py-11">
-                <template v-for="stage in stageList">
-                    <v-row
-                        :key="stage.identifier"
-                        v-if="showFeatures"
-                        class="layer-legend"
-                        :style="{
-                            '--color': stageColor[stage.identifier],
-                            '--back-color': `${stageColor[stage.identifier]}AA`,
-                        }"
-                    >
-                        {{ stage.name }}
-                    </v-row>
-                </template>
-            </div> -->
+    </v-row>
 </template>
 
 <i18n>
@@ -221,11 +201,38 @@ export default {
                     .subtract(30, 'days')
                     .format('YYYY-MM-DD'),
                 endDate: this.$moment().format('YYYY-MM-DD'),
-                cr: null,
+                cr: [],
                 ti: null,
             },
             isLoadingTotal: false,
             legendData: legend,
+            filter: '',
+            headers: [
+                {
+                    text: 'Código',
+                    align: 'start',
+                    value: 'name',
+                },
+                { text: 'Nome da TI', value: 'calories' },
+            ],
+            desserts: [
+                {
+                    name: 'Frozen Yogurt',
+                    calories: 159,
+                },
+                {
+                    name: 'Ice cream sandwich',
+                    calories: 237,
+                },
+                {
+                    name: 'Eclair',
+                    calories: 262,
+                },
+                {
+                    name: 'Cupcake',
+                    calories: 305,
+                },
+            ],
         }
     },
     watch: {
@@ -277,10 +284,8 @@ export default {
             this.setShowDialogDocument(value)
         },
 
-        search() {
-            this.setFilters(this.filters)
-            this.$emit('onSearch')
-        },
+        search() {},
+
         ...mapMutations('document', ['setFilters', 'setShowDialogDocument']),
         ...mapActions('document', ['getFilterOptions', 'downloadGeoJson']),
     },
@@ -291,6 +296,38 @@ export default {
 .background__toolbar
     background: linear-gradient(to bottom, rgb(30, 33, 50), rgb(44, 54, 73))
 
-.teste
-    width: 30 !important
+.background__color
+    background-color: white
+    width: 100vw
+    display: flex
+    flex-direction: column
+
+.card__width
+    display: flex
+    flex-direction: row
+    align-items: baseline
+    justify-content: space-between
+
+.box__width
+    width: 60% !important
+
+@media (max-width: 1700px)
+    .box__width
+        width: 70% !important
+
+@media (max-width: 1440px)
+    .box__width
+        width: 80% !important
+
+@media (max-width: 1280px)
+    .box__width
+        width: 90% !important
+
+@media (max-width: 1128px)
+    .box__width
+        width: 100% !important
+
+@media (max-width: 1007px)
+    .box__width
+        width: 100% !important
 </style>
