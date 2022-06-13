@@ -9,6 +9,7 @@
                         cols="6"
                     >
                         <BaseDateField
+                            :key="layer_filter.filter_alias"
                             v-model="filters.startDate"
                             :label="$t('end-date-label')"
                             :required="true"
@@ -22,6 +23,7 @@
                         cols="6"
                     >
                         <BaseDateField
+                            :key="layer_filter.filter_alias"
                             v-model="filters.endDate"
                             :label="$t('end-date-label')"
                             :required="true"
@@ -144,6 +146,7 @@ export default {
                     this.$set(
                         this.filters,
                         layerFilter.filter_type,
+                        layerFilter.filter_alias,
                         defaultValue
                     )
                 }
@@ -167,12 +170,12 @@ export default {
             if (cr) this.$store.dispatch('supportLayers/getTiOptions', cr)
             else this.filters.ti = null
         },
+
         filterLayer() {
             const filterInfo = {
                 id: this.layer.id,
                 filters: this.filters,
             }
-            console.log(this.filters)
             if (this.layer.layer_type === 'heatmap') {
                 this.loading = true
                 this.setLayerFiltersFire(filterInfo)

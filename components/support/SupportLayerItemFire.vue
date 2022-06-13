@@ -53,7 +53,7 @@ export default {
             const filters = {}
 
             this.layer.layer_filters.forEach((layerFilter) => {
-                const label = layerFilter.filter_type
+                const label = layerFilter.filter_alias
                 const value = layerFilter.default
                 filters[label] = value
             })
@@ -106,15 +106,19 @@ export default {
                         this.layer.opacity / 100
 
                     const filters = this.layer.filters
+                    const filter_alias = 'dt_foco_calor'
                     const keys = Object.keys(filters)
-
-                    console.log(keys)
-                    console.log(filters)
-
                     if (keys.length) {
                         wmsUrl += '&CQL_FILTER='
-                            wmsUrl += `dt_foco_calor >= ${filters.startDate} AND dt_foco_calor <= ${filters.endDate}` 
-            
+
+                        wmsUrl +=
+                            filter_alias +
+                            ' >= ' +
+                            filters.startDate +
+                            ' AND ' +
+                            filter_alias +
+                            ' <= ' +
+                            filters.endDate
                     }
                 } else {
                     wmsUrl =
@@ -129,7 +133,6 @@ export default {
             }
 
             return wmsUrl
-            
         },
     },
 
