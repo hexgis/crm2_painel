@@ -75,6 +75,7 @@
             "analytics-label": "Analytics",
             "map-label": "Map",
             "table-name": "Table Urgent Alerts"
+
         },
         "pt-br": {
             "title": "Alerta Urgente",

@@ -113,7 +113,6 @@ export const mutations = {
     setVisualizationStage(state, visualizationStage) {
         state.visualizationStage = visualizationStage
     },
-
 }
 
 export const actions = {
