@@ -74,7 +74,7 @@ export default {
         isVectorGrid: process.env.MONITORING_VECTOR2TILES === 'true',
         vectorGrid: null,
 
-         style: {
+        style: {
             CR: {
                 weight: 2.5,
                 color: '#965213',
@@ -95,7 +95,7 @@ export default {
             },
             DG: {
                 weight: 2.5,
-                color: '#e0790b', 
+                color: '#e0790b',
                 fill: true,
                 fillOpacity: 1,
             },
@@ -139,8 +139,7 @@ export default {
                     ...this.style.CR,
                     fillOpacity: this.opacity / 100,
                 })
-
-            }else {
+            } else {
                 this.$refs.alertPolygons.mapObject.invoke(
                     'setStyle',
                     this.setMonitoringStyle
@@ -163,7 +162,7 @@ export default {
                 default:
             }
         },
-        
+
         addFeatures() {
             this.$refs.alertPolygons.mapObject.clearLayers()
             if (
@@ -276,9 +275,7 @@ export default {
             })
 
             if (this.heatmapLayer)
-                this.heatmapLayer.removeFrom(
-                    this.$refs.alertHeat.mapObject
-                )
+                this.heatmapLayer.removeFrom(this.$refs.alertHeat.mapObject)
 
             this.heatmapLayer = this.$L.heatLayer(heatData, {
                 minOpacity: 0.5,
