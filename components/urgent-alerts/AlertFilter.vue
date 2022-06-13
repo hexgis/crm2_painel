@@ -131,22 +131,6 @@
             </v-col>
         </v-row>
     </v-col>
-
-    <!-- <div class="py-11">
-                <template v-for="stage in stageList">
-                    <v-row
-                        :key="stage.identifier"
-                        v-if="showFeatures"
-                        class="layer-legend"
-                        :style="{
-                            '--color': stageColor[stage.identifier],
-                            '--back-color': `${stageColor[stage.identifier]}AA`,
-                        }"
-                    >
-                        {{ stage.name }}
-                    </v-row>
-                </template>
-            </div> -->
 </template>
 
 <i18n>
@@ -199,11 +183,13 @@ export default {
             legendData: legend,
         }
     },
+
     watch: {
         'filters.cr'(value) {
             this.populateTiOptions(value)
         },
     },
+
     computed: {
         opacity: {
             get() {
@@ -247,6 +233,7 @@ export default {
             this.setFilters(this.filters)
             this.$emit('onSearch')
         },
+        
         ...mapMutations('urgent-alerts', ['setFilters']),
         ...mapActions('urgent-alerts', ['getFilterOptions', 'downloadGeoJson']),
     },

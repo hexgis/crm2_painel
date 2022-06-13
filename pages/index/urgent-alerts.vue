@@ -71,10 +71,10 @@
 <i18n>
     {
         "en": {
-            "title": "Alert Urgent",
+            "title": "Urgent Alerts",
             "analytics-label": "Analytics",
             "map-label": "Map",
-            "table-name": "Table Alert Urgent"
+            "table-name": "Table Urgent Alerts"
         },
         "pt-br": {
             "title": "Alerta Urgente",
