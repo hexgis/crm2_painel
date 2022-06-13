@@ -89,7 +89,7 @@ export const mutations = {
     setTable(state, table) {
         state.table = table
     },
-    
+
     setDownloadTable(state, tableCSV) {
         state.tableCSV = tableCSV
     },
@@ -113,7 +113,6 @@ export const mutations = {
     setVisualizationStage(state, visualizationStage) {
         state.visualizationStage = visualizationStage
     },
-    
 }
 
 export const actions = {
@@ -200,6 +199,7 @@ export const actions = {
                 tiFilters: tis.sort((a, b) => a.no_ti > b.no_ti),
             })
     },
+
     async getDataTable({ commit, state, rootGetters }) {
         commit('setLoadingFeatures', true)
         commit('setLoadingGeoJson', true)
@@ -224,7 +224,7 @@ export const actions = {
 
             if (table) commit('setTable', table)
 
-            const total = await this.$api.$get('alerts/total/', {
+            const total = await this.$api.$get('alerts/stats/', {
                 params,
             })
             if (total) commit('setTotal', total)
@@ -245,6 +245,7 @@ export const actions = {
             commit('setLoadingTable', false)
         }
     },
+
     async downloadTable({ commit, state, rootGetters }) {
         commit('setLoadingCSV', true)
 
@@ -292,6 +293,7 @@ export const actions = {
             commit('setLoadingCSV', false)
         }
     },
+    
     async downloadGeoJson({ commit, state, rootGetters }) {
         commit('setLoadingGeoJson', true)
 

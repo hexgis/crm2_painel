@@ -80,7 +80,7 @@
         "support-fire-tab": "Fire Hazard and Hot Spots",
         "landuse-tab": "Land Use And Occupation",
         "compare-tab": "Compare images",
-        "urgent-alerts-tab": "Urgent Alert",
+        "urgent-alerts-tab": "Urgent Alerts",
         "webhooks-tab": "Webhooks",
         "funai-tab": "Priorities"
     },
