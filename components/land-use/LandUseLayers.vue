@@ -75,10 +75,36 @@ export default {
         vectorGrid: null,
 
         style: {
-            weight: 2.5,
-            color: '#8e391b',
-            fill: true,
-            fillOpacity: 1,
+            VI: {
+                weight: 2.5,
+                color: '#bf8040',
+                fill: true,
+                fillOpacity: 1,
+            },
+            CR: {
+                weight: 2.5,
+                color: '#ff3333',
+                fill: true,
+                fillOpacity: 1,
+            },
+            MA: {
+                weight: 2.5,
+                color: '#1affff',
+                fill: true,
+                fillOpacity: 1,
+            },
+            AG: {
+                weight: 2.5,
+                color: '#ffff00',
+                fill: true,
+                fillOpacity: 1,
+            },
+            VN: {
+                weight: 2.5,
+                color: '#2eb82e',
+                fill: true,
+                fillOpacity: 1,
+            },
         },
     }),
 
@@ -104,7 +130,23 @@ export default {
         opacity() {
             if (this.isVectorGrid) {
                 this.vectorGrid.setFeatureStyle(1, {
-                    ...this.style,
+                    ...this.style.VN,
+                    fillOpacity: this.opacity / 100,
+                })
+                this.vectorGrid.setFeatureStyle(2, {
+                    ...this.style.AG,
+                    fillOpacity: this.opacity / 100,
+                })
+                this.vectorGrid.setFeatureStyle(3, {
+                    ...this.style.MA,
+                    fillOpacity: this.opacity / 100,
+                })
+                this.vectorGrid.setFeatureStyle(4, {
+                    ...this.style.CR,
+                    fillOpacity: this.opacity / 100,
+                })
+                this.vectorGrid.setFeatureStyle(5, {
+                    ...this.style.VI,
                     fillOpacity: this.opacity / 100,
                 })
             } else {
@@ -117,6 +159,22 @@ export default {
     },
 
     methods: {
+        vectorGridStyleFunction(no_estagio) {
+            switch (no_estagio) {
+                case 'VI':
+                    return this.style.VI
+                case 'CR':
+                    return this.style.CR
+                case 'MA':
+                    return this.style.MA
+                case 'AG':
+                    return this.style.AG
+                case 'VN':
+                    return this.style.VN
+                default:
+            }
+        },
+
         addFeatures() {
             this.$refs.landUsePolygons.mapObject.clearLayers()
             if (
@@ -130,12 +188,26 @@ export default {
                 this.vectorGrid = this.$L.vectorGrid
                     .slicer(this.features, {
                         maxZoom: 21,
+                        zIndex: 4,
                         vectorTileLayerStyles: {
-                            sliced: () => this.style,
+                            sliced: (e) =>
+                                this.vectorGridStyleFunction(e.no_estagio),
                         },
                         interactive: true,
-                        getFeatureId: (_) => {
-                            return 1
+                        getFeatureId: (e) => {
+                            switch (e.properties.no_estagio) {
+                                case 'VI':
+                                    return 5
+                                case 'CR':
+                                    return 4
+                                case 'MA':
+                                    return 3
+                                case 'AG':
+                                    return 2
+                                case 'VN':
+                                    return 1
+                                default:
+                            }
                         },
                     })
                     .on('click', (e) => {
