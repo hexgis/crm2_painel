@@ -15,7 +15,7 @@
         <AlertFilter @onSearch="search()" />
 
         <ShowDialog />
-
+        
         <div v-if="showFeatures" class="px-4">
             <v-divider class="mt-1"></v-divider>
             <p class="font-weight-regular pt-2">Legenda:</p>
@@ -39,6 +39,7 @@
                 <v-spacer></v-spacer>
             </v-col>
         </div>
+
         <v-footer
             absolute
             class="priority-footer"
@@ -92,10 +93,10 @@
 <i18n>
     {
         "en": {
-            "title": "Alert Urgent",
+            "title": "Urgent Alerts",
             "analytics-label": "Analytics",
             "map-label": "Map",
-            "table-name": "Table Alert Urgent"
+            "table-name": "Table Urgent Alerts"
         },
         "pt-br": {
             "title": "Alerta Urgente",
@@ -142,7 +143,7 @@ export default {
                 this.features.features.length > 0
             )
         },
-
+     
         showFeaturesAlert: {
             get() {
                 return this.$store.state['urgent-alerts'].showFeatures
@@ -152,7 +153,7 @@ export default {
                 this.$store.commit('urgent-alerts/setShowFeatures', value)
             },
         },
-
+        
         ...mapState('urgent-alerts', [
             'showFeatures',
             'features',
