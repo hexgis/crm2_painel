@@ -144,6 +144,7 @@ export default {
                 this.features.features.length > 0
             )
         },
+        
         showFeaturesLandUse: {
             get() {
                 return this.$store.state['land-use'].showFeatures
