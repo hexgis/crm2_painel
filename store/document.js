@@ -3,7 +3,7 @@ export const state = () => ({
     showFeatures: false,
     heatMap: true,
     tableDialogAlert: false,
-    isLoadingTable: true,
+    isLoadingTable: false,
     isLoadingFeatures: false,
     showDialogDocument: false,
 

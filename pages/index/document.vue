@@ -125,7 +125,7 @@ export default {
     data() {
         return {
             items: [
-                { value: 'Alerta Urgentes' },
+                { value: 'Alertas Urgentes' },
                 { value: 'FIP DGM' },
                 { value: 'Fiscalização(2016)' },
                 { value: 'Fiscalização(2017)' },

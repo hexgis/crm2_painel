@@ -3,168 +3,10 @@
         <v-col cols="auto">
             <v-dialog
                 v-model="showDialogDocument"
-                fullscreen
                 transition="dialog-bottom-transition"
                 max-width="95vw"
             >
-                <v-card>
-                    <v-toolbar class="background__toolbar" dark color="primary">
-                        <h3>Document Search</h3>
-                        <v-spacer></v-spacer>
-                        <v-toolbar-items>
-                            <v-btn icon @click="closeDialog(false)">
-                                <v-icon>mdi-close</v-icon>
-                            </v-btn>
-                        </v-toolbar-items>
-                    </v-toolbar>
-
-                    <v-subheader class="">Filters</v-subheader>
-                    <v-card-actions>
-                        <v-container fluid class="mb-5 pa-0">
-                            <v-row justify="left" align="center">
-                                <v-col cols="5" justify="space-around">
-                                    <v-select
-                                        v-model="filters.ac"
-                                        label="Ações"
-                                        item-value="id"
-                                        :items="actions"
-                                        item-text="name"
-                                        hide-details
-                                        clearable
-                                        multiple
-                                        required
-                                        class="mb-3"
-                                    >
-                                    </v-select>
-                                    <v-row class="d-flex">
-                                        <v-col md="6">
-                                            <v-select
-                                                v-if="filters.ac.length"
-                                                v-model="filters.cr"
-                                                label="Coordenação Regional (Todas)"
-                                                :items="
-                                                    filterOptions.regionalFilters
-                                                "
-                                                item-value="co_cr"
-                                                item-text="ds_cr"
-                                                hide-details
-                                                clearable
-                                                multiple
-                                                required
-                                            >
-                                            </v-select>
-                                        </v-col>
-                                        <v-col md="6">
-                                            <v-select
-                                                v-if="filters.ac.length"
-                                                v-model="filters.ti"
-                                                label="Terras Indigenas (Todas)"
-                                                :items="filterOptions.tiFilters"
-                                                item-text="no_ti"
-                                                item-value="co_funai"
-                                                multiple
-                                                clearable
-                                                hide-details
-                                                required
-                                                class="position__input"
-                                            >
-                                            </v-select>
-                                        </v-col>
-                                    </v-row>
-                                </v-col>
-                                <v-col cols="4" align-self="end">
-                                    <v-row>
-                                        <v-col>
-                                            <BaseDateField
-                                                v-if="filters.ac.length"
-                                                v-model="filters.startDate"
-                                                :label="$t('start-date-label')"
-                                                :required="true"
-                                                outlined
-                                            />
-                                        </v-col>
-                                        <v-col>
-                                            <BaseDateField
-                                                v-if="filters.ac.length"
-                                                v-model="filters.endDate"
-                                                :label="$t('end-date-label')"
-                                                :required="true"
-                                                :min-date="filters.startDate"
-                                                flex-row
-                                                outlined
-                                            />
-                                        </v-col>
-                                    </v-row>
-
-                                    <v-btn
-                                        v-if="filters.ac.length"
-                                        block
-                                        color="accent"
-                                        :loading="isLoadingFeatures"
-                                        @click="search"
-                                    >
-                                        {{ $t('search-label') }}
-                                    </v-btn>
-                                </v-col>
-                            </v-row>
-                        </v-container>
-                    </v-card-actions>
-                    <v-divider></v-divider>
-                    <v-card-actions class="d-flex flex-column">
-                        <v-card-actions style="width: 94vw">
-                            <v-container fluid>
-                                <v-row
-                                    justify="space-between"
-                                    class="align-baseline"
-                                    no-gutters
-                                >
-                                    <v-col md="10">
-                                        <!-- <p class="font-weight-bold">
-                                            Terra(s) Indígena(s) sem documentos
-                                            disponíveis para os parâmetros
-                                            buscados
-                                        </p> -->
-                                    </v-col>
-                                    <v-col md="2">
-                                        <!-- <v-text-field
-                                            v-model="filter"
-                                            append-icon="mdi-magnify"
-                                            label="Filter"
-                                            single-line
-                                            hide-details
-                                            style="width: 20vw"
-                                        ></v-text-field> -->
-                                    </v-col>
-                                </v-row>
-                            </v-container>
-                        </v-card-actions>
-                    </v-card-actions>
-                    <v-row no-gutters class="mb-1 mr-2">
-                        <v-col cols="6">
-                            <v-subheader>Resultados</v-subheader>
-                        </v-col>
-                        <v-spacer></v-spacer>
-                        <v-col cols="2">
-                            <v-text-field
-                                v-model="filter"
-                                append-icon="mdi-magnify"
-                                label="Filter"
-                                single-line
-                                hide-details
-                            ></v-text-field>
-                        </v-col>
-                    </v-row>
-                    <v-data-table
-                        :headers="headers"
-                        :items="desserts"
-                        :search="filter"
-                        fixed-header
-                        height="50vh"
-                        style="width: 100vw"
-                    ></v-data-table>
-                </v-card>
-
-                <!-- <v-card style="width: 100vw">
+                <v-card style="width: 100vw">
                     <v-toolbar class="background__toolbar" dark color="primary">
                         <h3>{{ $t('dialogName') }}</h3>
                         <v-spacer></v-spacer>
@@ -173,182 +15,28 @@
                         </v-btn>
                     </v-toolbar>
                     <v-card-actions>
-                        <v-container fluid grid-list-lg>
-                            <v-row justify="left" align="center">
-                                <v-col cols="5" justify="space-around">
+                        <v-container fluid>
+                            <v-row
+                                align="center"
+                                class="column"
+                                justify="space-around"
+                            >
+                                <v-col class="cols">
                                     <v-select
                                         v-model="filters.ac"
-                                        label="Ações"
+                                        :label="$t('action-label')"
                                         item-value="id"
                                         :items="actions"
                                         item-text="name"
                                         hide-details
-                                        clearable
                                         multiple
                                         required
-                                        class="mb-3"
                                     >
                                     </v-select>
-                                    <v-row class="d-flex">
-                                        <v-col md="6">
-                                            <v-select
-                                                v-if="filters.ac.length"
-                                                v-model="filters.cr"
-                                                label="Coordenação Regional (Todas)"
-                                                :items="
-                                                    filterOptions.regionalFilters
-                                                "
-                                                item-value="co_cr"
-                                                item-text="ds_cr"
-                                                hide-details
-                                                clearable
-                                                multiple
-                                                required
-                                            >
-                                            </v-select>
-                                        </v-col>
-                                        <v-col md="6">
-                                            <v-select
-                                                v-if="filters.ac.length"
-                                                v-model="filters.ti"
-                                                label="Terras Indigenas (Todas)"
-                                                :items="filterOptions.tiFilters"
-                                                item-text="no_ti"
-                                                item-value="co_funai"
-                                                multiple
-                                                clearable
-                                                hide-details
-                                                required
-                                                class="position__input"
-                                            >
-                                            </v-select>
-                                        </v-col>
-                                    </v-row>
                                 </v-col>
-                                <v-col cols="4" align-self="end">
-                                    <v-row>
-                                        <v-col>
-                                            <BaseDateField
-                                                v-if="filters.ac.length"
-                                                v-model="filters.startDate"
-                                                :label="$t('start-date-label')"
-                                                :required="true"
-                                                outlined
-                                            />
-                                        </v-col>
-                                        <v-col>
-                                            <BaseDateField
-                                                v-if="filters.ac.length"
-                                                v-model="filters.endDate"
-                                                :label="$t('end-date-label')"
-                                                :required="true"
-                                                :min-date="filters.startDate"
-                                                flex-row
-                                                outlined
-                                            />
-                                        </v-col>
-                                    </v-row>
-
-                                    <v-btn
+                                <v-col>
+                                    <v-select
                                         v-if="filters.ac.length"
-                                        block
-                                        color="accent"
-                                        :loading="isLoadingFeatures"
-                                        @click="search"
-                                    >
-                                        {{ $t('search-label') }}
-                                    </v-btn>
-                                </v-col>
-                            </v-row>
-                        </v-container>
-                    </v-card-actions>
-                    <v-divider></v-divider>
-                    <v-card-actions class="d-flex flex-column">
-                        <v-card-actions style="width: 94vw">
-                            <v-container fluid>
-                                <v-row
-                                    justify="space-between"
-                                    class="align-baseline"
-                                >
-                                    <v-col md="10">
-                                        <p class="font-weight-bold">
-                                            Terra(s) Indígena(s) sem documentos
-                                            disponíveis para os parâmetros
-                                            buscados
-                                        </p>
-                                    </v-col>
-                                    <v-col md="2">
-                                        <v-text-field
-                                            v-model="filter"
-                                            append-icon="mdi-magnify"
-                                            label="Filter"
-                                            single-line
-                                            hide-details
-                                            style="width: 20vw"
-                                        ></v-text-field>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
-                        </v-card-actions>
-
-                        <v-data-table
-                            :headers="headers"
-                            :items="desserts"
-                            :search="filter"
-                            fixed-header
-                            height="30vh"
-                            style="width: 100vw"
-                        ></v-data-table>
-                    </v-card-actions>
-                </v-card> -->
-            </v-dialog>
-        </v-col>
-
-        <!--  -->
-
-        <!-- <v-dialog
-            v-model="showDialogDocument"
-            scrollable
-            persistent
-            max-width="80vw"
-        > -->
-        <!-- <div class="background__color">
-                <v-toolbar class="background__toolbar" dark color="primary">
-                    <h3>{{ $t('dialogName') }}</h3>
-                    <v-spacer></v-spacer>
-                    <v-btn icon @click="closeDialog(false)">
-                        <v-icon>mdi-close</v-icon>
-                    </v-btn>
-                </v-toolbar>
-                <div class="mt-8 ml-6">
-                    <v-card
-                        elevation="4"
-                        style="width: 77vw"
-                        class="d-flex flex-column"
-                    >
-                        <div class="box__width">
-                            <div
-                                class="d-flex flex-column"
-                                style="margin-left: 1vw; margin-top: 1vh"
-                            >
-                                <div
-                                    class="d-flex"
-                                    style="min-width: 74%; max-width: 74%"
-                                >
-                                    <v-select
-                                        v-model="filters.cr"
-                                        label="Ações"
-                                        item-value="co_cr"
-                                        item-text="ds_cr"
-                                        hide-details
-                                        clearable
-                                        multiple
-                                        required
-                                        class="mr-4"
-                                        loading
-                                    >
-                                    </v-select>
-                                    <v-select
                                         v-model="filters.cr"
                                         label="Coordenação Regional (Todas)"
                                         :items="filterOptions.regionalFilters"
@@ -358,22 +46,38 @@
                                         clearable
                                         multiple
                                         required
-                                        style="min-width: 49%; max-width: 49%"
                                     >
                                     </v-select>
-                                </div>
-                                <div class="d-flex mt-5" style="width: 80%">
-                                    <div class="d-flex" style="width: 45%">
-                                        <div class="mr-2">
+                                </v-col>
+                                <v-col>
+                                    <v-select
+                                        v-if="filters.ac.length"
+                                        v-model="filters.ti"
+                                        label="Terras Indigenas (Todas)"
+                                        :items="filterOptions.tiFilters"
+                                        item-text="no_ti"
+                                        item-value="co_funai"
+                                        multiple
+                                        clearable
+                                        hide-details
+                                        required
+                                    >
+                                    </v-select>
+                                </v-col>
+                                <v-col class="mt-9">
+                                    <v-row>
+                                        <v-col>
                                             <BaseDateField
+                                                v-if="filters.ac.length"
                                                 v-model="filters.startDate"
                                                 :label="$t('start-date-label')"
                                                 :required="true"
                                                 outlined
                                             />
-                                        </div>
-                                        <div>
+                                        </v-col>
+                                        <v-col>
                                             <BaseDateField
+                                                v-if="filters.ac.length"
                                                 v-model="filters.endDate"
                                                 :label="$t('end-date-label')"
                                                 :required="true"
@@ -381,31 +85,12 @@
                                                 flex-row
                                                 outlined
                                             />
-                                        </div>
-                                    </div>
-                                    <div class="ml-4" style="width: 45%">
-                                        <v-slide-y-transition>
-                                            <v-select
-                                                v-model="filters.ti"
-                                                label="Terras Indigenas (Todas)"
-                                                :items="filterOptions.tiFilters"
-                                                item-text="no_ti"
-                                                item-value="co_funai"
-                                                multiple
-                                                clearable
-                                                hide-details
-                                                required
-                                                class="position__input"
-                                            >
-                                            </v-select>
-                                        </v-slide-y-transition>
-                                    </div>
-                                </div>
-                                <div
-                                    class="d-flex align-end mb-4"
-                                    style="width: 36%"
-                                >
+                                        </v-col>
+                                    </v-row>
+                                </v-col>
+                                <v-col class="mt-2">
                                     <v-btn
+                                        v-if="filters.ac.length"
                                         block
                                         color="accent"
                                         :loading="isLoadingFeatures"
@@ -413,52 +98,50 @@
                                     >
                                         {{ $t('search-label') }}
                                     </v-btn>
-                                </div>
-                            </div>
-                        </div>
-                        <v-divider></v-divider>
-                        <div style="width: 77vw">
-                            <v-card-title class="card__width">
-                                <p>
-                                    Terra(s) Indígena(s) sem documentos
-                                    disponíveis para os parâmetros buscados
-                                </p>
-                                <div>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-card-actions>
+                    <v-divider></v-divider>
+                    <v-card-actions class="d-flex flex-column">
+                        <v-container fluid class="pa-0">
+                            <v-row no-gutters class="mb-1">
+                                <v-col>
+                                    <v-subheader>
+                                        {{ $t('result-label') }}
+                                    </v-subheader>
+                                </v-col>
+                                <v-spacer></v-spacer>
+                                <v-col cols="2">
                                     <v-text-field
                                         v-model="filter"
                                         append-icon="mdi-magnify"
-                                        label="Filter"
+                                        :label="$t('filter-label')"
                                         single-line
                                         hide-details
                                     ></v-text-field>
-                                </div>
-                            </v-card-title>
-
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                        <v-container class="pa-0" fluid>
+                            <v-skeleton-loader
+                                v-if="isLoadingTable"
+                                type="table-row-divider@12"
+                            ></v-skeleton-loader>
                             <v-data-table
+                                v-if="!isLoadingTable"
                                 :headers="headers"
-                                :items="desserts"
+                                :items="values"
                                 :search="filter"
                                 fixed-header
-                                height="20vh"
+                                height="52vh"
+                                style="width: 100vw"
                             ></v-data-table>
-                        </div>
-                    </v-card>
-                </div>
-                <v-container>
-                    <v-col v-show="showFeatures">
-                        <v-btn
-                            color="accent"
-                            :loading="isLoadingGeoJson"
-                            fab
-                            small
-                            @click="downloadGeoJson()"
-                        >
-                            <v-icon>mdi-download</v-icon>
-                        </v-btn>
-                    </v-col>
-                </v-container>
-            </div> -->
-        <!-- </v-dialog> -->
+                        </v-container>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-col>
     </v-row>
 </template>
 
@@ -473,7 +156,10 @@
             "heat-map-label": "Heat map",
             "polygon-label": "Total polygon count",
             "end-date-label": "End Date",
-            "dialogName": "DOCUMENT SEARCH"
+            "dialogName": "DOCUMENT SEARCH",
+            "result-label": "Results",
+            "filter-label": "Filter",
+            "action-label": "Actions"
             
         },
         "pt-br": {
@@ -485,7 +171,10 @@
             "polygon-label": "Total de polígonos",
             "start-date-label": "Data Início",
             "end-date-label": "Data Fim",
-            "dialogName": "PESQUISA DE DOCUMENTOS"
+            "dialogName": "PESQUISA DE DOCUMENTOS",
+            "result-label": "Resultados",
+            "filter-label": "Filtrar",
+            "action-label": "Ações"
         }
     }
 </i18n>
@@ -496,7 +185,7 @@ import { mapMutations, mapState, mapActions } from 'vuex'
 import legend from '@/assets/legend.png'
 
 export default {
-    name: 'AlertFilter',
+    name: 'DocumentDialog',
 
     components: { BaseDateField },
 
@@ -519,34 +208,35 @@ export default {
                 {
                     text: 'Código',
                     align: 'start',
-                    value: 'name',
+                    value: 'id',
                 },
-                { text: 'Nome da TI', value: 'calories' },
+                { text: 'Nome da TI', value: 'name' },
             ],
             desserts: [
                 {
-                    name: 'Frozen Yogurt',
-                    calories: 159,
+                    name: 'Jumina',
+                    id: 159,
                 },
                 {
-                    name: 'Ice cream sandwich',
-                    calories: 237,
+                    name: 'Alto Rio Purus',
+                    id: 237,
                 },
                 {
-                    name: 'Eclair',
-                    calories: 262,
+                    name: 'Boca do Acre',
+                    id: 262,
                 },
                 {
-                    name: 'Cupcake',
-                    calories: 305,
+                    name: 'Rio Mequens',
+                    id: 305,
                 },
             ],
             actions: [
                 {
                     id: 1,
-                    name: 'Terra Indigena',
+                    name: 'Alertas Urgentes',
                 },
             ],
+            values: [],
         }
     },
     watch: {
@@ -581,6 +271,7 @@ export default {
             'total',
             'params',
             'showDialogDocument',
+            'isLoadingTable',
         ]),
     },
 
@@ -599,10 +290,18 @@ export default {
         },
 
         search() {
-            console.log(this.filterOptions.regionalFilters)
+            this.setLoadingTable(true)
+            this.values = this.desserts
+            setInterval(() => {
+                this.setLoadingTable(false)
+            }, 3000)
         },
 
-        ...mapMutations('document', ['setFilters', 'setShowDialogDocument']),
+        ...mapMutations('document', [
+            'setFilters',
+            'setShowDialogDocument',
+            'setLoadingTable',
+        ]),
         ...mapActions('document', ['getFilterOptions', 'downloadGeoJson']),
     },
 }
@@ -612,38 +311,7 @@ export default {
 .background__toolbar
     background: linear-gradient(to bottom, rgb(30, 33, 50), rgb(44, 54, 73))
 
-.background__color
-    background-color: white
-    width: 100vw
-    display: flex
-    flex-direction: column
-
-.card__width
-    display: flex
-    flex-direction: row
-    align-items: baseline
-    justify-content: space-between
-
-.box__width
-    width: 60% !important
-
-@media (max-width: 1700px)
-    .box__width
-        width: 70% !important
-
-@media (max-width: 1440px)
-    .box__width
-        width: 80% !important
-
-@media (max-width: 1280px)
-    .box__width
-        width: 90% !important
-
-@media (max-width: 1128px)
-    .box__width
-        width: 100% !important
-
-@media (max-width: 1007px)
-    .box__width
-        width: 100% !important
+@media (max-width: 1000px)
+    .column
+        flex-direction: column
 </style>
