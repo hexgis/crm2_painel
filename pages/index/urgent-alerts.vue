@@ -120,6 +120,7 @@ export default {
                 this.features.features.length > 0
             )
         },
+        
         showFeaturesAlert: {
             get() {
                 return this.$store.state['urgent-alerts'].showFeatures
