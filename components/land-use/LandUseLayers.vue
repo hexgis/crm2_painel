@@ -22,12 +22,6 @@
                 :options="{ onEachFeature }"
                 @ready="onLandUseReady"
             />
-
-            <!-- <BaseMetadataPopup
-                v-show="false"
-                ref="popupComponent"
-                :feature="selectedLandUseFeature"
-            /> -->
         </l-feature-group>
     </l-layer-group>
 </template>
@@ -171,7 +165,6 @@ export default {
                     return this.style.AG
                 case 'VN':
                     return this.style.VN
-                default:
             }
         },
 
@@ -206,17 +199,11 @@ export default {
                                     return 2
                                 case 'VN':
                                     return 1
-                                default:
                             }
                         },
                     })
                     .on('click', (e) => {
                         this.getFeatureDetails(e.layer.properties.id)
-                        // this.$nextTick(() => {
-                        //     e.layer.bindPopup(
-                        //         () => this.$refs.popupComponent.$el
-                        //     )
-                        // })
                     })
                     .addTo(this.$refs.landUsePolygons.mapObject)
             }
@@ -262,34 +249,15 @@ export default {
 
         async getFeatureDetails(featureId) {
             this.selectedLandUseFeature = null
-            // this.$nextTick(() => {
-            //     this.$refs.popup.mapObject
-            //         // .bindPopup(
-            //         //     () => this.$refs.popupComponent.$el
-            //         // )
-            //         .setContent(this.$refs.popupComponent.$el.innerHTML)
-            // })
 
             try {
                 this.selectedLandUseFeature = await this.$api.$get(
                     'land-use/detail/' + featureId + '/'
                 )
-
-                // this.$nextTick(() => {
-                //     // return this.$refs.popupComponent.$el
-                //     // this.$refs.popup.mapObject.unbindPopup()
-
-                //     this.$refs.popup.mapObject
-                //         // .bindPopup(
-                //         //     this.$refs.popupComponent.$el
-                //         // )
-                //         .setContent(this.$refs.popupComponent.$el.innerHTML)
-                // })
             } catch (exception) {
                 this.$store.commit('alert/addAlert', {
                     message: this.$t('detail-api-error'),
                 })
-                // return null
             }
         },
 
@@ -304,7 +272,7 @@ export default {
                 heatData.push([
                     feature.properties.nu_latitude,
                     feature.properties.nu_longitude,
-                    feature.properties.nu_area_km2 / maxArea, // normalize by maximum area
+                    feature.properties.nu_area_km2 / maxArea,
                 ])
             })
 

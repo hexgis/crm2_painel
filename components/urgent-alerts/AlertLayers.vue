@@ -22,12 +22,6 @@
                 :options="{ onEachFeature }"
                 @ready="onAlertReady"
             />
-
-            <!-- <BaseMetadataPopup
-                v-show="false"
-                ref="popupComponent"
-                :feature="selectedMonitoringFeature"
-            /> -->
         </l-feature-group>
     </l-layer-group>
 </template>
@@ -159,7 +153,6 @@ export default {
                     return this.style.FF
                 case 'DG':
                     return this.style.DG
-                default:
             }
         },
 
@@ -199,11 +192,6 @@ export default {
                     })
                     .on('click', (e) => {
                         this.getFeatureDetails(e.layer.properties.id)
-                        // this.$nextTick(() => {
-                        //     e.layer.bindPopup(
-                        //         () => this.$refs.popupComponent.$el
-                        //     )
-                        // })
                     })
                     .addTo(this.$refs.alertPolygons.mapObject)
             }
@@ -228,34 +216,15 @@ export default {
 
         async getFeatureDetails(featureId) {
             this.selectedAlertFeature = null
-            // this.$nextTick(() => {
-            //     this.$refs.popup.mapObject
-            //         // .bindPopup(
-            //         //     () => this.$refs.popupComponent.$el
-            //         // )
-            //         .setContent(this.$refs.popupComponent.$el.innerHTML)
-            // })
 
             try {
                 this.selectedAlertFeature = await this.$api.$get(
                     'alerts/detail/' + featureId + '/'
                 )
-
-                // this.$nextTick(() => {
-                //     // return this.$refs.popupComponent.$el
-                //     // this.$refs.popup.mapObject.unbindPopup()
-
-                //     this.$refs.popup.mapObject
-                //         // .bindPopup(
-                //         //     this.$refs.popupComponent.$el
-                //         // )
-                //         .setContent(this.$refs.popupComponent.$el.innerHTML)
-                // })
             } catch (exception) {
                 this.$store.commit('alert/addAlert', {
                     message: this.$t('detail-api-error'),
                 })
-                // return null
             }
         },
 
@@ -270,7 +239,7 @@ export default {
                 heatData.push([
                     feature.properties.nu_latitude,
                     feature.properties.nu_longitude,
-                    feature.properties.nu_area_km2 / maxArea, // normalize by maximum area
+                    feature.properties.nu_area_km2 / maxArea,
                 ])
             })
 
