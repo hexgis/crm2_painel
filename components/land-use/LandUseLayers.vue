@@ -69,31 +69,31 @@ export default {
         vectorGrid: null,
 
         style: {
-            VI: {
+            "VI": {
                 weight: 2.5,
                 color: '#bf8040',
                 fill: true,
                 fillOpacity: 1,
             },
-            CR: {
+            "CR": {
                 weight: 2.5,
                 color: '#ff3333',
                 fill: true,
                 fillOpacity: 1,
             },
-            MA: {
+            "MA": {
                 weight: 2.5,
                 color: '#1affff',
                 fill: true,
                 fillOpacity: 1,
             },
-            AG: {
+            "AG": {
                 weight: 2.5,
                 color: '#ffff00',
                 fill: true,
                 fillOpacity: 1,
             },
-            VN: {
+            "VN": {
                 weight: 2.5,
                 color: '#2eb82e',
                 fill: true,
@@ -266,8 +266,8 @@ export default {
                 (feature) => feature.properties.area_ha
             )
             const maxArea = Math.max.apply(null, areas)
-
             const heatData = []
+
             this.features.features.forEach((feature) => {
                 heatData.push([
                     feature.properties.nu_latitude,

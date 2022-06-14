@@ -69,25 +69,25 @@ export default {
         vectorGrid: null,
 
         style: {
-            CR: {
+            "CR": {
                 weight: 2.5,
                 color: '#965213',
                 fill: true,
                 fillOpacity: 1,
             },
-            DR: {
+            "DR": {
                 weight: 2.5,
                 color: '#337f1e',
                 fill: true,
                 fillOpacity: 1,
             },
-            FF: {
+            "FF": {
                 weight: 2.5,
                 color: '#ba1a1a',
                 fill: true,
                 fillOpacity: 1,
             },
-            DG: {
+            "DG": {
                 weight: 2.5,
                 color: '#e0790b',
                 fill: true,
