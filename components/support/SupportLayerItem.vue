@@ -31,7 +31,6 @@
 </template>
 
 <script>
-import { filter } from 'jszip'
 import { mapMutations, mapActions } from 'vuex'
 
 if (typeof window !== 'undefined') {
@@ -99,29 +98,55 @@ export default {
         wmsBaseUrl() {
             let wmsUrl = ''
             if (this.layer.layer_type === 'wms') {
-                if (this.layer.filters) {
+                const filters = this.layer.filters
+
+                if (filters) {
                     wmsUrl =
                         this.layer.wms.geoserver.wms_url +
                         '&env=percentage:' +
                         this.layer.opacity / 100
 
-                    const filters = this.layer.filters
-                    const keys = Object.keys(filters)
-
-                    if (keys.length) {
+                    // const keys = Object.keys(filters)
+                    if (Object.keys(filters).length) {
                         wmsUrl += '&CQL_FILTER='
 
-                        for (const filter in this.layer.filters) {
-                            if (this.layer.filters[filter].length) {
+                        for (const idx in this.layer.layer_filters) {
+                            let layer_filter = this.layer.layer_filters[idx]
+
+                            if (filters.co_cr) {
                                 wmsUrl +=
-                                    filter +
+                                    layer_filter.filter_alias +
                                     ' IN ' +
                                     '(' +
-                                    this.layer.filters[filter] +
+                                    filters.co_cr +
+                                    ')' +
+                                    ' AND '
+                            }
+
+                            if (filters.co_funai) {
+                                wmsUrl +=
+                                    layer_filter.filter_alias +
+                                    ' IN ' +
+                                    '(' +
+                                    filters.co_funai +
                                     ')' +
                                     ' AND '
                             }
                         }
+                        // if (keys.length) {
+                        //     wmsUrl += '&CQL_FILTER='
+
+                        //     for (const filter in this.layer.filters) {
+                        //         if (this.layer.filters[filter].length) {
+                        //             wmsUrl +=
+                        //                 filter +
+                        //                 ' IN ' +
+                        //                 '(' +
+                        //                 this.layer.filters[filter] +
+                        //                 ')' +
+                        //                 ' AND '
+                        //         }
+                        //     }
                         wmsUrl = wmsUrl.slice(0, -4)
                     }
                 } else {
