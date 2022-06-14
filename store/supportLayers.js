@@ -126,6 +126,7 @@ export const mutations = {
             Vue.set(state.supportCategoryGroupsFire, group.id, group)
         }
     },
+
     setSupportCategoryGroupsProdes(state, categoryGroups) {
         state.supportCategoryGroupsProdes = {}
         state.supportLayersCategoryProdes = {}
@@ -154,6 +155,7 @@ export const mutations = {
             Vue.set(state.supportCategoryGroupsProdes, group.id, group)
         }
     },
+
     setSupportCategoryGroupsRaster(state, categoryGroups) {
         state.supportCategoryGroupsRaster = {}
         state.supportLayersCategoryRaster = {}
@@ -182,6 +184,7 @@ export const mutations = {
             Vue.set(state.supportCategoryGroupsRaster, group.id, group)
         }
     },
+
     setSupportCategoryGroupsBase(state, categoryGroups) {
         state.supportCategoryGroupsBase = {}
         state.supportLayers = {}
@@ -217,36 +220,44 @@ export const mutations = {
             ...filters,
         }
     },
+
     setLayerFiltersRaster(state, { id, filters }) {
         state.supportLayersCategoryRaster[id].filters = {
             ...state.supportLayersCategoryRaster[id].filters,
             ...filters,
         }
     },
+
     setFilterOptions(state, data) {
         state.filterOptions = data
     },
+
     setLayerFiltersFire(state, { id, filters }) {
         state.supportLayersCategoryFire[id].filters = {
             ...state.supportLayersCategoryFire[id].filters,
             ...filters,
         }
     },
+
     setLayerFiltersProdes(state, { id, filters }) {
         state.supportLayersCategoryProdes[id].filters = {
             ...state.supportLayersCategoryProdes[id].filters,
             ...filters,
         }
     },
+
     toggleLayerVisibility(state, { id, visible }) {
         state.supportLayers[id].visible = visible
     },
+
     toggleLayerVisibilityFire(state, { id, visible }) {
         state.supportLayersCategoryFire[id].visible = visible
     },
+
     toggleLayerVisibilityProdes(state, { id, visible }) {
         state.supportLayersCategoryProdes[id].visible = visible
     },
+
     toggleLayerVisibilityRaster(state, { id, visible }) {
         state.supportLayersCategoryRaster[id].visible = visible
     },
@@ -254,24 +265,31 @@ export const mutations = {
     setLayerOpacity(state, { id, opacity }) {
         state.supportLayers[id].opacity = opacity
     },
+
     setLayerOpacityRaster(state, { id, opacity }) {
         state.supportLayersCategoryRaster[id].opacity = opacity
     },
+
     setLayerOpacityFire(state, { id, opacity }) {
         state.supportLayersCategoryFire[id].opacity = opacity
     },
+
     setLayerOpacityProdes(state, { id, opacity }) {
         state.supportLayersCategoryProdes[id].opacity = opacity
     },
+
     setLayerLoading(state, { id, loading }) {
         state.supportLayers[id].loading = loading
     },
+
     setLayerLoadingFire(state, { id, loading }) {
         state.supportLayersCategoryFire[id].loading = loading
     },
+
     setLayerLoadingProdes(state, { id, loading }) {
         state.supportLayersCategoryProdes[id].loading = loading
     },
+
     setLayerLoadingRaster(state, { id, loading }) {
         state.supportLayersCategoryRaster[id].loading = loading
     },
@@ -280,18 +298,22 @@ export const mutations = {
         state.supportLayers[id].data = data
         state.supportLayers[id].visible = true
     },
+
     setHeatLayerDataRaster(state, { id, data }) {
         state.supportLayersCategoryRaster[id].data = data
         state.supportLayersCategoryRaster[id].visible = true
     },
+
     setHeatLayerDataFire(state, { id, data }) {
         state.supportLayersCategoryFire[id].data = data
         state.supportLayersCategoryFire[id].visible = true
     },
+
     setHeatLayerDataProdes(state, { id, data }) {
         state.supportLayersCategoryProdes[id].data = data
         state.supportLayersCategoryProdes[id].visible = true
     },
+
     setLoading(state, loading) {
         state.loading = loading
     },

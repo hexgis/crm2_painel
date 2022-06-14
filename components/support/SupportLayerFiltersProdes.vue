@@ -6,7 +6,7 @@
                     <BaseDateField
                         v-model="filters.start_date"
                         :label="$t('start-date-label')"
-                        :required="true"
+                        required
                         outlined
                         dense
                     />
@@ -15,7 +15,7 @@
                     <BaseDateField
                         v-model="filters.end_date"
                         :label="$t('end-date-label')"
-                        :required="true"
+                        required
                         :min-date="filters.start_date"
                         outlined
                         dense
@@ -35,7 +35,7 @@
                         <BaseDateField
                             v-model="filters[layer_filter.filter_type]"
                             :label="$t('start-date-label')"
-                            :required="true"
+                            required
                             outlined
                             dense
                         />
@@ -57,7 +57,7 @@
                         hide-details
                         clearable
                         multiple
-                        required="true"
+                        required
                     >
                     </v-select>
                 </v-col>
@@ -78,7 +78,7 @@
                             multiple
                             clearable
                             hide-details
-                            required="true"
+                            required
                         >
                         </v-select>
                     </v-slide-y-transition>
@@ -174,11 +174,13 @@ export default {
     mounted() {
         this.getFilterOptions()
     },
+
     watch: {
         'filters.co_cr'(value) {
             this.populateTiOptions(value)
         },
     },
+
     computed: {
         ...mapState('supportLayers', ['filterOptions']),
     },
