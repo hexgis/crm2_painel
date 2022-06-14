@@ -34,6 +34,10 @@
                     <v-icon class="mr-2" color="#00cc00">mdi-square</v-icon>
                     Vegetação Natural
                 </v-row>
+                <v-row class="mb-2">
+                    <v-icon class="mr-2" color="#ff3333">mdi-square</v-icon>
+                    Corte Raso
+                </v-row>
                 <v-spacer></v-spacer>
             </v-col>
         </div>
@@ -140,6 +144,7 @@ export default {
                 this.features.features.length > 0
             )
         },
+        
         showFeaturesLandUse: {
             get() {
                 return this.$store.state['land-use'].showFeatures

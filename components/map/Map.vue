@@ -154,6 +154,8 @@
                 <BaseWmsMetadataPopup :map="map" />
                 <LandUseLayers :map="map" />
                 <PriorityLayers :map="map" />
+
+                <AlertLayers :map="map" />
             </l-map>
 
             <div v-if="loading" class="loading-background">
@@ -208,6 +210,7 @@ import BaseWmsMetadataPopup from '@/components/base/BaseWmsMetadataPopup'
 // import AlgorithmLayers from '@/components/algorithms/AlgorithmLayers'
 // import WebhooksLayers from '@/components/webhooks/WebhooksLayers'
 import PriorityLayers from '@/components/priority/PriorityLayers'
+import AlertLayers from '@/components/urgent-alerts/AlertLayers'
 import LandUseLayers from '@/components/land-use/LandUseLayers'
 
 import 'leaflet/dist/leaflet.css'
@@ -240,6 +243,7 @@ export default {
         // WebhooksLayers,
         MapPrinter,
         LandUseLayers,
+        AlertLayers
     },
 
     data: () => ({

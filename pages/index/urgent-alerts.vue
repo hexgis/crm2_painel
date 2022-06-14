@@ -15,6 +15,30 @@
         <AlertFilter @onSearch="search()" />
 
         <ShowDialog />
+        
+        <div v-if="showFeatures" class="px-4">
+            <v-divider class="mt-1"></v-divider>
+            <p class="font-weight-regular pt-2">Legenda:</p>
+            <v-col>
+                <v-row class="mb-2">
+                    <v-icon class="mr-2" color="#965213">mdi-square</v-icon>
+                    CR
+                </v-row>
+                <v-row class="mb-2">
+                    <v-icon class="mr-2" color="#337f1e">mdi-square</v-icon>
+                    DR
+                </v-row>
+                <v-row class="mb-2">
+                    <v-icon class="mr-2" color="#ba1a1a">mdi-square</v-icon>
+                    FF
+                </v-row>
+                <v-row class="mb-2">
+                    <v-icon class="mr-2" color="#e0790b">mdi-square</v-icon>
+                    DG
+                </v-row>
+                <v-spacer></v-spacer>
+            </v-col>
+        </div>
 
         <v-footer
             absolute
@@ -55,11 +79,9 @@
                         />
                     </div>
                 </v-row>
-
                 <v-row class="py-2">
                     <v-divider></v-divider>
                 </v-row>
-
                 <v-row class="d-flex justify-center">
                     <v-img max-width="200" src="/img/logocmr_normal.png" />
                 </v-row>
@@ -75,7 +97,6 @@
             "analytics-label": "Analytics",
             "map-label": "Map",
             "table-name": "Table Urgent Alerts"
-
         },
         "pt-br": {
             "title": "Alerta Urgente",
@@ -106,6 +127,7 @@ export default {
                 { text: 'Terra Indígena', value: 'no_ti' },
                 { text: 'Coordenação Regional', value: 'ds_cr' },
                 { text: 'Classe', value: 'no_estagio' },
+                { text: 'Data da Imagem', value: 'dt_imagem' },
                 { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
                 { text: 'Latitude', value: 'nu_latitude' },
                 { text: 'Longitude', value: 'nu_longitude' },
@@ -121,7 +143,7 @@ export default {
                 this.features.features.length > 0
             )
         },
-        
+     
         showFeaturesAlert: {
             get() {
                 return this.$store.state['urgent-alerts'].showFeatures
@@ -131,6 +153,7 @@ export default {
                 this.$store.commit('urgent-alerts/setShowFeatures', value)
             },
         },
+        
         ...mapState('urgent-alerts', [
             'showFeatures',
             'features',

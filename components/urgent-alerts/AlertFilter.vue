@@ -233,7 +233,7 @@ export default {
             this.setFilters(this.filters)
             this.$emit('onSearch')
         },
-        
+
         ...mapMutations('urgent-alerts', ['setFilters']),
         ...mapActions('urgent-alerts', ['getFilterOptions', 'downloadGeoJson']),
     },
