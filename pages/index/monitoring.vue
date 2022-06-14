@@ -5,6 +5,7 @@
                 {{ $t('title') }}
             </h4>
             <v-switch
+                v-if="features"
                 v-model="showFeaturesMonitoring"
                 class="mt-n1 ml-5"
                 hide-details
@@ -27,24 +28,32 @@
                         depressed
                         icon
                         color="accent"
-                        @click="changeVisualizationStage('stage1')"
+                        @click="changeVisualizationStage('map')"
                     >
                         <v-icon large>mdi-map</v-icon>
                     </v-btn>
                     <v-btn
                         icon
                         color="accent"
-                        @click="changeVisualizationStage('stage2')"
+                        @click="changeVisualizationStage('chart')"
                     >
                         <v-icon large>mdi-chart-box</v-icon>
                     </v-btn>
-                    <v-btn
-                        icon
-                        color="accent"
-                        @click="changeVisualizationStage('stage4')"
-                    >
+                    <v-btn icon color="accent" @click="showTableDialog(true)">
                         <v-icon large>mdi-table</v-icon>
                     </v-btn>
+                    <div class="d-none" v-if="tableDialogMonitoring">
+                        <TableDialog
+                            :table="tableDialogMonitoring"
+                            :headers="headers"
+                            :value="tableMonitoring"
+                            :loadingTable="isLoadingTableMonitoring"
+                            :loadingCSV="isLoadingCSVMonitoring"
+                            :fDownloadCSV="downloadTableMonitoring"
+                            :tableName="$t('table-name')"
+                            :fCloseTable="closeTable"
+                        />
+                    </div>
                 </v-row>
 
                 <v-row class="py-2">
@@ -64,12 +73,14 @@
         "en": {
             "title": "Monitoring",
             "analytics-label": "Analytics",
-            "map-label": "Map"
+            "map-label": "Map",
+            "table-name": "Monitoring Table"
         },
         "pt-br": {
             "title": "Monitoramento Diário",
             "analytics-label": "Analytics",
-            "map-label": "Mapa"
+            "map-label": "Mapa",
+            "table-name": "Tabela de Monitoramento"
         }
     }
 </i18n>
@@ -77,16 +88,28 @@
 <script>
 import MonitoringFilter from '@/components/monitoring/MonitoringFilter'
 import ShowDialog from '@/components/show-dialog/ShowDialog'
+import TableDialog from '@/components/table-dialog/TableDialog.vue'
 import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
-    components: { MonitoringFilter, ShowDialog },
+    components: { MonitoringFilter, ShowDialog, TableDialog },
 
     data() {
         return {
             tab: null,
             items: ['MapStage', 'AnalytcalStage'],
             text: 'Texto de teste.',
+            headers: [
+                { text: 'Código Funai', value: 'co_funai' },
+                { text: 'Terra Indígena', value: 'no_ti' },
+                { text: 'Coordenação Regional', value: 'ds_cr' },
+                { text: 'Classe', value: 'no_estagio' },
+                { text: 'Data da Imagem', value: 'dt_imagem' },
+                { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
+                { text: 'Latitude', value: 'nu_latitude' },
+                { text: 'Longitude', value: 'nu_longitude' },
+            ],
+            checkNewFilters: false,
         }
     },
     computed: {
@@ -106,20 +129,62 @@ export default {
                 this.$store.commit('monitoring/setShowFeatures', value)
             },
         },
-        ...mapState('monitoring', ['showFeatures', 'features']),
+        ...mapState('monitoring', [
+            'showFeatures',
+            'features',
+            'total',
+            'visualizationStage',
+            'isLoadingTableMonitoring',
+            'tableDialogMonitoring',
+            'tableMonitoring',
+            'isLoadingCSVMonitoring',
+        ]),
     },
-
     methods: {
         search() {
-             this.getFeatures()
-             this.getDataTableMonitoring()
-            
+            if (this.tableDialogMonitoring) {
+                this.checkNewFilters = true
+                this.getDataTableMonitoring()
+            }
+            if (!this.tableDialogMonitoring) this.getFeatures()
         },
+
         changeVisualizationStage(tab) {
             this.setVisualizationStage(tab)
         },
-        ...mapActions('monitoring', ['getFeatures', 'getDataTableMonitoring']),
+
+        showTableDialog(value) {
+            if (this.features) {
+                this.settableDialogMonitoring(value)
+                this.setshowTableDialog(value)
+                this.getDataTableMonitoring()
+            }
+        },
+
+        closeTable(value) {
+            if (!this.checkNewFilters) {
+                this.settableDialogMonitoring(value)
+                this.setshowTableDialog(value)
+            } else {
+                this.settableDialogMonitoring(value)
+                this.setshowTableDialog(value)
+                this.getFeatures()
+                this.checkNewFilters = false
+            }
+        },
+
+        ...mapActions('monitoring', [
+            'getFeatures',
+            'getDataTableMonitoring',
+            'downloadTableMonitoring',
+        ]),
+
         ...mapMutations('priority', ['setVisualizationStage']),
+        ...mapMutations('tableDialog', ['setshowTableDialog']),
+        ...mapMutations('monitoring', [
+            'settableDialogMonitoring',
+            'setLoadingTable',
+        ]),
     },
 }
 </script>

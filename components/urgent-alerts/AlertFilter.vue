@@ -1,14 +1,6 @@
 <template>
     <v-col class="px-4">
-        <v-row class="px-3">
-            <v-checkbox
-                v-model="filters.currentView"
-                :label="$t('current-view-label')"
-                :error="error"
-            />
-        </v-row>
-
-        <v-row class="px-3 pb-5">
+        <v-row class="px-3 pb-1 py-3">
             <v-select
                 v-model="filters.cr"
                 label="Coordenação Regional (Todas)"
@@ -18,12 +10,31 @@
                 hide-details
                 clearable
                 multiple
-                :error="error"
+                required="true"
             >
             </v-select>
         </v-row>
 
-        <v-row class="pt-1">
+        <v-slide-y-transition>
+            <v-row
+                v-if="filters.cr && filterOptions.tiFilters"
+                class="px-3 pb-1"
+            >
+                <v-select
+                    v-model="filters.ti"
+                    label="Terras Indigenas (Todas)"
+                    :items="filterOptions.tiFilters"
+                    item-text="no_ti"
+                    item-value="co_funai"
+                    multiple
+                    hide-details
+                    required="true"
+                >
+                </v-select>
+            </v-row>
+        </v-slide-y-transition>
+
+        <v-row class="pt-5">
             <v-col class="py-0">
                 <BaseDateField
                     v-model="filters.startDate"
@@ -44,14 +55,14 @@
             </v-col>
         </v-row>
 
-        <v-row class="px-3">
+        <v-row>
             <v-col v-show="showFeatures">
                 <v-btn
                     color="accent"
                     :loading="isLoadingGeoJson"
                     fab
                     small
-                    @click="downloadGeoJsonMonitoring()"
+                    @click="downloadGeoJson()"
                 >
                     <v-icon>mdi-download</v-icon>
                 </v-btn>
@@ -70,30 +81,30 @@
 
         <v-divider v-if="showFeatures" class="mt-8 mb-5" />
 
-        <!-- <v-row v-if="total" class="px-3 py-1"> -->
-        <v-row v-if="showFeatures && total">
-            <v-col cols="7" class="grey--text text--darken-2">
-                {{ $t('polygon-label') }}:
-            </v-col>
-            <v-col cols="5" class="text-right">
-                {{ total.total }}
-            </v-col>
-        </v-row>
+        <v-row v-if="total" class="px-3 py-1">
+            <v-row v-if="showFeatures && total">
+                <v-col cols="7" class="grey--text text--darken-2">
+                    {{ $t('polygon-label') }}:
+                </v-col>
+                <v-col cols="5" class="text-right">
+                    {{ total.total }}
+                </v-col>
+            </v-row>
 
-        <v-row v-if="showFeatures && total && total.area_ha">
-            <v-col cols="7" class="grey--text text--darken-2">
-                {{ $t('total-area-label') }}:
-            </v-col>
-            <v-col cols="5" class="text-right">
-                {{
-                    total.area_ha.toLocaleString($i18n.locale, {
-                        maximumFractionDigits: 2,
-                    })
-                }}
-                ha
-            </v-col>
+            <v-row v-if="showFeatures && total && total.area_ha">
+                <v-col cols="7" class="grey--text text--darken-2">
+                    {{ $t('total-area-label') }}:
+                </v-col>
+                <v-col cols="5" class="text-right">
+                    {{
+                        total.area_ha.toLocaleString($i18n.locale, {
+                            maximumFractionDigits: 2,
+                        })
+                    }}
+                    ha
+                </v-col>
+            </v-row>
         </v-row>
-        <!-- </v-row> -->
 
         <v-row v-if="showFeatures" align="center">
             <v-col cols="4" class="grey--text text--darken-2">
@@ -120,22 +131,6 @@
             </v-col>
         </v-row>
     </v-col>
-
-    <!-- <div class="py-11">
-                <template v-for="stage in stageList">
-                    <v-row
-                        :key="stage.identifier"
-                        v-if="showFeatures"
-                        class="layer-legend"
-                        :style="{
-                            '--color': stageColor[stage.identifier],
-                            '--back-color': `${stageColor[stage.identifier]}AA`,
-                        }"
-                    >
-                        {{ stage.name }}
-                    </v-row>
-                </template>
-            </div> -->
 </template>
 
 <i18n>
@@ -145,9 +140,9 @@
             "opacity-label": "Opacity",
             "current-view-label": "Search in current area?",
             "start-date-label": "Start Date",
-            "total-area-label": "Total Area",
+            "total-area-label": "Total area",
             "heat-map-label": "Heat map",
-            "polygon-label": "Total polygon",
+            "polygon-label": "Total polygon count",
             "end-date-label": "End Date"
         },
         "pt-br": {
@@ -169,7 +164,7 @@ import { mapMutations, mapState, mapActions } from 'vuex'
 import legend from '@/assets/legend.png'
 
 export default {
-    name: 'MonitoringFilter',
+    name: 'AlertFilter',
 
     components: { BaseDateField },
 
@@ -177,42 +172,50 @@ export default {
         return {
             isGeoserver: process.env.MONITORING_GEOSERVER === 'true',
             filters: {
-                startDate: this.$moment().format('YYYY-MM-DD'),
+                startDate: this.$moment()
+                    .subtract(30, 'days')
+                    .format('YYYY-MM-DD'),
                 endDate: this.$moment().format('YYYY-MM-DD'),
-                currentView: false,
-                priority: null,
-                cr: [],
+                cr: null,
+                ti: null,
             },
             isLoadingTotal: false,
             legendData: legend,
-            error: false,
         }
     },
+
+    watch: {
+        'filters.cr'(value) {
+            this.populateTiOptions(value)
+        },
+    },
+
     computed: {
         opacity: {
             get() {
-                return this.$store.state.monitoring.opacity
+                return this.$store.state['urgent-alerts'].opacity
             },
             set(value) {
-                this.$store.commit('monitoring/setOpacity', value)
+                this.$store.commit('urgent-alerts/setOpacity', value)
             },
         },
 
         heatMap: {
             get() {
-                return this.$store.state.monitoring.heatMap
+                return this.$store.state['urgent-alerts'].heatMap
             },
             set(value) {
-                this.$store.commit('monitoring/setHeatMap', value)
+                this.$store.commit('urgent-alerts/setHeatMap', value)
             },
         },
 
-        ...mapState('monitoring', [
+        ...mapState('urgent-alerts', [
+            'isLoadingGeoJson',
             'isLoadingFeatures',
             'filterOptions',
             'showFeatures',
             'total',
-            'isLoadingGeoJson',
+            'params',
         ]),
     },
 
@@ -221,27 +224,18 @@ export default {
     },
 
     methods: {
-        search() {
-            if (
-                (this.filters.currentView &&
-                    this.filters.startDate &&
-                    this.filters.endDate) ||
-                (this.filters.cr.length &&
-                    this.filters.startDate &&
-                    this.filters.endDate)
-            ) {
-                this.error = false
-                this.setFilters(this.filters)
-                this.$emit('onSearch')
-                return
-            }
-            this.error = true
+        populateTiOptions(cr) {
+            if (cr) this.$store.dispatch('urgent-alerts/getTiOptions', cr)
+            else this.filters.ti = null
         },
-        ...mapMutations('monitoring', ['setFilters']),
-        ...mapActions('monitoring', [
-            'getFilterOptions',
-            'downloadGeoJsonMonitoring',
-        ]),
+
+        search() {
+            this.setFilters(this.filters)
+            this.$emit('onSearch')
+        },
+
+        ...mapMutations('urgent-alerts', ['setFilters']),
+        ...mapActions('urgent-alerts', ['getFilterOptions', 'downloadGeoJson']),
     },
 }
 </script>

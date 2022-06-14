@@ -28,6 +28,7 @@
             :to="localePath(tab.route)"
             exact
             nuxt
+            :disabled="showTableDialog"
         >
             <v-tooltip left>
                 <template #activator="{ on }">
@@ -81,6 +82,7 @@
         "compare-tab": "Compare images",
         "prodes-tab": "PRODES (INPE)",
         "algorithms-tab": "Algorithms",
+        "urgent-alerts-tab": "Urgent Alerts",
         "webhooks-tab": "Webhooks",
         "funai-tab": "Priorities"
     },
@@ -95,6 +97,7 @@
         "compare-tab": "Comparar imagens",
         "prodes-tab": "PRODES (INPE)",
         "algorithms-tab": "Algoritmos",
+        "urgent-alerts-tab": "Alerta Urgente",
         "webhooks-tab": "Webhooks",
         "funai-tab": "Polígonos Prioritários"
     }
@@ -174,7 +177,11 @@ export default {
                 //     name: this.$t('algorithms-tab'),
                 //     icon: 'mdi-function-variant',
                 //     route: '/algorithms',
-                // },
+                {
+                    name: this.$t('urgent-alerts-tab'),
+                    icon: 'mdi-alert-octagram',
+                    route: '/urgent-alerts',
+                },
                 // {
                 //     name: this.$t('webhooks-tab'),
                 //     icon: 'mdi-webhook',
@@ -184,6 +191,7 @@ export default {
         },
 
         ...mapState('catalog', ['isComparing']),
+        ...mapState('tableDialog', ['showTableDialog']),
     },
 
     watch: {
