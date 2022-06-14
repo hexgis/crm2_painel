@@ -2,9 +2,9 @@
     <l-lwms-tile-layer
         v-if="layer.layer_type == 'wms'"
         ref="wmsLayer"
+        format="image/png"
         :base-url="wmsBaseUrl"
         :layers="geoserverLayer"
-        format="image/png"
         :transparent="true"
         :z-index="3"
         :visible="layer.visible"
@@ -31,7 +31,6 @@
 </template>
 
 <script>
-import { filter } from 'jszip'
 import { mapMutations, mapActions } from 'vuex'
 
 if (typeof window !== 'undefined') {
@@ -53,7 +52,7 @@ export default {
             const filters = {}
 
             this.layer.layer_filters.forEach((layerFilter) => {
-                const label = layerFilter.filter_alias
+                const label = layerFilter.filter_type
                 const value = layerFilter.default
                 filters[label] = value
             })
@@ -99,26 +98,39 @@ export default {
         wmsBaseUrl() {
             let wmsUrl = ''
             if (this.layer.layer_type === 'wms') {
-                if (this.layer.filters) {
+                const filters = this.layer.filters
+
+                if (filters) {
                     wmsUrl =
                         this.layer.wms.geoserver.wms_url +
                         '&env=percentage:' +
                         this.layer.opacity / 100
 
-                    const filters = this.layer.filters
-                    const filter_alias = 'dt_foco_calor'
-                    const keys = Object.keys(filters)
-                    if (keys.length) {
+                    if (Object.keys(filters).length) {
+
                         wmsUrl += '&CQL_FILTER='
 
-                        wmsUrl +=
-                            filter_alias +
-                            ' >= ' +
-                            filters.startDate +
-                            ' AND ' +
-                            filter_alias +
-                            ' <= ' +
-                            filters.endDate
+                        for (const idx in this.layer.layer_filters) {
+                            let layer_filter = this.layer.layer_filters[idx]
+
+                            if (layer_filter.filter_type == 'start_date' && filters.startDate){
+                                wmsUrl +=
+                                    layer_filter.filter_alias +
+                                    ' >= ' + 
+                                    filters.startDate +
+                                    ' AND '
+                            }
+
+                            if (layer_filter.filter_type == 'end_date' && filters.endDate){
+                                wmsUrl +=
+                                    layer_filter.filter_alias +
+                                    ' <= ' + 
+                                    filters.startDate +
+                                    ' AND '
+                            }
+                        }
+
+                        wmsUrl = wmsUrl.slice(0, -4)
                     }
                 } else {
                     wmsUrl =
@@ -131,6 +143,7 @@ export default {
                     this.$refs.wmsLayer.mapObject.setUrl(wmsUrl)
                 })
             }
+                        console.log(wmsUrl)
 
             return wmsUrl
         },

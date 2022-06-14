@@ -174,14 +174,17 @@ export default {
             this.hasDoubleDate = hasStartDate && hasEndDate
         }
     },
+    
     mounted() {
         this.getFilterOptions()
     },
+
     watch: {
         'filters.co_cr'(value) {
             this.populateTiOptions(value)
         },
     },
+
     computed: {
         ...mapState('supportLayers', ['filterOptions']),
     },
@@ -191,12 +194,12 @@ export default {
             if (cr) this.$store.dispatch('supportLayers/getTiOptions', cr)
             else this.filters.ti = null
         },
+
         filterLayer() {
             const filterInfo = {
                 id: this.layer.id,
                 filters: this.filters,
             }
-            console.log(this.filters)
             if (this.layer.layer_type === 'heatmap') {
                 this.loading = true
                 this.setLayerFilters(filterInfo)

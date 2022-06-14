@@ -9,12 +9,12 @@
                         cols="6"
                     >
                         <BaseDateField
-                            :key="layer_filter.filter_alias"
                             v-model="filters.startDate"
-                            :label="$t('end-date-label')"
-                            :required="true"
                             outlined
                             dense
+                            :key="layer_filter.filter_alias"
+                            :label="$t('end-date-label')"
+                            :required="true"
                         />
                     </v-col>
                     <v-col
@@ -23,12 +23,12 @@
                         cols="6"
                     >
                         <BaseDateField
-                            :key="layer_filter.filter_alias"
                             v-model="filters.endDate"
-                            :label="$t('end-date-label')"
-                            :required="true"
                             outlined
                             dense
+                            :key="layer_filter.filter_alias"
+                            :label="$t('end-date-label')"
+                            :required="true"
                         />
                     </v-col>
                 </template>
@@ -153,14 +153,17 @@ export default {
             })
         }
     },
+
     mounted() {
         this.getFilterOptions()
     },
+
     watch: {
         'filters.co_cr'(value) {
             this.populateTiOptions(value)
         },
     },
+
     computed: {
         ...mapState('supportLayers', ['filterOptions']),
     },
