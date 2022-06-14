@@ -80,7 +80,7 @@
         "support-fire-tab": "Fire Hazard and Hot Spots",
         "landuse-tab": "Land Use And Occupation",
         "compare-tab": "Compare images",
-        "algorithms-tab": "Algorithms",
+        "urgent-alerts-tab": "Urgent Alerts",
         "webhooks-tab": "Webhooks",
         "funai-tab": "Priorities",
         "document-tab": "Document"
@@ -94,7 +94,7 @@
         "support-fire-tab": "Risco de Fogo e Focos de Calor",
         "landuse-tab": "Uso e Ocupação do Solo",
         "compare-tab": "Comparar imagens",
-        "algorithms-tab": "Algoritmos",
+        "urgent-alerts-tab": "Alerta Urgente",
         "webhooks-tab": "Webhooks",
         "funai-tab": "Polígonos Prioritários",
         "document-tab": "Documental"
@@ -176,6 +176,11 @@ export default {
                 //     icon: 'mdi-function-variant',
                 //     route: '/algorithms',
                 // },
+                {
+                    name: this.$t('urgent-alerts-tab'),
+                    icon: 'mdi-alert-octagram',
+                    route: '/urgent-alerts',
+                },
                 // {
                 //     name: this.$t('webhooks-tab'),
                 //     icon: 'mdi-webhook',
