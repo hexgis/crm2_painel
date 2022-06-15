@@ -4,25 +4,24 @@ export const state = () => ({
     showFeatures: false,
     supportLayersGroups: {},
     supportLayers: {},
-    supportCategoryGroupsFire : {},
-    supportCategoryGroupsRaster : {},
-    supportCategoryGroupsBase : {},
+    supportCategoryGroupsFire: {},
+    supportCategoryGroupsRaster: {},
+    supportCategoryGroupsBase: {},
     loading: false,
-    supportLayersCategoryFire : {},
-    supportLayersCategoryBase : {},
-    supportLayersCategoryRaster : {},
+    supportLayersCategoryFire: {},
+    supportLayersCategoryBase: {},
+    supportLayersCategoryRaster: {},
     filters: {
         categoryBase: 1,
         categoryRaster: 3,
         categoryFire: 2,
-        
+        co_cr: [],
+        co_funai: [],
     },
     filterOptions: {
         regionalFilters: [],
         tiFilters: [],
     },
-
-
 })
 
 export const getters = {
@@ -88,7 +87,6 @@ export const mutations = {
             Vue.set(state.supportLayersGroups, group.id, group)
         }
     },
-
 
     setSupportCategoryGroupsFire(state, categoryGroups) {
         state.supportCategoryGroupsFire = {}
@@ -175,7 +173,6 @@ export const mutations = {
         }
     },
 
-
     setLayerFilters(state, { id, filters }) {
         state.supportLayers[id].filters = {
             ...state.supportLayers[id].filters,
@@ -249,7 +246,7 @@ export const mutations = {
 export const actions = {
     async getLayersGroups({ commit }) {
         commit('setLoading', true)
-        
+
         try {
             const response = await this.$api.$get('support/layers-groups/')
 
@@ -286,12 +283,11 @@ export const actions = {
     async getCategoryGroupsRasters({ commit }) {
         commit('setLoading', true)
         const params = {
-            category: 3
-            
+            category: 3,
         }
         try {
-            const response = await this.$api.$get('support/layers-groups/',{
-                params
+            const response = await this.$api.$get('support/layers-groups/', {
+                params,
             })
 
             commit('setSupportCategoryGroupsRaster', response)
@@ -314,12 +310,12 @@ export const actions = {
     async getCategoryGroupsFire({ commit }) {
         commit('setLoading', true)
         const params = {
-            category: 2
-            
+            category: 2,
         }
         try {
-            const response = await this.$api.$get('support/layers-groups/', 
-            {params})
+            const response = await this.$api.$get('support/layers-groups/', {
+                params,
+            })
 
             commit('setSupportCategoryGroupsFire', response)
             commit('setShowFeatures', true)
@@ -341,12 +337,11 @@ export const actions = {
     async getCategoryGroupsBase({ commit }) {
         commit('setLoading', true)
         const params = {
-            category: 1
-            
+            category: 1,
         }
         try {
-            const response = await this.$api.$get('support/layers-groups/',{
-                params
+            const response = await this.$api.$get('support/layers-groups/', {
+                params,
             })
 
             commit('setSupportCategoryGroupsBase', response)

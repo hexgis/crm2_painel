@@ -18,13 +18,12 @@ import { mapState } from 'vuex'
 import SupportLayerItem from './SupportLayerItem'
 import SupportLayerItemFire from './SupportLayerItemFire'
 
-
 export default {
     name: 'SupportLayers',
 
-
     components: {
-        SupportLayerItem,SupportLayerItemFire
+        SupportLayerItem,
+        SupportLayerItemFire,
     },
 
     computed: mapState('supportLayers', [

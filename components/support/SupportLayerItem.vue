@@ -97,8 +97,14 @@ export default {
 
         wmsBaseUrl() {
             let wmsUrl = ''
+
+            // let alias = {
+            //     cordenacao: this.layer.layer_filters[0].filter_alias,
+            //     ti: this.layer.layer_filters[1].filter_alias,
+            // }
             if (this.layer.layer_type === 'wms') {
                 const filters = this.layer.filters
+                console.log(this.layer.filters)
 
                 if (filters) {
                     wmsUrl =
@@ -107,53 +113,63 @@ export default {
                         this.layer.opacity / 100
 
                     // const keys = Object.keys(filters)
-                    if (Object.keys(filters).length) {
-                        wmsUrl += '&CQL_FILTER='
+                    // if (Object.keys(filters).length) {
+                    wmsUrl += '&CQL_FILTER='
 
-                        for (const idx in this.layer.layer_filters) {
-                            let layer_filter = this.layer.layer_filters[idx]
+                    // console.log(this.layer.layer_filters[1].filter_alias)
 
-                            if (filters.co_cr) {
-                                wmsUrl +=
-                                    layer_filter.filter_alias +
-                                    ' IN ' +
-                                    '(' +
-                                    filters.co_cr +
-                                    ')' +
-                                    ' AND '
-                            }
+                    // for (const idx in this.layer.layer_filters) {
+                    //     let layer_filter = this.layer.layer_filters[idx]
 
-                            if (filters.co_funai) {
-                                wmsUrl +=
-                                    layer_filter.filter_alias +
-                                    ' IN ' +
-                                    '(' +
-                                    filters.co_funai +
-                                    ')' +
-                                    ' AND '
-                            }
-                        }
-                        // if (keys.length) {
-                        //     wmsUrl += '&CQL_FILTER='
+                    // console.log(this.layer.layer_filters[0].filter_alias)
 
-                        //     for (const filter in this.layer.filters) {
-                        //         if (this.layer.filters[filter].length) {
-                        //             wmsUrl +=
-                        //                 filter +
-                        //                 ' IN ' +
-                        //                 '(' +
-                        //                 this.layer.filters[filter] +
-                        //                 ')' +
-                        //                 ' AND '
-                        //         }
-                        //     }
-                        wmsUrl = wmsUrl.slice(0, -4)
+                    if (filters.co_cr) {
+                        let result = filters.co_cr.join(',')
+                        wmsUrl +=
+                            // this.layer.layer_filters[0].filter_alias
+                            'co_cr' + ' IN ' + '(' + result + ')' + ' AND '
                     }
+
+                    if (filters.co_funai) {
+                        let result = filters.co_funai.join(',')
+
+                        wmsUrl +=
+                            // this.layer.layer_filters[1].filter_alias
+                            'co_funai' + ' IN ' + '(' + result + ')' + ' AND '
+                    }
+
+                    // }
+
+                    // if (keys.length) {
+                    //     wmsUrl += '&CQL_FILTER='
+
+                    //     for (const filter in this.layer.filters) {
+                    //         let i = 0
+                    //         console.log(this.layer.layer_filters)
+                    //         if (this.layer.filters[filter].length) {
+                    //             wmsUrl +=
+                    //                 this.layer.layer_filters[i].filter_alias +
+                    //                 ' IN ' +
+                    //                 '(' +
+                    //                 this.layer.filters[filter] +
+                    //                 ')' +
+                    //                 ' AND '
+
+                    //             i++
+                    //         }
+                    //     }
+                    // }
+                    wmsUrl = wmsUrl.slice(0, -4)
+                    // }
                 } else {
-                    wmsUrl =
+                    let wmsUrl2 =
                         this.layer.wms.geoserver.wms_url +
                         '&env=percentage:' +
                         this.layer.opacity / 100
+
+                    console.log('URL 2 !!!')
+
+                    return wmsUrl2
                 }
 
                 this.$nextTick(() => {
