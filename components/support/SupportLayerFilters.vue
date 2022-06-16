@@ -141,7 +141,10 @@ export default {
 
     data: () => ({
         valid: false,
-        filters: [],
+        filters: {
+            co_cr: [],
+            co_funai: [],
+        },
         loading: false,
         hasDoubleDate: false,
     }),
@@ -174,7 +177,7 @@ export default {
             this.hasDoubleDate = hasStartDate && hasEndDate
         }
     },
-    
+
     mounted() {
         this.getFilterOptions()
     },

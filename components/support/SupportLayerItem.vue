@@ -97,78 +97,28 @@ export default {
 
         wmsBaseUrl() {
             let wmsUrl = ''
-
-            // let alias = {
-            //     cordenacao: this.layer.layer_filters[0].filter_alias,
-            //     ti: this.layer.layer_filters[1].filter_alias,
-            // }
             if (this.layer.layer_type === 'wms') {
                 const filters = this.layer.filters
-                console.log(this.layer.filters)
+                if (filters.co_cr || filters.co_funai) {
+                    let [aliasCoordenacao, aliasTi] = this.layer.layer_filters // Destructuring filter alias
+                    wmsUrl = `${
+                        this.layer.wms.geoserver.wms_url
+                    }&env=percentage:${this.layer.opacity / 100}`
 
-                if (filters) {
-                    wmsUrl =
-                        this.layer.wms.geoserver.wms_url +
-                        '&env=percentage:' +
-                        this.layer.opacity / 100
-
-                    // const keys = Object.keys(filters)
-                    // if (Object.keys(filters).length) {
-                    wmsUrl += '&CQL_FILTER='
-
-                    // console.log(this.layer.layer_filters[1].filter_alias)
-
-                    // for (const idx in this.layer.layer_filters) {
-                    //     let layer_filter = this.layer.layer_filters[idx]
-
-                    // console.log(this.layer.layer_filters[0].filter_alias)
-
-                    if (filters.co_cr) {
-                        let result = filters.co_cr.join(',')
-                        wmsUrl +=
-                            // this.layer.layer_filters[0].filter_alias
-                            'co_cr' + ' IN ' + '(' + result + ')' + ' AND '
+                    if (filters.co_cr.length) {
+                        console.log(aliasCoordenacao.filter_alias)
+                        let list_coord = filters.co_cr.join(',')
+                        wmsUrl += `&CQL_FILTER= ${aliasCoordenacao.filter_alias} IN (${list_coord})`
                     }
-
-                    if (filters.co_funai) {
+                    if (filters.co_funai.length) {
+                        console.log(aliasTi.filter_alias)
                         let result = filters.co_funai.join(',')
-
-                        wmsUrl +=
-                            // this.layer.layer_filters[1].filter_alias
-                            'co_funai' + ' IN ' + '(' + result + ')' + ' AND '
+                        wmsUrl += `AND ${aliasTi.filter_alias} IN (${result})`
                     }
-
-                    // }
-
-                    // if (keys.length) {
-                    //     wmsUrl += '&CQL_FILTER='
-
-                    //     for (const filter in this.layer.filters) {
-                    //         let i = 0
-                    //         console.log(this.layer.layer_filters)
-                    //         if (this.layer.filters[filter].length) {
-                    //             wmsUrl +=
-                    //                 this.layer.layer_filters[i].filter_alias +
-                    //                 ' IN ' +
-                    //                 '(' +
-                    //                 this.layer.filters[filter] +
-                    //                 ')' +
-                    //                 ' AND '
-
-                    //             i++
-                    //         }
-                    //     }
-                    // }
-                    wmsUrl = wmsUrl.slice(0, -4)
-                    // }
                 } else {
-                    let wmsUrl2 =
-                        this.layer.wms.geoserver.wms_url +
-                        '&env=percentage:' +
-                        this.layer.opacity / 100
-
-                    console.log('URL 2 !!!')
-
+                    let wmsUrl2 = `${
+                        this.layer.wms.geoserver.wms_url
+                    }&env=percentage:${this.layer.opacity / 100}`
                     return wmsUrl2
                 }
 
