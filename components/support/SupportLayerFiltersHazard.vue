@@ -114,7 +114,7 @@ import { mapMutations, mapActions, mapState } from 'vuex'
 import BaseDateField from '@/components/base/BaseDateField'
 
 export default {
-    name: 'SupportLayerFiltersFire',
+    name: 'SupportLayerFiltersHazard',
 
     components: {
         BaseDateField,

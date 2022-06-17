@@ -30,15 +30,6 @@
                     </span>
                 </v-list-item-title>
             </v-list-item-content>
-
-            <!-- <v-list-item-action v-if="disabledHeatmap">
-                <v-switch
-                    :input-value="layer.visible"
-                    :disabled="true"
-                    :loading="layer.loading"
-                    @change="toggleLayer"
-                />
-            </v-list-item-action> -->
             <v-list-item-action @click.stop="">
                 <v-switch
                     :input-value="layer.visible"
@@ -49,7 +40,7 @@
         </template>
 
         <v-container class="py-0">
-            <SupportLayerFiltersFire :layer="layer" />
+            <SupportLayerFiltersHazard :layer="layer" />
 
             <v-row
                 v-if="
@@ -102,12 +93,12 @@
 import { mapState, mapMutations } from 'vuex'
 import tmsLegend from '@/assets/tmsLegend.png'
 
-import SupportLayerFiltersFire from '@/components/support/SupportLayerFiltersFire'
+import SupportLayerFiltersHazard from '@/components/support/SupportLayerFiltersHazard'
 
 export default {
-    name: 'SupportLayersGroupItemFire',
+    name: 'SupportLayersGroupItemHazard',
 
-    components: { SupportLayerFiltersFire },
+    components: { SupportLayerFiltersHazard },
 
     props: {
         layerId: {

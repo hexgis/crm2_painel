@@ -156,7 +156,7 @@ export default {
                 {
                     name: this.$t('support-fire-tab'),
                     icon: 'mdi-fire',
-                    route: '/support-fire',
+                    route: '/support-hazard',
                 },
                 {
                     name: this.$t('landuse-tab'),
