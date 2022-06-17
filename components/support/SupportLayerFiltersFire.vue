@@ -9,7 +9,7 @@
                         cols="6"
                     >
                         <BaseDateField
-                            v-model="filters.startDate"
+                            v-model="filters.startData"
                             outlined
                             dense
                             :key="layer_filter.filter_alias"
@@ -23,7 +23,7 @@
                         cols="6"
                     >
                         <BaseDateField
-                            v-model="filters.endDate"
+                            v-model="filters.endData"
                             outlined
                             dense
                             :key="layer_filter.filter_alias"
