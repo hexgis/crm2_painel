@@ -101,30 +101,33 @@ export default {
             if (this.layer.layer_type === 'wms') {
                 const filters = this.layer.filters
 
-                if (filters.co_cr || filters.co_funai) {
-                    let [aliasCoordenacao, aliasTi, aliasData] = this.layer.layer_filters // Destructuring filter alias
+                if (filters.co_cr || filters.co_funai || filters.startData || filters.endData) {
+                    let [aliasCoordenacao, aliasTi, aliasData] =
+                        this.layer.layer_filters // Destructuring filter alias
 
                     wmsUrl = `${
                         this.layer.wms.geoserver.wms_url
                     }&env=percentage:${this.layer.opacity / 100}`
-                    
 
                     if (filters.startData.length && filters.endData.length) {
                         let result = filters.startData
                         let result2 = filters.endData
 
-
                         wmsUrl += `&CQL_FILTER=${aliasData.filter_alias} >= (${result}) AND ${aliasData.filter_alias} <= (${result2})`
-                        
+
+                        this.$nextTick(() => {
+                            this.$refs.wmsLayer.mapObject.setUrl(wmsUrl)
+                        })
+
+                        return wmsUrl
                     }
 
                     if (filters.co_cr.length && filters.co_funai.length) {
                         let result = filters.co_cr.join(',')
                         let result2 = filters.co_funai.join(',')
 
-
                         wmsUrl += `&CQL_FILTER=${aliasCoordenacao.filter_alias} IN (${result}) AND ${aliasTi.filter_alias} IN (${result2})`
-                        
+
                         this.$nextTick(() => {
                             this.$refs.wmsLayer.mapObject.setUrl(wmsUrl)
                         })
