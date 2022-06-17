@@ -14,7 +14,7 @@
                             dense
                             :key="layer_filter.filter_alias"
                             :label="$t('end-date-label')"
-                            :required="true"
+                            required
                         />
                     </v-col>
                     <v-col
@@ -28,7 +28,7 @@
                             dense
                             :key="layer_filter.filter_alias"
                             :label="$t('end-date-label')"
-                            :required="true"
+                            required
                         />
                     </v-col>
                 </template>
@@ -48,7 +48,7 @@
                         hide-details
                         clearable
                         multiple
-                        required="true"
+                        required
                     >
                     </v-select>
                 </v-col>
@@ -69,7 +69,7 @@
                             multiple
                             clearable
                             hide-details
-                            required="true"
+                            required
                         >
                         </v-select>
                     </v-slide-y-transition>

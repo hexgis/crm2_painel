@@ -161,10 +161,10 @@ export default {
                     return wmsUrl
                 }
 
-                let wmsUrl2 = `${
+                let wmsUrlBase = `${
                     this.layer.wms.geoserver.wms_url
                 }&env=percentage:${this.layer.opacity / 100}`
-                return wmsUrl2
+                return wmsUrlBase
             }
         },
     },
