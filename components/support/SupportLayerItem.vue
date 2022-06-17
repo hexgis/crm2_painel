@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import { filter } from 'jszip'
 import { mapMutations, mapActions } from 'vuex'
 
 if (typeof window !== 'undefined') {
@@ -104,29 +105,35 @@ export default {
                     wmsUrl = `${
                         this.layer.wms.geoserver.wms_url
                     }&env=percentage:${this.layer.opacity / 100}`
-
+                    if (filters.co_cr.length && filters.co_funai.length) {
+                        let result = filters.co_cr.join(',')
+                        let result2 = filters.co_funai.join(',')
+                        // ${aliasTi.filter_alias}
+                        wmsUrl += `&CQL_FILTER=${aliasCoordenacao.filter_alias} IN (${result}) AND ${aliasTi.filter_alias} IN (${result2})`
+                        this.$nextTick(() => {
+                            this.$refs.wmsLayer.mapObject.setUrl(wmsUrl)
+                        })
+                        return wmsUrl
+                    }
                     if (filters.co_cr.length) {
-                        console.log(aliasCoordenacao.filter_alias)
                         let list_coord = filters.co_cr.join(',')
-                        wmsUrl += `&CQL_FILTER= ${aliasCoordenacao.filter_alias} IN (${list_coord})`
+                        wmsUrl += `&CQL_FILTER=${aliasCoordenacao.filter_alias} IN (${list_coord})`
                     }
                     if (filters.co_funai.length) {
-                        console.log(aliasTi.filter_alias)
                         let result = filters.co_funai.join(',')
-                        wmsUrl += `AND ${aliasTi.filter_alias} IN (${result})`
+                        wmsUrl += `&CQL_FILTER= ${aliasTi.filter_alias} IN (${result})`
                     }
-                } else {
-                    let wmsUrl2 = `${
-                        this.layer.wms.geoserver.wms_url
-                    }&env=percentage:${this.layer.opacity / 100}`
-                    return wmsUrl2
+                    this.$nextTick(() => {
+                        this.$refs.wmsLayer.mapObject.setUrl(wmsUrl)
+                    })
+                    return wmsUrl
                 }
 
-                this.$nextTick(() => {
-                    this.$refs.wmsLayer.mapObject.setUrl(wmsUrl)
-                })
+                let wmsUrl2 = `${
+                    this.layer.wms.geoserver.wms_url
+                }&env=percentage:${this.layer.opacity / 100}`
+                return wmsUrl2
             }
-            return wmsUrl
         },
     },
 
