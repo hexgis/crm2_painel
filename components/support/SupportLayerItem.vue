@@ -108,7 +108,6 @@ export default {
                     if (filters.co_cr.length && filters.co_funai.length) {
                         let result = filters.co_cr.join(',')
                         let result2 = filters.co_funai.join(',')
-                        // ${aliasTi.filter_alias}
                         wmsUrl += `&CQL_FILTER=${aliasCoordenacao.filter_alias} IN (${result}) AND ${aliasTi.filter_alias} IN (${result2})`
                         this.$nextTick(() => {
                             this.$refs.wmsLayer.mapObject.setUrl(wmsUrl)
