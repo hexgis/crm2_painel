@@ -129,7 +129,10 @@ export default {
 
     data: () => ({
         valid: false,
-        filters: [],
+        filters: {
+            startData: '',
+            endData: '',
+        },
         loading: false,
     }),
 
