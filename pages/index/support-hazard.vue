@@ -13,7 +13,7 @@
         </div>
         <v-list v-if="!$fetchState.pending" expand>
             <template v-for="group in orderedSupportLayersGroups">
-                <SupportLayersGroupFire :key="group.id" :group="group" />
+                <SupportLayersGroupHazard :key="group.id" :group="group" />
             </template>
         </v-list>
         <div v-if="$fetchState.pending">
@@ -51,12 +51,12 @@
 import { mapState } from 'vuex'
 import _ from 'lodash'
 
-import SupportLayersGroupFire from '@/components/support/SupportLayersGroupFire'
+import SupportLayersGroupHazard from '@/components/support/SupportLayersGroupHazard'
 
 export default {
-    name: 'SupportFire',
+    name: 'SupportHazard',
 
-    components: { SupportLayersGroupFire },
+    components: { SupportLayersGroupHazard },
 
     transition: 'scroll-y-transition',
 

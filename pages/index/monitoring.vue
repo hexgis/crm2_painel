@@ -14,6 +14,22 @@
 
         <ShowDialog />
 
+        <v-container class="pa-0">
+            <v-list v-if="!$fetchState.pending" expand>
+                <template v-for="group in orderedSupportLayersGroups">
+                    <SupportLayersGroupAntropismo
+                        :key="group.id"
+                        :group="group"
+                    />
+                </template>
+            </v-list>
+            <div v-if="$fetchState.pending">
+                <template v-for="i in 6">
+                    <v-skeleton-loader :key="i" type="text" class="mx-4 my-5" />
+                </template>
+            </div>
+        </v-container>
+        <v-divider />
         <MonitoringFilter @onSearch="search()" />
 
         <v-footer
@@ -88,11 +104,22 @@
 <script>
 import MonitoringFilter from '@/components/monitoring/MonitoringFilter'
 import ShowDialog from '@/components/show-dialog/ShowDialog'
+import SupportLayersGroupAntropismo from '@/components/support/SupportLayersGroupAntropismo'
 import TableDialog from '@/components/table-dialog/TableDialog.vue'
 import { mapActions, mapMutations, mapState } from 'vuex'
+import _ from 'lodash'
 
 export default {
-    components: { MonitoringFilter, ShowDialog, TableDialog },
+
+    components: { MonitoringFilter, ShowDialog, SupportLayersGroupAntropismo, TableDialog },
+
+    async fetch() {
+        if (!Object.keys(this.supportCategoryGroupsAntropismo).length) {
+            await this.$store.dispatch(
+                'supportLayers/getCategoryGroupsAntropismo'
+            )
+        }
+    },
 
     data() {
         return {
@@ -120,6 +147,7 @@ export default {
                 this.features.features.length > 0
             )
         },
+
         showFeaturesMonitoring: {
             get() {
                 return this.$store.state.monitoring.showFeatures
@@ -129,6 +157,25 @@ export default {
                 this.$store.commit('monitoring/setShowFeatures', value)
             },
         },
+
+        orderedSupportLayersGroups() {
+            return _.sortBy(this.supportCategoryGroupsAntropismo, 'order')
+        },
+
+        showFeaturesAntropismo: {
+            get() {
+                return this.$store.state.supportLayers.showFeatures
+            },
+            set(value) {
+                this.$store.commit('supportLayers/setShowFeatures', value)
+            },
+        },
+
+        ...mapState('supportLayers', [
+            'supportCategoryGroupsAntropismo',
+            'loading',
+        ]),
+
         ...mapState('monitoring', [
             'showFeatures',
             'features',
@@ -140,13 +187,18 @@ export default {
             'isLoadingCSVMonitoring',
         ]),
     },
+
     methods: {
         search() {
+            this.getFeatures()
+            this.getDataTableMonitoring()
+
             if (this.tableDialogMonitoring) {
                 this.checkNewFilters = true
                 this.getDataTableMonitoring()
             }
             if (!this.tableDialogMonitoring) this.getFeatures()
+
         },
 
         changeVisualizationStage(tab) {
@@ -180,7 +232,9 @@ export default {
         ]),
 
         ...mapMutations('priority', ['setVisualizationStage']),
+
         ...mapMutations('tableDialog', ['setshowTableDialog']),
+        
         ...mapMutations('monitoring', [
             'settableDialogMonitoring',
             'setLoadingTable',

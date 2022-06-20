@@ -8,16 +8,21 @@ export const state = () => ({
     supportCategoryGroupsRaster: {},
     supportCategoryGroupsBase: {},
     supportCategoryGroupsProdes: {},
+    supportCategoryGroupsAntropismo: {},
     loading: false,
     supportLayersCategoryFire: {},
     supportLayersCategoryBase: {},
     supportLayersCategoryRaster: {},
     supportLayersCategoryProdes: {},
+    supportLayersCategoryAntropismo: {},
     filters: {
         categoryBase: 1,
         categoryRaster: 3,
         categoryFire: 2,
         categoryProdes: 4,
+        categoryAntropismo: 5,
+        co_cr: [],
+        co_funai: [],
     },
     filterOptions: {
         regionalFilters: [],
@@ -35,6 +40,7 @@ export const getters = {
         }
         return activeLayerIds
     },
+
     activeLayerIds(state) {
         const activeLayerIds = []
         for (const layer of Object.values(state.supportLayersCategoryRaster)) {
@@ -44,6 +50,7 @@ export const getters = {
         }
         return activeLayerIds
     },
+
     activeLayerIds(state) {
         const activeLayerIds = []
         for (const layer of Object.values(state.supportLayersCategoryFire)) {
@@ -53,9 +60,22 @@ export const getters = {
         }
         return activeLayerIds
     },
+
     activeLayerIds(state) {
         const activeLayerIds = []
         for (const layer of Object.values(state.supportLayersCategoryProdes)) {
+            if (layer.visible) {
+                activeLayerIds.push(layer.id)
+            }
+        }
+        return activeLayerIds
+    },
+
+    activeLayerIds(state) {
+        const activeLayerIds = []
+        for (const layer of Object.values(
+            state.supportLayersCategoryAntropismo
+        )) {
             if (layer.visible) {
                 activeLayerIds.push(layer.id)
             }
@@ -130,7 +150,6 @@ export const mutations = {
     setSupportCategoryGroupsProdes(state, categoryGroups) {
         state.supportCategoryGroupsProdes = {}
         state.supportLayersCategoryProdes = {}
-
         for (const group of categoryGroups) {
             const layers = group.layers
             group.layers = []
@@ -153,6 +172,36 @@ export const mutations = {
             }
 
             Vue.set(state.supportCategoryGroupsProdes, group.id, group)
+        }
+    },
+
+    setSupportCategoryGroupsAntropismo(state, categoryGroups) {
+        state.supportCategoryGroupsAntropismo = {}
+        state.supportLayersCategoryAntropismo = {}
+
+        for (const group of categoryGroups) {
+            const layers = group.layers
+            group.layers = []
+
+            for (const layer of layers) {
+                layer.visible = false
+
+                if (layer.layer_type === 'wms' && layer.wms.default_opacity) {
+                    layer.opacity = layer.wms.default_opacity
+                } else {
+                    layer.opacity = 100
+                }
+
+                layer.loading = false
+                layer.filters = []
+                layer.data = []
+
+                group.layers.push(layer.id)
+
+                Vue.set(state.supportLayersCategoryAntropismo, layer.id, layer)
+            }
+
+            Vue.set(state.supportCategoryGroupsAntropismo, group.id, group)
         }
     },
 
@@ -238,6 +287,12 @@ export const mutations = {
             ...filters,
         }
     },
+    setLayerFiltersAntropismo(state, { id, filters }) {
+        state.supportLayersCategoryAntropismo[id].filters = {
+            ...state.supportLayersCategoryAntropismo[id].filters,
+            ...filters,
+        }
+    },
 
     setLayerFiltersProdes(state, { id, filters }) {
         state.supportLayersCategoryProdes[id].filters = {
@@ -258,6 +313,10 @@ export const mutations = {
         state.supportLayersCategoryProdes[id].visible = visible
     },
 
+    toggleLayerVisibilityAntropismo(state, { id, visible }) {
+        state.supportLayersCategoryAntropismo[id].visible = visible
+    },
+
     toggleLayerVisibilityRaster(state, { id, visible }) {
         state.supportLayersCategoryRaster[id].visible = visible
     },
@@ -272,6 +331,9 @@ export const mutations = {
 
     setLayerOpacityFire(state, { id, opacity }) {
         state.supportLayersCategoryFire[id].opacity = opacity
+    },
+    setLayerOpacityAntropismo(state, { id, opacity }) {
+        state.supportLayersCategoryAntropismo[id].opacity = opacity
     },
 
     setLayerOpacityProdes(state, { id, opacity }) {
@@ -288,6 +350,10 @@ export const mutations = {
 
     setLayerLoadingProdes(state, { id, loading }) {
         state.supportLayersCategoryProdes[id].loading = loading
+    },
+
+    setLayerLoadingAntropismo(state, { id, loading }) {
+        state.supportLayersCategoryAntropismo[id].loading = loading
     },
 
     setLayerLoadingRaster(state, { id, loading }) {
@@ -410,6 +476,7 @@ export const actions = {
             commit('setLoading', false)
         }
     },
+
     async getCategoryGroupsProdes({ commit }) {
         commit('setLoading', true)
         const params = {
@@ -421,6 +488,34 @@ export const actions = {
             })
 
             commit('setSupportCategoryGroupsProdes', response)
+            commit('setShowFeatures', true)
+        } catch (exception) {
+            commit(
+                'alert/addAlert',
+                {
+                    message: this.$i18n.t('default-error', {
+                        action: this.$i18n.t('retrieve'),
+                        resource: this.$i18n.tc('layer', 2),
+                    }),
+                },
+                { root: true }
+            )
+        } finally {
+            commit('setLoading', false)
+        }
+    },
+
+    async getCategoryGroupsAntropismo({ commit }) {
+        commit('setLoading', true)
+        const params = {
+            category: 5,
+        }
+        try {
+            const response = await this.$api.$get('support/layers-groups/', {
+                params,
+            })
+
+            commit('setSupportCategoryGroupsAntropismo', response)
             commit('setShowFeatures', true)
         } catch (exception) {
             commit(
@@ -568,4 +663,6 @@ export const actions = {
 
         commit('setFilterOptions', data)
     },
+
 }
+

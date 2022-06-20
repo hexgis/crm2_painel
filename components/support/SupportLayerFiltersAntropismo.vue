@@ -6,7 +6,7 @@
                     <BaseDateField
                         v-model="filters.start_date"
                         :label="$t('start-date-label')"
-                        :required="true"
+                        required
                         outlined
                         dense
                     />
@@ -15,7 +15,7 @@
                     <BaseDateField
                         v-model="filters.end_date"
                         :label="$t('end-date-label')"
-                        :required="true"
+                        required
                         :min-date="filters.start_date"
                         outlined
                         dense
@@ -35,7 +35,7 @@
                         <BaseDateField
                             v-model="filters[layer_filter.filter_type]"
                             :label="$t('start-date-label')"
-                            :required="true"
+                            required
                             outlined
                             dense
                         />
@@ -57,7 +57,7 @@
                         hide-details
                         clearable
                         multiple
-                        required="true"
+                        required
                     >
                     </v-select>
                 </v-col>
@@ -65,10 +65,7 @@
                 <v-col
                     class="mb-5"
                     cols="12"
-                    v-if="
-                        layer_filter.filter_type === 'Terras Indígenas' &&
-                        layer.name != 'Aldeias Indígenas'
-                    "
+                    v-if="layer_filter.filter_type === 'Terras Indígenas'"
                     :key="layer_filter.filter_type"
                 >
                     <v-slide-y-transition>
@@ -81,7 +78,7 @@
                             multiple
                             clearable
                             hide-details
-                            required="true"
+                            required
                         >
                         </v-select>
                     </v-slide-y-transition>
@@ -126,7 +123,7 @@ import { mapMutations, mapActions, mapState } from 'vuex'
 import BaseDateField from '@/components/base/BaseDateField'
 
 export default {
-    name: 'SupportLayerFilters',
+    name: 'SupportLayerFiltersAntropismo',
 
     components: {
         BaseDateField,
@@ -141,10 +138,7 @@ export default {
 
     data: () => ({
         valid: false,
-        filters: {
-            co_cr: [],
-            co_funai: [],
-        },
+        filters: {},
         loading: false,
         hasDoubleDate: false,
     }),
@@ -205,14 +199,14 @@ export default {
             }
             if (this.layer.layer_type === 'heatmap') {
                 this.loading = true
-                this.setLayerFilters(filterInfo)
+                this.setLayerFiltersAntropismo(filterInfo)
                 this.getHeatMapLayer(filterInfo).finally(() => {
                     this.loading = false
                 })
             } else if (this.layer.layer_type === 'wms') {
-                this.setLayerFilters(filterInfo)
+                this.setLayerFiltersAntropismo(filterInfo)
 
-                this.toggleLayerVisibility({
+                this.toggleLayerVisibilityAntropismo({
                     id: this.layer.id,
                     visible: true,
                 })
@@ -220,8 +214,8 @@ export default {
         },
 
         ...mapMutations('supportLayers', [
-            'setLayerFilters',
-            'toggleLayerVisibility',
+            'setLayerFiltersAntropismo',
+            'toggleLayerVisibilityAntropismo',
         ]),
 
         ...mapActions('supportLayers', ['getHeatMapLayer', 'getFilterOptions']),
