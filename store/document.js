@@ -1,15 +1,22 @@
 export const state = () => ({
     features: null,
     showFeatures: false,
-    visualizationStage: 'stage1',
-    tableDialogMonitoring: false,
-    isLoadingCSVMonitoring: false,
-    isLoadingGeoJson: false,
+    heatMap: true,
+    tableDialogAlert: false,
+    isLoadingTable: false,
     isLoadingFeatures: false,
-    isLoadingTableMonitoring: true,
+    showDialogDocument: false,
+
+    isLoadingGeoJson: false,
+    isLoadingCSV: false,
+    unitMeasurement: [],
+    // displayAnalitcs: null, // responsável por exibir qual dos 4 Dashboards será exibido na tela: Filtro Aplicado; CR; TI; Municípios. Também encaminhar o filtro aplicado.
+    visualizationStage: 'map',
     filterOptions: {
         regionalFilters: [],
+        tiFilters: [],
     },
+
     filters: {
         startDate: null,
         endDate: null,
@@ -18,16 +25,15 @@ export const state = () => ({
     },
 
     opacity: 100,
-    heatMap: true,
     total: null,
-    tableMonitoring: [],
-    tableCSVMonitoring: [],
+    table: [],
+    tableCSV: [],
 })
 
 export const getters = {
     featuresLoaded(state) {
         return (
-            state.features &&
+            !!state.features &&
             state.features.features &&
             state.features.features.length > 0
         )
@@ -35,69 +41,81 @@ export const getters = {
 }
 
 export const mutations = {
-    setFeatures(state, features) {
-        state.features = features
-        state.isLoadingFeatures = false
-    },
-
-    setShowFeatures(state, showFeatures) {
-        state.showFeatures = showFeatures
-    },
-
-    setLoadingGeoJson(state, payload) {
-        state.isLoadingGeoJson = payload
-    },
-
-    clearFeatures(state) {
-        state.features = null
-    },
-
-    setTotal(state, total) {
-        state.total = total
-    },
-
-    settableDialogMonitoring(state, tableDialogMonitoring) {
-        state.tableDialogMonitoring = tableDialogMonitoring
-    },
-
-    setLoadingFeatures(state, payload) {
-        state.isLoadingFeatures = payload
-    },
-
-    setLoadingTableMonitoring(state, payload) {
-        state.isLoadingTableMonitoring = payload
-    },
-
-    setFilterOptions(state, data) {
-        state.filterOptions = data
-    },
-
-    setOpacity(state, opacity) {
-        state.opacity = opacity
-    },
-
-    setDownloadTable(state, tableCSVMonitoring) {
-        state.tableCSVMonitoring = tableCSVMonitoring
-    },
-
-    setHeatMap(state, heatMap) {
-        state.heatMap = heatMap
-    },
-
-    setLoadingCSV(state, payload) {
-        state.isLoadingCSVMonitoring = payload
-    },
-
-    setTable(state, tableMonitoring) {
-        state.tableMonitoring = tableMonitoring
-    },
-
     setFilters(state, filters) {
         state.filters = {
             ...state.filters,
             ...filters,
         }
     },
+
+    setShowDialogDocument(state, payload) {
+        state.showDialogDocument = payload
+    },
+
+    setParams(state, params) {
+        state.params = params
+    },
+
+    setFeatures(state, features) {
+        state.features = features
+    },
+
+    settableDialogAlert(state, tableDialogAlert) {
+        state.tableDialogAlert = tableDialogAlert
+    },
+
+    setLoadingTable(state, loadingTable) {
+        state.isLoadingTable = loadingTable
+    },
+
+    setLoadingFeatures(state, payload) {
+        state.isLoadingFeatures = payload
+    },
+
+    clearFeatures(state) {
+        state.features = null
+    },
+    setLoadingCSV(state, payload) {
+        state.isLoadingCSV = payload
+    },
+    setLoadingGeoJson(state, payload) {
+        state.isLoadingGeoJson = payload
+    },
+
+    setShowFeatures(state, showFeatures) {
+        state.showFeatures = showFeatures
+    },
+
+    setOpacity(state, opacity) {
+        state.opacity = opacity
+    },
+
+    setTable(state, table) {
+        state.table = table
+    },
+    setDownloadTable(state, tableCSV) {
+        state.tableCSV = tableCSV
+    },
+
+    setFilterOptions(state, data) {
+        state.filterOptions = data
+    },
+
+    setTotal(state, total) {
+        state.total = total
+    },
+
+    setHeatMap(state, heatMap) {
+        state.heatMap = heatMap
+    },
+    //
+    setUnitMeasurement(state, unitMeasurement) {
+        state.unitMeasurement = unitMeasurement
+    },
+    setVisualizationStage(state, visualizationStage) {
+        state.visualizationStage = visualizationStage
+    },
+    //
 }
 
 export const actions = {
@@ -111,13 +129,15 @@ export const actions = {
             end_date: state.filters.endDate,
         }
 
-        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
+        if (state.filters.ti && state.filters.ti.length)
+            params.co_funai = state.filters.ti.toString()
 
         if (state.filters.cr && state.filters.cr.length)
             params.co_cr = state.filters.cr.toString()
 
+        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
         try {
-            const response = await this.$api.$get('monitoring/consolidated/', {
+            const response = await this.$api.$get('alerts/', {
                 params,
             })
 
@@ -129,14 +149,12 @@ export const actions = {
                     { root: true }
                 )
             } else {
-                commit('setFeatures', response)
                 commit('setShowFeatures', true)
-                const total = await this.$api.$get(
-                    'monitoring/consolidated/stats/',
-                    {
-                        params,
-                    }
-                )
+                commit('setFeatures', response)
+
+                const total = await this.$api.$get('alerts/total/', {
+                    params,
+                })
                 if (total) commit('setTotal', total)
             }
         } catch (exception) {
@@ -152,9 +170,11 @@ export const actions = {
             )
         } finally {
             commit('setLoadingFeatures', false)
+            commit('setParams', params)
             commit('setLoadingGeoJson', false)
         }
     },
+
     async getFilterOptions({ commit }) {
         const regional_coordinators = await this.$api.$get('funai/cr/')
 
@@ -168,11 +188,24 @@ export const actions = {
 
         commit('setFilterOptions', data)
     },
-    async getDataTableMonitoring({ commit, state, rootGetters }) {
-        commit('setLoadingGeoJson', true)
-        commit('setLoadingFeatures', true)
-        commit('setLoadingTableMonitoring', true)
 
+    async getTiOptions({ commit, state }, cr) {
+        const params = {
+            co_cr: cr.toString(),
+        }
+
+        const tis = await this.$api.$get('funai/ti/', { params })
+
+        if (tis)
+            commit('setFilterOptions', {
+                ...state.filterOptions,
+                tiFilters: tis.sort((a, b) => a.no_ti > b.no_ti),
+            })
+    },
+    async getDataTable({ commit, state, rootGetters }) {
+        commit('setLoadingFeatures', true)
+        commit('setLoadingGeoJson', true)
+        commit('setLoadingTable', true)
         const params = {
             start_date: state.filters.startDate,
             end_date: state.filters.endDate,
@@ -181,30 +214,21 @@ export const actions = {
         if (state.filters.ti && state.filters.ti.length)
             params.co_funai = state.filters.ti.toString()
 
-        if (state.filters.priority && state.filters.priority.length)
-            params.priority = state.filters.priority.toString()
-
         if (state.filters.cr && state.filters.cr.length)
             params.co_cr = state.filters.cr.toString()
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
         try {
-            const tableMonitoring = await this.$api.$get(
-                'monitoring/consolidated/table/',
-                {
-                    params,
-                }
-            )
+            const table = await this.$api.$get('alerts/table/', {
+                params,
+            })
 
-            if (tableMonitoring) commit('setTable', tableMonitoring)
+            if (table) commit('setTable', table)
 
-            const total = await this.$api.$get(
-                'monitoring/consolidated/stats/',
-                {
-                    params,
-                }
-            )
+            const total = await this.$api.$get('alerts/total/', {
+                params,
+            })
             if (total) commit('setTotal', total)
         } catch (error) {
             commit(
@@ -220,10 +244,10 @@ export const actions = {
         } finally {
             commit('setLoadingFeatures', false)
             commit('setLoadingGeoJson', false)
-            commit('setLoadingTableMonitoring', false)
+            commit('setLoadingTable', false)
         }
     },
-    async downloadTableMonitoring({ commit, state, rootGetters }) {
+    async downloadTable({ commit, state, rootGetters }) {
         commit('setLoadingCSV', true)
 
         const params = {
@@ -235,73 +259,12 @@ export const actions = {
         if (state.filters.ti && state.filters.ti.length)
             params.co_funai = state.filters.ti.toString()
 
-        if (state.filters.priority && state.filters.priority.length)
-            params.priority = state.filters.priority.toString()
-
         if (state.filters.cr && state.filters.cr.length)
             params.co_cr = state.filters.cr.toString()
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
-        const tableCSVMonitoring = await this.$api.get(
-            'monitoring/consolidated/table/',
-            {
-                params,
-            }
-        )
-
-        function saveData(data, fileName, type) {
-            var elementBtn, blob, url
-
-            elementBtn = document.createElement('a')
-            elementBtn.style = 'display: none'
-            document.body.appendChild(elementBtn)
-
-            if (type !== 'text/csv') {
-                data = JSON.stringify(data)
-            }
-
-            blob = new Blob([data], { type: type })
-            url = window.URL.createObjectURL(blob)
-
-            elementBtn.href = url
-            elementBtn.download = fileName
-            elementBtn.click()
-            window.URL.revokeObjectURL(url)
-        }
-
-        try {
-            saveData(
-                tableCSVMonitoring.data,
-                'poligono_monitoramento.csv',
-                'text/csv'
-            )
-        } finally {
-            commit('setLoadingCSV', false)
-        }
-    },
-    async downloadGeoJsonMonitoring({ commit, state, rootGetters }) {
-        commit('setLoadingGeoJson', true)
-
-        const params = {
-            start_date: state.filters.startDate,
-            end_date: state.filters.endDate,
-            format: state.filters.csv,
-            format: state.filters.json,
-        }
-
-        if (state.filters.ti && state.filters.ti.length)
-            params.co_funai = state.filters.ti.toString()
-
-        if (state.filters.priority && state.filters.priority.length)
-            params.priority = state.filters.priority.toString()
-
-        if (state.filters.cr && state.filters.cr.length)
-            params.co_cr = state.filters.cr.toString()
-
-        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
-
-        const GeoJson = await this.$api.get('monitoring/consolidated/', {
+        const tableCSV = await this.$api.get('alerts/table/', {
             params,
         })
 
@@ -326,11 +289,55 @@ export const actions = {
         }
 
         try {
-            saveData(
-                GeoJson.data,
-                'poligono_monitoramento.json',
-                'application/json'
-            )
+            saveData(tableCSV.data, 'alerta-urgente.csv', 'text/csv')
+        } finally {
+            commit('setLoadingCSV', false)
+        }
+    },
+    async downloadGeoJson({ commit, state, rootGetters }) {
+        commit('setLoadingGeoJson', true)
+
+        const params = {
+            start_date: state.filters.startDate,
+            end_date: state.filters.endDate,
+            format: state.filters.csv,
+            format: state.filters.json,
+        }
+
+        if (state.filters.ti && state.filters.ti.length)
+            params.co_funai = state.filters.ti.toString()
+
+        if (state.filters.cr && state.filters.cr.length)
+            params.co_cr = state.filters.cr.toString()
+
+        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
+
+        const GeoJson = await this.$api.get('alerts/', {
+            params,
+        })
+
+        function saveData(data, fileName, type) {
+            var elementBtn, blob, url
+
+            elementBtn = document.createElement('a')
+            elementBtn.style = 'display: none'
+            document.body.appendChild(elementBtn)
+
+            if (type !== 'text/csv') {
+                data = JSON.stringify(data)
+            }
+
+            blob = new Blob([data], { type: type })
+            url = window.URL.createObjectURL(blob)
+
+            elementBtn.href = url
+            elementBtn.download = fileName
+            elementBtn.click()
+            window.URL.revokeObjectURL(url)
+        }
+
+        try {
+            saveData(GeoJson.data, 'alerta-urgente.json', 'application/json')
         } finally {
             commit('setLoadingGeoJson', false)
         }

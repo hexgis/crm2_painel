@@ -6,37 +6,35 @@
             </h4>
             <v-switch
                 v-if="features"
-                v-model="showFeaturesLandUse"
+                v-model="showFeaturesAlert"
                 class="mt-n1 ml-5"
                 hide-details
             />
         </div>
 
-        <LandUseFilter @onSearch="search()" />
+        <AlertFilter @onSearch="search()" />
 
-        <div v-if="showFeaturesLandUse" class="px-4">
+        <ShowDialog />
+        
+        <div v-if="showFeatures" class="px-4">
             <v-divider class="mt-1"></v-divider>
             <p class="font-weight-regular pt-2">Legenda:</p>
             <v-col>
                 <v-row class="mb-2">
-                    <v-icon class="mr-2" color="#ffff00">mdi-square</v-icon>
-                    Agropecuária
+                    <v-icon class="mr-2" color="#965213">mdi-square</v-icon>
+                    CR
                 </v-row>
                 <v-row class="mb-2">
-                    <v-icon class="mr-2" color="#66ffff">mdi-square</v-icon>
-                    Massa de Água
+                    <v-icon class="mr-2" color="#337f1e">mdi-square</v-icon>
+                    DR
                 </v-row>
                 <v-row class="mb-2">
-                    <v-icon class="mr-2" color="#cc9966">mdi-square</v-icon>
-                    Vilarejo
+                    <v-icon class="mr-2" color="#ba1a1a">mdi-square</v-icon>
+                    FF
                 </v-row>
                 <v-row class="mb-2">
-                    <v-icon class="mr-2" color="#00cc00">mdi-square</v-icon>
-                    Vegetação Natural
-                </v-row>
-                <v-row class="mb-2">
-                    <v-icon class="mr-2" color="#ff3333">mdi-square</v-icon>
-                    Corte Raso
+                    <v-icon class="mr-2" color="#e0790b">mdi-square</v-icon>
+                    DG
                 </v-row>
                 <v-spacer></v-spacer>
             </v-col>
@@ -65,27 +63,25 @@
                     >
                         <v-icon large>mdi-chart-box</v-icon>
                     </v-btn>
-                    <v-btn icon color="accent" @click="showTableLand(true)">
+                    <v-btn icon color="accent" @click="showTableAlert(true)">
                         <v-icon large>mdi-table</v-icon>
                     </v-btn>
-                    <div class="d-none" v-if="tableDialogLand">
+                    <div class="d-none" v-if="tableDialogAlert">
                         <TableDialog
-                            :table="tableDialogLand"
+                            :table="tableDialogAlert"
+                            :value="table"
                             :headers="headers"
-                            :value="tableLandUse"
                             :loadingTable="isLoadingTable"
                             :loadingCSV="isLoadingCSV"
-                            :tableName="$t('table-name')"
-                            :fDownloadCSV="downloadTableLandUse"
+                            :fDownloadCSV="downloadTable"
                             :fCloseTable="closeTable"
+                            :tableName="$t('table-name')"
                         />
                     </div>
                 </v-row>
-
                 <v-row class="py-2">
                     <v-divider></v-divider>
                 </v-row>
-
                 <v-row class="d-flex justify-center">
                     <v-img max-width="200" src="/img/logocmr_normal.png" />
                 </v-row>
@@ -97,27 +93,28 @@
 <i18n>
     {
         "en": {
-            "title": "Land Use And Ocupation",
+            "title": "Urgent Alerts",
             "analytics-label": "Analytics",
             "map-label": "Map",
-            "table-name": "Land Use Table"
+            "table-name": "Table Urgent Alerts"
         },
         "pt-br": {
-            "title": "Uso e Ocupação Do Solo",
+            "title": "Alerta Urgente",
             "analytics-label": "Analytics",
             "map-label": "Mapa",
-            "table-name": "Tabela de Uso e Ocupação do Solo"
+            "table-name": "Tabela de Alerta Urgente"
         }
     }
 </i18n>
 
 <script>
-import LandUseFilter from '@/components/land-use/LandUseFilter'
+import AlertFilter from '@/components/urgent-alerts/AlertFilter.vue'
+import ShowDialog from '@/components/show-dialog/ShowDialog'
 import TableDialog from '@/components/table-dialog/TableDialog.vue'
 import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
-    components: { LandUseFilter, TableDialog },
+    components: { AlertFilter, ShowDialog, TableDialog },
 
     data() {
         return {
@@ -129,9 +126,11 @@ export default {
                 { text: 'Código Funai', value: 'co_funai' },
                 { text: 'Terra Indígena', value: 'no_ti' },
                 { text: 'Coordenação Regional', value: 'ds_cr' },
-                { text: 'Data Cadastro', value: 'dt_cadastro' },
-                { text: 'Nu Área Km2', value: 'nu_area_km2' },
+                { text: 'Classe', value: 'no_estagio' },
+                { text: 'Data da Imagem', value: 'dt_imagem' },
                 { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
+                { text: 'Latitude', value: 'nu_latitude' },
+                { text: 'Longitude', value: 'nu_longitude' },
             ],
             checkNewFilters: false,
         }
@@ -144,38 +143,36 @@ export default {
                 this.features.features.length > 0
             )
         },
-        
-        showFeaturesLandUse: {
+     
+        showFeaturesAlert: {
             get() {
-                return this.$store.state['land-use'].showFeatures
+                return this.$store.state['urgent-alerts'].showFeatures
             },
 
             set(value) {
-                this.$store.commit('land-use/setShowFeatures', value)
+                this.$store.commit('urgent-alerts/setShowFeatures', value)
             },
         },
-        ...mapState('land-use', [
+        
+        ...mapState('urgent-alerts', [
             'showFeatures',
             'features',
-            'total',
-            'tableLandUse',
+            'table',
             'visualizationStage',
-            'tableDialogLand',
-            'response',
-            'params',
+            'tableDialogAlert',
             'isLoadingTable',
             'isLoadingCSV',
+            'total',
         ]),
-        ...mapState('priority', ['visualizationStage']),
     },
 
     methods: {
         search() {
-            if (this.tableDialogLand) {
+            if (this.tableDialogAlert) {
                 this.checkNewFilters = true
-                this.getDataTableLandUse()
+                this.getDataTable()
             }
-            if (!this.tableDialogLand) this.getFeatures()
+            if (!this.tableDialogAlert) this.getFeatures()
         },
 
         searchDataTable() {
@@ -186,35 +183,37 @@ export default {
             this.setVisualizationStage(tab)
         },
 
-        showTableLand(value) {
+        showTableAlert(value) {
             if (this.features) {
-                this.settableDialogLand(value)
+                this.settableDialogAlert(value)
                 this.setshowTableDialog(value)
-                this.getDataTableLandUse()
+                this.getDataTable()
             }
         },
 
         closeTable(value) {
             if (!this.checkNewFilters) {
-                this.settableDialogLand(value)
+                this.settableDialogAlert(value)
                 this.setshowTableDialog(value)
             } else {
-                this.settableDialogLand(value)
+                this.settableDialogAlert(value)
                 this.setshowTableDialog(value)
                 this.getFeatures()
                 this.checkNewFilters = false
             }
         },
 
-        ...mapActions('land-use', [
+        ...mapActions('urgent-alerts', [
             'getFeatures',
-            'getDataTableLandUse',
-            'downloadTableLandUse',
+            'getDataTable',
+            'downloadTable',
         ]),
 
         ...mapMutations('tableDialog', ['setshowTableDialog']),
-        ...mapMutations('priority', ['setVisualizationStage']),
-        ...mapMutations('land-use', ['settableDialogLand']),
+        ...mapMutations('urgent-alerts', [
+            'setVisualizationStage',
+            'settableDialogAlert',
+        ]),
     },
 }
 </script>

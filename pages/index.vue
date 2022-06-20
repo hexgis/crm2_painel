@@ -28,6 +28,7 @@
             :to="localePath(tab.route)"
             exact
             nuxt
+            :disabled="showTableDialog"
         >
             <v-tooltip left>
                 <template #activator="{ on }">
@@ -81,8 +82,10 @@
         "compare-tab": "Compare images",
         "prodes-tab": "PRODES (INPE)",
         "algorithms-tab": "Algorithms",
+        "urgent-alerts-tab": "Urgent Alerts",
         "webhooks-tab": "Webhooks",
-        "funai-tab": "Priorities"
+        "priority-tab": "Priorities",
+        "document-tab": "Document"
     },
     "pt-br": {
         "catalog-tab": "Meu acervo de imagens",
@@ -95,8 +98,10 @@
         "compare-tab": "Comparar imagens",
         "prodes-tab": "PRODES (INPE)",
         "algorithms-tab": "Algoritmos",
+        "urgent-alerts-tab": "Alerta Urgente",
         "webhooks-tab": "Webhooks",
-        "funai-tab": "Polígonos Prioritários"
+        "priority-tab": "Polígonos Prioritários",
+        "document-tab": "Documental"
     }
 }
 </i18n>
@@ -126,7 +131,7 @@ export default {
         tabs() {
             return [
                 {
-                    name: this.$t('funai-tab'),
+                    name: this.$t('priority-tab'),
                     icon: 'mdi-map-marker-alert',
                     route: '/priority',
                 },
@@ -166,15 +171,28 @@ export default {
                     route: '/land-use',
                 },
                 {
+
                     name: this.$t('prodes-tab'),
                     icon: 'mdi-view-dashboard',
                     route: '/support-prodes',
+                },
+                {
+
+                    name: this.$t('document-tab'),
+                    icon: 'mdi-file-document',
+                    route: '/document',
+
                 },
                 // {
                 //     name: this.$t('algorithms-tab'),
                 //     icon: 'mdi-function-variant',
                 //     route: '/algorithms',
                 // },
+                {
+                    name: this.$t('urgent-alerts-tab'),
+                    icon: 'mdi-alert-octagram',
+                    route: '/urgent-alerts',
+                },
                 // {
                 //     name: this.$t('webhooks-tab'),
                 //     icon: 'mdi-webhook',
@@ -184,6 +202,7 @@ export default {
         },
 
         ...mapState('catalog', ['isComparing']),
+        ...mapState('tableDialog', ['showTableDialog']),
     },
 
     watch: {
