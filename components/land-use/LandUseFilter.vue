@@ -7,10 +7,11 @@
                 :items="filterOptions.regionalFilters"
                 item-value="co_cr"
                 item-text="ds_cr"
+                multiple
                 hide-details
                 clearable
                 required="true"
-                multiple
+                :error="errorRegional"
             >
             </v-select>
         </v-row>
@@ -43,6 +44,7 @@
                 item-value="map_year"
                 clearable
                 multiple
+                :error="errorAno"
             ></v-select>
         </v-row>
 
@@ -74,6 +76,12 @@
 
         <v-row v-if="total" class="px-3 py-1">
             <v-row v-if="showFeatures && total && total.area_ha">
+                <v-col cols="7" class="grey--text text--darken-2">
+                    {{ $t('polygon-label') }}:
+                </v-col>
+                <v-col cols="5" class="text-right">
+                    {{ total.total }}
+                </v-col>
                 <v-col cols="7" class="grey--text text--darken-2">
                     {{ $t('total-area-label') }}:
                 </v-col>
@@ -139,7 +147,7 @@
             "start-date-label": "Start Date",
             "total-area-label": "Total area",
             "heat-map-label": "Heat map",
-            "polygon-label": "Total polygon count",
+            "polygon-label": "Total polygons count",
             "end-date-label": "End Date"
         },
         "pt-br": {
@@ -170,12 +178,14 @@ export default {
             isGeoserver: process.env.MONITORING_GEOSERVER === 'true',
             filters: {
                 currentView: false,
-                year: null,
-                cr: null,
+                year: [],
+                cr: [],
                 ti: null,
             },
             isLoadingTotal: false,
             legendData: legend,
+            errorRegional: false,
+            errorAno: false,
         }
     },
     watch: {
@@ -223,6 +233,23 @@ export default {
         },
 
         search() {
+            if (!this.filters.cr.length && !this.filters.year.length) {
+                this.errorRegional = true
+                this.errorAno = true
+                return
+            }
+            if (!this.filters.cr.length && this.filters.year.length) {
+                this.errorRegional = true
+                this.errorAno = false
+                return
+            }
+            if (this.filters.cr.length && !this.filters.year.length) {
+                this.errorRegional = false
+                this.errorAno = true
+                return
+            }
+            this.errorRegional = false
+            this.errorAno = false
             this.setFilters(this.filters)
             this.$emit('onSearch')
         },

@@ -28,6 +28,7 @@
             :to="localePath(tab.route)"
             exact
             nuxt
+            :disabled="showTableDialog"
         >
             <v-tooltip left>
                 <template #activator="{ on }">
@@ -79,9 +80,10 @@
         "support-fire-tab": "Fire Hazard and Hot Spots",
         "landuse-tab": "Land Use And Occupation",
         "compare-tab": "Compare images",
-        "algorithms-tab": "Algorithms",
+        "urgent-alerts-tab": "Urgent Alerts",
         "webhooks-tab": "Webhooks",
-        "funai-tab": "Priorities"
+        "funai-tab": "Priorities",
+        "document-tab": "Document"
     },
     "pt-br": {
         "catalog-tab": "Meu acervo de imagens",
@@ -92,9 +94,10 @@
         "support-fire-tab": "Risco de Fogo e Focos de Calor",
         "landuse-tab": "Uso e Ocupação do Solo",
         "compare-tab": "Comparar imagens",
-        "algorithms-tab": "Algoritmos",
+        "urgent-alerts-tab": "Alerta Urgente",
         "webhooks-tab": "Webhooks",
-        "funai-tab": "Polígonos Prioritários"
+        "funai-tab": "Polígonos Prioritários",
+        "document-tab": "Documental"
     }
 }
 </i18n>
@@ -163,11 +166,21 @@ export default {
                     icon: 'mdi-sprout',
                     route: '/land-use',
                 },
+                {
+                    name: this.$t('document-tab'),
+                    icon: 'mdi-file-document',
+                    route: '/document',
+                },
                 // {
                 //     name: this.$t('algorithms-tab'),
                 //     icon: 'mdi-function-variant',
                 //     route: '/algorithms',
                 // },
+                {
+                    name: this.$t('urgent-alerts-tab'),
+                    icon: 'mdi-alert-octagram',
+                    route: '/urgent-alerts',
+                },
                 // {
                 //     name: this.$t('webhooks-tab'),
                 //     icon: 'mdi-webhook',
@@ -177,6 +190,7 @@ export default {
         },
 
         ...mapState('catalog', ['isComparing']),
+        ...mapState('tableDialog', ['showTableDialog']),
     },
 
     watch: {
