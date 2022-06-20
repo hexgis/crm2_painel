@@ -18,6 +18,8 @@ export const state = () => ({
         categoryRaster: 3,
         categoryFire: 2,
         categoryAntropismo: 5,
+        co_cr: [],
+        co_funai: [],
     },
     filterOptions: {
         regionalFilters: [],

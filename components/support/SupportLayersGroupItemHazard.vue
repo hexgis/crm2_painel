@@ -40,7 +40,7 @@
         </template>
 
         <v-container class="py-0">
-            <SupportLayerFilters :layer="layer" />
+            <SupportLayerFiltersHazard :layer="layer" />
 
             <v-row
                 v-if="
@@ -93,12 +93,12 @@
 import { mapState, mapMutations } from 'vuex'
 import tmsLegend from '@/assets/tmsLegend.png'
 
-import SupportLayerFilters from '@/components/support/SupportLayerFilters'
+import SupportLayerFiltersHazard from '@/components/support/SupportLayerFiltersHazard'
 
 export default {
-    name: 'SupportLayersGroupItemFire',
+    name: 'SupportLayersGroupItemHazard',
 
-    components: { SupportLayerFilters },
+    components: { SupportLayerFiltersHazard },
 
     props: {
         layerId: {
