@@ -183,11 +183,7 @@ export default {
                     route: '/document',
 
                 },
-                // {
-                //     name: this.$t('algorithms-tab'),
-                //     icon: 'mdi-function-variant',
-                //     route: '/algorithms',
-                // },
+    
                 {
                     name: this.$t('urgent-alerts-tab'),
                     icon: 'mdi-alert-octagram',
