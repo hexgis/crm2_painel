@@ -65,10 +65,7 @@
                 <v-col
                     class="mb-5"
                     cols="12"
-                    v-if="
-                        layer_filter.filter_type === 'Terras Indígenas' &&
-                        layer.name != 'Aldeias Indígenas'
-                    "
+                    v-if="layer_filter.filter_type === 'Terras Indígenas'"
                     :key="layer_filter.filter_type"
                 >
                     <v-slide-y-transition>

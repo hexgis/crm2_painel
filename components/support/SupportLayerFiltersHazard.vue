@@ -13,7 +13,7 @@
                             outlined
                             dense
                             :key="layer_filter.filter_alias"
-                            :label="$t('end-date-label')"
+                            :label="$t('start-date-label')"
                             required
                         />
                     </v-col>
