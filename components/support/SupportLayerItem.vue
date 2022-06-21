@@ -99,23 +99,26 @@ export default {
         wmsBaseUrl() {
             let wmsUrl = ''
             if (this.layer.layer_type === 'wms') {
+                
+                wmsUrl = `${this.layer.wms.geoserver.wms_url}&env=percentage:${
+                    this.layer.opacity / 100
+                }`
+
                 const filters = this.layer.filters
                 if (filters.startData || filters.endData) {
-                    
                     let [aliasStartDate, aliasEndDate] =
                         this.layer.layer_filters // Destructuring filter alias
-                    
-                    wmsUrl = `${
-                        this.layer.wms.geoserver.wms_url
-                    }&env=percentage:${this.layer.opacity / 100}`
+
+                    // wmsUrl = `${
+                    //     this.layer.wms.geoserver.wms_url
+                    // }&env=percentage:${this.layer.opacity / 100}`
 
                     if (filters.startData.length && filters.endData.length) {
-
                         let valueStartData = filters.startData
                         let valueEndData = filters.endData
 
                         wmsUrl += `&CQL_FILTER=${aliasStartDate.filter_alias} >= (${valueStartData}) AND ${aliasEndDate.filter_alias} <= (${valueEndData})`
-                        
+
                         this.$nextTick(() => {
                             this.$refs.wmsLayer.mapObject.setUrl(wmsUrl)
                         })
@@ -124,20 +127,18 @@ export default {
                 }
 
                 if (filters.co_cr || filters.co_funai) {
-
                     let [aliasCoordenacao, aliasTi] = this.layer.layer_filters // Destructuring filter alias
-                    
-                    wmsUrl = `${
-                        this.layer.wms.geoserver.wms_url
-                    }&env=percentage:${this.layer.opacity / 100}`
+
+                    // wmsUrl = `${
+                    //     this.layer.wms.geoserver.wms_url
+                    // }&env=percentage:${this.layer.opacity / 100}`
 
                     if (filters.co_cr.length && filters.co_funai.length) {
-
                         let valueCo_cr = filters.co_cr.join(',')
                         let valueCo_funai = filters.co_funai.join(',')
 
                         wmsUrl += `&CQL_FILTER=${aliasCoordenacao.filter_alias} IN (${valueCo_cr}) AND ${aliasTi.filter_alias} IN (${valueCo_funai})`
-                        
+
                         this.$nextTick(() => {
                             this.$refs.wmsLayer.mapObject.setUrl(wmsUrl)
                         })
