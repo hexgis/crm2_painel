@@ -6,7 +6,7 @@
                     <BaseDateField
                         v-model="filters.start_date"
                         :label="$t('start-date-label')"
-                        :required="true"
+                        required
                         outlined
                         dense
                     />
@@ -15,7 +15,7 @@
                     <BaseDateField
                         v-model="filters.end_date"
                         :label="$t('end-date-label')"
-                        :required="true"
+                        required
                         :min-date="filters.start_date"
                         outlined
                         dense
@@ -35,7 +35,7 @@
                         <BaseDateField
                             v-model="filters[layer_filter.filter_type]"
                             :label="$t('start-date-label')"
-                            :required="true"
+                            required
                             outlined
                             dense
                         />
@@ -44,7 +44,7 @@
 
                 <v-col
                     cols="12"
-                    v-if="layer_filter.filter_type === 'Coordenação Regional'"
+                    v-if="layer_filter.filter_type === 'co_cr'"
                     :key="layer_filter.filter_type"
                     class="mb-5"
                 >
@@ -57,7 +57,7 @@
                         hide-details
                         clearable
                         multiple
-                        required="true"
+                        required
                     >
                     </v-select>
                 </v-col>
@@ -65,10 +65,7 @@
                 <v-col
                     class="mb-5"
                     cols="12"
-                    v-if="
-                        layer_filter.filter_type === 'Terras Indígenas' &&
-                        layer.name != 'Aldeias Indígenas'
-                    "
+                    v-if="layer_filter.filter_type === 'co_funai'"
                     :key="layer_filter.filter_type"
                 >
                     <v-slide-y-transition>
@@ -81,7 +78,7 @@
                             multiple
                             clearable
                             hide-details
-                            required="true"
+                            required
                         >
                         </v-select>
                     </v-slide-y-transition>

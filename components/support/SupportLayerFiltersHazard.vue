@@ -35,7 +35,7 @@
 
                 <v-col
                     cols="12"
-                    v-if="layer_filter.filter_type === 'Coordenação Regional'"
+                    v-if="layer_filter.filter_type === 'co_cr'"
                     :key="layer_filter.filter_type"
                     class="mb-5"
                 >
@@ -56,7 +56,7 @@
                 <v-col
                     class="mb-5"
                     cols="12"
-                    v-if="layer_filter.filter_type === 'Terras Indígenas'"
+                    v-if="layer_filter.filter_type === 'co_funai'"
                     :key="layer_filter.filter_type"
                 >
                     <v-slide-y-transition>
