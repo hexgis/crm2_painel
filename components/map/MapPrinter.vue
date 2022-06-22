@@ -193,10 +193,10 @@ export default {
 
             // this.janela = window.open()
 
-            console.log(this.bounds._northEast)
-            console.log(this.boundsZoomed)
-            console.log(this.fileList)
-            console.log(this.localBounds)
+            // console.log(this.bounds._northEast)
+            // console.log(this.boundsZoomed)
+            // console.log(this.fileList)
+            // console.log(this.localBounds)
 
             let janela = window.open(
                 '',
@@ -214,7 +214,6 @@ export default {
             // script.defer = true
 
             janela.document.head.appendChild(script)
-
             // let title = document.createElement('title')
             // janela.document.head.appendChild(title)
             let cssMap = document.createElement('link')
@@ -229,13 +228,15 @@ export default {
 
             let script2 = document.createElement('script')
             script2.innerHTML = `setTimeout(() => {var map = L.map('map').setView([51.505, -0.09], 13);
-            
-            var tiles = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-		maxZoom: 19,
-		attribution: '&copy; <a href="//www.openstreetmap.org/">OpenStreetMap</a> contributors'
-	}).addTo(map);
 
-    document.onload = window.print()
+            console.log(${this.dialog})
+            
+                var tiles = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="//www.openstreetmap.org/">OpenStreetMap</a> contributors'
+             }).addTo(map);
+
+        document.onload = window.print()
 
             }, 1000)
 
@@ -245,7 +246,7 @@ export default {
 
             let divMap = document.createElement('div')
             divMap.id = 'map'
-            divMap.style = 'height: 500px;'
+            divMap.style = 'width: 100%; height: 300px;'
             janela.document.body.appendChild(divMap)
 
             // janela.onload = window.print()
