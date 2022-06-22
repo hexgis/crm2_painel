@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex mt-3">
-        <v-dialog v-model="dialog" persistent max-width="1100" max-height="600">
+        <v-dialog v-model="dialog" persistent>
             <template v-slot:activator="{ on, attrs }">
                 <v-btn
                     fab
@@ -181,7 +181,6 @@ export default {
             // win.document.write('</body></html>');
 
             // this.janela = window.open()
-            console.log(MapForPrint)
 
             let janela = window.open(
                 '',
@@ -190,25 +189,49 @@ export default {
             )
 
             let script = document.createElement('script')
-            script.type = 'text/javascript'
+
+            // script.type = 'text/javascript'
             script.src = 'https://unpkg.com/leaflet@1.8.0/dist/leaflet.js'
             script.integrity =
                 'sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=='
-
-            let script2 = document.createElement('script')
-            script2.type = 'teste'
+            script.crossOrigin = ''
+            // script.defer = true
 
             janela.document.head.appendChild(script)
-            janela.document.createAttribute(script2)
 
-            //             janela.document.write(`
-            //              <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
-            //    integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
-            //    crossorigin=""/>
+            // let title = document.createElement('title')
+            // janela.document.head.appendChild(title)
+            let cssMap = document.createElement('link')
+            cssMap.rel = 'stylesheet'
+            cssMap.href = 'https://unpkg.com/leaflet@1.8.0/dist/leaflet.css'
+            cssMap.integrity =
+                'sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=='
+            cssMap.crossOrigin = ''
+            cssMap.async = ''
 
-            //                     <div id="map" style='height: 180px'></div>
-            //                     <h1></h1>
-            //             `)
+            janela.document.head.appendChild(cssMap)
+
+            let script2 = document.createElement('script')
+            script2.innerHTML = `setTimeout(() => {var map = L.map('map').setView([51.505, -0.09], 13);
+            var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	}).addTo(map);
+
+    document.onload = window.print()
+
+            }, 3000)
+
+            
+            
+            `
+
+            janela.document.body.appendChild(script2)
+
+            let divMap = document.createElement('div')
+            divMap.id = 'map'
+            divMap.style = 'height: 180px;'
+            janela.document.body.appendChild(divMap)
 
             // janela.onload = window.print()
         },
