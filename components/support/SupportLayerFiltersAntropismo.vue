@@ -32,8 +32,8 @@
                         />
                     </v-col>
                 </template>
-                </template>
-                <template>
+            </template>
+            <template>
                 <v-col
                     cols="12"
                     v-if="verifyFilterType('co_cr')"
@@ -57,10 +57,10 @@
                 <v-col
                     class="mb-5"
                     cols="12"
-                    v-if="verifyFilterType('co_funai') "
+                    v-if="verifyFilterType('co_funai')"
                     :key="layer.layer_filters.filter_type"
                 >
-                <v-slide-y-transition>
+                    <v-slide-y-transition>
                         <v-select
                             v-model="filters.co_funai"
                             label="Terras Indigenas (Todas)"
@@ -73,7 +73,7 @@
                             required
                         >
                         </v-select>
-                        </v-slide-y-transition>
+                    </v-slide-y-transition>
                 </v-col>
             </template>
 
@@ -130,7 +130,10 @@ export default {
 
     data: () => ({
         valid: false,
-        filters: {},
+        filters: {
+            co_cr: [],
+            co_funai: [],
+        },
         loading: false,
         hasDoubleDate: false,
     }),

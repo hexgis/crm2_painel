@@ -108,6 +108,10 @@ export default {
                     let [aliasStartDate, aliasEndDate] =
                         this.layer.layer_filters // Destructuring filter alias
 
+                    // wmsUrl = `${
+                    //     this.layer.wms.geoserver.wms_url
+                    // }&env=percentage:${this.layer.opacity / 100}`
+
                     if (filters.startData.length && filters.endData.length) {
                         let valueStartData = filters.startData
                         let valueEndData = filters.endData
@@ -122,22 +126,22 @@ export default {
                 }
 
                 if (filters.co_cr || filters.co_funai) {
-                    let [firstLayerFilter, secondLayerFilter] =
-                        this.layer.layer_filters // Destructuring filter alias
+                    let [firstInput, secondInput] = this.layer.layer_filters // Destructuring filter alias
+                    let valueCo_cr = filters.co_cr.join(',')
+                    let valueCo_funai = filters.co_funai.join(',')
 
-                    let array = [firstLayerFilter, secondLayerFilter]
-
-                    if (array[0].filter_type == 'co_funai') {
-                        array = array.reverse()
-                    }
-
-                    let [aliasCoordenacao, aliasTi] = array
+                    console.log(this.layer.layer_filters)
 
                     if (filters.co_cr.length && filters.co_funai.length) {
-                        let valueCo_cr = filters.co_cr.join(',')
-                        let valueCo_funai = filters.co_funai.join(',')
-
-                        wmsUrl += `&CQL_FILTER=${aliasCoordenacao.filter_alias} IN (${valueCo_cr}) AND ${aliasTi.filter_alias} IN (${valueCo_funai})`
+                        wmsUrl += `&CQL_FILTER=${firstInput.filter_alias} IN (${
+                            firstInput.filter_type == 'co_cr'
+                                ? valueCo_cr
+                                : valueCo_funai
+                        }) AND ${secondInput.filter_alias} IN (${
+                            secondInput.filter_type == 'co_funai'
+                                ? valueCo_funai
+                                : valueCo_cr
+                        })`
 
                         this.$nextTick(() => {
                             this.$refs.wmsLayer.mapObject.setUrl(wmsUrl)
@@ -146,19 +150,24 @@ export default {
                     }
 
                     if (filters.co_cr.length) {
-                        let list_coord = filters.co_cr.join(',')
-                        wmsUrl += `&CQL_FILTER=${aliasCoordenacao.filter_alias} IN (${list_coord})`
+                        if (firstInput.filter_type == 'co_cr') {
+                            wmsUrl += `&CQL_FILTER=${firstInput.filter_alias} IN (${valueCo_cr} )`
+                        } else {
+                            wmsUrl += `&CQL_FILTER=${secondInput.filter_alias} IN (${valueCo_cr} )`
+                        }
                     }
 
                     if (filters.co_funai.length) {
-                        let list_funaiTi = filters.co_funai.join(',')
-                        wmsUrl += `&CQL_FILTER=${aliasTi.filter_alias} IN (${list_funaiTi})`
+                        // let list_funaiTi = filters.co_funai.join(',')
+                        if (firstInput.filter_type == 'co_funai') {
+                            wmsUrl += `&CQL_FILTER=${firstInput.filter_alias} IN (${valueCo_funai} )`
+                        } else {
+                            wmsUrl += `&CQL_FILTER=${secondInput.filter_alias} IN (${valueCo_funai} )`
+                        }
                     }
-
                     this.$nextTick(() => {
                         this.$refs.wmsLayer.mapObject.setUrl(wmsUrl)
                     })
-
                     return wmsUrl
                 }
 
