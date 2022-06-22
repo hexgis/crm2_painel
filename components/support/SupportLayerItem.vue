@@ -99,7 +99,6 @@ export default {
         wmsBaseUrl() {
             let wmsUrl = ''
             if (this.layer.layer_type === 'wms') {
-                
                 wmsUrl = `${this.layer.wms.geoserver.wms_url}&env=percentage:${
                     this.layer.opacity / 100
                 }`
@@ -127,7 +126,16 @@ export default {
                 }
 
                 if (filters.co_cr || filters.co_funai) {
-                    let [aliasCoordenacao, aliasTi] = this.layer.layer_filters // Destructuring filter alias
+                    let [firstLayerFilter, secondLayerFilter] =
+                        this.layer.layer_filters // Destructuring filter alias
+
+                    let array = [firstLayerFilter, secondLayerFilter]
+
+                    if (array[0].filter_type == 'co_funai') {
+                        array = array.reverse()
+                    }
+
+                    let [aliasCoordenacao, aliasTi] = array
 
                     // wmsUrl = `${
                     //     this.layer.wms.geoserver.wms_url
