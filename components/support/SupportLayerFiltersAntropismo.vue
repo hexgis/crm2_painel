@@ -32,11 +32,12 @@
                         />
                     </v-col>
                 </template>
-
+                </template>
+                <template>
                 <v-col
                     cols="12"
-                    v-if="layer_filter.filter_type === 'co_cr'"
-                    :key="layer_filter.filter_type"
+                    v-if="verifyFilterType('co_cr')"
+                    :key="layer.layer_filters.filter_type"
                     class="mb-5"
                 >
                     <v-select
@@ -56,8 +57,8 @@
                 <v-col
                     class="mb-5"
                     cols="12"
-                    v-if="layer_filter.filter_type === 'co_funai' "
-                    :key="layer_filter.filter_type"
+                    v-if="verifyFilterType('co_funai') "
+                    :key="layer.layer_filters.filter_type"
                 >
                 <v-slide-y-transition>
                         <v-select
@@ -181,6 +182,14 @@ export default {
         populateTiOptions(cr) {
             if (cr) this.$store.dispatch('supportLayers/getTiOptions', cr)
             else this.filters.ti = null
+        },
+        verifyFilterType(type) {
+            const keys = Object.keys(this.layer.layer_filters)
+            for (const key in keys) {
+                if (this.layer.layer_filters[key].filter_type.includes(type)) {
+                    return true
+                }
+            }
         },
 
         filterLayer() {

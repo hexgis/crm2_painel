@@ -46,7 +46,7 @@
                 <v-col
                     cols="12"
                     v-if="verifyFilterType('co_cr')"
-                    :key = "layer.layer_filters.filter_type"
+                    :key="layer.layer_filters.filter_type"
                     class="mb-5"
                 >
                     <v-select
@@ -67,8 +67,7 @@
                     class="mb-5"
                     cols="12"
                     v-if="verifyFilterType('co_funai')"
-                    :key= "layer.layer_filters.filter_type"
-                   
+                    :key="layer.layer_filters.filter_type"
                 >
                     <v-slide-y-transition>
                         <v-select
@@ -197,8 +196,11 @@ export default {
             else this.filters.ti = null
         },
         verifyFilterType(type) {
-            if (this.layer.layer_filters["0"].filter_type.includes(type) || this.layer.layer_filters["1"].filter_type.includes(type) ) {
-                return true
+            const keys = Object.keys(this.layer.layer_filters)
+            for (const key in keys) {
+                if (this.layer.layer_filters[key].filter_type.includes(type)) {
+                    return true
+                }
             }
         },
 

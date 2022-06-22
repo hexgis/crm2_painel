@@ -108,10 +108,6 @@ export default {
                     let [aliasStartDate, aliasEndDate] =
                         this.layer.layer_filters // Destructuring filter alias
 
-                    // wmsUrl = `${
-                    //     this.layer.wms.geoserver.wms_url
-                    // }&env=percentage:${this.layer.opacity / 100}`
-
                     if (filters.startData.length && filters.endData.length) {
                         let valueStartData = filters.startData
                         let valueEndData = filters.endData
@@ -136,10 +132,6 @@ export default {
                     }
 
                     let [aliasCoordenacao, aliasTi] = array
-
-                    // wmsUrl = `${
-                    //     this.layer.wms.geoserver.wms_url
-                    // }&env=percentage:${this.layer.opacity / 100}`
 
                     if (filters.co_cr.length && filters.co_funai.length) {
                         let valueCo_cr = filters.co_cr.join(',')
