@@ -147,6 +147,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
 import MapForPrint from '@/components/map/MapForPrint.vue'
 import MiniMapForPrint from '@/components/map/MiniMapForPrint.vue'
 
@@ -166,6 +167,16 @@ export default {
         }
     },
 
+    computed: {
+        ...mapState('map', [
+            'bounds',
+            'boundsZoomed',
+            'loading',
+            'fileList',
+            'localBounds',
+        ]),
+    },
+
     methods: {
         Baixar() {
             //     var style = "<style>";
@@ -181,6 +192,11 @@ export default {
             // win.document.write('</body></html>');
 
             // this.janela = window.open()
+
+            console.log(this.bounds._northEast)
+            console.log(this.boundsZoomed)
+            console.log(this.fileList)
+            console.log(this.localBounds)
 
             let janela = window.open(
                 '',
@@ -213,24 +229,23 @@ export default {
 
             let script2 = document.createElement('script')
             script2.innerHTML = `setTimeout(() => {var map = L.map('map').setView([51.505, -0.09], 13);
-            var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            
+            var tiles = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
-		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+		attribution: '&copy; <a href="//www.openstreetmap.org/">OpenStreetMap</a> contributors'
 	}).addTo(map);
 
     document.onload = window.print()
 
-            }, 3000)
+            }, 1000)
 
-            
-            
             `
 
             janela.document.body.appendChild(script2)
 
             let divMap = document.createElement('div')
             divMap.id = 'map'
-            divMap.style = 'height: 180px;'
+            divMap.style = 'height: 500px;'
             janela.document.body.appendChild(divMap)
 
             // janela.onload = window.print()
