@@ -138,7 +138,7 @@
                     <v-spacer></v-spacer>
                     <v-card-actions>
                         <v-btn text @click="dialog = false"> CANCELAR </v-btn>
-                        <v-btn text onclick="window.print()"> SALVAR </v-btn>
+                        <v-btn text @click="Baixar"> SALVAR </v-btn>
                     </v-card-actions>
                 </v-footer>
             </v-card>
@@ -158,18 +158,21 @@ export default {
     data() {
         return {
             dialog: false,
+            janela: window.open(
+                '',
+                'JanelaSecundaria',
+                'scrollbars=yes,width=400,height=230'
+            ),
         }
     },
 
     methods: {
         Baixar() {
-
             //     var style = "<style>";
             // style = style + "table {width: 100%;font: 20px Calibri;}";
             // style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
             // style = style + "padding: 2px 3px;text-align: center;}";
             // style = style + "</style>";
-
             // win.document.write('<html><head>');
             // win.document.write('<title>Polígonos Prioritários</title>');
             // win.document.write('</head>');
@@ -177,8 +180,37 @@ export default {
             // win.document.write('<body>');
             // win.document.write('</body></html>');
 
+            // this.janela = window.open()
+            console.log(MapForPrint)
 
-            window.print()
+            let janela = window.open(
+                '',
+                'JanelaSecundaria',
+                'scrollbars=yes,width=400,height=230'
+            )
+
+            let script = document.createElement('script')
+            script.type = 'text/javascript'
+            script.src = 'https://unpkg.com/leaflet@1.8.0/dist/leaflet.js'
+            script.integrity =
+                'sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=='
+
+            let script2 = document.createElement('script')
+            script2.type = 'teste'
+
+            janela.document.head.appendChild(script)
+            janela.document.createAttribute(script2)
+
+            //             janela.document.write(`
+            //              <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+            //    integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+            //    crossorigin=""/>
+
+            //                     <div id="map" style='height: 180px'></div>
+            //                     <h1></h1>
+            //             `)
+
+            // janela.onload = window.print()
         },
     },
 }
