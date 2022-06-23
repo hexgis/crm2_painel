@@ -124,7 +124,7 @@ import { mapMutations, mapActions, mapState } from 'vuex'
 import BaseDateField from '@/components/base/BaseDateField'
 
 export default {
-    name: 'SupportLayerFilters',
+    name: 'SupportLayerFiltersProdes',
 
     components: {
         BaseDateField,
@@ -175,7 +175,6 @@ export default {
             this.hasDoubleDate = hasStartDate && hasEndDate
         }
     },
-
     mounted() {
         this.getFilterOptions()
     },
@@ -195,6 +194,7 @@ export default {
             if (cr) this.$store.dispatch('supportLayers/getTiOptions', cr)
             else this.filters.ti = null
         },
+
         verifyFilterType(type) {
             const keys = Object.keys(this.layer.layer_filters)
             for (const key in keys) {
@@ -211,14 +211,14 @@ export default {
             }
             if (this.layer.layer_type === 'heatmap') {
                 this.loading = true
-                this.setLayerFilters(filterInfo)
+                this.setLayerFiltersProdes(filterInfo)
                 this.getHeatMapLayer(filterInfo).finally(() => {
                     this.loading = false
                 })
             } else if (this.layer.layer_type === 'wms') {
-                this.setLayerFilters(filterInfo)
+                this.setLayerFiltersProdes(filterInfo)
 
-                this.toggleLayerVisibility({
+                this.toggleLayerVisibilityProdes({
                     id: this.layer.id,
                     visible: true,
                 })
@@ -226,8 +226,8 @@ export default {
         },
 
         ...mapMutations('supportLayers', [
-            'setLayerFilters',
-            'toggleLayerVisibility',
+            'setLayerFiltersProdes',
+            'toggleLayerVisibilityProdes',
         ]),
 
         ...mapActions('supportLayers', ['getHeatMapLayer', 'getFilterOptions']),
