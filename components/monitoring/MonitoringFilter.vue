@@ -7,7 +7,6 @@
                 :error="error"
             />
         </v-row>
-
         <v-row class="px-3 pb-5">
             <v-select
                 v-model="filters.cr"
@@ -41,7 +40,6 @@
                 </v-select>
             </v-row>
         </v-slide-y-transition>
-
         <v-row class="pt-1">
             <v-col class="py-0">
                 <BaseDateField
@@ -51,7 +49,6 @@
                     outlined
                 />
             </v-col>
-
             <v-col class="py-0">
                 <BaseDateField
                     v-model="filters.endDate"
@@ -62,7 +59,6 @@
                 />
             </v-col>
         </v-row>
-
         <v-row class="px-3">
             <v-col v-show="showFeatures">
                 <v-btn
@@ -86,9 +82,7 @@
                 </v-btn>
             </v-col>
         </v-row>
-
         <v-divider v-if="showFeatures" class="mt-8 mb-5" />
-
         <v-row v-if="showFeatures && total">
             <v-col cols="7" class="grey--text text--darken-2">
                 {{ $t('polygon-label') }}:
@@ -149,8 +143,7 @@
             "total-area-label": "Total Area",
             "heat-map-label": "Heat map",
             "polygon-label": "Total polygon",
-            "end-date-label": "End Date",
-            "select-all": "Select All"
+            "end-date-label": "End Date"
         },
         "pt-br": {
             "search-label": "Buscar",
@@ -160,8 +153,7 @@
             "heat-map-label": "Mapa de calor",
             "polygon-label": "Total de polígonos",
             "start-date-label": "Data Início",
-            "end-date-label": "Data Fim",
-            "select-all": "Selecionar Todas"
+            "end-date-label": "Data Final"
         }
     }
 </i18n>
