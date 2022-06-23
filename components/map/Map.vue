@@ -76,7 +76,7 @@
                             @loading="isLoading()"
                             @loads="loaded()"
                         />
-                        <MapPrinter />
+                        <MapPrinter :refMap="map" />
                     </div>
                 </l-control>
 
@@ -243,7 +243,7 @@ export default {
         // WebhooksLayers,
         MapPrinter,
         LandUseLayers,
-        AlertLayers
+        AlertLayers,
     },
 
     data: () => ({

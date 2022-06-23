@@ -21,7 +21,30 @@
                 <v-row id="PDF">
                     <v-col>
                         <v-card>
-                            <MapForPrint />
+                            <div
+                                id="map-wrap"
+                                style="width: 50vw; height: 100vh"
+                            >
+                                <client-only>
+                                    <l-map
+                                        :zoom="4"
+                                        :bounds="[
+                                            [-33.8689056, -73.9830625],
+                                            [5.2842873, -28.6341164],
+                                        ]"
+                                        :max-zoom="21"
+                                        :min-zoom="2"
+                                    >
+                                        <l-tile-layer
+                                            url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+                                            attribution="&copy; <a href='//www.openstreetmap.org/'>OpenStreetMap</a> contributors"
+                                        ></l-tile-layer>
+                                        <l-marker
+                                            :lat-lng="[51.504, -0.159]"
+                                        ></l-marker>
+                                    </l-map>
+                                </client-only>
+                            </div>
                         </v-card>
                     </v-col>
                     <v-col>
@@ -72,7 +95,7 @@
                                 TERRAS INDÍGENAS
                             </h6>
 
-                            <MiniMapForPrint />
+                            <!-- <MiniMapForPrint /> -->
 
                             <v-divider></v-divider>
                             <div class="px-4">
@@ -150,9 +173,25 @@
 import { mapState, mapMutations } from 'vuex'
 import MapForPrint from '@/components/map/MapForPrint.vue'
 import MiniMapForPrint from '@/components/map/MiniMapForPrint.vue'
+import 'leaflet/dist/leaflet.css'
+import 'leaflet-basemaps/L.Control.Basemaps.css'
+import 'leaflet-minimap/dist/Control.MiniMap.min.css'
+
+if (typeof window !== 'undefined') {
+    require('leaflet-bing-layer')
+    require('leaflet-basemaps')
+    require('leaflet-minimap')
+}
 
 export default {
     name: 'MapPrinter',
+
+    props: {
+        refMap: {
+            type: Object,
+            require: true,
+        },
+    },
 
     components: { MapForPrint, MiniMapForPrint },
 
@@ -198,6 +237,12 @@ export default {
             // console.log(this.fileList)
             // console.log(this.localBounds)
 
+            let camadas = this.refMap.eachLayer((layer) => {
+                return layer
+            })
+
+            console.log(camadas)
+
             let janela = window.open(
                 '',
                 'JanelaSecundaria',
@@ -226,15 +271,25 @@ export default {
 
             janela.document.head.appendChild(cssMap)
 
+            console.log(this.refMap)
+
             let script2 = document.createElement('script')
             script2.innerHTML = `setTimeout(() => {var map = L.map('map').setView([51.505, -0.09], 13);
 
-            console.log(${this.dialog})
+            
             
                 var tiles = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="//www.openstreetmap.org/">OpenStreetMap</a> contributors'
              }).addTo(map);
+
+             var camadas = ${camadas}
+
+             console.log(camadas)
+
+             map.addLayer(camadas)
+
+
 
         document.onload = window.print()
 
