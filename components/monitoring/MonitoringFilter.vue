@@ -36,6 +36,7 @@
                     hide-details
                     required="true"
                     multiple
+                    clearable
                 >
                 </v-select>
             </v-row>
