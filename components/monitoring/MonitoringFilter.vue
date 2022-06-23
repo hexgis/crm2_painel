@@ -33,7 +33,7 @@
                     item-text="no_ti"
                     item-value="co_funai"
                     hide-details
-                    required="true"
+                    required
                     multiple
                     clearable
                 >
@@ -45,7 +45,7 @@
                 <BaseDateField
                     v-model="filters.startDate"
                     :label="$t('start-date-label')"
-                    :required="true"
+                    required
                     outlined
                 />
             </v-col>
@@ -53,7 +53,7 @@
                 <BaseDateField
                     v-model="filters.endDate"
                     :label="$t('end-date-label')"
-                    :required="true"
+                    required
                     :min-date="filters.startDate"
                     outlined
                 />
