@@ -40,7 +40,7 @@
         </template>
 
         <v-container class="py-0">
-            <SupportLayerFilters :layer="layer" />
+            <SupportLayerFiltersAntropismo :layer="layer" />
 
             <v-row
                 v-if="
@@ -78,14 +78,6 @@
                 </v-col>
             </v-row>
         </v-container>
-
-        <v-divider
-            v-if="
-                layer.layer_type === 'wms' &&
-                layer.visible &&
-                layer.wms.has_opacity
-            "
-        />
     </v-list-group>
 </template>
 
@@ -93,12 +85,12 @@
 import { mapState, mapMutations } from 'vuex'
 import tmsLegend from '@/assets/tmsLegend.png'
 
-import SupportLayerFilters from '@/components/support/SupportLayerFilters'
+import SupportLayerFiltersAntropismo from '@/components/support/SupportLayerFiltersAntropismo'
 
 export default {
-    name: 'SupportLayersGroupItemFire',
+    name: 'SupportLayersGroupItemAntropismo',
 
-    components: { SupportLayerFilters },
+    components: { SupportLayerFiltersAntropismo },
 
     props: {
         layerId: {
@@ -117,10 +109,10 @@ export default {
     }),
 
     computed: {
-        ...mapState('supportLayers', ['supportLayersCategoryFire']),
+        ...mapState('supportLayers', ['supportLayersCategoryAntropismo']),
 
         layer() {
-            return this.supportLayersCategoryFire[this.layerId] || null
+            return this.supportLayersCategoryAntropismo[this.layerId] || null
         },
 
         layerPreview() {
@@ -144,7 +136,7 @@ export default {
 
     methods: {
         toggleLayer() {
-            this.toggleLayerVisibilityFire({
+            this.toggleLayerVisibilityAntropismo({
                 id: this.layerId,
                 visible: !this.layer.visible,
             })
@@ -153,15 +145,15 @@ export default {
         },
 
         updateLayerOpacity(opacity) {
-            this.setLayerOpacityFire({
+            this.setLayerOpacityAntropismo({
                 id: this.layerId,
                 opacity,
             })
         },
 
         ...mapMutations('supportLayers', [
-            'toggleLayerVisibilityFire',
-            'setLayerOpacityFire',
+            'toggleLayerVisibilityAntropismo',
+            'setLayerOpacityAntropismo',
         ]),
     },
 }

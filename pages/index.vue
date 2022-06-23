@@ -80,9 +80,11 @@
         "support-fire-tab": "Fire Hazard and Hot Spots",
         "landuse-tab": "Land Use And Occupation",
         "compare-tab": "Compare images",
+        "prodes-tab": "PRODES (INPE)",
+        "algorithms-tab": "Algorithms",
         "urgent-alerts-tab": "Urgent Alerts",
         "webhooks-tab": "Webhooks",
-        "funai-tab": "Priorities",
+        "priority-tab": "Priorities",
         "document-tab": "Document"
     },
     "pt-br": {
@@ -94,9 +96,11 @@
         "support-fire-tab": "Risco de Fogo e Focos de Calor",
         "landuse-tab": "Uso e Ocupação do Solo",
         "compare-tab": "Comparar imagens",
+        "prodes-tab": "PRODES (INPE)",
+        "algorithms-tab": "Algoritmos",
         "urgent-alerts-tab": "Alerta Urgente",
         "webhooks-tab": "Webhooks",
-        "funai-tab": "Polígonos Prioritários",
+        "priority-tab": "Polígonos Prioritários",
         "document-tab": "Documental"
     }
 }
@@ -127,7 +131,7 @@ export default {
         tabs() {
             return [
                 {
-                    name: this.$t('funai-tab'),
+                    name: this.$t('priority-tab'),
                     icon: 'mdi-map-marker-alert',
                     route: '/priority',
                 },
@@ -159,7 +163,7 @@ export default {
                 {
                     name: this.$t('support-fire-tab'),
                     icon: 'mdi-fire',
-                    route: '/support-fire',
+                    route: '/support-hazard',
                 },
                 {
                     name: this.$t('landuse-tab'),
@@ -167,15 +171,19 @@ export default {
                     route: '/land-use',
                 },
                 {
+
+                    name: this.$t('prodes-tab'),
+                    icon: 'mdi-view-dashboard',
+                    route: '/support-prodes',
+                },
+                {
+
                     name: this.$t('document-tab'),
                     icon: 'mdi-file-document',
                     route: '/document',
+
                 },
-                // {
-                //     name: this.$t('algorithms-tab'),
-                //     icon: 'mdi-function-variant',
-                //     route: '/algorithms',
-                // },
+    
                 {
                     name: this.$t('urgent-alerts-tab'),
                     icon: 'mdi-alert-octagram',

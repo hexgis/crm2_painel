@@ -99,43 +99,83 @@ export default {
         wmsBaseUrl() {
             let wmsUrl = ''
             if (this.layer.layer_type === 'wms') {
-                if (this.layer.filters) {
-                    wmsUrl =
-                        this.layer.wms.geoserver.wms_url +
-                        '&env=percentage:' +
-                        this.layer.opacity / 100
+                wmsUrl = `${this.layer.wms.geoserver.wms_url}&env=percentage:${
+                    this.layer.opacity / 100
+                }`
 
-                    const filters = this.layer.filters
-                    const keys = Object.keys(filters)
+                const filters = this.layer.filters
+                if (filters.startData || filters.endData) {
+                    let [aliasStartDate, aliasEndDate] =
+                        this.layer.layer_filters // Destructuring filter alias
 
-                    if (keys.length) {
-                        wmsUrl += '&CQL_FILTER='
+                    // wmsUrl = `${
+                    //     this.layer.wms.geoserver.wms_url
+                    // }&env=percentage:${this.layer.opacity / 100}`
 
-                        keys.forEach(element => {
-                            let el = ''
-                            if (Array.isArray(filters[element])){
-                                el = JSON.stringify(filters[element]).slice(1, -1)
-                            } else {
-                                el = filters[element]
-                            }
-                            wmsUrl += element + ' IN (' + el + ') AND '  
-                        });
-                        wmsUrl = wmsUrl.slice(0, -4)
+                    if (filters.startData.length && filters.endData.length) {
+                        let valueStartData = filters.startData
+                        let valueEndData = filters.endData
+
+                        wmsUrl += `&CQL_FILTER=${aliasStartDate.filter_alias} >= (${valueStartData}) AND ${aliasEndDate.filter_alias} <= (${valueEndData})`
+
+                        this.$nextTick(() => {
+                            this.$refs.wmsLayer.mapObject.setUrl(wmsUrl)
+                        })
+                        return wmsUrl
                     }
-                } else {
-                    wmsUrl =
-                        this.layer.wms.geoserver.wms_url +
-                        '&env=percentage:' +
-                        this.layer.opacity / 100
                 }
 
-                this.$nextTick(() => {
-                    this.$refs.wmsLayer.mapObject.setUrl(wmsUrl)
-                })
-            }
+                if (filters.co_cr || filters.co_funai) {
+                    let [firstInput, secondInput] = this.layer.layer_filters // Destructuring filter alias
+                    let valueCo_cr = filters.co_cr.join(',')
+                    let valueCo_funai = filters.co_funai.join(',')
 
-            return wmsUrl
-            
+                    console.log(this.layer.layer_filters)
+
+                    if (filters.co_cr.length && filters.co_funai.length) {
+                        wmsUrl += `&CQL_FILTER=${firstInput.filter_alias} IN (${
+                            firstInput.filter_type == 'co_cr'
+                                ? valueCo_cr
+                                : valueCo_funai
+                        }) AND ${secondInput.filter_alias} IN (${
+                            secondInput.filter_type == 'co_funai'
+                                ? valueCo_funai
+                                : valueCo_cr
+                        })`
+
+                        this.$nextTick(() => {
+                            this.$refs.wmsLayer.mapObject.setUrl(wmsUrl)
+                        })
+                        return wmsUrl
+                    }
+
+                    if (filters.co_cr.length) {
+                        if (firstInput.filter_type == 'co_cr') {
+                            wmsUrl += `&CQL_FILTER=${firstInput.filter_alias} IN (${valueCo_cr} )`
+                        } else {
+                            wmsUrl += `&CQL_FILTER=${secondInput.filter_alias} IN (${valueCo_cr} )`
+                        }
+                    }
+
+                    if (filters.co_funai.length) {
+                        // let list_funaiTi = filters.co_funai.join(',')
+                        if (firstInput.filter_type == 'co_funai') {
+                            wmsUrl += `&CQL_FILTER=${firstInput.filter_alias} IN (${valueCo_funai} )`
+                        } else {
+                            wmsUrl += `&CQL_FILTER=${secondInput.filter_alias} IN (${valueCo_funai} )`
+                        }
+                    }
+                    this.$nextTick(() => {
+                        this.$refs.wmsLayer.mapObject.setUrl(wmsUrl)
+                    })
+                    return wmsUrl
+                }
+
+                let wmsUrlBase = `${
+                    this.layer.wms.geoserver.wms_url
+                }&env=percentage:${this.layer.opacity / 100}`
+                return wmsUrlBase
+            }
         },
     },
 

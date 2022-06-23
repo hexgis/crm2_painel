@@ -9,6 +9,12 @@
         <template v-for="layer in supportLayersCategoryRaster">
             <SupportLayerItem :key="layer.id" :layer="layer" />
         </template>
+        <template v-for="layer in supportLayersCategoryProdes">
+            <SupportLayerItem :key="layer.id" :layer="layer" />
+        </template>
+        <template v-for="layer in supportLayersCategoryAntropismo">
+            <SupportLayerItem :key="layer.id" :layer="layer" />
+        </template>
     </l-layer-group>
 </template>
 
@@ -29,6 +35,9 @@ export default {
         'showFeatures',
         'supportLayersCategoryFire',
         'supportLayersCategoryRaster',
+        'supportLayersCategoryProdes',
+        'supportLayersCategoryAntropismo'
+
     ]),
 }
 </script>
