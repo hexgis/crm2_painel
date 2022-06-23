@@ -3,7 +3,7 @@
         <template #activator>
             <v-list-item-content>
                 <v-list-item-title class="text-wrap">
-                    <span class="text-cursor">
+                    <span class="text-cursor subtitle-1 mx-2">
                         {{ group.name }}
                     </span>
                 </v-list-item-title>

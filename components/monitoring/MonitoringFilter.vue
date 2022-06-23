@@ -1,4 +1,12 @@
 <template>
+ <v-expansion-panels accordion>
+     <v-expansion-panel>
+            <v-expansion-panel-header
+                ><span class="text-cursor subtitle-1">Monitoramento Diário
+                    </span>
+                    </v-expansion-panel-header
+            >
+            <v-expansion-panel-content>
     <v-col class="px-4">
         <v-row class="px-3">
             <v-checkbox
@@ -136,6 +144,9 @@
                     </v-row>
                 </template>
             </div> -->
+            </v-expansion-panel-content>
+            </v-expansion-panel>
+        </v-expansion-panels>
 </template>
 
 <i18n>

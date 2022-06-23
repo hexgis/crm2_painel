@@ -15,6 +15,7 @@
         <ShowDialog />
 
         <v-container class="pa-0">
+            <v-card >
             <v-list v-if="!$fetchState.pending" expand>
                 <template v-for="group in orderedSupportLayersGroups">
                     <SupportLayersGroupAntropismo
@@ -28,8 +29,10 @@
                     <v-skeleton-loader :key="i" type="text" class="mx-4 my-5" />
                 </template>
             </div>
+            </v-card>
         </v-container>
         <v-divider />
+        
         <MonitoringFilter @onSearch="search()" />
 
         <v-footer
