@@ -1,43 +1,34 @@
 <template>
     <v-form v-if="layer.layer_filters.length" v-model="valid">
         <v-row dense class="my-4">
-            <template v-if="hasDoubleDate">
-                <v-col cols="6">
-                    <BaseDateField
-                        v-model="filters.start_date"
-                        :label="$t('start-date-label')"
-                        :required="true"
-                        outlined
-                        dense
-                    />
-                </v-col>
-                <v-col cols="6">
-                    <BaseDateField
-                        v-model="filters.end_date"
-                        :label="$t('end-date-label')"
-                        :required="true"
-                        :min-date="filters.start_date"
-                        outlined
-                        dense
-                    />
-                </v-col>
-            </template>
-
             <template v-for="layer_filter in layer.layer_filters">
-                <template
-                    v-if="
-                        !hasDoubleDate &&
-                        (layer_filter.filter_type === 'start_date' ||
-                            layer_filter.filter_type === 'end_date')
-                    "
-                >
-                    <v-col :key="layer_filter.filter_type">
+                <template>
+                    <v-col
+                        v-if="layer_filter.filter_type === 'start_date'"
+                        :key="layer_filter.filter_type"
+                        cols="6"
+                    >
                         <BaseDateField
-                            v-model="filters[layer_filter.filter_type]"
-                            :label="$t('start-date-label')"
-                            :required="true"
+                            v-model="filters.startData"
                             outlined
                             dense
+                            :key="layer_filter.filter_alias"
+                            :label="$t('end-date-label')"
+                            required
+                        />
+                    </v-col>
+                    <v-col
+                        v-if="layer_filter.filter_type === 'end_date'"
+                        :key="layer_filter.filter_type"
+                        cols="6"
+                    >
+                        <BaseDateField
+                            v-model="filters.endData"
+                            outlined
+                            dense
+                            :key="layer_filter.filter_alias"
+                            :label="$t('end-date-label')"
+                            required
                         />
                     </v-col>
                 </template>
@@ -58,7 +49,7 @@
                         hide-details
                         clearable
                         multiple
-                        required="true"
+                        required
                     >
                     </v-select>
                 </v-col>
@@ -79,7 +70,7 @@
                             multiple
                             clearable
                             hide-details
-                            required="true"
+                            required
                         >
                         </v-select>
                     </v-slide-y-transition>
@@ -124,7 +115,7 @@ import { mapMutations, mapActions, mapState } from 'vuex'
 import BaseDateField from '@/components/base/BaseDateField'
 
 export default {
-    name: 'SupportLayerFilters',
+    name: 'SupportLayerFiltersAntropismo',
 
     components: {
         BaseDateField,
@@ -211,14 +202,14 @@ export default {
             }
             if (this.layer.layer_type === 'heatmap') {
                 this.loading = true
-                this.setLayerFilters(filterInfo)
+                this.setLayerFiltersAntropismo(filterInfo)
                 this.getHeatMapLayer(filterInfo).finally(() => {
                     this.loading = false
                 })
             } else if (this.layer.layer_type === 'wms') {
-                this.setLayerFilters(filterInfo)
+                this.setLayerFiltersAntropismo(filterInfo)
 
-                this.toggleLayerVisibility({
+                this.toggleLayerVisibilityAntropismo({
                     id: this.layer.id,
                     visible: true,
                 })
@@ -226,8 +217,8 @@ export default {
         },
 
         ...mapMutations('supportLayers', [
-            'setLayerFilters',
-            'toggleLayerVisibility',
+            'setLayerFiltersAntropismo',
+            'toggleLayerVisibilityAntropismo',
         ]),
 
         ...mapActions('supportLayers', ['getHeatMapLayer', 'getFilterOptions']),
