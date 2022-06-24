@@ -7,7 +7,6 @@
                 :error="error"
             />
         </v-row>
-
         <v-row class="px-3 pb-5">
             <v-select
                 v-model="filters.cr"
@@ -22,28 +21,44 @@
             >
             </v-select>
         </v-row>
-
+        <v-slide-y-transition>
+            <v-row
+                v-if="filters.cr && filterOptions.tiFilters"
+                class="px-3 pb-5"
+            >
+                <v-select
+                    v-model="filters.ti"
+                    label="Terras Indigenas"
+                    :items="filterOptions.tiFilters"
+                    item-text="no_ti"
+                    item-value="co_funai"
+                    hide-details
+                    required
+                    multiple
+                    clearable
+                >
+                </v-select>
+            </v-row>
+        </v-slide-y-transition>
         <v-row class="pt-1">
             <v-col class="py-0">
                 <BaseDateField
                     v-model="filters.startDate"
                     :label="$t('start-date-label')"
-                    :required="true"
+                    required
                     outlined
                 />
             </v-col>
-
             <v-col class="py-0">
                 <BaseDateField
                     v-model="filters.endDate"
                     :label="$t('end-date-label')"
-                    :required="true"
+                    required
                     :min-date="filters.startDate"
                     outlined
                 />
             </v-col>
         </v-row>
-
         <v-row class="px-3">
             <v-col v-show="showFeatures">
                 <v-btn
@@ -67,10 +82,7 @@
                 </v-btn>
             </v-col>
         </v-row>
-
         <v-divider v-if="showFeatures" class="mt-8 mb-5" />
-
-        <!-- <v-row v-if="total" class="px-3 py-1"> -->
         <v-row v-if="showFeatures && total">
             <v-col cols="7" class="grey--text text--darken-2">
                 {{ $t('polygon-label') }}:
@@ -93,7 +105,6 @@
                 ha
             </v-col>
         </v-row>
-        <!-- </v-row> -->
 
         <v-row v-if="showFeatures" align="center">
             <v-col cols="4" class="grey--text text--darken-2">
@@ -120,22 +131,6 @@
             </v-col>
         </v-row>
     </v-col>
-
-    <!-- <div class="py-11">
-                <template v-for="stage in stageList">
-                    <v-row
-                        :key="stage.identifier"
-                        v-if="showFeatures"
-                        class="layer-legend"
-                        :style="{
-                            '--color': stageColor[stage.identifier],
-                            '--back-color': `${stageColor[stage.identifier]}AA`,
-                        }"
-                    >
-                        {{ stage.name }}
-                    </v-row>
-                </template>
-            </div> -->
 </template>
 
 <i18n>
@@ -158,7 +153,7 @@
             "heat-map-label": "Mapa de calor",
             "polygon-label": "Total de polígonos",
             "start-date-label": "Data Início",
-            "end-date-label": "Data Fim"
+            "end-date-label": "Data Final"
         }
     }
 </i18n>
@@ -182,12 +177,20 @@ export default {
                 currentView: false,
                 priority: null,
                 cr: [],
+                ti: null,
             },
             isLoadingTotal: false,
             legendData: legend,
             error: false,
         }
     },
+
+    watch: {
+        'filters.cr'(value) {
+            this.populateTiOptions(value)
+        },
+    },
+
     computed: {
         opacity: {
             get() {
@@ -221,6 +224,11 @@ export default {
     },
 
     methods: {
+        populateTiOptions(cr) {
+            if (cr) this.$store.dispatch('monitoring/getTiOptions', cr)
+            else this.filters.ti = null
+        },
+
         search() {
             if (
                 (this.filters.currentView &&
@@ -237,6 +245,7 @@ export default {
             }
             this.error = true
         },
+
         ...mapMutations('monitoring', ['setFilters']),
         ...mapActions('monitoring', [
             'getFilterOptions',
