@@ -131,6 +131,11 @@ export default {
         tabs() {
             return [
                 {
+                    name: this.$t('layers-tab'),
+                    icon: 'mdi-layers',
+                    route: '/support',
+                },
+                {
                     name: this.$t('priority-tab'),
                     icon: 'mdi-map-marker-alert',
                     route: '/priority',
@@ -151,9 +156,9 @@ export default {
                     route: '/monitoring',
                 },
                 {
-                    name: this.$t('layers-tab'),
-                    icon: 'mdi-layers',
-                    route: '/support',
+                    name: this.$t('urgent-alerts-tab'),
+                    icon: 'mdi-alert-octagram',
+                    route: '/urgent-alerts',
                 },
                 {
                     name: this.$t('high-resolution-mosaics-tab'),
@@ -182,12 +187,6 @@ export default {
                     icon: 'mdi-file-document',
                     route: '/document',
 
-                },
-    
-                {
-                    name: this.$t('urgent-alerts-tab'),
-                    icon: 'mdi-alert-octagram',
-                    route: '/urgent-alerts',
                 },
                 // {
                 //     name: this.$t('webhooks-tab'),

@@ -33,6 +33,7 @@
         <div class="py-3">
             <MonitoringFilter @onSearch="search()" />
         </div>
+        <v-divider />
         <v-footer
             absolute
             class="priority-footer"

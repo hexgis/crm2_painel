@@ -129,7 +129,6 @@
                         />
                     </v-col>
                 </v-row>
-
                 <v-row
                     v-if="showFeatures"
                     align="center"
@@ -219,6 +218,7 @@ export default {
             get() {
                 return this.$store.state.monitoring.opacity
             },
+            
             set(value) {
                 this.$store.commit('monitoring/setOpacity', value)
             },
@@ -228,6 +228,7 @@ export default {
             get() {
                 return this.$store.state.monitoring.heatMap
             },
+
             set(value) {
                 this.$store.commit('monitoring/setHeatMap', value)
             },
