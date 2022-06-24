@@ -9,6 +9,7 @@ export const state = () => ({
     isLoadingTableMonitoring: true,
     filterOptions: {
         regionalFilters: [],
+        tiFilters: [],
     },
     filters: {
         startDate: null,
@@ -111,6 +112,9 @@ export const actions = {
             end_date: state.filters.endDate,
         }
 
+        if (state.filters.ti && state.filters.ti.length)
+            params.co_funai = state.filters.ti.toString()
+
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
         if (state.filters.cr && state.filters.cr.length)
@@ -155,6 +159,7 @@ export const actions = {
             commit('setLoadingGeoJson', false)
         }
     },
+
     async getFilterOptions({ commit }) {
         const regional_coordinators = await this.$api.$get('funai/cr/')
 
@@ -168,6 +173,21 @@ export const actions = {
 
         commit('setFilterOptions', data)
     },
+
+    async getTiOptions({ commit, state }, cr) {
+        const params = {
+            co_cr: cr.toString(),
+        }
+
+        const tis = await this.$api.$get('funai/ti/', { params })
+
+        if (tis)
+            commit('setFilterOptions', {
+                ...state.filterOptions,
+                tiFilters: tis.sort((a, b) => a.no_ti > b.no_ti),
+            })
+    },
+
     async getDataTableMonitoring({ commit, state, rootGetters }) {
         commit('setLoadingGeoJson', true)
         commit('setLoadingFeatures', true)
@@ -223,6 +243,7 @@ export const actions = {
             commit('setLoadingTableMonitoring', false)
         }
     },
+
     async downloadTableMonitoring({ commit, state, rootGetters }) {
         commit('setLoadingCSV', true)
 
@@ -280,6 +301,7 @@ export const actions = {
             commit('setLoadingCSV', false)
         }
     },
+    
     async downloadGeoJsonMonitoring({ commit, state, rootGetters }) {
         commit('setLoadingGeoJson', true)
 
