@@ -15,7 +15,6 @@
         <ShowDialog />
 
         <v-container class="pa-0">
-            <v-card >
             <v-list v-if="!$fetchState.pending" expand>
                 <template v-for="group in orderedSupportLayersGroups">
                     <SupportLayersGroupAntropismo
@@ -29,12 +28,11 @@
                     <v-skeleton-loader :key="i" type="text" class="mx-4 my-5" />
                 </template>
             </div>
-            </v-card>
         </v-container>
         <v-divider />
-        
-        <MonitoringFilter @onSearch="search()" />
-
+        <div class="py-3">
+            <MonitoringFilter @onSearch="search()" />
+        </div>
         <v-footer
             absolute
             class="priority-footer"
@@ -113,8 +111,12 @@ import { mapActions, mapMutations, mapState } from 'vuex'
 import _ from 'lodash'
 
 export default {
-
-    components: { MonitoringFilter, ShowDialog, SupportLayersGroupAntropismo, TableDialog },
+    components: {
+        MonitoringFilter,
+        ShowDialog,
+        SupportLayersGroupAntropismo,
+        TableDialog,
+    },
 
     async fetch() {
         if (!Object.keys(this.supportCategoryGroupsAntropismo).length) {
@@ -201,7 +203,6 @@ export default {
                 this.getDataTableMonitoring()
             }
             if (!this.tableDialogMonitoring) this.getFeatures()
-
         },
 
         changeVisualizationStage(tab) {
@@ -237,7 +238,7 @@ export default {
         ...mapMutations('priority', ['setVisualizationStage']),
 
         ...mapMutations('tableDialog', ['setshowTableDialog']),
-        
+
         ...mapMutations('monitoring', [
             'settableDialogMonitoring',
             'setLoadingTable',
