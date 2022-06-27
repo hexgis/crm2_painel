@@ -155,6 +155,7 @@
 <i18n>
     {
         "en": {
+            "monitoring-label": "Daily Monitoring",
             "search-label": "Search",
             "opacity-label": "Opacity",
             "current-view-label": "Search in current area?",
@@ -163,9 +164,9 @@
             "total-area-label": "Total Area",
             "heat-map-label": "Heat map",
             "polygon-label": "Total polygon",
-            "monitoring-label": "Daily Monitoring"
         },
         "pt-br": {
+            "monitoring-label": "Monitoramento Diário",
             "search-label": "Buscar",
             "opacity-label": "Opacidade",
             "current-view-label": "Pesquisar nesta área?",
@@ -174,8 +175,6 @@
             "total-area-label": "Área total",
             "heat-map-label": "Mapa de calor",
             "polygon-label": "Total de polígonos",
-            "monitoring-label": "Monitoramento Diário",
-
         }
     }
 </i18n>
