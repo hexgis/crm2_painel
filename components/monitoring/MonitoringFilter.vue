@@ -163,7 +163,7 @@
             "end-date-label": "End Date",
             "total-area-label": "Total Area",
             "heat-map-label": "Heat map",
-            "polygon-label": "Total polygon",
+            "polygon-label": "Total polygon"
         },
         "pt-br": {
             "monitoring-label": "Monitoramento Diário",
@@ -174,7 +174,7 @@
             "end-date-label": "Data Final",
             "total-area-label": "Área total",
             "heat-map-label": "Mapa de calor",
-            "polygon-label": "Total de polígonos",
+            "polygon-label": "Total de polígonos"
         }
     }
 </i18n>
