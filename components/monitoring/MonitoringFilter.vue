@@ -159,22 +159,22 @@
             "opacity-label": "Opacity",
             "current-view-label": "Search in current area?",
             "start-date-label": "Start Date",
+            "end-date-label": "End Date",
             "total-area-label": "Total Area",
             "heat-map-label": "Heat map",
             "polygon-label": "Total polygon",
-            "end-date-label": "End Date",
             "monitoring-label": "Daily Monitoring"
         },
         "pt-br": {
             "search-label": "Buscar",
             "opacity-label": "Opacidade",
             "current-view-label": "Pesquisar nesta área?",
+            "start-date-label": "Data Início",
+            "end-date-label": "Data Final",
             "total-area-label": "Área total",
             "heat-map-label": "Mapa de calor",
             "polygon-label": "Total de polígonos",
-            "start-date-label": "Data Início",
             "monitoring-label": "Monitoramento Diário",
-            "end-date-label": "Data Final"
 
         }
     }
@@ -218,7 +218,7 @@ export default {
             get() {
                 return this.$store.state.monitoring.opacity
             },
-            
+
             set(value) {
                 this.$store.commit('monitoring/setOpacity', value)
             },
