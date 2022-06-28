@@ -9,7 +9,6 @@
                 </v-list-item-title>
             </v-list-item-content>
         </template>
-
         <v-container class="py-0">
             <v-list expand>
                 <template v-for="layer in orderedSupportLayers">
