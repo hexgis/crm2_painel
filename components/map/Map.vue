@@ -257,6 +257,7 @@ export default {
         ],
         mapOptions: {
             zoomControl: false,
+            name: '1',
         },
         areaBounds: null,
         initialBounds: [

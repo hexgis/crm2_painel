@@ -1,233 +1,162 @@
 <template>
-    <client-only>
-        <div class="map-container2">
-            <l-map
-                ref="map"
-                :zoom="zoom"
-                :bounds="localBounds"
-                :min-zoom="minZoom"
-                :max-zoom="21"
-                :max-bounds="maxBounds"
-                :max-bounds-viscosity="1"
-                :options="mapOptions"
-                @update:bounds="updateBounds"
-            >
-                <l-control position="topleft">
-                    <div class="pa-1 map-action-buttons">
-                        <div
-                            v-if="user.settings.map_zoom_buttons_visible"
-                        ></div>
-
-                        <div class="div-spacer" />
-                    </div>
-                </l-control>
-
-                <l-control
-                    class="leaflet-coordinates-control"
-                    position="bottomleft"
+    <v-row>
+        <v-col cols="8" style="height: 68vh; width: 60vh">
+            <client-only>
+                <l-map
+                    ref="printMap"
+                    id="printMap"
+                    :zoom.sync="zoom"
+                    :options="options"
+                    :bounds.sync="bounds"
                 >
-                    <div v-if="user.settings.map_pointer_coordinates_visible">
-                        {{ cursorCoordinates.lat }},
-                        {{ cursorCoordinates.lng }}
+                    <l-tile-layer
+                        url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+                        :attribution="attribution"
+                    ></l-tile-layer>
+                    <PriorityLayers :map="map" />
+                    <MonitoringLayers :map="map" />
+                    <SupportLayers />
+                    <AlertLayers :map="map" />
+                </l-map>
+            </client-only>
+        </v-col>
+        <v-col cols="4">
+            <div style="border: 0.5px solid gray; height: 100%">
+                <v-container class="d-flex" style="width: 60%; height: 13%">
+                    <v-img
+                        contain
+                        width="60"
+                        class="mr-4"
+                        src="/img/funai.svg"
+                    />
+                    <v-img
+                        contain
+                        width="100"
+                        src="/img/logocmr_normal_min.png"
+                    />
+                </v-container>
+                <div class="text-center text-caption">
+                    <p>
+                        Centro de Monitoramento Remoto - Fundação Nacional do
+                        Índio
+                    </p>
+                    <p class="font-weight-bold">
+                        SISTEMA DE INTEGRAÇÃO DE DADOS GEOESPACIAIS DAS TERRAS
+                        INDÍGENAS
+                    </p>
+                    <p class="font-weight-bold">
+                        {{ titleMap }}
+                    </p>
+                </div>
+                <div
+                    class="d-flex justify-center"
+                    style="height: 15vh; width: 100%"
+                >
+                    <client-only>
+                        <l-map
+                            ref="miniPrintMap"
+                            id="miniPrintMap"
+                            :zoom.sync="zoom"
+                            :options="optionsMiniMap"
+                            :bounds.sync="bounds"
+                        >
+                            <l-tile-layer
+                                url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+                                :attribution="attribution"
+                            ></l-tile-layer>
+                            <l-rectangle
+                                :bounds="bounds"
+                                :zoom.sync="zoom"
+                                :l-style="rectangle.style"
+                            ></l-rectangle>
+                        </l-map>
+                    </client-only>
+                </div>
+                <div class="text-caption">
+                    <div class="text-caption ma-1">
+                        <p>Legenda:</p>
                     </div>
-                </l-control>
+                    <v-divider></v-divider>
+                    <div class="text-caption ma-1">
+                        <p class="font-weight-bold">Bases Cartograficas:</p>
+                    </div>
+                    <v-divider></v-divider>
 
-                <l-control-scale
-                    v-if="user.settings.map_scale_visible"
-                    position="bottomleft"
-                />
-
-                <l-geo-json
-                    ref="interestArea"
-                    :geojson="interestArea"
-                    :options-style="interestStyle"
-                    :visible="showInterestArea"
-                />
-
-                <SupportLayers />
-
-                <MonitoringLayers v-if="!monitoringGeoserver" :map="map" />
-
-                <BaseWmsMetadataPopup :map="map" />
-
-                <PriorityLayers :map="map" />
-            </l-map>
-
-            <div v-if="loading" class="loading-background">
-                <div>
-                    <v-skeleton-loader
-                        type="chip"
-                        width="32"
-                    ></v-skeleton-loader>
-                    <v-skeleton-loader
-                        type="chip"
-                        width="32"
-                    ></v-skeleton-loader>
-                    <v-skeleton-loader
-                        type="chip"
-                        width="32"
-                    ></v-skeleton-loader>
+                    <div class="text-caption ma-1">
+                        <p class="size-text ma-0">
+                            CENTRO DE MONITORAMENTO REMOTO -
+                            https://cmr.funai.gov.br
+                        </p>
+                        <p>Data da impressão: {{ todayDate() }}</p>
+                    </div>
+                    <v-divider></v-divider>
+                    <div class="text-caption ma-1">
+                        <p class="size-text ma-0">
+                            As informações podem apresentar distorções em função
+                            das bases cartográficas utilizadas.
+                        </p>
+                        <p>Modelo de mapa adaptado para formato A4.</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </client-only>
+        </v-col>
+    </v-row>
 </template>
 
-<i18n>
-{
-    "en": {
-        "zoom-in": "Zoom in",
-        "zoom-out": "Zoom out"
-    },
-    "pt-br": {
-        "zoom-in": "Aproximar",
-        "zoom-out": "Reduzir"
-    }
-}
-</i18n>
-
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex'
-import interestArea from '@/assets/interest_area.json'
-import MapPrinter from '@/components/map/MapPrinter.vue'
+import { mapState } from 'vuex'
 
-import MapSearch from '@/components/map/MapSearch.vue'
-import ZoomToCoords from '@/components/map/ZoomToCoords.vue'
-import FileLoaderControl from '@/components/map/file-loader/FileLoaderControl.vue'
-import FileLoaderLayers from '@/components/map/file-loader/FileLoaderLayers.vue'
-// import ImageryLayers from '@/components/imagery/ImageryLayers'
-// import CatalogLayers from '@/components/catalog/CatalogLayers'
-import MonitoringLayers from '@/components/monitoring/MonitoringLayers'
-// import MonitoringLayersGeoserver from '@/components/monitoring/MonitoringLayersGeoserver'
-import SupportLayers from '@/components/support/SupportLayers'
-// import ChangeDetectionLayers from '@/components/change-detection/ChangeDetectionLayers'
-import BaseWmsMetadataPopup from '@/components/base/BaseWmsMetadataPopup'
-// import AlgorithmLayers from '@/components/algorithms/AlgorithmLayers'
-// import WebhooksLayers from '@/components/webhooks/WebhooksLayers'
+import MiniMapForPrint from '@/components/map/MiniMapForPrint.vue'
 import PriorityLayers from '@/components/priority/PriorityLayers'
-
-import 'leaflet/dist/leaflet.css'
-import 'leaflet-basemaps/L.Control.Basemaps.css'
-import 'leaflet-minimap/dist/Control.MiniMap.min.css'
-
-if (typeof window !== 'undefined') {
-    require('leaflet-basemaps')
-    require('leaflet-minimap')
-}
+import MonitoringLayers from '@/components/monitoring/MonitoringLayers'
+import SupportLayers from '@/components/support/SupportLayers'
+import AlertLayers from '@/components/urgent-alerts/AlertLayers'
 
 export default {
-    name: 'MapForPrint',
-
-    components: {
-        // ImageryLayers,
-        // CatalogLayers,
-        MonitoringLayers,
-        // MonitoringLayersGeoserver,
-        SupportLayers,
-        MapSearch,
-        ZoomToCoords,
-        FileLoaderControl,
-        FileLoaderLayers,
-        // ChangeDetectionLayers,
-        BaseWmsMetadataPopup,
-        // AlgorithmLayers,
-        // WebhooksLayers,
-        MapPrinter,
-        PriorityLayers
+    props: {
+        titleMap: {
+            type: String,
+            default: '',
+        },
     },
-
+    components: {
+        MiniMapForPrint,
+        PriorityLayers,
+        MonitoringLayers,
+        SupportLayers,
+        AlertLayers,
+    },
     data: () => ({
         map: null,
-        zoom: 4,
-        minZoom: 9,
-        maxBounds: [
-            [-90, -280],
-            [90, 280],
-        ],
-        mapOptions: {
+        zoom: 5,
+        boundsMiniMap: null,
+        attribution:
+            '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        options: {
             zoomControl: false,
+            name: 'printMap',
         },
-        areaBounds: null,
-        initialBounds: [],
-
-        loadedFiles: [],
-        mapLoading: false,
-
-        interestArea,
-        showInterestArea: process.env.INTEREST_AREA_OUTLINE === 'true',
-        interestStyle: {
-            fillOpacity: 0,
-            fill: false,
-            color: '#fcd40d',
-            dashArray: '5',
+        optionsMiniMap: {
+            zoomControl: false,
+            name: 'printMap',
+            dragging: false,
+            boxZoom: false,
         },
-
-        showImagery: process.env.IMAGERY === 'true',
-        monitoringGeoserver: process.env.MONITORING_GEOSERVER === 'true',
-
-        baseLayers: [
-            {
-                url: '//{s}.tile.osm.org/{z}/{x}/{y}.png',
-                options: {
-                    label: 'Open Street Map',
-                    tag: 'OSM',
-                    attribution:
-                        '&copy; <a href="//www.openstreetmap.org/">OpenStreetMap</a> contributors',
-                    maxZoom: 21,
-                    maxNativeZoom: 18,
-                    zIndex: 1,
-                },
-            },
-        ],
-        bingKey:
-            'AuhiCJHlGzhg93IqUH_oCpl_-ZUrIE6SPftlyGYUvr9Amx5nzA-WqGcPquyFZl4L',
-
-        lastZoom: null,
-        zoomControlGrid: 7,
-
-        tooltipsRef: null,
-        tooltipsGridRef: null,
-        cursorCoordinates: {
-            lat: '',
-            lng: '',
+        rectangle: {
+            bounds: [
+                [47.341456, -1.397133],
+                [47.303901, -1.243813],
+            ],
+            style: { color: 'red', weight: 3 },
         },
-        miniMap: null,
-        miniMapLayer: null,
-        miniMapLayerOptions: {
-            minZoom: 0,
-            maxZoom: 18,
-        },
-        miniMapOptions: {
-            togglePreview: false,
-            height: 125,
-            width: 125,
-        },
-        localBounds: [],
+        // bounds: [
+        //     [-33.8689056, -73.9830625],
+        //     [5.2842873, -28.6341164],
+        // ],
     }),
 
     computed: {
-        minimapVisibleSettings() {
-            return this.user.settings.minimap_visible
-        },
-        initialExtentCoords() {
-            return this.user.settings.initial_extent.coordinates
-                ? this.$L.GeoJSON.coordsToLatLngs(
-                      this.user.settings.initial_extent.coordinates[0]
-                  )
-                : []
-        },
-        ...mapState('map', ['bounds', 'boundsZoomed', 'loading']),
-        ...mapState('userProfile', ['user']),
-    },
-
-    watch: {
-        boundsZoomed() {
-            this.map.flyToBounds(this.bounds)
-        },
-
-        minimapVisibleSettings(visible) {
-            visible ? this.miniMap.addTo(this.map) : this.miniMap.remove()
-        },
+        ...mapState('map', ['bounds']),
     },
 
     mounted() {
@@ -237,213 +166,24 @@ export default {
     },
 
     methods: {
-        isLoading() {
-            this.setMapLoading(true)
-        },
-        loaded() {
-            this.setMapLoading(false)
+        todayDate() {
+            let date = new Date()
+            let dd = date.getDate()
+            let mm = date.getMonth() + 1
+            let yyyy = date.getFullYear()
+            return `${dd}/${mm < 10 ? '0' + mm : mm}/${yyyy}`
         },
         createMap() {
-            this.map = this.$refs.map.mapObject
-            this.map.on('zoomend', this.onZoomEnd)
-            this.map.addEventListener('mousemove', this.refreshCoordinates)
+            this.map = this.$refs.printMap.mapObject
 
-            this.createMapLayers()
-            // this.createMiniMap()
-            this.createCssRefs()
-
-            this.$emit('mapCreated')
-
-            if (this.bounds) {
-                this.localBounds = this.bounds
-            } else if (
-                this.user &&
-                (this.user.settings.initial_extent ||
-                    this.user.settings.interest_area_zoom_on_init)
-            ) {
-                let areaBounds
-
-                if (this.user.settings.initial_extent) {
-                    areaBounds = this.$L.polygon(this.initialExtentCoords)
-                } else areaBounds = this.$refs.interestArea.mapObject
-
-                this.updateBounds(areaBounds.getBounds())
-                this.localBounds = areaBounds.getBounds()
-
-                setTimeout(() => {
-                    const map = this.$refs.map.mapObject
-
-                    map.invalidateSize()
-                    map.setZoom(map.getZoom() + 1)
-                }, 100)
-            } else {
-                this.localBounds = this.initialBounds
-            }
+            this.boundsMiniMap = this.map.getBounds()
         },
-        createMiniMap() {
-            const osm = this.baseLayers[0]
-
-            const miniMapLayer = this.$L.tileLayer(
-                osm.url,
-                this.miniMapLayerOptions
-            )
-
-            this.miniMap = new this.$L.Control.MiniMap(
-                miniMapLayer,
-                this.miniMapOptions
-            )
-
-            if (this.minimapVisibleSettings) {
-                this.miniMap.addTo(this.map)
-            }
-        },
-
-        createMapLayers() {
-            const tileLayers = []
-            for (const layer of this.baseLayers) {
-                const tileLayer = this.$L.tileLayer(layer.url, layer.options)
-
-                tileLayers.push(tileLayer)
-            }
-
-            this.map.addControl(
-                this.$L.control.basemaps({
-                    basemaps: tileLayers,
-                    tileX: 0,
-                    tileY: 0,
-                    tileZ: 1,
-                })
-            )
-        },
-
-        createCssRefs() {
-            this.tooltipsRef = this.map.getPane('tooltipPane')
-            this.tooltipsRef.style.visibility = 'hidden'
-        },
-
-        onZoomEnd(event) {
-            const map = event.target
-            const zoom = map.getZoom()
-
-            if (
-                zoom < this.zoomControlGrid &&
-                (!this.lastZoom || this.lastZoom >= this.zoomControlGrid)
-            ) {
-                this.tooltipsRef.style.visibility = 'hidden'
-            } else if (
-                zoom >= this.zoomControlGrid &&
-                (!this.lastZoom || this.lastZoom < this.zoomControlGrid)
-            ) {
-                this.tooltipsRef.style.visibility = 'visible'
-            }
-
-            this.lastZoom = zoom
-        },
-
-        updateBounds(latLngBounds) {
-            this.setBounds(latLngBounds)
-        },
-
-        refreshCoordinates(event) {
-            this.cursorCoordinates.lat = event.latlng.lat.toFixed(4)
-            this.cursorCoordinates.lng = event.latlng.lng.toFixed(4)
-        },
-        ...mapMutations('map', ['setBounds', 'setMapLoading']),
-        ...mapActions('map', ['zoomToBounds']),
     },
 }
 </script>
 
-<style lang="sass">
-.map-action-buttons
-    z-index: 4
-    opacity: 0.84
-
-    .v-icon
-        font-size: 18px !important
-
-.leaflet-tooltip-right:before,
-.leaflet-tooltip-left:before
-    right: 0
-    left: 0
-    margin-left: 0px
-    border-right-color: transparent !important
-    border-left-color: transparent !important
-
-.leaflet-container
-    font-family: 'Roboto', sans-serif !important
-    line-height: 1.5 !important
-
-.card-popup
-    .leaflet-popup-content
-        margin: 0px
-
-    .leaflet-popup-scrolled
-        border: none
-
-.leaflet-popup-content-wrapper
-    padding: 0px
-    border: 0px !important
-    border-radius: 4px !important
-    box-shadow: none
-    -webkit-box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12) !important
-    box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12) !important
-
-.leaflet-coordinates-control
-    background: rgba(255, 255, 255, 0.7)
-    padding: 0 5px
-    font-size: 11px
-    color: #333
-    margin-left: 0 !important
-    margin-bottom: 0 !important
-
-.leaflet-logo-control
-    margin-left: 6px !important
-    margin-bottom: 15px
-
-.nation-logo-container
-    margin-left: -3px
-
-.map-container2
-    height: 75vh
-    width: 40vw
-    overflow: hidden !important
-    padding: 0
-
-.logo-flags
-    margin-left: -3px
-    opacity: 0.4
-    transition: all ease 0.1s
-
-.logo-flags:hover
-    opacity: 1
-    transform: scale(1.1)
-
-.logo-hex
-    opacity: 0.4
-    display: flex
-    flex-direction: row
-
-.basemap.active
-    border: 0
-
-.loading-background
-    position: absolute
-    top: 0px
-    left: 0px
-    height: 100%
-    width: 100%
-    background-color: rgba(245, 245, 245, 0.4)
-    z-index: 3
-    display: flex
-    align-items: center
-    justify-content: center
-
-    div
-        display: flex
-        align-items: center
-        justify-content: space-around
-        width: 140px
-.div-spacer
-    height: 20px
+<style scoped>
+p {
+    font-size: xx-small;
+}
 </style>

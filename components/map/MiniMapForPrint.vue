@@ -43,14 +43,6 @@
                     :options-style="interestStyle"
                     :visible="showInterestArea"
                 />
-
-                <SupportLayers />
-
-                <MonitoringLayers v-if="!monitoringGeoserver" :map="map" />
-
-                <BaseWmsMetadataPopup :map="map" />
-
-                <PriorityLayers :map="map" />
             </l-map>
 
             <div v-if="loading" class="loading-background">
@@ -133,7 +125,7 @@ export default {
         // AlgorithmLayers,
         // WebhooksLayers,
         MapPrinter,
-        PriorityLayers
+        PriorityLayers,
     },
 
     data: () => ({
@@ -409,8 +401,8 @@ export default {
     margin-left: -3px
 
 .map-container3
-    height: 13vh
-    width: 15vw
+    height: 15vh
+    width: 20vw
     overflow: hidden !important
     padding: 0
 
