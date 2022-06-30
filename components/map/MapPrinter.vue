@@ -16,7 +16,7 @@
             <v-toolbar dark color="secondary">
                 <h3>Impressão</h3>
                 <v-spacer></v-spacer>
-                <v-btn icon @click="dialogPrint = false">
+                <v-btn icon @click="closeDialogPrinter(false)">
                     <v-icon>mdi-close</v-icon>
                 </v-btn>
             </v-toolbar>
@@ -128,21 +128,38 @@ export default {
 
     methods: {
         Baixar() {
+            let zoomControl = document.getElementsByClassName(
+                'leaflet-control-zoom'
+            )[0]
             try {
                 this.loading = true
-                let options = { cacheBust: true, quality: 1, bgcolor: 'white' }
+                zoomControl.classList.add('remove-control-zoom')
+
+                let nameImageDownaload = this.titleMap
+                let options = {
+                    quality: 1,
+                    bgcolor: 'white',
+                }
                 let node = document.getElementById('printableMap')
+
                 domtoimage.toJpeg(node, options).then(function (dataUrl) {
                     var link = document.createElement('a')
-                    link.download = 'my-image-name.jpeg'
+                    link.download = nameImageDownaload
+                        ? nameImageDownaload + '.jpeg'
+                        : 'Mapa.jpeg'
                     link.href = dataUrl
                     link.click()
+                    zoomControl.classList.remove('remove-control-zoom')
                 })
             } catch (error) {
-                alert('error')
+                alert('Ocorreu um erro ao gerar a imagem.' + error)
             } finally {
                 this.loading = false
             }
+        },
+        closeDialogPrinter(value) {
+            this.dialogPrint = value
+            this.currentStep = 1
         },
     },
 }
@@ -151,5 +168,12 @@ export default {
 <style scoped>
 .background__toolbar {
     background: linear-gradient(to bottom, rgb(30, 33, 50), rgb(44, 54, 73));
+}
+</style>
+
+<style>
+.remove-control-zoom {
+    display: none !important;
+    visibility: hidden;
 }
 </style>
