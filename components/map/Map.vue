@@ -529,7 +529,6 @@ export default {
                     tileZ: 1,
                 })
             )
-            console.log(tileLayers)
         },
 
         createBingLayer() {
