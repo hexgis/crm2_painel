@@ -5,9 +5,9 @@
                 <l-map
                     ref="printMap"
                     id="printMap"
-                    :zoom.sync="zoom"
-                    :options="options"
-                    :bounds="boundsPrinter"
+                    :zoom="zoom"
+                    :options="optionsMap"
+                    :bounds="bounds"
                 >
                     <l-tile-layer
                         url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
@@ -61,19 +61,13 @@
                         <l-map
                             ref="miniPrintMap"
                             id="miniPrintMap"
-                            :zoom="4"
+                            :zoom="zoomMiniMap"
                             :options="optionsMiniMap"
-                            :bounds.sync="boundsPrinter"
                         >
                             <l-tile-layer
                                 url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
                                 :attribution="attribution"
                             ></l-tile-layer>
-                            <l-rectangle
-                                :bounds="rectangle.bounds"
-                                :zoom="zoom"
-                                :l-style="rectangle.style"
-                            ></l-rectangle>
                         </l-map>
                     </client-only>
                 </div>
@@ -110,15 +104,11 @@
 
 <script>
 import { mapState } from 'vuex'
-// import simpleGraticule from '@/plugins/L.SimpleGraticule'
-
 import MiniMapForPrint from '@/components/map/MiniMapForPrint.vue'
 import PriorityLayers from '@/components/priority/PriorityLayers'
 import MonitoringLayers from '@/components/monitoring/MonitoringLayers'
 import SupportLayers from '@/components/support/SupportLayers'
 import AlertLayers from '@/components/urgent-alerts/AlertLayers'
-
-import imgNorthArrow from '../../assets/north-arrow.png'
 
 export default {
     props: {
@@ -137,20 +127,11 @@ export default {
     data: () => ({
         map: null,
         miniMap: null,
-        zoom: 5,
+        zoom: 1,
+        zoomMiniMap: 4,
         valueScale: null,
         valueNorthArrow: null,
-        tileComponent: {
-            name: 'tile-component',
-            props: {
-                coords: {
-                    type: Object,
-                    required: true,
-                },
-            },
-            template:
-                '<div>Coords: {{coords.x}}, {{coords.y}}, {{coords.z}}</div>',
-        },
+
         zoomIntervals: {
             A4: [
                 { start: 0, end: 3, interval: 50 },
@@ -206,14 +187,13 @@ export default {
                 { start: 18, end: 20, interval: 0.001 },
             ],
         },
-        boundsMiniMap: null,
         attribution:
             '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | <span style="color: red !important; font-weight: bold !important">Mapa não oficial</span>',
-        options: {
+        optionsMap: {
             name: 'printMap',
-            zoomControl: true,
+            zoomControl: false,
             scrollWheelZoom: false,
-            doubleClickZoom: true,
+            doubleClickZoom: false,
             boxZoom: true,
             keyboard: false,
         },
@@ -228,36 +208,10 @@ export default {
             scrollWheelZoom: false,
             doubleClickZoom: false,
         },
-        rectangle: {
-            bounds: [
-                [-33.8689056, -73.9830625],
-                [5.2842873, -28.6341164],
-            ],
-            style: { color: 'red', weight: 3 },
-        },
-        // boundsPrinter: [
-        //     [-33.8689056, -73.9830625],
-        //     [5.2842873, -28.6341164],
-        // ],
     }),
 
-    // watch: {
-    //     boundsPrinter() {
-    //         console.log('alterou bounds')
-    //     },
-    // },
-
     computed: {
-        boundsPrinter: {
-            get() {
-                return this.$store.state.map.bounds
-            },
-
-            set(value) {
-                this.boundsPrinter = value
-            },
-        },
-        // ...mapState('map', ['bounds']),
+        ...mapState('map', ['bounds']),
     },
 
     mounted() {
@@ -272,16 +226,11 @@ export default {
             let dd = date.getDate()
             let mm = date.getMonth() + 1
             let yyyy = date.getFullYear()
-            return `${dd}/${mm < 10 ? '0' + mm : mm}/${yyyy}`
-        },
-        onMainMapMoved(e) {
-            this.miniMap.setView(this.map.getCenter(), 4)
-            // aimingRect.setBounds(this.map.getBounds())
+            return `${dd < 10 ? '0' + dd : dd}/${
+                mm < 10 ? '0' + mm : mm
+            }/${yyyy}`
         },
 
-        onMainMapMoving(e) {
-            // aimingRect.setBounds(this.map.getBounds())
-        },
         createMap() {
             try {
                 require('@/plugins/L.SimpleGraticule')
@@ -292,32 +241,18 @@ export default {
 
                 window.L = this.$L // define leaflet global
 
-                console.log(this.map.getBounds())
-
                 let currentBouldMap = this.map.getBounds()
-
-                let aimingRect = L.rectangle(currentBouldMap, {
+                this.aimingRect = L.rectangle(currentBouldMap, {
                     color: '#e31a1c',
                     weight: 3,
                     opacity: 0.37,
                     fillOpacity: 0,
-                }).addTo(this.map)
+                }).addTo(this.miniMap)
 
                 this.map.invalidateSize()
                 this.map.on('move', this.onMainMapMoving)
                 this.map.on('moveend', this.onMainMapMoved)
-
                 this.miniMap.fitBounds(this.map.getBounds())
-                this.miniMap.setZoom(4)
-
-                // this.miniMap.setView(this.map.getCenter(), 4)
-
-                var options = {
-                    interval: 20,
-                    showOriginLabel: true,
-                    redraw: 'move',
-                    zoomIntervals: this.zoomIntervals.A4,
-                }
 
                 L.control
                     .mapBounds({
@@ -327,13 +262,29 @@ export default {
                     })
                     .addTo(this.map)
 
+                let options = {
+                    interval: 20,
+                    showOriginLabel: true,
+                    redraw: 'move',
+                    zoomIntervals: this.zoomIntervals.A4,
+                }
+
                 L.simpleGraticule(options).addTo(this.map)
+
+                this.miniMap.setZoom(4)
 
                 this.valueScale = true
                 this.valueNorthArrow = true
             } catch (error) {
                 alert('Erro ao gerar o mapa.' + error)
             }
+        },
+        onMainMapMoved(e) {
+            this.miniMap.setView(this.map.getCenter(), 4)
+        },
+
+        onMainMapMoving(e) {
+            this.aimingRect.setBounds(this.map.getBounds())
         },
     },
 }
