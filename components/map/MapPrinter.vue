@@ -101,7 +101,6 @@
 import MapForPrint from '@/components/map/MapForPrint.vue'
 import MiniMapForPrint from '@/components/map/MiniMapForPrint.vue'
 import domtoimage from 'dom-to-image'
-import jsPDF from 'jspdf'
 
 export default {
     name: 'MapPrinter',
@@ -133,15 +132,12 @@ export default {
             )[0]
             try {
                 this.loading = true
-                zoomControl.classList.add('remove-control-zoom')
-
                 let nameImageDownaload = this.titleMap
                 let options = {
                     quality: 1,
                     bgcolor: 'white',
                 }
                 let node = document.getElementById('printableMap')
-
                 domtoimage.toJpeg(node, options).then(function (dataUrl) {
                     var link = document.createElement('a')
                     link.download = nameImageDownaload
@@ -149,7 +145,6 @@ export default {
                         : 'Mapa.jpeg'
                     link.href = dataUrl
                     link.click()
-                    zoomControl.classList.remove('remove-control-zoom')
                 })
             } catch (error) {
                 alert('Ocorreu um erro ao gerar a imagem.' + error)
