@@ -15,8 +15,8 @@
         <AlertFilter @onSearch="search()" />
 
         <ShowDialog />
-        
-        <div v-if="showFeatures" class="px-4">
+
+        <div v-if="showFeaturesUrgentAlert" class="px-4">
             <v-divider class="mt-1"></v-divider>
             <p class="font-weight-regular pt-2">Legenda:</p>
             <v-col>
@@ -143,19 +143,23 @@ export default {
                 this.features.features.length > 0
             )
         },
-     
+
         showFeaturesAlert: {
             get() {
-                return this.$store.state['urgent-alerts'].showFeatures
+                return this.$store.state['urgent-alerts']
+                    .showFeaturesUrgentAlert
             },
 
             set(value) {
-                this.$store.commit('urgent-alerts/setShowFeatures', value)
+                this.$store.commit(
+                    'urgent-alerts/setshowFeaturesUrgentAlert',
+                    value
+                )
             },
         },
-        
+
         ...mapState('urgent-alerts', [
-            'showFeatures',
+            'showFeaturesUrgentAlert',
             'features',
             'table',
             'visualizationStage',

@@ -56,7 +56,7 @@
         </v-row>
 
         <v-row>
-            <v-col v-show="showFeatures">
+            <v-col v-show="showFeaturesUrgentAlert">
                 <v-btn
                     color="accent"
                     :loading="isLoadingGeoJson"
@@ -79,10 +79,10 @@
             </v-col>
         </v-row>
 
-        <v-divider v-if="showFeatures" class="mt-8 mb-5" />
+        <v-divider v-if="showFeaturesUrgentAlert" class="mt-8 mb-5" />
 
         <v-row v-if="total" class="px-3 py-1">
-            <v-row v-if="showFeatures && total">
+            <v-row v-if="showFeaturesUrgentAlert && total">
                 <v-col cols="7" class="grey--text text--darken-2">
                     {{ $t('polygon-label') }}:
                 </v-col>
@@ -91,7 +91,7 @@
                 </v-col>
             </v-row>
 
-            <v-row v-if="showFeatures && total && total.area_ha">
+            <v-row v-if="showFeaturesUrgentAlert && total && total.area_ha">
                 <v-col cols="7" class="grey--text text--darken-2">
                     {{ $t('total-area-label') }}:
                 </v-col>
@@ -106,7 +106,7 @@
             </v-row>
         </v-row>
 
-        <v-row v-if="showFeatures" align="center">
+        <v-row v-if="showFeaturesUrgentAlert" align="center">
             <v-col cols="4" class="grey--text text--darken-2">
                 {{ $t('opacity-label') }}
             </v-col>
@@ -120,7 +120,11 @@
             </v-col>
         </v-row>
 
-        <v-row v-if="showFeatures" align="center" justify="space-between">
+        <v-row
+            v-if="showFeaturesUrgentAlert"
+            align="center"
+            justify="space-between"
+        >
             <v-col>
                 <span class="grey--text text--darken-2">
                     {{ $t('heat-map-label') }}
@@ -213,7 +217,7 @@ export default {
             'isLoadingGeoJson',
             'isLoadingFeatures',
             'filterOptions',
-            'showFeatures',
+            'showFeaturesUrgentAlert',
             'total',
             'params',
         ]),

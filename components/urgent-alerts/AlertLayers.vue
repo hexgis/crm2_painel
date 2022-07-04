@@ -1,5 +1,5 @@
 <template>
-    <l-layer-group name="alert" :visible="showFeatures">
+    <l-layer-group name="alert" :visible="showFeaturesUrgentAlert">
         <l-layer-group ref="alertHeat" :visible="heatMap" />
 
         <l-feature-group ref="alertPolygons">
@@ -69,25 +69,25 @@ export default {
         vectorGrid: null,
 
         style: {
-            "CR": {
+            CR: {
                 weight: 2.5,
                 color: '#965213',
                 fill: true,
                 fillOpacity: 1,
             },
-            "DR": {
+            DR: {
                 weight: 2.5,
                 color: '#337f1e',
                 fill: true,
                 fillOpacity: 1,
             },
-            "FF": {
+            FF: {
                 weight: 2.5,
                 color: '#ba1a1a',
                 fill: true,
                 fillOpacity: 1,
             },
-            "DG": {
+            DG: {
                 weight: 2.5,
                 color: '#e0790b',
                 fill: true,
@@ -101,7 +101,7 @@ export default {
             'features',
             'opacity',
             'heatMap',
-            'showFeatures',
+            'showFeaturesUrgentAlert',
         ]),
         ...mapGetters('urgent-alerts', ['featuresLoaded']),
     },

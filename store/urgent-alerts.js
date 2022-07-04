@@ -1,6 +1,6 @@
 export const state = () => ({
     features: null,
-    showFeatures: false,
+    showFeaturesUrgentAlert: false,
     heatMap: true,
     tableDialogAlert: false,
     isLoadingTable: true,
@@ -78,8 +78,8 @@ export const mutations = {
         state.isLoadingGeoJson = payload
     },
 
-    setShowFeatures(state, showFeatures) {
-        state.showFeatures = showFeatures
+    setshowFeaturesUrgentAlert(state, showFeaturesUrgentAlert) {
+        state.showFeaturesUrgentAlert = showFeaturesUrgentAlert
     },
 
     setOpacity(state, opacity) {
@@ -139,14 +139,14 @@ export const actions = {
             })
 
             if (!response.features || !response.features.length) {
-                commit('setShowFeatures', false)
+                commit('setshowFeaturesUrgentAlert', false)
                 commit(
                     'alert/addAlert',
                     { message: this.$i18n.t('no-result') },
                     { root: true }
                 )
             } else {
-                commit('setShowFeatures', true)
+                commit('setshowFeaturesUrgentAlert', true)
                 commit('setFeatures', response)
 
                 const total = await this.$api.$get('alerts/stats/', {
@@ -293,7 +293,7 @@ export const actions = {
             commit('setLoadingCSV', false)
         }
     },
-    
+
     async downloadGeoJson({ commit, state, rootGetters }) {
         commit('setLoadingGeoJson', true)
 
@@ -337,11 +337,7 @@ export const actions = {
         }
 
         try {
-            saveData(
-                GeoJson.data,
-                'alerta-urgente.json',
-                'application/json'
-            )
+            saveData(GeoJson.data, 'alerta-urgente.json', 'application/json')
         } finally {
             commit('setLoadingGeoJson', false)
         }
