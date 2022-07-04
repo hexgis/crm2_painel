@@ -1,6 +1,6 @@
 <template>
     <v-row>
-        <v-col cols="8" style="height: 68vh; width: 60vh">
+        <v-col cols="8" class="pr-0" style="height: 68vh; width: 60vh">
             <client-only>
                 <l-map
                     ref="printMap"
@@ -29,8 +29,15 @@
                 </l-map>
             </client-only>
         </v-col>
-        <v-col cols="4">
-            <div style="border: 0.5px solid gray; height: 100%">
+        <v-col cols="4" class="pl-1">
+            <div
+                style="
+                    border-right: 0.5px solid gray;
+                    border-top: 0.5px solid gray;
+                    border-bottom: 0.5px solid gray;
+                    height: 100%;
+                "
+            >
                 <v-container class="d-flex" style="width: 60%; height: 13%">
                     <v-img
                         contain
@@ -44,11 +51,11 @@
                         src="/img/logocmr_normal_min.png"
                     />
                 </v-container>
-                <div class="text-center text-caption font-weight-bold">
-                    <p class="font-weight-bold">
+                <div class="text-center font-weight-bold">
+                    <p class="font-weight-bold mb-1">
                         {{ titleMap }}
                     </p>
-                    <p>
+                    <p class="mb-2">
                         Centro de Monitoramento Remoto - Fundação Nacional do
                         Índio
                     </p>
@@ -68,29 +75,226 @@
                                 url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
                                 :attribution="attribution"
                             ></l-tile-layer>
+                            <l-control position="topleft" class="ma-0 pa-0">
+                                <p class="ma-1 pa-0 print-mini-map-text">
+                                    LOCALIZAÇÃO DA ÁREA
+                                </p>
+                            </l-control>
                         </l-map>
                     </client-only>
                 </div>
-                <div class="text-caption">
-                    <div class="text-caption ma-1">
-                        <p>Legenda:</p>
+                <div>
+                    <p class="d-block ma-1">Legenda:</p>
+                    <div class="ma-1 flex-wrap">
+                        <div v-if="showFeatures">
+                            <div class="d-flex align-center">
+                                <v-icon x-small color="#9400D3"
+                                    >mdi-square</v-icon
+                                >
+                                <p>Polígonos Prioritários: Muito Alta</p>
+                            </div>
+                            <div class="d-flex align-center">
+                                <v-icon x-small color="#FF0000"
+                                    >mdi-square</v-icon
+                                >
+                                <p>Polígonos Prioritários: Alta</p>
+                            </div>
+                            <div class="d-flex align-center">
+                                <v-icon x-small color="#FF8C00"
+                                    >mdi-square</v-icon
+                                >
+                                <p>Polígonos Prioritários: Média</p>
+                            </div>
+                            <div class="d-flex align-center">
+                                <v-icon x-small color="#FFD700"
+                                    >mdi-square</v-icon
+                                >
+                                <p>Polígonos Prioritários: Baixa</p>
+                            </div>
+                            <div class="d-flex align-center">
+                                <v-icon x-small color="#008000"
+                                    >mdi-square</v-icon
+                                >
+                                <p>Polígonos Prioritários: Muito Baixa</p>
+                            </div>
+                        </div>
+                        <div v-if="showFeaturesUrgentAlert">
+                            <div class="d-flex align-center">
+                                <v-icon x-small color="#965213"
+                                    >mdi-square</v-icon
+                                >
+                                <p>Alerta Urgente: CR</p>
+                            </div>
+                            <div class="d-flex align-center">
+                                <v-icon x-small color="#337f1e"
+                                    >mdi-square</v-icon
+                                >
+                                <p>Alerta Urgente: DR</p>
+                            </div>
+                            <div class="d-flex align-center">
+                                <v-icon x-small color="#ba1a1a"
+                                    >mdi-square</v-icon
+                                >
+                                <p>Alerta Urgente: FF</p>
+                            </div>
+                            <div class="d-flex align-center">
+                                <v-icon x-small color="#e0790b"
+                                    >mdi-square</v-icon
+                                >
+                                <p>Alerta Urgente: DG</p>
+                            </div>
+                        </div>
+                        <div v-if="showFeaturesMonitoring">
+                            <div class="d-flex align-center">
+                                <v-icon x-small color="#dd2c00"
+                                    >mdi-square</v-icon
+                                >
+                                <p>Monitoramento Diário: CR</p>
+                            </div>
+                            <div class="d-flex align-center">
+                                <v-icon x-small color="#800080"
+                                    >mdi-square</v-icon
+                                >
+                                <p>Monitoramento Diário: DR</p>
+                            </div>
+                            <div class="d-flex align-center">
+                                <v-icon x-small color="#a93130"
+                                    >mdi-square</v-icon
+                                >
+                                <p>Monitoramento Diário: FF</p>
+                            </div>
+                            <div class="d-flex align-center">
+                                <v-icon x-small color="#ff7f00"
+                                    >mdi-square</v-icon
+                                >
+                                <p>Monitoramento Diário: DG</p>
+                            </div>
+                        </div>
+                        <div v-if="supportLayersCategoryAntropismo">
+                            <div
+                                v-for="layer in supportLayersCategoryAntropismo"
+                                :key="layer.id"
+                            >
+                                <div
+                                    v-if="layer.visible"
+                                    class="d-flex align-center"
+                                >
+                                    <v-icon x-small color="#e0790b"
+                                        >mdi-square</v-icon
+                                    >
+                                    <p>{{ layer.name }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="supportLayersCategoryFire">
+                            <div
+                                v-for="layer in supportLayersCategoryFire"
+                                :key="layer.id"
+                            >
+                                <div
+                                    v-if="layer.visible"
+                                    class="d-flex align-center"
+                                >
+                                    <v-icon x-small color="#e0790b"
+                                        >mdi-square</v-icon
+                                    >
+                                    <p>{{ layer.name }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="showFeaturesSupportLayers">
+                            <div v-for="layer in supportLayers" :key="layer.id">
+                                <div
+                                    v-if="layer.visible"
+                                    class="d-flex align-center"
+                                >
+                                    <v-icon x-small color="#e0790b"
+                                        >mdi-square</v-icon
+                                    >
+                                    <p>{{ layer.name }}</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <v-divider></v-divider>
-                    <div class="text-caption ma-1">
-                        <p class="font-weight-bold">Bases Cartograficas:</p>
+                    <div class="ma-1">
+                        <p class="font-weight-bold">Bases Cartográficas:</p>
+                        <div v-if="showFeatures">
+                            <p>
+                                - Polígonos Prioritários presentes no território
+                                Brasileiro. Fonte: Banco de Dados Funai - 2022
+                            </p>
+                        </div>
+                        <div v-if="showFeaturesMonitoring">
+                            <p>
+                                - Monitoramento Diário. Fonte: Banco de Dados
+                                Funai - 2022
+                            </p>
+                        </div>
+                        <div v-if="showFeaturesUrgentAlert">
+                            <p>
+                                - Alerta Urgente. Fonte: Banco de Dados Funai -
+                                2022
+                            </p>
+                        </div>
+                        <div v-if="showFeaturesSupportLayers">
+                            <div v-for="layer in supportLayers" :key="layer.id">
+                                <div
+                                    v-if="layer.visible"
+                                    class="d-flex align-center"
+                                >
+                                    <p>
+                                        - {{ layer.name }} presente no
+                                        território brasileiro.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="supportLayersCategoryAntropismo">
+                            <div
+                                v-for="layer in supportLayersCategoryAntropismo"
+                                :key="layer.id"
+                            >
+                                <div
+                                    v-if="layer.visible"
+                                    class="d-flex align-center"
+                                >
+                                    <p>
+                                        - {{ layer.name }} presente no
+                                        território brasileiro.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="supportLayersCategoryFire">
+                            <div
+                                v-for="layer in supportLayersCategoryFire"
+                                :key="layer.id"
+                            >
+                                <div
+                                    v-if="layer.visible"
+                                    class="d-flex align-center"
+                                >
+                                    <p>
+                                        - {{ layer.name }} presente no
+                                        território brasileiro.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <v-divider></v-divider>
 
-                    <div class="text-caption ma-1">
-                        <p class="size-text ma-0">
+                    <div class="ma-1">
+                        <p>
                             CENTRO DE MONITORAMENTO REMOTO -
-                            https://cmr.funai.gov.br
+                            https://cmr.funai.gov.br | Data da impressão:
+                            {{ todayDate() }}
                         </p>
-                        <p>Data da impressão: {{ todayDate() }}</p>
                     </div>
                     <v-divider></v-divider>
-                    <div class="text-caption ma-1">
-                        <p class="size-text ma-0">
+                    <div class="ma-1">
+                        <p>
                             As informações podem apresentar distorções em função
                             das bases cartográficas utilizadas.
                         </p>
@@ -212,6 +416,15 @@ export default {
 
     computed: {
         ...mapState('map', ['bounds']),
+        ...mapState('priority', ['showFeatures']),
+        ...mapState('monitoring', ['showFeaturesMonitoring']),
+        ...mapState('urgent-alerts', ['showFeaturesUrgentAlert']),
+        ...mapState('supportLayers', [
+            'showFeaturesSupportLayers',
+            'supportLayers',
+            'supportLayersCategoryAntropismo',
+            'supportLayersCategoryFire',
+        ]),
     },
 
     mounted() {
@@ -258,7 +471,7 @@ export default {
                     .mapBounds({
                         type: 'center',
                         position: 'bottomleft',
-                        template: 'Centroide do mapa: {y}, {x}',
+                        template: 'Centroide do mapa: {y} , {x} ',
                     })
                     .addTo(this.map)
 
@@ -279,6 +492,7 @@ export default {
                 alert('Erro ao gerar o mapa.' + error)
             }
         },
+
         onMainMapMoved(e) {
             this.miniMap.setView(this.map.getCenter(), 4)
         },
@@ -292,6 +506,11 @@ export default {
 
 <style scoped>
 p {
+    font-size: xx-small;
+    margin: 0;
+}
+.print-mini-map-text {
+    color: dimgray !important;
     font-size: xx-small;
 }
 </style>
