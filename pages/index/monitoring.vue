@@ -6,7 +6,7 @@
             </h4>
             <v-switch
                 v-if="features"
-                v-model="showFeaturesMonitoring"
+                v-model="featuresMonitoring"
                 class="mt-n1 ml-5"
                 hide-details
             />
@@ -154,13 +154,16 @@ export default {
             )
         },
 
-        showFeaturesMonitoring: {
+        featuresMonitoring: {
             get() {
-                return this.$store.state.monitoring.showFeatures
+                return this.$store.state.monitoring.showFeaturesMonitoring
             },
 
             set(value) {
-                this.$store.commit('monitoring/setShowFeatures', value)
+                this.$store.commit(
+                    'monitoring/setshowFeaturesMonitoring',
+                    value
+                )
             },
         },
 
@@ -170,10 +173,13 @@ export default {
 
         showFeaturesAntropismo: {
             get() {
-                return this.$store.state.supportLayers.showFeatures
+                return this.$store.state.supportLayers.showFeaturesSupportLayers
             },
             set(value) {
-                this.$store.commit('supportLayers/setShowFeatures', value)
+                this.$store.commit(
+                    'supportLayers/setshowFeaturesSupportLayers',
+                    value
+                )
             },
         },
 
@@ -183,7 +189,7 @@ export default {
         ]),
 
         ...mapState('monitoring', [
-            'showFeatures',
+            'showFeaturesMonitoring',
             'features',
             'total',
             'visualizationStage',

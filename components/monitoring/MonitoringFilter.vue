@@ -71,7 +71,7 @@
                     </v-col>
                 </v-row>
                 <v-row class="px-3">
-                    <v-col v-show="showFeatures">
+                    <v-col v-show="showFeaturesMonitoring">
                         <v-btn
                             color="accent"
                             :loading="isLoadingGeoJson"
@@ -93,8 +93,8 @@
                         </v-btn>
                     </v-col>
                 </v-row>
-                <v-divider v-if="showFeatures" class="mt-8 mb-5" />
-                <v-row v-if="showFeatures && total">
+                <v-divider v-if="showFeaturesMonitoring" class="mt-8 mb-5" />
+                <v-row v-if="showFeaturesMonitoring && total">
                     <v-col cols="7" class="grey--text text--darken-2">
                         {{ $t('polygon-label') }}:
                     </v-col>
@@ -103,7 +103,7 @@
                     </v-col>
                 </v-row>
 
-                <v-row v-if="showFeatures && total && total.area_ha">
+                <v-row v-if="showFeaturesMonitoring && total && total.area_ha">
                     <v-col cols="7" class="grey--text text--darken-2">
                         {{ $t('total-area-label') }}:
                     </v-col>
@@ -116,7 +116,7 @@
                         ha
                     </v-col>
                 </v-row>
-                <v-row v-if="showFeatures" align="center">
+                <v-row v-if="showFeaturesMonitoring" align="center">
                     <v-col cols="4" class="grey--text text--darken-2">
                         {{ $t('opacity-label') }}
                     </v-col>
@@ -130,7 +130,7 @@
                     </v-col>
                 </v-row>
                 <v-row
-                    v-if="showFeatures"
+                    v-if="showFeaturesMonitoring"
                     align="center"
                     justify="space-between"
                 >
@@ -236,7 +236,7 @@ export default {
         ...mapState('monitoring', [
             'isLoadingFeatures',
             'filterOptions',
-            'showFeatures',
+            'showFeaturesMonitoring',
             'total',
             'isLoadingGeoJson',
         ]),

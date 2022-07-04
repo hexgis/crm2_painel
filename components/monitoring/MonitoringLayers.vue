@@ -1,5 +1,5 @@
 <template>
-    <l-layer-group name="monitoring" :visible="showFeatures">
+    <l-layer-group name="monitoring" :visible="showFeaturesMonitoring">
         <l-layer-group ref="monitoringHeat" :visible="heatMap" />
 
         <l-feature-group ref="monitoringPolygons">
@@ -87,7 +87,7 @@ export default {
             'features',
             'opacity',
             'heatMap',
-            'showFeatures',
+            'showFeaturesMonitoring',
         ]),
         ...mapGetters('monitoring', ['featuresLoaded']),
     },

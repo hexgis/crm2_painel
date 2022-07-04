@@ -7,7 +7,7 @@
             format="image/png"
             :transparent="true"
             :z-index="4"
-            :visible="showFeatures"
+            :visible="showFeaturesMonitoring"
         />
     </l-layer-group>
 </template>
@@ -33,7 +33,11 @@ export default {
     }),
 
     computed: {
-        ...mapState('monitoring', ['showFeatures', 'opacity', 'filters']),
+        ...mapState('monitoring', [
+            'showFeaturesMonitoring',
+            'opacity',
+            'filters',
+        ]),
     },
 
     watch: {
