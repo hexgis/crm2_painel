@@ -72,14 +72,20 @@ export default {
         },
         showFeatures: {
             get() {
-                return this.$store.state.supportLayers.showFeatures
+                return this.$store.state.supportLayers.showFeaturesSupportLayers
             },
             set(value) {
-                this.$store.commit('supportLayers/setShowFeatures', value)
+                this.$store.commit(
+                    'supportLayers/setshowFeaturesSupportLayers',
+                    value
+                )
             },
         },
 
-        ...mapState('supportLayers', ['supportCategoryGroupsRaster', 'loading']),
+        ...mapState('supportLayers', [
+            'supportCategoryGroupsRaster',
+            'loading',
+        ]),
     },
 }
 </script>

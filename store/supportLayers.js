@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
 export const state = () => ({
-    showFeatures: false,
+    showFeaturesSupportLayers: false,
     supportLayersGroups: {},
     supportLayers: {},
     supportCategoryGroupsFire: {},
@@ -85,8 +85,8 @@ export const getters = {
 }
 
 export const mutations = {
-    setShowFeatures(state, showFeatures) {
-        state.showFeatures = showFeatures
+    setshowFeaturesSupportLayers(state, showFeaturesSupportLayers) {
+        state.showFeaturesSupportLayers = showFeaturesSupportLayers
     },
 
     setSupportLayersGroups(state, layersGroups) {
@@ -393,7 +393,7 @@ export const actions = {
             const response = await this.$api.$get('support/layers-groups/')
 
             commit('setSupportLayersGroups', response)
-            commit('setShowFeatures', true)
+            commit('setshowFeaturesSupportLayers', true)
         } catch (exception) {
             commit(
                 'alert/addAlert',
@@ -433,7 +433,7 @@ export const actions = {
             })
 
             commit('setSupportCategoryGroupsRaster', response)
-            commit('setShowFeatures', true)
+            commit('setshowFeaturesSupportLayers', true)
         } catch (exception) {
             commit(
                 'alert/addAlert',
@@ -460,7 +460,7 @@ export const actions = {
             })
 
             commit('setSupportCategoryGroupsFire', response)
-            commit('setShowFeatures', true)
+            commit('setshowFeaturesSupportLayers', true)
         } catch (exception) {
             commit(
                 'alert/addAlert',
@@ -488,7 +488,7 @@ export const actions = {
             })
 
             commit('setSupportCategoryGroupsProdes', response)
-            commit('setShowFeatures', true)
+            commit('setshowFeaturesSupportLayers', true)
         } catch (exception) {
             commit(
                 'alert/addAlert',
@@ -516,7 +516,7 @@ export const actions = {
             })
 
             commit('setSupportCategoryGroupsAntropismo', response)
-            commit('setShowFeatures', true)
+            commit('setshowFeaturesSupportLayers', true)
         } catch (exception) {
             commit(
                 'alert/addAlert',
@@ -543,7 +543,7 @@ export const actions = {
             })
 
             commit('setSupportCategoryGroupsBase', response)
-            commit('setShowFeatures', true)
+            commit('setshowFeaturesSupportLayers', true)
         } catch (exception) {
             commit(
                 'alert/addAlert',
@@ -576,7 +576,7 @@ export const actions = {
 
             commit('setHeatLayerData', { id, data })
             commit('setLayerLoading', { id, loading: false })
-            commit('setShowFeatures', true)
+            commit('setshowFeaturesSupportLayers', true)
         } catch (exception) {
             commit(
                 'alert/addAlert',
@@ -606,7 +606,7 @@ export const actions = {
 
             commit('setHeatLayerDataRaster', { id, data })
             commit('setLayerLoadingRaster', { id, loading: false })
-            commit('setShowFeatures', true)
+            commit('setshowFeaturesSupportLayers', true)
         } catch (exception) {
             commit(
                 'alert/addAlert',
@@ -636,7 +636,7 @@ export const actions = {
 
             commit('setHeatLayerDataFire', { id, data })
             commit('setLayerLoadingFire', { id, loading: false })
-            commit('setShowFeatures', true)
+            commit('setshowFeaturesSupportLayers', true)
         } catch (exception) {
             commit(
                 'alert/addAlert',
@@ -663,6 +663,4 @@ export const actions = {
 
         commit('setFilterOptions', data)
     },
-
 }
-
