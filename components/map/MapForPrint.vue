@@ -445,7 +445,7 @@ export default {
             ],
         },
         attribution:
-            '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | <span style="color:red;font-weight:bold;">Mapa não oficial</span>',
+            '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | <strong style="color: red;">Mapa não oficial</strong>',
         optionsMap: {
             name: 'printMap',
             zoomControl: false,
@@ -596,5 +596,6 @@ p {
 }
 .leaflet-control-attribution {
     white-space: nowrap !important;
+    inline-size: min-content !important;
 }
 </style>
