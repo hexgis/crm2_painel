@@ -87,132 +87,185 @@
                     <p class="d-block ma-1">Legenda:</p>
                     <div class="ma-1 flex-wrap">
                         <div v-if="showFeatures">
-                            <div class="d-flex align-center">
+                            <v-row no-gutters align="center">
                                 <v-icon x-small color="#9400D3"
                                     >mdi-square</v-icon
                                 >
-                                <p>Polígonos Prioritários: Muito Alta</p>
-                            </div>
-                            <div class="d-flex align-center">
+                                <v-col no-gutters cols="6">
+                                    <p>Polígonos Prioritários: Muito Alta</p>
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters align="center">
                                 <v-icon x-small color="#FF0000"
                                     >mdi-square</v-icon
                                 >
-                                <p>Polígonos Prioritários: Alta</p>
-                            </div>
-                            <div class="d-flex align-center">
+                                <v-col no-gutters cols="6">
+                                    <p>Polígonos Prioritários: Alta</p>
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters align="center">
                                 <v-icon x-small color="#FF8C00"
                                     >mdi-square</v-icon
                                 >
-                                <p>Polígonos Prioritários: Média</p>
-                            </div>
-                            <div class="d-flex align-center">
+                                <v-col no-gutters cols="6">
+                                    <p>Polígonos Prioritários: Média</p>
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters align="center">
                                 <v-icon x-small color="#FFD700"
                                     >mdi-square</v-icon
                                 >
-                                <p>Polígonos Prioritários: Baixa</p>
-                            </div>
-                            <div class="d-flex align-center">
+                                <v-col no-gutters cols="6">
+                                    <p>Polígonos Prioritários: Baixa</p>
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters align="center">
                                 <v-icon x-small color="#008000"
                                     >mdi-square</v-icon
                                 >
-                                <p>Polígonos Prioritários: Muito Baixa</p>
-                            </div>
+                                <v-col no-gutters cols="6">
+                                    <p>Polígonos Prioritários: Muito Baixa</p>
+                                </v-col>
+                            </v-row>
                         </div>
                         <div v-if="showFeaturesUrgentAlert">
-                            <div class="d-flex align-center">
+                            <v-row no-gutters align="center">
                                 <v-icon x-small color="#965213"
                                     >mdi-square</v-icon
                                 >
-                                <p>Alerta Urgente: CR</p>
-                            </div>
-                            <div class="d-flex align-center">
+                                <v-col no-gutters cols="6">
+                                    <p>Alerta Urgente: CR</p>
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters align="center">
                                 <v-icon x-small color="#337f1e"
                                     >mdi-square</v-icon
                                 >
-                                <p>Alerta Urgente: DR</p>
-                            </div>
-                            <div class="d-flex align-center">
+                                <v-col no-gutters cols="6">
+                                    <p>Alerta Urgente: DR</p>
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters align="center">
                                 <v-icon x-small color="#ba1a1a"
                                     >mdi-square</v-icon
                                 >
-                                <p>Alerta Urgente: FF</p>
-                            </div>
-                            <div class="d-flex align-center">
+                                <v-col no-gutters cols="6">
+                                    <p>Alerta Urgente: FF</p>
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters align="center">
                                 <v-icon x-small color="#e0790b"
                                     >mdi-square</v-icon
                                 >
-                                <p>Alerta Urgente: DG</p>
-                            </div>
+                                <v-col no-gutters cols="6">
+                                    <p>Alerta Urgente: DG</p>
+                                </v-col>
+                            </v-row>
                         </div>
                         <div v-if="showFeaturesMonitoring">
-                            <div class="d-flex align-center">
+                            <v-row no-gutters align="center">
                                 <v-icon x-small color="#dd2c00"
                                     >mdi-square</v-icon
                                 >
-                                <p>Monitoramento Diário: CR</p>
-                            </div>
-                            <div class="d-flex align-center">
+                                <v-col no-gutters cols="6">
+                                    <p>Monitoramento Diário: CR</p>
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters align="center">
                                 <v-icon x-small color="#800080"
                                     >mdi-square</v-icon
                                 >
-                                <p>Monitoramento Diário: DR</p>
-                            </div>
-                            <div class="d-flex align-center">
+                                <v-col no-gutters cols="6">
+                                    <p>Monitoramento Diário: DR</p>
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters align="center">
                                 <v-icon x-small color="#a93130"
                                     >mdi-square</v-icon
                                 >
-                                <p>Monitoramento Diário: FF</p>
-                            </div>
-                            <div class="d-flex align-center">
+                                <v-col no-gutters cols="6">
+                                    <p>Monitoramento Diário: FF</p>
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters align="center">
                                 <v-icon x-small color="#ff7f00"
                                     >mdi-square</v-icon
                                 >
-                                <p>Monitoramento Diário: DG</p>
-                            </div>
+                                <v-col no-gutters cols="6">
+                                    <p>Monitoramento Diário: DG</p>
+                                </v-col>
+                            </v-row>
                         </div>
-                        <div v-if="supportLayersCategoryAntropismo">
+                        <div v-if="showFeaturesSupportLayers">
                             <div
                                 v-for="layer in supportLayersCategoryAntropismo"
                                 :key="layer.id"
                             >
-                                <div
+                                <v-row
+                                    no-gutters
+                                    align="center"
                                     v-if="layer.visible"
-                                    class="d-flex align-center"
                                 >
-                                    <v-icon x-small color="#e0790b"
-                                        >mdi-square</v-icon
-                                    >
-                                    <p>{{ layer.name }}</p>
-                                </div>
+                                    <img
+                                        :src="
+                                            layer.wms.geoserver.preview_url +
+                                            layer.wms.geoserver_layer_name
+                                        "
+                                        width="13vw"
+                                        alt="CorLayer"
+                                        class=""
+                                    />
+                                    <v-col>
+                                        <p>{{ layer.name }}</p>
+                                    </v-col>
+                                </v-row>
                             </div>
                         </div>
-                        <div v-if="supportLayersCategoryFire">
+                        <div v-if="showFeaturesSupportLayers">
                             <div
                                 v-for="layer in supportLayersCategoryFire"
                                 :key="layer.id"
                             >
-                                <div
+                                <v-row
+                                    no-gutters
+                                    align="center"
                                     v-if="layer.visible"
-                                    class="d-flex align-center"
                                 >
-                                    <v-icon x-small color="#e0790b"
-                                        >mdi-square</v-icon
-                                    >
-                                    <p>{{ layer.name }}</p>
-                                </div>
+                                    <img
+                                        :src="
+                                            layer.wms.geoserver.preview_url +
+                                            layer.wms.geoserver_layer_name
+                                        "
+                                        width="13vw"
+                                        alt="CorLayer"
+                                        class=""
+                                    />
+                                    <v-col>
+                                        <p>{{ layer.name }}</p>
+                                    </v-col>
+                                </v-row>
                             </div>
                         </div>
                         <div v-if="showFeaturesSupportLayers">
                             <div v-for="layer in supportLayers" :key="layer.id">
-                                <div
+                                <v-row
+                                    no-gutters
+                                    align="center"
                                     v-if="layer.visible"
-                                    class="d-flex align-center"
                                 >
-                                    <v-icon x-small color="#e0790b"
-                                        >mdi-square</v-icon
-                                    >
-                                    <p>{{ layer.name }}</p>
-                                </div>
+                                    <img
+                                        :src="
+                                            layer.wms.geoserver.preview_url +
+                                            layer.wms.geoserver_layer_name
+                                        "
+                                        width="13vw"
+                                        alt="CorLayer"
+                                        class=""
+                                    />
+                                    <v-col>
+                                        <p>{{ layer.name }}</p>
+                                    </v-col>
+                                </v-row>
                             </div>
                         </div>
                     </div>
@@ -238,32 +291,33 @@
                             </p>
                         </div>
                         <div v-if="showFeaturesSupportLayers">
-                            <div v-for="layer in supportLayers" :key="layer.id">
-                                <div
-                                    v-if="layer.visible"
-                                    class="d-flex align-center"
-                                >
-                                    <p>
-                                        - {{ layer.name }} presente no
-                                        território brasileiro.
-                                    </p>
-                                </div>
+                            <div
+                                v-for="layer in supportLayers"
+                                :key="layer.name"
+                            >
+                                <v-row no-gutters v-if="layer.visible">
+                                    <v-col>
+                                        <p>
+                                            - {{ layer.name }} presente no
+                                            território brasileiro.
+                                        </p>
+                                    </v-col>
+                                </v-row>
                             </div>
                         </div>
                         <div v-if="supportLayersCategoryAntropismo">
                             <div
                                 v-for="layer in supportLayersCategoryAntropismo"
-                                :key="layer.id"
+                                :key="layer.name"
                             >
-                                <div
-                                    v-if="layer.visible"
-                                    class="d-flex align-center"
-                                >
-                                    <p>
-                                        - {{ layer.name }} presente no
-                                        território brasileiro.
-                                    </p>
-                                </div>
+                                <v-row no-gutters v-if="layer.visible">
+                                    <v-col>
+                                        <p>
+                                            - {{ layer.name }} presente no
+                                            território brasileiro.
+                                        </p>
+                                    </v-col>
+                                </v-row>
                             </div>
                         </div>
                         <div v-if="supportLayersCategoryFire">
@@ -271,15 +325,14 @@
                                 v-for="layer in supportLayersCategoryFire"
                                 :key="layer.id"
                             >
-                                <div
-                                    v-if="layer.visible"
-                                    class="d-flex align-center"
-                                >
-                                    <p>
-                                        - {{ layer.name }} presente no
-                                        território brasileiro.
-                                    </p>
-                                </div>
+                                <v-row no-gutters v-if="layer.visible">
+                                    <v-col>
+                                        <p>
+                                            - {{ layer.name }} presente no
+                                            território brasileiro.
+                                        </p>
+                                    </v-col>
+                                </v-row>
                             </div>
                         </div>
                     </div>
@@ -392,7 +445,7 @@ export default {
             ],
         },
         attribution:
-            '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | <span style="color: red !important; font-weight: bold !important">Mapa não oficial</span>',
+            '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | <span style="color:red;font-weight:bold;">Mapa não oficial</span>',
         optionsMap: {
             name: 'printMap',
             zoomControl: false,
@@ -512,6 +565,7 @@ p {
 .print-mini-map-text {
     color: dimgray !important;
     font-size: xx-small;
+    white-space: nowrap;
 }
 </style>
 
@@ -539,5 +593,8 @@ p {
 .north-arrow:after {
     height: 35px;
     width: 30px;
+}
+.leaflet-control-attribution {
+    white-space: nowrap !important;
 }
 </style>
