@@ -75,10 +75,30 @@ export default {
         vectorGrid: null,
 
         style: {
-            weight: 2.5,
-            color: '#8e391b',
-            fill: true,
-            fillOpacity: 1,
+            CR: {
+                weight: 2.5,
+                color: '#ff3333',
+                fill: true,
+                fillOpacity: 1,
+            },
+            DG: {
+                weight: 2.5,
+                color: '#ff8000',
+                fill: true,
+                fillOpacity: 1,
+            },
+            FF: {
+                weight: 2.5,
+                color: '#b35900',
+                fill: true,
+                fillOpacity: 1,
+            },
+            DR: {
+                weight: 2.5,
+                color: '#990099',
+                fill: true,
+                fillOpacity: 1,
+            },
         },
     }),
 
@@ -104,7 +124,19 @@ export default {
         opacity() {
             if (this.isVectorGrid) {
                 this.vectorGrid.setFeatureStyle(1, {
-                    ...this.style,
+                    ...this.style.DR,
+                    fillOpacity: this.opacity / 100,
+                })
+                this.vectorGrid.setFeatureStyle(2, {
+                    ...this.style.FF,
+                    fillOpacity: this.opacity / 100,
+                })
+                this.vectorGrid.setFeatureStyle(3, {
+                    ...this.style.DG,
+                    fillOpacity: this.opacity / 100,
+                })
+                this.vectorGrid.setFeatureStyle(4, {
+                    ...this.style.CR,
                     fillOpacity: this.opacity / 100,
                 })
             } else {
@@ -117,6 +149,19 @@ export default {
     },
 
     methods: {
+        vectorGridStyleFunction(no_estagio) {
+            switch (no_estagio) {
+                case 'CR':
+                    return this.style.CR
+                case 'DG':
+                    return this.style.DG
+                case 'FF':
+                    return this.style.FF
+                case 'DR':
+                    return this.style.DR
+            }
+        },
+
         addFeatures() {
             this.$refs.monitoringPolygons.mapObject.clearLayers()
             if (
@@ -131,20 +176,25 @@ export default {
                     .slicer(this.features, {
                         maxZoom: 21,
                         vectorTileLayerStyles: {
-                            sliced: () => this.style,
+                            sliced: (e) =>
+                                this.vectorGridStyleFunction(e.no_estagio),
                         },
                         interactive: true,
-                        getFeatureId: (_) => {
-                            return 1
+                        getFeatureId: (e) => {
+                            switch (e.properties.no_estagio) {
+                                case 'CR':
+                                    return 4
+                                case 'DG':
+                                    return 3
+                                case 'FF':
+                                    return 2
+                                case 'DR':
+                                    return 1
+                            }
                         },
                     })
                     .on('click', (e) => {
                         this.getFeatureDetails(e.layer.properties.id)
-                        // this.$nextTick(() => {
-                        //     e.layer.bindPopup(
-                        //         () => this.$refs.popupComponent.$el
-                        //     )
-                        // })
                     })
                     .addTo(this.$refs.monitoringPolygons.mapObject)
             }
@@ -162,18 +212,18 @@ export default {
             const style = this.style
             style.fillOpacity = this.opacity / 100
 
-            switch (feature.properties.no_estagio) {
-                case 'CR':
-                    style.color = '#965213'
+            switch (feature.properties.stage) {
+                case 'Corte Raso':
+                    style.color = '#ffff00'
                     break
-                case 'DR':
-                    style.color = '#337f1e'
+                case 'Degradação':
+                    style.color = '#ff8000'
                     break
-                case 'FF':
-                    style.color = '#ba1a1a'
+                case 'Fogo em FLoresta':
+                    style.color = '#b35900'
                     break
-                case 'DG':
-                    style.color = '#e0790b'
+                case 'Desmatamento em Regeneração':
+                    style.color = '#990099'
                     break
             }
             return style
@@ -190,34 +240,15 @@ export default {
 
         async getFeatureDetails(featureId) {
             this.selectedMonitoringFeature = null
-            // this.$nextTick(() => {
-            //     this.$refs.popup.mapObject
-            //         // .bindPopup(
-            //         //     () => this.$refs.popupComponent.$el
-            //         // )
-            //         .setContent(this.$refs.popupComponent.$el.innerHTML)
-            // })
 
             try {
                 this.selectedMonitoringFeature = await this.$api.$get(
                     'monitoring/consolidated/detail/' + featureId + '/'
                 )
-
-                // this.$nextTick(() => {
-                //     // return this.$refs.popupComponent.$el
-                //     // this.$refs.popup.mapObject.unbindPopup()
-
-                //     this.$refs.popup.mapObject
-                //         // .bindPopup(
-                //         //     this.$refs.popupComponent.$el
-                //         // )
-                //         .setContent(this.$refs.popupComponent.$el.innerHTML)
-                // })
             } catch (exception) {
                 this.$store.commit('alert/addAlert', {
                     message: this.$t('detail-api-error'),
                 })
-                // return null
             }
         },
 
