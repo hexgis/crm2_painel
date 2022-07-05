@@ -214,7 +214,7 @@ export default {
 
             switch (feature.properties.stage) {
                 case 'Corte Raso':
-                    style.color = '#ffff00'
+                    style.color = '#ff3333'
                     break
                 case 'Degradação':
                     style.color = '#ff8000'
