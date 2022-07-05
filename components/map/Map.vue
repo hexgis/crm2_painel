@@ -186,7 +186,7 @@
     },
     "pt-br": {
         "zoom-in": "Aproximar",
-        "zoom-out": "Reduzir"
+        "zoom-out": "Afastar"
     }
 }
 </i18n>

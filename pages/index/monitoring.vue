@@ -30,8 +30,10 @@
             </div>
         </v-container>
         <v-divider />
-        <MonitoringFilter @onSearch="search()" />
-
+        <div class="py-3">
+            <MonitoringFilter @onSearch="search()" />
+        </div>
+        <v-divider />
         <v-footer
             absolute
             class="priority-footer"
@@ -110,8 +112,12 @@ import { mapActions, mapMutations, mapState } from 'vuex'
 import _ from 'lodash'
 
 export default {
-
-    components: { MonitoringFilter, ShowDialog, SupportLayersGroupAntropismo, TableDialog },
+    components: {
+        MonitoringFilter,
+        ShowDialog,
+        SupportLayersGroupAntropismo,
+        TableDialog,
+    },
 
     async fetch() {
         if (!Object.keys(this.supportCategoryGroupsAntropismo).length) {
@@ -198,7 +204,6 @@ export default {
                 this.getDataTableMonitoring()
             }
             if (!this.tableDialogMonitoring) this.getFeatures()
-
         },
 
         changeVisualizationStage(tab) {
@@ -234,7 +239,7 @@ export default {
         ...mapMutations('priority', ['setVisualizationStage']),
 
         ...mapMutations('tableDialog', ['setshowTableDialog']),
-        
+
         ...mapMutations('monitoring', [
             'settableDialogMonitoring',
             'setLoadingTable',
