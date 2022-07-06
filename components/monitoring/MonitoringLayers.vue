@@ -219,7 +219,7 @@ export default {
                 case 'Degradação':
                     style.color = '#ff8000'
                     break
-                case 'Fogo em FLoresta':
+                case 'Fogo em Floresta':
                     style.color = '#b35900'
                     break
                 case 'Desmatamento em Regeneração':

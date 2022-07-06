@@ -43,7 +43,7 @@
                 </v-row>
                 <v-row class="mb-2">
                     <v-icon class="mr-2" color="#b35900">mdi-square</v-icon>
-                    Fogo em FLoresta
+                    Fogo em Floresta
                 </v-row>
                 <v-row class="mb-2">
                     <v-icon class="mr-2" color="#ff8000">mdi-square</v-icon>
