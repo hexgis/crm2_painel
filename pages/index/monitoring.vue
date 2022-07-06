@@ -34,6 +34,28 @@
             <MonitoringFilter @onSearch="search()" />
         </div>
         <v-divider />
+        <div v-if="showFeatures" class="px-4">
+            <p class="font-weight-regular pt-2">Legenda:</p>
+            <v-col>
+                <v-row class="mb-2">
+                    <v-icon class="mr-2" color="#990099">mdi-square</v-icon>
+                    Desmatamento em Regeneração
+                </v-row>
+                <v-row class="mb-2">
+                    <v-icon class="mr-2" color="#b35900">mdi-square</v-icon>
+                    Fogo em Floresta
+                </v-row>
+                <v-row class="mb-2">
+                    <v-icon class="mr-2" color="#ff8000">mdi-square</v-icon>
+                    Degradação
+                </v-row>
+                <v-row class="mb-2">
+                    <v-icon class="mr-2" color="#ff3333">mdi-square</v-icon>
+                    Corte Raso
+                </v-row>
+                <v-spacer></v-spacer>
+            </v-col>
+        </div>
         <v-footer
             absolute
             class="priority-footer"
