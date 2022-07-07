@@ -8,7 +8,7 @@
                     height="36"
                     width="36"
                     class="button-drawer"
-                    @click="removeAllFeatures()"
+                    @click="removeAllFeatures(), OperationalSystemFile()"
                     v-on="on"
                 >
                     <transition name="slide-x-file-drawer-button">
@@ -30,8 +30,9 @@
                     v-if="showOptions"
                     class="upload-options-drawer file-button"
                 >
-                    <span> {{ $t('upload-hint') }}</span>
-
+                    <div>
+                        <span>{{ name }}</span>
+                    </div>
                     <v-file-input
                         type="file"
                         hide-details
@@ -172,18 +173,17 @@
         "go-to-tooltip": "Go to features",
         "remove-feature-tooltip": "Remove feature",
         "file-drawer": "Load a file",
-        "upload-hint": "SHP, KML, KMZ, Json/GeoJson",
         "file-error-shapefile": "Problem reading Shapefile file.",
         "file-error-kmz": "Problem reading Kmz file.",
         "file-error-parsing-kmlz": "Found problems while parsing KMZ/KML file. Please, validate your file",
         "file-error-general": "File type not acceptable on system.",
         "file-error-internal": "Internal Error: "
+
     },
     "pt-br": {
         "go-to-tooltip": "Ir para feições",
         "remove-feature-tooltip": "Remover feição",
         "file-drawer": "Carregue um arquivo",
-        "upload-hint": "SHP, KML, KMZ, Json/GeoJson",
         "file-error-shapefile": "Problema ao ler o arquivo Shapefile",
         "file-error-kmz": "Problema ao ler o arquivo KMZ.",
         "file-error-parsing-kmlz": "Problemas encontrados durante a análise do arquivo KMZ/KML. Por favor, valide o arquivo",
@@ -220,6 +220,7 @@ export default {
     data() {
         return {
             showOptions: false,
+            name: '',
             showFileOptions: {
                 type: Number,
                 default: null,
@@ -254,12 +255,14 @@ export default {
             if (file === this.showFileOptions) this.showFileOptions = null
             else this.showFileOptions = file
         },
+        
         flyToBound(feature) {
             const bounds = this.$L.geoJSON(feature).getBounds()
 
             if (bounds.getNorthEast() && bounds.getSouthWest())
                 this.map.flyToBounds(bounds)
         },
+
         hasGeometryOnFeature(feature, geometries) {
             return (
                 feature.features.some((f) =>
@@ -267,6 +270,7 @@ export default {
                 ) || false
             )
         },
+
         remove(index) {
             this.files.splice(index, 1)
             this.removeFileFromMap(index)
@@ -317,6 +321,13 @@ export default {
                 this.rgbToHex(parseInt(green)) +
                 this.rgbToHex(parseInt(blue))
             )
+        },
+
+        OperationalSystemFile() {
+            if (navigator.userAgent.indexOf('Win') != -1)
+                this.name = 'KML, KMZ, JSON, GeoJson'
+            if (navigator.userAgent.indexOf('Linux') != -1)
+                this.name = 'SHP, KML, KMZ, JSON, GeoJson'
         },
 
         fileError(error, message) {
