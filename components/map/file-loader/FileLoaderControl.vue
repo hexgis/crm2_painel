@@ -31,7 +31,7 @@
                     class="upload-options-drawer file-button"
                 >
                     <div>
-                        <span>{{ name }}</span>
+                        <span>{{ AvailableTypes }}</span>
                     </div>
                     <v-file-input
                         type="file"
@@ -220,7 +220,7 @@ export default {
     data() {
         return {
             showOptions: false,
-            name: '',
+            AvailableTypes: '',
             showFileOptions: {
                 type: Number,
                 default: null,
@@ -255,7 +255,7 @@ export default {
             if (file === this.showFileOptions) this.showFileOptions = null
             else this.showFileOptions = file
         },
-        
+
         flyToBound(feature) {
             const bounds = this.$L.geoJSON(feature).getBounds()
 
@@ -325,9 +325,9 @@ export default {
 
         OperationalSystemFile() {
             if (navigator.userAgent.indexOf('Win') != -1)
-                this.name = 'KML, KMZ, JSON, GeoJson'
+                this.AvailableTypes = 'KML, KMZ, JSON, GeoJson'
             if (navigator.userAgent.indexOf('Linux') != -1)
-                this.name = 'SHP, KML, KMZ, JSON, GeoJson'
+                this.AvailableTypes = 'SHP, KML, KMZ, JSON, GeoJson'
         },
 
         fileError(error, message) {
