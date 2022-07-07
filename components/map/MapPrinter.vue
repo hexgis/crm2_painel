@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex mt-3">
+    <div class="button-print-map d-flex mt-3">
         <v-tooltip right>
             <template #activator="{ on }">
                 <v-btn v-on="on" fab ripple height="36" width="36">
@@ -10,12 +10,14 @@
         </v-tooltip>
         <v-dialog
             v-model="dialogPrint"
-            max-width="80vw"
-            max-height="80vh"
             persistent
             transition="dialog-transition"
             :overlay="false"
+            class="dialog-width-map-printer"
+            max-width="1123px"
         >
+            <!-- :width="currentStep == 2 ? '100vw' : ''"
+            class="dialog-width-map-printer" -->
             <v-toolbar dark color="secondary">
                 <h3>{{ $t('print-dialog-label') }}</h3>
                 <v-spacer></v-spacer>
@@ -24,7 +26,7 @@
                 </v-btn>
             </v-toolbar>
 
-            <v-stepper class="" v-model="currentStep" value="3">
+            <v-stepper v-model="currentStep" value="3">
                 <v-stepper-items>
                     <v-stepper-content step="1">
                         <v-container fluid>
@@ -65,14 +67,17 @@
                             </v-row>
                         </v-container>
                     </v-stepper-content>
-                    <v-stepper-content step="2">
+                    <v-stepper-content step="2" class="ma-1 pa-1">
                         <div id="printableMap">
                             <v-container v-if="currentStep == 2">
-                                <MapForPrint :titleMap="titleMap" />
+                                <MapForPrint
+                                    :titleMap="titleMap"
+                                    :leafSize="select"
+                                />
                             </v-container>
                         </div>
 
-                        <div class="d-flex flex-row">
+                        <div class="d-flex flex-row mx-2">
                             <v-btn text @click="currentStep--">
                                 {{ $t('input-button-back-second-step') }}
                             </v-btn>
@@ -83,7 +88,7 @@
                                 color="primary"
                                 class="mr-2"
                                 :loading="loadingPrintImage"
-                                @click="Baixar"
+                                @click="saveImage"
                             >
                                 <v-icon dark> mdi-file-image-outline </v-icon>
                                 {{ $t('input-button-print-image') }}
@@ -152,7 +157,7 @@ export default {
     }),
 
     methods: {
-        async Baixar() {
+        async saveImage() {
             let zoomControl = document.getElementsByClassName(
                 'leaflet-control-zoom'
             )[0]
@@ -198,4 +203,20 @@ export default {
     display: none !important;
     visibility: hidden;
 }
+
+.dialog-width-map-printer {
+    width: 100vw !important;
+}
+
+/* @media (max-width: 959px) {
+    .button-print-map {
+        visibility: hidden !important;
+    }
+}
+
+@media (max-width: 1279px) {
+    .dialog-width-map-printer {
+        width: 100vw !important;
+    }
+} */
 </style>

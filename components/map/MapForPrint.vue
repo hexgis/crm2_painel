@@ -1,6 +1,6 @@
 <template>
-    <v-row>
-        <v-col cols="8" class="pr-0" style="height: 68vh; width: 60vh">
+    <v-row no-gutters style="width: 90vw; height: 700px" class="row-map-width">
+        <v-col cols="8" class="pr-0 row-map-width">
             <client-only>
                 <l-map
                     ref="printMap"
@@ -38,19 +38,14 @@
                     height: 100%;
                 "
             >
-                <v-container class="d-flex" style="width: 60%; height: 13%">
-                    <v-img
-                        contain
-                        width="60"
-                        class="mr-4"
-                        src="/img/funai.svg"
-                    />
-                    <v-img
-                        contain
-                        width="100"
-                        src="/img/logocmr_normal_min.png"
-                    />
-                </v-container>
+                <div class="d-flex justify-center align-center ma-2">
+                    <div style="width: 20%">
+                        <v-img contain class="mr-4" src="/img/funai.svg" />
+                    </div>
+                    <div style="width: 25%">
+                        <v-img contain src="/img/logocmr_normal_min.png" />
+                    </div>
+                </div>
                 <div class="text-center font-weight-bold">
                     <p class="font-weight-bold mb-1">
                         {{ titleMap }}
@@ -62,7 +57,7 @@
                 </div>
                 <div
                     class="d-flex justify-center"
-                    style="height: 15vh; width: 100%"
+                    style="height: 25vh; width: 100%"
                 >
                     <client-only>
                         <l-map
@@ -85,7 +80,7 @@
                 </div>
                 <div>
                     <p class="d-block ma-1">Legenda:</p>
-                    <div class="ma-1 flex-wrap">
+                    <div class="ma-1 flex-wrap" style="width: 100%">
                         <div v-if="showFeatures">
                             <v-row no-gutters align="center">
                                 <v-icon x-small color="#9400D3"
@@ -366,11 +361,16 @@ import PriorityLayers from '@/components/priority/PriorityLayers'
 import MonitoringLayers from '@/components/monitoring/MonitoringLayers'
 import SupportLayers from '@/components/support/SupportLayers'
 import AlertLayers from '@/components/urgent-alerts/AlertLayers'
+const { zoomIntervals } = require('@/utils/zoomIntervalsGraticule')
 
 export default {
     props: {
         titleMap: {
             type: String,
+            default: '',
+        },
+        leafSize: {
+            type: Object,
             default: '',
         },
     },
@@ -389,61 +389,7 @@ export default {
         valueScale: null,
         valueNorthArrow: null,
 
-        zoomIntervals: {
-            A4: [
-                { start: 0, end: 3, interval: 50 },
-                { start: 4, end: 5, interval: 5 },
-                { start: 6, end: 7, interval: 1 },
-                { start: 8, end: 9, interval: 0.5 },
-                { start: 10, end: 11, interval: 0.25 },
-                { start: 12, end: 13, interval: 0.1 },
-                { start: 14, end: 16, interval: 0.01 },
-                { start: 17, end: 20, interval: 0.001 },
-            ],
-            A3: [
-                { start: 0, end: 3, interval: 50 },
-                { start: 4, end: 5, interval: 5 },
-                { start: 6, end: 7, interval: 1 },
-                { start: 8, end: 9, interval: 0.5 },
-                { start: 10, end: 11, interval: 0.25 },
-                { start: 12, end: 12, interval: 0.1 },
-                { start: 13, end: 16, interval: 0.01 },
-                { start: 17, end: 20, interval: 0.001 },
-            ],
-            A2: [
-                { start: 0, end: 3, interval: 50 },
-                { start: 4, end: 4, interval: 10 },
-                { start: 5, end: 6, interval: 5 },
-                { start: 7, end: 8, interval: 1 },
-                { start: 9, end: 9, interval: 0.5 },
-                { start: 10, end: 11, interval: 0.25 },
-                { start: 12, end: 13, interval: 0.1 },
-                { start: 14, end: 16, interval: 0.01 },
-                { start: 17, end: 20, interval: 0.001 },
-            ],
-            A1: [
-                { start: 0, end: 3, interval: 50 },
-                { start: 4, end: 4, interval: 25 },
-                { start: 5, end: 7, interval: 5 },
-                { start: 8, end: 8, interval: 1 },
-                { start: 9, end: 9, interval: 0.5 },
-                { start: 10, end: 11, interval: 0.25 },
-                { start: 12, end: 14, interval: 0.1 },
-                { start: 15, end: 17, interval: 0.01 },
-                { start: 18, end: 20, interval: 0.001 },
-            ],
-            A0: [
-                { start: 0, end: 3, interval: 50 },
-                { start: 4, end: 5, interval: 25 },
-                { start: 6, end: 7, interval: 5 },
-                { start: 8, end: 9, interval: 1 },
-                { start: 10, end: 10, interval: 0.5 },
-                { start: 11, end: 11, interval: 0.25 },
-                { start: 12, end: 14, interval: 0.1 },
-                { start: 15, end: 17, interval: 0.01 },
-                { start: 18, end: 20, interval: 0.001 },
-            ],
-        },
+        // zoomIntervals: require('@/utils/zoomIntervalsGraticule'),
         attribution:
             '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | <strong style="color: red;">Mapa não oficial</strong>',
         optionsMap: {
@@ -527,12 +473,11 @@ export default {
                         template: 'Centroide do mapa: {y} , {x} ',
                     })
                     .addTo(this.map)
-
                 let options = {
                     interval: 20,
                     showOriginLabel: true,
                     redraw: 'move',
-                    zoomIntervals: this.zoomIntervals.A4,
+                    zoomIntervals: zoomIntervals[this.leafSize.type],
                 }
 
                 L.simpleGraticule(options).addTo(this.map)
@@ -567,6 +512,24 @@ p {
     font-size: xx-small;
     white-space: nowrap;
 }
+
+.row-map-width {
+    max-width: 1123px !important;
+    max-height: 792px !important;
+}
+
+/* @media (max-width: 1024px) {
+    .row-map-width {
+        width: 85vw !important;
+        height: 700px !important;
+    }
+}
+@media (max-width: 1279px) {
+    .row-map-width {
+        width: 80vw !important;
+        height: 700px !important;
+    }
+} */
 </style>
 
 <style>
