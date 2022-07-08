@@ -325,9 +325,9 @@ export default {
 
         OperationalSystemFile() {
             if (navigator.userAgent.indexOf('Win') != -1)
-                this.AvailableTypes = 'KML, KMZ, JSON, GeoJson'
+                this.AvailableTypes = 'SHP(.zip),KML, KMZ, JSON, GeoJson'
             if (navigator.userAgent.indexOf('Linux') != -1)
-                this.AvailableTypes = 'SHP, KML, KMZ, JSON, GeoJson'
+                this.AvailableTypes = 'SHP(.zip), KML, KMZ, JSON, GeoJson'
         },
 
         fileError(error, message) {
