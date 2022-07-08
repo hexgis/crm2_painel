@@ -82,7 +82,7 @@
                     </div>
                 </v-col>
             </v-row>
-            <v-divider></v-divider>
+            <v-divider class="mt-1"></v-divider>
             <div>
                 <v-skeleton-loader type="table-cell" />
                 <v-row
