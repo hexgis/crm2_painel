@@ -1,6 +1,6 @@
 <template>
-    <v-row no-gutters style="width: 90vw; height: 700px" class="row-map-width">
-        <v-col cols="8" class="pr-0 row-map-width">
+    <v-row no-gutters style="width: 1123px; height: 700px">
+        <v-col cols="8" class="pr-0">
             <client-only>
                 <l-map
                     ref="printMap"
@@ -57,7 +57,7 @@
                 </div>
                 <div
                     class="d-flex justify-center"
-                    style="height: 25vh; width: 100%"
+                    style="height: 150px; max-height: 150px; width: 100%"
                 >
                     <client-only>
                         <l-map
@@ -361,7 +361,7 @@ import PriorityLayers from '@/components/priority/PriorityLayers'
 import MonitoringLayers from '@/components/monitoring/MonitoringLayers'
 import SupportLayers from '@/components/support/SupportLayers'
 import AlertLayers from '@/components/urgent-alerts/AlertLayers'
-const { zoomIntervals } = require('@/utils/zoomIntervalsGraticule')
+const intervalZooms = require('@/utils/zoomIntervalsGraticule')
 
 export default {
     props: {
@@ -389,7 +389,6 @@ export default {
         valueScale: null,
         valueNorthArrow: null,
 
-        // zoomIntervals: require('@/utils/zoomIntervalsGraticule'),
         attribution:
             '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | <strong style="color: red;">Mapa não oficial</strong>',
         optionsMap: {
@@ -477,7 +476,7 @@ export default {
                     interval: 20,
                     showOriginLabel: true,
                     redraw: 'move',
-                    zoomIntervals: zoomIntervals[this.leafSize.type],
+                    zoomIntervals: intervalZooms.default[this.leafSize.type],
                 }
 
                 L.simpleGraticule(options).addTo(this.map)
@@ -512,24 +511,6 @@ p {
     font-size: xx-small;
     white-space: nowrap;
 }
-
-.row-map-width {
-    max-width: 1123px !important;
-    max-height: 792px !important;
-}
-
-/* @media (max-width: 1024px) {
-    .row-map-width {
-        width: 85vw !important;
-        height: 700px !important;
-    }
-}
-@media (max-width: 1279px) {
-    .row-map-width {
-        width: 80vw !important;
-        height: 700px !important;
-    }
-} */
 </style>
 
 <style>

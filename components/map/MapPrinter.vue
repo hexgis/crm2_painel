@@ -12,12 +12,8 @@
             v-model="dialogPrint"
             persistent
             transition="dialog-transition"
-            :overlay="false"
-            class="dialog-width-map-printer"
-            max-width="1123px"
+            max-width="100vw"
         >
-            <!-- :width="currentStep == 2 ? '100vw' : ''"
-            class="dialog-width-map-printer" -->
             <v-toolbar dark color="secondary">
                 <h3>{{ $t('print-dialog-label') }}</h3>
                 <v-spacer></v-spacer>
@@ -68,14 +64,15 @@
                         </v-container>
                     </v-stepper-content>
                     <v-stepper-content step="2" class="ma-1 pa-1">
-                        <div id="printableMap">
-                            <v-container v-if="currentStep == 2">
+                        <v-container v-if="currentStep == 2">
+                            <div style="overflow-x: auto; overflow-y: auto">
                                 <MapForPrint
                                     :titleMap="titleMap"
                                     :leafSize="select"
+                                    id="printableMap"
                                 />
-                            </v-container>
-                        </div>
+                            </div>
+                        </v-container>
 
                         <div class="d-flex flex-row mx-2">
                             <v-btn text @click="currentStep--">
@@ -203,20 +200,4 @@ export default {
     display: none !important;
     visibility: hidden;
 }
-
-.dialog-width-map-printer {
-    width: 100vw !important;
-}
-
-/* @media (max-width: 959px) {
-    .button-print-map {
-        visibility: hidden !important;
-    }
-}
-
-@media (max-width: 1279px) {
-    .dialog-width-map-printer {
-        width: 100vw !important;
-    }
-} */
 </style>
