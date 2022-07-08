@@ -392,6 +392,7 @@ export default {
 
         loadFileMethod(type) {
             switch (type) {
+                case 'application/x-zip-compressed':
                 case 'application/zip':
                     return this.loadShpFile
                 case 'application/vnd.google-earth.kmz':
@@ -409,6 +410,7 @@ export default {
         readFile(file, fileReader) {
             switch (file.type) {
                 case 'application/zip':
+                case 'application/x-zip-compressed':
                 case 'application/vnd.google-earth.kmz':
                     return fileReader.readAsArrayBuffer(file)
                 case 'application/vnd.google-earth.kml+xml':
