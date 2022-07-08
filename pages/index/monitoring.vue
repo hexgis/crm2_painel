@@ -30,7 +30,7 @@
             </div>
         </v-container>
         <v-divider />
-        <div class="py-3">
+        <div>
             <MonitoringFilter @onSearch="search()" />
         </div>
         <div v-if="showFeatures && !isLoadingFeatures" class="px-4">

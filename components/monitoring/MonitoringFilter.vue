@@ -92,8 +92,8 @@
                     </v-btn>
                 </v-col>
             </v-row>
-            <div v-if="isLoadingFeatures" class="mt-4">
-                <v-row justify="center">
+            <div v-if="isLoadingFeatures" class="mt-1">
+                <v-row no-gutters justify="center">
                     <v-col cols="6">
                         <v-skeleton-loader type="table-cell@4" />
                     </v-col>
@@ -103,13 +103,13 @@
                         </div>
                     </v-col>
                 </v-row>
-                <v-divider class="mt-4"></v-divider>
+                <v-divider class="mt-1"></v-divider>
                 <div>
                     <v-skeleton-loader type="table-cell" />
                     <v-row
                         no-gutters
                         align="center"
-                        class="mb-2"
+                        class="mb-4"
                         v-for="n in 4"
                         :key="n"
                     >
@@ -122,7 +122,7 @@
                             />
                         </v-col>
 
-                        <v-col cols="4" class="mt-2">
+                        <v-col cols="10" class="mt-1">
                             <v-skeleton-loader type="text" />
                         </v-col>
                     </v-row>
@@ -142,6 +142,7 @@
                 v-if="
                     showFeatures && total && total.area_ha && !isLoadingFeatures
                 "
+                class="mt-2"
             >
                 <v-col cols="7" class="grey--text text--darken-2">
                     {{ $t('total-area-label') }}:
@@ -155,7 +156,11 @@
                     ha
                 </v-col>
             </v-row>
-            <v-row v-if="showFeatures && !isLoadingFeatures" align="center">
+            <v-row
+                v-if="showFeatures && !isLoadingFeatures"
+                align="center"
+                class="mt-2"
+            >
                 <v-col cols="4" class="grey--text text--darken-2">
                     {{ $t('opacity-label') }}
                 </v-col>
@@ -167,6 +172,7 @@
                 v-if="showFeatures && !isLoadingFeatures"
                 align="center"
                 justify="space-between"
+                class="mt-2"
             >
                 <v-col>
                     <span class="grey--text text--darken-2">
