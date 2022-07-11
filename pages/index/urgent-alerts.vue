@@ -15,7 +15,7 @@
         <AlertFilter @onSearch="search()" />
 
         <ShowDialog />
-        
+
         <div v-if="showFeatures" class="px-4">
             <v-divider class="mt-1"></v-divider>
             <p class="font-weight-regular pt-2">Legenda:</p>
@@ -54,17 +54,27 @@
                         color="accent"
                         @click="changeVisualizationStage('map')"
                     >
-                        <v-icon large>mdi-map</v-icon>
+                        <v-tooltip left>
+                            <template #activator="{ on }">
+                                <v-icon v-on="on" large>mdi-map</v-icon>
+                            </template>
+                            <span>Mapa</span>
+                        </v-tooltip>
                     </v-btn>
-                    <v-btn
+                    <!-- <v-btn
                         icon
                         color="accent"
                         @click="changeVisualizationStage('chart')"
                     >
                         <v-icon large>mdi-chart-box</v-icon>
-                    </v-btn>
+                    </v-btn> -->
                     <v-btn icon color="accent" @click="showTableAlert(true)">
-                        <v-icon large>mdi-table</v-icon>
+                        <v-tooltip left>
+                            <template #activator="{ on }">
+                                <v-icon v-on="on" large>mdi-table</v-icon>
+                            </template>
+                            <span>Tabela</span>
+                        </v-tooltip>
                     </v-btn>
                     <div class="d-none" v-if="tableDialogAlert">
                         <TableDialog
@@ -143,7 +153,7 @@ export default {
                 this.features.features.length > 0
             )
         },
-     
+
         showFeaturesAlert: {
             get() {
                 return this.$store.state['urgent-alerts'].showFeatures
@@ -153,7 +163,7 @@ export default {
                 this.$store.commit('urgent-alerts/setShowFeatures', value)
             },
         },
-        
+
         ...mapState('urgent-alerts', [
             'showFeatures',
             'features',
