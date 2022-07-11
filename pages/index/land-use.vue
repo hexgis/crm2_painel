@@ -56,17 +56,27 @@
                         color="accent"
                         @click="changeVisualizationStage('map')"
                     >
-                        <v-icon large>mdi-map</v-icon>
+                        <v-tooltip left>
+                            <template #activator="{ on }">
+                                <v-icon v-on="on" large>mdi-map</v-icon>
+                            </template>
+                            <span>Mapa</span>
+                        </v-tooltip>
                     </v-btn>
-                    <v-btn
+                    <!-- <v-btn
                         icon
                         color="accent"
                         @click="changeVisualizationStage('chart')"
                     >
                         <v-icon large>mdi-chart-box</v-icon>
-                    </v-btn>
+                    </v-btn> -->
                     <v-btn icon color="accent" @click="showTableLand(true)">
-                        <v-icon large>mdi-table</v-icon>
+                        <v-tooltip left>
+                            <template #activator="{ on }">
+                                <v-icon v-on="on" large>mdi-table</v-icon>
+                            </template>
+                            <span>Tabela</span>
+                        </v-tooltip>
                     </v-btn>
                     <div class="d-none" v-if="tableDialogLand">
                         <TableDialog
@@ -144,7 +154,7 @@ export default {
                 this.features.features.length > 0
             )
         },
-        
+
         showFeaturesLandUse: {
             get() {
                 return this.$store.state['land-use'].showFeatures
