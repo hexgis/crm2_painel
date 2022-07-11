@@ -208,10 +208,9 @@
                                         "
                                         width="13vw"
                                         alt="CorLayer"
-                                        class=""
                                     />
                                     <v-col>
-                                        <p>{{ layer.name }}</p>
+                                        <p class="ml-1">{{ layer.name }}</p>
                                     </v-col>
                                 </v-row>
                             </div>
@@ -233,10 +232,33 @@
                                         "
                                         width="13vw"
                                         alt="CorLayer"
-                                        class=""
                                     />
                                     <v-col>
-                                        <p>{{ layer.name }}</p>
+                                        <p class="ml-1">{{ layer.name }}</p>
+                                    </v-col>
+                                </v-row>
+                            </div>
+                        </div>
+                        <div v-if="showFeaturesSupportLayers">
+                            <div
+                                v-for="layer in supportLayersCategoryRaster"
+                                :key="layer.id"
+                            >
+                                <v-row
+                                    no-gutters
+                                    align="center"
+                                    v-if="layer.visible"
+                                >
+                                    <img
+                                        :src="
+                                            layer.wms.geoserver.preview_url +
+                                            layer.wms.geoserver_layer_name
+                                        "
+                                        width="13vw"
+                                        alt="CorLayer"
+                                    />
+                                    <v-col>
+                                        <p class="ml-1">{{ layer.name }}</p>
                                     </v-col>
                                 </v-row>
                             </div>
@@ -255,10 +277,9 @@
                                         "
                                         width="13vw"
                                         alt="CorLayer"
-                                        class=""
                                     />
                                     <v-col>
-                                        <p>{{ layer.name }}</p>
+                                        <p class="ml-1">{{ layer.name }}</p>
                                     </v-col>
                                 </v-row>
                             </div>
@@ -422,6 +443,7 @@ export default {
             'supportLayers',
             'supportLayersCategoryAntropismo',
             'supportLayersCategoryFire',
+            'supportLayersCategoryRaster',
         ]),
     },
 
