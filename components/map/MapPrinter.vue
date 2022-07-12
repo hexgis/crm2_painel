@@ -155,9 +155,6 @@ export default {
 
     methods: {
         async saveImage() {
-            let zoomControl = document.getElementsByClassName(
-                'leaflet-control-zoom'
-            )[0]
             this.loadingPrintImage = true
             try {
                 let nameImageDownaload = this.titleMap
@@ -166,6 +163,12 @@ export default {
                     bgcolor: 'white',
                 }
                 let node = document.getElementById('printableMap')
+                let infoControlRight = document.getElementsByClassName(
+                    'leaflet-control-attribution'
+                )[1]
+                if (window.navigator.userAgent.indexOf('Firefox') > -1) {
+                    infoControlRight.setAttribute('style', 'width: 110%')
+                }
                 await domtoimage.toJpeg(node, options).then(function (image) {
                     var link = document.createElement('a')
                     link.href = image
@@ -175,9 +178,11 @@ export default {
                     link.click()
                 })
                 this.loadingPrintImage = false
+                infoControlRight.setAttribute('style', 'width: 100%')
             } catch (error) {
                 alert('Ocorreu um erro ao gerar a imagem.')
                 this.loadingPrintImage = false
+                infoControlRight.setAttribute('style', 'width: 100%')
             }
         },
 

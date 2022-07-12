@@ -411,7 +411,7 @@ export default {
         valueNorthArrow: null,
 
         attribution:
-            '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | <strong style="color: red;">Mapa não oficial</strong>',
+            '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | <span style="color: red; font-weight: bold; width: 100%">Mapa não oficial</span>',
         optionsMap: {
             name: 'printMap',
             zoomControl: false,
@@ -559,9 +559,5 @@ p {
 .north-arrow:after {
     height: 35px;
     width: 30px;
-}
-.leaflet-control-attribution {
-    white-space: nowrap !important;
-    inline-size: min-content !important;
 }
 </style>
