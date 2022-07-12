@@ -48,7 +48,7 @@
             ></v-select>
         </v-row>
 
-        <v-row>
+        <v-row no-gutters align="center">
             <v-col v-show="showFeatures">
                 <v-btn
                     color="accent"
@@ -71,10 +71,44 @@
                 </v-btn>
             </v-col>
         </v-row>
+        <div v-if="isLoadingFeatures" class="mt-4">
+            <v-row justify="center">
+                <v-col cols="6">
+                    <v-skeleton-loader type="table-cell@4" />
+                </v-col>
+                <v-col cols="6">
+                    <div class="d-flex justify-end">
+                        <v-skeleton-loader type="table-cell@4" />
+                    </div>
+                </v-col>
+            </v-row>
+            <v-divider class="mt-1"></v-divider>
+            <div>
+                <v-skeleton-loader type="table-cell" />
+                <v-row
+                    no-gutters
+                    align="center"
+                    class="mb-4"
+                    v-for="n in 5"
+                    :key="n"
+                >
+                    <v-col cols="1">
+                        <v-skeleton-loader
+                            width="20"
+                            height="20"
+                            tile
+                            type="avatar"
+                        />
+                    </v-col>
 
-        <v-divider v-if="showFeatures" class="mt-8 mb-5" />
+                    <v-col cols="4" class="mt-1">
+                        <v-skeleton-loader type="text" />
+                    </v-col>
+                </v-row>
+            </div>
+        </div>
 
-        <v-row v-if="total" class="px-3 py-1">
+        <v-row v-if="total && !isLoadingFeatures" class="px-3 py-1 mt-7">
             <v-row v-if="showFeatures && total && total.area_ha">
                 <v-col cols="7" class="grey--text text--darken-2">
                     {{ $t('polygon-label') }}:
@@ -96,8 +130,8 @@
             </v-row>
         </v-row>
 
-        <v-row v-if="showFeatures" align="center">
-            <v-col cols="4" class="grey--text text--darken-2">
+        <v-row v-if="showFeatures && !isLoadingFeatures" align="center">
+            <v-col cols="4" class="grey--text text--darken-2 mt-1">
                 {{ $t('opacity-label') }}
             </v-col>
             <v-col cols="8">
@@ -109,7 +143,11 @@
                 />
             </v-col>
         </v-row>
-        <v-row v-if="showFeatures" align="center" justify="space-between">
+        <v-row
+            v-if="showFeatures && !isLoadingFeatures"
+            align="center"
+            justify="space-between"
+        >
             <v-col>
                 <span class="grey--text text--darken-2">
                     {{ $t('heat-map-label') }}

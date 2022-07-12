@@ -14,10 +14,12 @@
 
         <FunaiFilter @onSearch="search()" />
 
-        <div v-if="showFeatures" class="px-4">
-            <v-divider class="mt-1"></v-divider>
-            <p class="font-weight-regular pt-2">Legenda:</p>
-            <v-col>
+        <div v-if="showFeatures && !isLoadingFeatures" class="px-4">
+            <v-divider></v-divider>
+            <p class="font-weight-regular pt-2 grey--text text--darken-2">
+                Legenda:
+            </p>
+            <v-col class="grey--text text--darken-2">
                 <v-row class="mb-2">
                     <v-icon class="mr-2" color="#9400D3">mdi-square</v-icon>
                     Muito Alta
@@ -167,6 +169,7 @@ export default {
             'tableDialogPriority',
             'isLoadingTable',
             'isLoadingCSV',
+            'isLoadingFeatures',
             'total',
         ]),
     },
