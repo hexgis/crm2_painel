@@ -16,10 +16,12 @@
 
         <ShowDialog />
 
-        <div v-if="showFeatures" class="px-4">
+        <div v-if="showFeatures && !isLoadingFeatures" class="px-4">
             <v-divider class="mt-1"></v-divider>
-            <p class="font-weight-regular pt-2">Legenda:</p>
-            <v-col>
+            <p class="font-weight-regular pt-2 grey--text text--darken-2">
+                Legenda:
+            </p>
+            <v-col class="grey--text text--darken-2">
                 <v-row class="mb-2">
                     <v-icon class="mr-2" color="#965213">mdi-square</v-icon>
                     CR
@@ -173,6 +175,7 @@ export default {
             'tableDialogAlert',
             'isLoadingTable',
             'isLoadingCSV',
+            'isLoadingFeatures',
             'total',
         ]),
     },

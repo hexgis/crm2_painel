@@ -30,13 +30,15 @@
             </div>
         </v-container>
         <v-divider />
-        <div class="py-3">
+        <div>
             <MonitoringFilter @onSearch="search()" />
         </div>
-        <v-divider />
-        <div v-if="showFeatures" class="px-4">
-            <p class="font-weight-regular pt-2">Legenda:</p>
-            <v-col>
+        <div v-if="showFeatures && !isLoadingFeatures" class="px-4">
+            <v-divider></v-divider>
+            <p class="font-weight-regular pt-2 grey--text text--darken-2">
+                Legenda:
+            </p>
+            <v-col class="grey--text text--darken-2">
                 <v-row class="mb-2">
                     <v-icon class="mr-2" color="#990099">mdi-square</v-icon>
                     Desmatamento em Regeneração
@@ -224,14 +226,12 @@ export default {
             'tableDialogMonitoring',
             'tableMonitoring',
             'isLoadingCSVMonitoring',
+            'isLoadingFeatures',
         ]),
     },
 
     methods: {
         search() {
-            this.getFeatures()
-            this.getDataTableMonitoring()
-
             if (this.tableDialogMonitoring) {
                 this.checkNewFilters = true
                 this.getDataTableMonitoring()

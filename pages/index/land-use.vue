@@ -14,10 +14,12 @@
 
         <LandUseFilter @onSearch="search()" />
 
-        <div v-if="showFeaturesLandUse" class="px-4">
+        <div v-if="showFeaturesLandUse && !isLoadingFeatures" class="px-4">
             <v-divider class="mt-1"></v-divider>
-            <p class="font-weight-regular pt-2">Legenda:</p>
-            <v-col>
+            <p class="font-weight-regular pt-2 grey--text text--darken-2">
+                Legenda:
+            </p>
+            <v-col class="grey--text text--darken-2">
                 <v-row class="mb-2">
                     <v-icon class="mr-2" color="#ffff00">mdi-square</v-icon>
                     Agropecuária
@@ -176,6 +178,7 @@ export default {
             'params',
             'isLoadingTable',
             'isLoadingCSV',
+            'isLoadingFeatures',
         ]),
         ...mapState('priority', ['visualizationStage']),
     },
