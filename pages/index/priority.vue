@@ -65,13 +65,14 @@
                             <span>Mapa</span>
                         </v-tooltip>
                     </v-btn>
-                    <!-- <v-btn
+                    <v-btn
                         icon
+                        disabled
                         color="accent"
                         @click="changeVisualizationStage('chart')"
                     >
                         <v-icon large>mdi-chart-box</v-icon>
-                    </v-btn> -->
+                    </v-btn>
                     <v-btn icon color="accent" @click="showTablePriority(true)">
                         <v-tooltip left>
                             <template #activator="{ on }">
