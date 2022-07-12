@@ -67,9 +67,10 @@
                         <v-container v-if="currentStep == 2">
                             <div style="overflow-x: auto; overflow-y: auto">
                                 <MapForPrint
+                                    id="printableMap"
+                                    class="pa-1"
                                     :titleMap="titleMap"
                                     :leafSize="select"
-                                    id="printableMap"
                                 />
                             </div>
                         </v-container>
