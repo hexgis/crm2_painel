@@ -73,25 +73,25 @@ export default {
                 weight: 2.5,
                 color: '#965213',
                 fill: true,
-                fillOpacity: 1,
+                fillOpacity: null,
             },
             DR: {
                 weight: 2.5,
                 color: '#337f1e',
                 fill: true,
-                fillOpacity: 1,
+                fillOpacity: null,
             },
             FF: {
                 weight: 2.5,
                 color: '#ba1a1a',
                 fill: true,
-                fillOpacity: 1,
+                fillOpacity: null,
             },
             DG: {
                 weight: 2.5,
                 color: '#e0790b',
                 fill: true,
-                fillOpacity: 1,
+                fillOpacity: null,
             },
         },
     }),
@@ -144,6 +144,13 @@ export default {
 
     methods: {
         vectorGridStyleFunction(no_estagio) {
+            Object.keys(this.style).forEach((item) => {
+                Object.keys(this.style[item]).forEach((i) => {
+                    if (i == 'fillOpacity') {
+                        this.style[item][i] = this.opacity / 100
+                    }
+                })
+            })
             switch (no_estagio) {
                 case 'CR':
                     return this.style.CR
