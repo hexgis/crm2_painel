@@ -54,9 +54,11 @@ export const mutations = {
     clearFeatures(state) {
         state.features = null
     },
+    
     setTotal(state, total) {
         state.total = total
     },
+
     setVisualizationStage(state, visualizationStage) {
         state.visualizationStage = visualizationStage
     },
@@ -68,6 +70,7 @@ export const mutations = {
     setLoadingFeatures(state, payload) {
         state.isLoadingFeatures = payload
     },
+
     setFilterOptions(state, data) {
         state.filterOptions = data
     },
@@ -75,6 +78,7 @@ export const mutations = {
     setOpacity(state, opacity) {
         state.opacity = opacity
     },
+
     setDownloadTable(state, tableCSVLandUse) {
         state.tableCSVLandUse = tableCSVLandUse
     },
@@ -82,9 +86,11 @@ export const mutations = {
     setHeatMap(state, heatMap) {
         state.heatMap = heatMap
     },
+
     setLoadingCSV(state, payload) {
         state.isLoadingCSV = payload
     },
+
     setTable(state, tableLandUse) {
         state.tableLandUse = tableLandUse
     },
@@ -152,6 +158,7 @@ export const actions = {
             commit('setLoadingGeoJson', false)
         }
     },
+
     async getFilterOptions({ commit }) {
         const regional_coordinators = await this.$api.$get('funai/cr/')
         const data = {}
@@ -191,7 +198,6 @@ export const actions = {
                 ...state.filterOptions,
                 year: years
         })
-
     }
     },
     
@@ -241,6 +247,7 @@ export const actions = {
             commit('setLoadingTable', false)
         }
     },
+
     async downloadTableLandUse({ commit, state, rootGetters }) {
         commit('setLoadingCSV', true)
 
@@ -293,6 +300,7 @@ export const actions = {
             commit('setLoadingCSV', false)
         }
     },
+
     async downloadGeoJsonLandUse({ commit, state, rootGetters }) {
         commit('setLoadingGeoJson', true)
 

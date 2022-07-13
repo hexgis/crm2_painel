@@ -210,14 +210,17 @@ export default {
             errorAno: false,
         }
     },
+
     watch: {
         'filters.cr'(value) {
             this.populateTiOptions(value)
         },
+
         'filters.ti'(value) {
             this.populateYearsOptions(value)
         },
     },
+
     computed: {
         opacity: {
             get() {
@@ -283,6 +286,7 @@ export default {
             this.setFilters(this.filters)
             this.$emit('onSearch')
         },
+        
         ...mapMutations('land-use', ['setFilters']),
         ...mapActions('land-use', [
             'getFilterOptions',
