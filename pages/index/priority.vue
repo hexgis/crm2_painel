@@ -14,10 +14,12 @@
 
         <FunaiFilter @onSearch="search()" />
 
-        <div v-if="showFeatures" class="px-4">
-            <v-divider class="mt-1"></v-divider>
-            <p class="font-weight-regular pt-2">Legenda:</p>
-            <v-col>
+        <div v-if="showFeatures && !isLoadingFeatures" class="px-4">
+            <v-divider></v-divider>
+            <p class="font-weight-regular pt-2 grey--text text--darken-2">
+                Legenda:
+            </p>
+            <v-col class="grey--text text--darken-2">
                 <v-row class="mb-2">
                     <v-icon class="mr-2" color="#9400D3">mdi-square</v-icon>
                     Muito Alta
@@ -58,17 +60,28 @@
                         color="accent"
                         @click="changeVisualizationStage('map')"
                     >
-                        <v-icon large>mdi-map</v-icon>
+                        <v-tooltip left>
+                            <template #activator="{ on }">
+                                <v-icon v-on="on" large>mdi-map</v-icon>
+                            </template>
+                            <span>Mapa</span>
+                        </v-tooltip>
                     </v-btn>
                     <v-btn
                         icon
+                        disabled
                         color="accent"
                         @click="changeVisualizationStage('chart')"
                     >
                         <v-icon large>mdi-chart-box</v-icon>
                     </v-btn>
                     <v-btn icon color="accent" @click="showTablePriority(true)">
-                        <v-icon large>mdi-table</v-icon>
+                        <v-tooltip left>
+                            <template #activator="{ on }">
+                                <v-icon v-on="on" large>mdi-table</v-icon>
+                            </template>
+                            <span>Tabela</span>
+                        </v-tooltip>
                     </v-btn>
                     <div class="d-none" v-if="tableDialogPriority">
                         <TableDialog
@@ -167,6 +180,7 @@ export default {
             'tableDialogPriority',
             'isLoadingTable',
             'isLoadingCSV',
+            'isLoadingFeatures',
             'total',
         ]),
     },

@@ -30,10 +30,34 @@
             </div>
         </v-container>
         <v-divider />
-        <div class="py-3">
+        <div>
             <MonitoringFilter @onSearch="search()" />
         </div>
-        <v-divider />
+        <div v-if="showFeaturesMonitoring && !isLoadingFeatures" class="px-4">
+            <v-divider></v-divider>
+            <p class="font-weight-regular pt-2 grey--text text--darken-2">
+                Legenda:
+            </p>
+            <v-col class="grey--text text--darken-2">
+                <v-row class="mb-2">
+                    <v-icon class="mr-2" color="#990099">mdi-square</v-icon>
+                    Desmatamento em Regeneração
+                </v-row>
+                <v-row class="mb-2">
+                    <v-icon class="mr-2" color="#b35900">mdi-square</v-icon>
+                    Fogo em Floresta
+                </v-row>
+                <v-row class="mb-2">
+                    <v-icon class="mr-2" color="#ff8000">mdi-square</v-icon>
+                    Degradação
+                </v-row>
+                <v-row class="mb-2">
+                    <v-icon class="mr-2" color="#ff3333">mdi-square</v-icon>
+                    Corte Raso
+                </v-row>
+                <v-spacer></v-spacer>
+            </v-col>
+        </div>
         <v-footer
             absolute
             class="priority-footer"
@@ -48,17 +72,28 @@
                         color="accent"
                         @click="changeVisualizationStage('map')"
                     >
-                        <v-icon large>mdi-map</v-icon>
+                        <v-tooltip left>
+                            <template #activator="{ on }">
+                                <v-icon v-on="on" large>mdi-map</v-icon>
+                            </template>
+                            <span>Mapa</span>
+                        </v-tooltip>
                     </v-btn>
                     <v-btn
                         icon
+                        disabled
                         color="accent"
                         @click="changeVisualizationStage('chart')"
                     >
                         <v-icon large>mdi-chart-box</v-icon>
                     </v-btn>
                     <v-btn icon color="accent" @click="showTableDialog(true)">
-                        <v-icon large>mdi-table</v-icon>
+                        <v-tooltip left>
+                            <template #activator="{ on }">
+                                <v-icon v-on="on" large>mdi-table</v-icon>
+                            </template>
+                            <span>Tabela</span>
+                        </v-tooltip>
                     </v-btn>
                     <div class="d-none" v-if="tableDialogMonitoring">
                         <TableDialog
@@ -197,14 +232,12 @@ export default {
             'tableDialogMonitoring',
             'tableMonitoring',
             'isLoadingCSVMonitoring',
+            'isLoadingFeatures',
         ]),
     },
 
     methods: {
         search() {
-            this.getFeatures()
-            this.getDataTableMonitoring()
-
             if (this.tableDialogMonitoring) {
                 this.checkNewFilters = true
                 this.getDataTableMonitoring()

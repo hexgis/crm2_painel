@@ -14,10 +14,12 @@
 
         <LandUseFilter @onSearch="search()" />
 
-        <div v-if="showFeaturesLandUse" class="px-4">
+        <div v-if="showFeaturesLandUse && !isLoadingFeatures" class="px-4">
             <v-divider class="mt-1"></v-divider>
-            <p class="font-weight-regular pt-2">Legenda:</p>
-            <v-col>
+            <p class="font-weight-regular pt-2 grey--text text--darken-2">
+                Legenda:
+            </p>
+            <v-col class="grey--text text--darken-2">
                 <v-row class="mb-2">
                     <v-icon class="mr-2" color="#ffff00">mdi-square</v-icon>
                     Agropecuária
@@ -56,17 +58,28 @@
                         color="accent"
                         @click="changeVisualizationStage('map')"
                     >
-                        <v-icon large>mdi-map</v-icon>
+                        <v-tooltip left>
+                            <template #activator="{ on }">
+                                <v-icon v-on="on" large>mdi-map</v-icon>
+                            </template>
+                            <span>Mapa</span>
+                        </v-tooltip>
                     </v-btn>
                     <v-btn
                         icon
+                        disabled
                         color="accent"
                         @click="changeVisualizationStage('chart')"
                     >
                         <v-icon large>mdi-chart-box</v-icon>
                     </v-btn>
                     <v-btn icon color="accent" @click="showTableLand(true)">
-                        <v-icon large>mdi-table</v-icon>
+                        <v-tooltip left>
+                            <template #activator="{ on }">
+                                <v-icon v-on="on" large>mdi-table</v-icon>
+                            </template>
+                            <span>Tabela</span>
+                        </v-tooltip>
                     </v-btn>
                     <div class="d-none" v-if="tableDialogLand">
                         <TableDialog
@@ -144,7 +157,7 @@ export default {
                 this.features.features.length > 0
             )
         },
-        
+
         showFeaturesLandUse: {
             get() {
                 return this.$store.state['land-use'].showFeatures
@@ -165,6 +178,7 @@ export default {
             'params',
             'isLoadingTable',
             'isLoadingCSV',
+            'isLoadingFeatures',
         ]),
         ...mapState('priority', ['visualizationStage']),
     },

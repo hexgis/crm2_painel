@@ -96,34 +96,6 @@
                     position="bottomleft"
                 />
 
-                <l-control
-                    :key="
-                        'logo-nation-' +
-                        (user.settings.map_scale_visible ? 'first' : 'second')
-                    "
-                    position="bottomleft"
-                    class="leaflet-logo-control"
-                >
-                    <div>
-                        <v-col class="pa-0 logo-hex">
-                            <a href="//cmr.funai.gov.br" target="_blank">
-                                <v-img
-                                    contain
-                                    width="60"
-                                    src="/img/logocmr-img.png"
-                                />
-                            </a>
-                            <a href="//funai.gov.br" target="_blank">
-                                <v-img
-                                    contain
-                                    width="60"
-                                    src="/img/funai.svg"
-                                />
-                            </a>
-                        </v-col>
-                    </div>
-                </l-control>
-
                 <l-geo-json
                     ref="interestArea"
                     :geojson="interestArea"
@@ -187,7 +159,7 @@
     },
     "pt-br": {
         "zoom-in": "Aproximar",
-        "zoom-out": "Reduzir"
+        "zoom-out": "Afastar"
     }
 }
 </i18n>
@@ -649,10 +621,6 @@ export default {
     color: #333
     margin-left: 0 !important
     margin-bottom: 0 !important
-
-.leaflet-logo-control
-    margin-left: 6px !important
-    margin-bottom: 15px
 
 .nation-logo-container
     margin-left: -3px
