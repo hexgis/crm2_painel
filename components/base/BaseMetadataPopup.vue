@@ -1,12 +1,17 @@
 <template>
     <v-card>
-        <v-card-text v-if="feature" class="px-10 pt-8 pb-10">
+        <v-tabs background-color="primary">
+            <v-tab>
+                {{ $t('polygons') }}
+            </v-tab>
+        </v-tabs>
+        <v-card-text v-if="feature" style="max-height: 312px; overflow-y: auto">
             <template v-for="(value, field) in feature">
                 <v-row
                     v-if="value"
                     :key="field"
                     :align="field.align"
-                    class="list-separator striped"
+                    class="mx-0 list-separator"
                     dense
                 >
                     <v-col cols="5" class="text-subtitle-2">
@@ -15,7 +20,7 @@
                         <span v-if="field === 'date_t1'">**</span>
                         :
                     </v-col>
-                    <v-col :title="value.length > 29 ? value : ''">
+                    <v-col :title="value.length > 29 ? value : ''" class="text-subtitle-2">
                         {{ value }}
                     </v-col>
                 </v-row>
@@ -51,11 +56,13 @@
 {
     "en": {
         "search-images": "Search Images",
+        "polygons": "Polygon",
         "t0-explanation": "Date T0*: last Landsat-8 image in which the vegetation coverage alteration still hadn't began",
         "t1-explanation": "Date T1**: satellite image date in which is possible to see the first visual alteration in vegetation cover"
     },
     "pt-br": {
         "search-images": "Visualizar Imagens",
+        "polygons": "Polígono",
         "t0-explanation": "Data T0*: última imagem Landsat-8 em que a alteração da cobertura vegetal ainda não havia sido iniciada",
         "t1-explanation": "Data T1**: data da imagem do satélite em que o é possivel ver a primeira aparição da alteração da cobertura vegetal"
     }
