@@ -168,7 +168,7 @@ export default {
                     'leaflet-control-attribution'
                 )[1]
                 if (window.navigator.userAgent.indexOf('Firefox') > -1) {
-                    infoControlRight.setAttribute('style', 'width: 110%')
+                    infoControlRight.setAttribute('style', 'width: 120%')
                 }
                 await domtoimage.toJpeg(node, options).then(function (image) {
                     var link = document.createElement('a')

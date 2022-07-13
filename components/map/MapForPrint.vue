@@ -560,4 +560,8 @@ p {
     height: 35px;
     width: 30px;
 }
+
+.leaflet-control-attribution {
+    white-space: nowrap !important;
+}
 </style>
