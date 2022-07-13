@@ -8,7 +8,7 @@
                     height="36"
                     width="36"
                     class="button-drawer"
-                    @click="removeAllFeatures(), OperationalSystemFile()"
+                    @click="removeAllFeatures()"
                     v-on="on"
                 >
                     <transition name="slide-x-file-drawer-button">
@@ -30,9 +30,8 @@
                     v-if="showOptions"
                     class="upload-options-drawer file-button"
                 >
-                    <div>
-                        <span>{{ AvailableTypes }}</span>
-                    </div>
+                    <span> {{ $t('upload-hint') }}</span>
+
                     <v-file-input
                         type="file"
                         hide-details
@@ -57,7 +56,7 @@
                                 <ConfirmButton
                                     icon="mdi-delete-outline"
                                     :icon-tooltip="$t('remove-feature-tooltip')"
-                                    @remove="remove(i)"
+                                    @confirm="remove(i)"
                                 />
                                 <v-tooltip top>
                                     <template v-slot:activator="{ on, attrs }">
@@ -75,6 +74,11 @@
                                     </template>
                                     <span>{{ $t('go-to-tooltip') }}</span>
                                 </v-tooltip>
+                                <ConfirmButton
+                                    icon="mdi-database-plus-outline"
+                                    :icon-tooltip="$t('database-tooltip')"
+                                    @confirm="saveIntoDb(i)"
+                                />
                             </div>
 
                             <span
@@ -172,20 +176,25 @@
     "en": {
         "go-to-tooltip": "Go to features",
         "remove-feature-tooltip": "Remove feature",
+        "database-tooltip": "Save into Database",
         "file-drawer": "Load a file",
+        "upload-hint": "SHP (ZIP), KML, KMZ, GPX, Json/GeoJson",
         "file-error-shapefile": "Problem reading Shapefile file.",
         "file-error-kmz": "Problem reading Kmz file.",
+        "file-error-parsing-gpx": "Found problems while parsing GPX file. Please, validate your file.",
         "file-error-parsing-kmlz": "Found problems while parsing KMZ/KML file. Please, validate your file",
         "file-error-general": "File type not acceptable on system.",
         "file-error-internal": "Internal Error: "
-
     },
     "pt-br": {
         "go-to-tooltip": "Ir para feições",
         "remove-feature-tooltip": "Remover feição",
+        "database-tooltip": "Salvar no Banco de Dados",
         "file-drawer": "Carregue um arquivo",
+        "upload-hint": "SHP (ZIP), KML, KMZ, GPX, Json/GeoJson",
         "file-error-shapefile": "Problema ao ler o arquivo Shapefile",
         "file-error-kmz": "Problema ao ler o arquivo KMZ.",
+        "file-error-parsing-gpx": "Problemas encontrados durante a análise do arquivo GPX. Por favor, valide o arquivo.",
         "file-error-parsing-kmlz": "Problemas encontrados durante a análise do arquivo KMZ/KML. Por favor, valide o arquivo",
         "file-error-general": "Arquivo não aceito pelo sistema.",
         "file-error-internal": "Erro interno: "
@@ -198,29 +207,24 @@ import { mapMutations, mapState, mapActions } from 'vuex'
 import shp from 'shpjs'
 import omnivore from 'leaflet-omnivore'
 import JSZip from 'jszip'
-import ConfirmButton from '@/components/confirmButton/ConfirmButton.vue'
-
+import ConfirmButton from '@/components/confirmbutton/ConfirmButton.vue'
 export default {
     components: {
         ConfirmButton,
     },
-
     props: {
         map: {
             type: Object,
             default: null,
         },
-
         files: {
             type: Array,
             required: true,
         },
     },
-
     data() {
         return {
             showOptions: false,
-            AvailableTypes: '',
             showFileOptions: {
                 type: Number,
                 default: null,
@@ -233,7 +237,6 @@ export default {
         },
         ...mapState('map', ['fileList']),
     },
-
     methods: {
         setFileColor(fileIndex, color) {
             this.changeStyle({
@@ -242,7 +245,6 @@ export default {
                 opacity: this.fileList[fileIndex].opacity,
             })
         },
-
         setFileOpacity(fileIndex, opacity) {
             this.changeStyle({
                 fileIndex,
@@ -250,19 +252,15 @@ export default {
                 color: this.fileList[fileIndex].color,
             })
         },
-
         openFileOptions(file) {
             if (file === this.showFileOptions) this.showFileOptions = null
             else this.showFileOptions = file
         },
-
         flyToBound(feature) {
             const bounds = this.$L.geoJSON(feature).getBounds()
-
             if (bounds.getNorthEast() && bounds.getSouthWest())
                 this.map.flyToBounds(bounds)
         },
-
         hasGeometryOnFeature(feature, geometries) {
             return (
                 feature.features.some((f) =>
@@ -270,39 +268,34 @@ export default {
                 ) || false
             )
         },
-
         remove(index) {
             this.files.splice(index, 1)
             this.removeFileFromMap(index)
         },
-
+        saveIntoDb(index) {
+            this.saveToDatabase({ index })
+        },
         removeAllFeatures() {
             this.showOptions = !this.showOptions
         },
-
         addToMap(data, name) {
             const isPoint = this.hasGeometryOnFeature(data, [
                 'Point',
                 'MultiPoint',
             ])
-
             const file = {
                 name,
                 feature: data,
                 color: this.getRandomColor(),
                 opacity: isPoint ? 0.8 : 0,
             }
-
             this.files.push(file)
-
             this.addFileToMap(file)
         },
-
         rgbToHex(color) {
             const hexColor = color.toString(16)
             return hexColor.length < 2 ? `0${hexColor}` : hexColor
         },
-
         getRandomColor() {
             const COLORDIFF = 40
             const value = [
@@ -310,11 +303,9 @@ export default {
                 Math.random() * 255,
                 Math.random() * 255,
             ]
-
             const red = value[0] > COLORDIFF ? value[0] - COLORDIFF : 0
             const green = value[1] > COLORDIFF ? value[1] - COLORDIFF : 0
             const blue = value[2] > COLORDIFF ? value[2] - COLORDIFF : 0
-
             return (
                 '#' +
                 this.rgbToHex(parseInt(red)) +
@@ -322,14 +313,6 @@ export default {
                 this.rgbToHex(parseInt(blue))
             )
         },
-
-        OperationalSystemFile() {
-            if (navigator.userAgent.indexOf('Win') != -1)
-                this.AvailableTypes = 'SHP(.zip),KML, KMZ, JSON, GeoJson'
-            if (navigator.userAgent.indexOf('Linux') != -1)
-                this.AvailableTypes = 'SHP(.zip), KML, KMZ, JSON, GeoJson'
-        },
-
         fileError(error, message) {
             this.$emit('loads')
             this.$store.commit('alert/addAlert', {
@@ -342,15 +325,12 @@ export default {
                 }`,
             })
         },
-
         loadGeojsonFile(evt, name) {
-            const json = JSON.parse(evt.target.result)
-
+            const json = JSON.parse(evt.result)
             this.addToMap(json, name)
         },
-
         loadShpFile(evt, name) {
-            shp(evt.target.result)
+            shp(evt.result)
                 .then((data) => {
                     this.addToMap(this.$L.geoJSON(data).toGeoJSON(), name)
                 })
@@ -358,19 +338,21 @@ export default {
                     this.fileError(error, this.$i18n.t('file-error-shapefile'))
                 )
         },
-
         loadKmlFile(evt, name) {
-            const geoJson = omnivore.kml.parse(evt.target.result).toGeoJSON()
-
+            const geoJson = omnivore.kml.parse(evt.result).toGeoJSON()
             if (geoJson.features && geoJson.features.length)
                 this.addToMap(geoJson, name)
             else this.fileError(null, this.$i18n.t('file-error-parsing-kmlz'))
         },
-
+        loadGpxFile(evt, name) {
+            const geoJson = omnivore.gpx.parse(evt.result).toGeoJSON()
+            if (geoJson.features && geoJson.features.length)
+                this.addToMap(geoJson, name)
+            else this.fileError(null, this.$i18n.t('file-error-parsing-gpx'))
+        },
         loadKmzFile(evt, name) {
             const zip = new JSZip()
-
-            zip.loadAsync(evt.target.result)
+            zip.loadAsync(evt.result)
                 .then((e) => {
                     const firstFile = Object.keys(e.files)[0]
                     return e.file(firstFile).async('string')
@@ -389,33 +371,42 @@ export default {
                     this.fileError(error, this.$i18n.t('file-error-kmz'))
                 )
         },
-
         loadFileMethod(type) {
             switch (type) {
-                case 'application/x-zip-compressed':
                 case 'application/zip':
+                case 'application/x-zip-compressed':
                     return this.loadShpFile
                 case 'application/vnd.google-earth.kmz':
+                case 'kmz':
                     return this.loadKmzFile
+                case 'application/gpx+xml':
+                case 'gpx':
+                    return this.loadGpxFile
                 case 'application/vnd.google-earth.kml+xml':
+                case 'kml':
                     return this.loadKmlFile
                 case 'application/geo+json':
                 case 'application/json':
+                case 'geojson':
                     return this.loadGeojsonFile
                 default:
                     return null
             }
         },
-
-        readFile(file, fileReader) {
-            switch (file.type) {
+        readFile(file, fileReader, type) {
+            switch (type) {
                 case 'application/zip':
                 case 'application/x-zip-compressed':
                 case 'application/vnd.google-earth.kmz':
+                case 'kmz':
                     return fileReader.readAsArrayBuffer(file)
+                case 'application/gpx+xml':
                 case 'application/vnd.google-earth.kml+xml':
                 case 'application/geo+json':
                 case 'application/json':
+                case 'geojson':
+                case 'kml':
+                case 'gpx':
                     return fileReader.readAsText(file)
                 default:
                     return this.fileError(
@@ -424,21 +415,24 @@ export default {
                     )
             }
         },
-
         loadFile(f) {
+            var type = null
             this.$emit('loading')
-
             const reader = new FileReader()
+            if (!f.type) {
+                type = f.name.substr(f.name.indexOf('.')).replace('.', '')
+            } else {
+                type = f.type
+            }
             reader.onload = (e) => this.$emit('load', e.target.result)
-
-            const loadMethod = this.loadFileMethod(f.type)
-
-            reader.addEventListener('load', (evt) => loadMethod(evt, f.name))
-
-            this.readFile(f, reader)
+            const loadMethod = this.loadFileMethod(type)
+            reader.addEventListener('load', (evt) =>
+                loadMethod(evt.target, f.name)
+            )
+            this.readFile(f, reader, type)
         },
         ...mapMutations('map', ['addFileToMap', 'removeFileFromMap']),
-        ...mapActions('map', ['changeStyle']),
+        ...mapActions('map', ['changeStyle', 'saveToDatabase']),
     },
 }
 </script>
@@ -447,52 +441,45 @@ export default {
 .file-option-class
     position: relative
     top: 36px
-
 .slide-up-class
     display: flex
     justify-content: center
     padding-bottom: 5px
     cursor: pointer
-
 .file-name-span
     width: 169px
     white-space: nowrap
     overflow: hidden
     text-overflow: ellipsis
-
 .file-button-area
     display: flex
     flex-direction: row
     padding-right: 10px
-
 .go-to-icon
-    transform: rotate(45deg)
-    opacity: 0.4
-
+    > span
+        margin-top: -3px
+        > .v-icon
+            transform: rotate(45deg)
+            opacity: 0.4
 .go-to-icon:hover
     opacity: 1
-
 .file-legend
     width: 100%
     height: 100%
     border-radius: var(--radius)
     background-color: var(--background-color)
     border: 2px solid var(--color)
-
 .right-icon-class
     width: 16px
     height: 16px
     margin-left: 20px
     display: flex
     cursor: pointer
-
 .back-icon
     transform: rotate(-90deg)
-
 .drawer-block
     margin-left: -18px
     overflow: hidden
-
     .upload-options-drawer
         position: relative
         z-index: 2
@@ -504,17 +491,14 @@ export default {
         background-color: white
         transition: ease all 0.6s
         padding-left: 35px
-
         span
             font-size: 15px
             margin-right: 10px
             opacity: 0.27
             user-select: none
-
         div
             margin: 0px !important
             padding: 0px !important
-
         .v-input
             display: flex
             align-items: center
@@ -525,11 +509,9 @@ export default {
             height: 36px
             width: 36px
             max-width: 36px
-
         .v-icon
             color: #111
             padding: 5px
-
     .file-list
         display: flex
         flex-direction: column
@@ -538,12 +520,10 @@ export default {
         margin: 5px 10px 0 50px
         padding-bottom: 5px
         transition: ease all 0.6s
-
         .file-list-box
             display: flex
             flex-direction: column
             overflow: hidden
-
             .file-block
                 display: flex
                 justify-content: space-between
@@ -556,40 +536,31 @@ export default {
                 padding: 1px 20px 1px 0
                 margin: 2px 0
                 transition: 0.2s all ease
-
+                min-height: 42px
                 span
                     font-weight: bold
                     font-size: 14px
                     user-select: none
-
             .file-option
                 background-color: white
                 margin: 2px 5px 5px 40px
                 padding: 5px
                 border-radius: 10px
                 max-width: 260px
-
 .slide-x-file-drawer-enter-active, .slide-x-file-drawer-leave-active
     transition: all 0.4s ease-out !important
-
 .slide-x-file-drawer-enter, .slide-x-file-drawer-leave-to
     transform: translateX(-100%)
-
 .slide-y-file-drawer-enter-active, .slide-y-file-drawer-leave-active
     transition: all 0.4s ease-out !important
-
 .slide-y-file-drawer-enter, .slide-y-file-drawer-leave-to
     transform: translateY(-200%)
-
 .slide-x-file-drawer-leave-active
     transition-delay: 0.3s !important
-
 .slide-y-file-drawer-enter-active
     transition-delay: 0.2s !important
-
 .slide-y-file-option-drawer-enter, .slide-y-file-option-drawer-leave-to
     transform: translateY(-100%)
-
 .slide-y-file-option-drawer-enter-active, .slide-y-file-option-drawer-leave-active
     transition: all 0.2s ease !important
 </style>
