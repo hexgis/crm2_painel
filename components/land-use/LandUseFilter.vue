@@ -28,7 +28,7 @@
                     item-text="no_ti"
                     item-value="co_funai"
                     hide-details
-                    required="true"
+                    required
                     multiple
                 >
                 </v-select>
@@ -120,22 +120,6 @@
             </v-col>
         </v-row>
     </v-col>
-
-    <!-- <div class="py-11">
-                <template v-for="stage in stageList">
-                    <v-row
-                        :key="stage.identifier"
-                        v-if="showFeatures"
-                        class="layer-legend"
-                        :style="{
-                            '--color': stageColor[stage.identifier],
-                            '--back-color': `${stageColor[stage.identifier]}AA`,
-                        }"
-                    >
-                        {{ stage.name }}
-                    </v-row>
-                </template>
-            </div> -->
 </template>
 
 <i18n>
@@ -192,6 +176,9 @@ export default {
         'filters.cr'(value) {
             this.populateTiOptions(value)
         },
+        'filters.ti'(value) {
+            this.populateYearsOptions(value)
+        },
     },
     computed: {
         opacity: {
@@ -230,6 +217,11 @@ export default {
         populateTiOptions(cr) {
             if (cr) this.$store.dispatch('land-use/getTiOptions', cr)
             else this.filters.ti = null
+        },
+
+        populateYearsOptions(ti) {
+            if (ti) this.$store.dispatch('land-use/getYearsOptions', ti)
+            else this.filters.year = null
         },
 
         search() {
