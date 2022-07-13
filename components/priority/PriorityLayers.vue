@@ -59,31 +59,31 @@ export default {
                 weight: 2.5,
                 color: '#008000', // Green
                 fill: true,
-                fillOpacity: 1,
+                fillOpacity: null,
             },
             low: {
                 weight: 2.5,
                 color: '#FFD700', // Gold
                 fill: true,
-                fillOpacity: 1,
+                fillOpacity: null,
             },
             medium: {
                 weight: 2.5,
                 color: '#FF8C00', // DarkOrange
                 fill: true,
-                fillOpacity: 1,
+                fillOpacity: null,
             },
             high: {
                 weight: 2.5,
                 color: '#FF0000', // red
                 fill: true,
-                fillOpacity: 1,
+                fillOpacity: null,
             },
             highest: {
                 weight: 2.5,
                 color: '#9400D3', // DarkViolet
                 fill: true,
-                fillOpacity: 1,
+                fillOpacity: null,
             },
         },
     }),
@@ -139,6 +139,14 @@ export default {
 
     methods: {
         vectorGridStyleFunction(priority) {
+            Object.keys(this.style).forEach((item) => {
+                Object.keys(this.style[item]).forEach((i) => {
+                    if (i == 'fillOpacity') {
+                        this.style[item][i] = this.opacity / 100
+                    }
+                })
+            })
+
             switch (priority) {
                 case 'Muito Alta':
                     return this.style.highest
@@ -212,6 +220,7 @@ export default {
         },
 
         setMonitoringStyle(feature) {
+            console.log(this.style)
             const style = this.style
             style.fillOpacity = this.opacity / 100
 
