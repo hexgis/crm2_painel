@@ -56,7 +56,7 @@
                                 <ConfirmButton
                                     icon="mdi-delete-outline"
                                     :icon-tooltip="$t('remove-feature-tooltip')"
-                                    @confirm="remove(i)"
+                                    @remove="remove(i)"
                                 />
                                 <v-tooltip top>
                                     <template v-slot:activator="{ on, attrs }">
@@ -74,11 +74,6 @@
                                     </template>
                                     <span>{{ $t('go-to-tooltip') }}</span>
                                 </v-tooltip>
-                                <ConfirmButton
-                                    icon="mdi-database-plus-outline"
-                                    :icon-tooltip="$t('database-tooltip')"
-                                    @confirm="saveIntoDb(i)"
-                                />
                             </div>
 
                             <span
@@ -207,11 +202,13 @@ import { mapMutations, mapState, mapActions } from 'vuex'
 import shp from 'shpjs'
 import omnivore from 'leaflet-omnivore'
 import JSZip from 'jszip'
-import ConfirmButton from '@/components/confirmbutton/ConfirmButton.vue'
+import ConfirmButton from '@/components/confirmButton/ConfirmButton.vue'
 export default {
+
     components: {
         ConfirmButton,
     },
+
     props: {
         map: {
             type: Object,
@@ -222,6 +219,7 @@ export default {
             required: true,
         },
     },
+
     data() {
         return {
             showOptions: false,
@@ -231,12 +229,14 @@ export default {
             },
         }
     },
+
     computed: {
         fileLayer() {
             return this.$L.geoJSON(this.file)
         },
         ...mapState('map', ['fileList']),
     },
+
     methods: {
         setFileColor(fileIndex, color) {
             this.changeStyle({
@@ -245,6 +245,7 @@ export default {
                 opacity: this.fileList[fileIndex].opacity,
             })
         },
+
         setFileOpacity(fileIndex, opacity) {
             this.changeStyle({
                 fileIndex,
@@ -252,15 +253,18 @@ export default {
                 color: this.fileList[fileIndex].color,
             })
         },
+
         openFileOptions(file) {
             if (file === this.showFileOptions) this.showFileOptions = null
             else this.showFileOptions = file
         },
+
         flyToBound(feature) {
             const bounds = this.$L.geoJSON(feature).getBounds()
             if (bounds.getNorthEast() && bounds.getSouthWest())
                 this.map.flyToBounds(bounds)
         },
+
         hasGeometryOnFeature(feature, geometries) {
             return (
                 feature.features.some((f) =>
@@ -268,16 +272,20 @@ export default {
                 ) || false
             )
         },
+
         remove(index) {
             this.files.splice(index, 1)
             this.removeFileFromMap(index)
         },
+
         saveIntoDb(index) {
             this.saveToDatabase({ index })
         },
+
         removeAllFeatures() {
             this.showOptions = !this.showOptions
         },
+
         addToMap(data, name) {
             const isPoint = this.hasGeometryOnFeature(data, [
                 'Point',
@@ -292,10 +300,12 @@ export default {
             this.files.push(file)
             this.addFileToMap(file)
         },
+
         rgbToHex(color) {
             const hexColor = color.toString(16)
             return hexColor.length < 2 ? `0${hexColor}` : hexColor
         },
+
         getRandomColor() {
             const COLORDIFF = 40
             const value = [
@@ -313,6 +323,7 @@ export default {
                 this.rgbToHex(parseInt(blue))
             )
         },
+
         fileError(error, message) {
             this.$emit('loads')
             this.$store.commit('alert/addAlert', {
@@ -325,10 +336,12 @@ export default {
                 }`,
             })
         },
+
         loadGeojsonFile(evt, name) {
             const json = JSON.parse(evt.result)
             this.addToMap(json, name)
         },
+
         loadShpFile(evt, name) {
             shp(evt.result)
                 .then((data) => {
@@ -338,18 +351,21 @@ export default {
                     this.fileError(error, this.$i18n.t('file-error-shapefile'))
                 )
         },
+
         loadKmlFile(evt, name) {
             const geoJson = omnivore.kml.parse(evt.result).toGeoJSON()
             if (geoJson.features && geoJson.features.length)
                 this.addToMap(geoJson, name)
             else this.fileError(null, this.$i18n.t('file-error-parsing-kmlz'))
         },
+
         loadGpxFile(evt, name) {
             const geoJson = omnivore.gpx.parse(evt.result).toGeoJSON()
             if (geoJson.features && geoJson.features.length)
                 this.addToMap(geoJson, name)
             else this.fileError(null, this.$i18n.t('file-error-parsing-gpx'))
         },
+
         loadKmzFile(evt, name) {
             const zip = new JSZip()
             zip.loadAsync(evt.result)
@@ -371,6 +387,7 @@ export default {
                     this.fileError(error, this.$i18n.t('file-error-kmz'))
                 )
         },
+
         loadFileMethod(type) {
             switch (type) {
                 case 'application/zip':
@@ -393,6 +410,7 @@ export default {
                     return null
             }
         },
+
         readFile(file, fileReader, type) {
             switch (type) {
                 case 'application/zip':
@@ -415,6 +433,7 @@ export default {
                     )
             }
         },
+
         loadFile(f) {
             var type = null
             this.$emit('loading')
@@ -432,7 +451,7 @@ export default {
             this.readFile(f, reader, type)
         },
         ...mapMutations('map', ['addFileToMap', 'removeFileFromMap']),
-        ...mapActions('map', ['changeStyle', 'saveToDatabase']),
+        ...mapActions('map', ['changeStyle']),
     },
 }
 </script>
