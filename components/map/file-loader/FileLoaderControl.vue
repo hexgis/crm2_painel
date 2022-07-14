@@ -171,7 +171,6 @@
     "en": {
         "go-to-tooltip": "Go to features",
         "remove-feature-tooltip": "Remove feature",
-        "database-tooltip": "Save into Database",
         "file-drawer": "Load a file",
         "upload-hint": "SHP (ZIP), KML, KMZ, GPX, Json/GeoJson",
         "file-error-shapefile": "Problem reading Shapefile file.",
@@ -184,7 +183,6 @@
     "pt-br": {
         "go-to-tooltip": "Ir para feições",
         "remove-feature-tooltip": "Remover feição",
-        "database-tooltip": "Salvar no Banco de Dados",
         "file-drawer": "Carregue um arquivo",
         "upload-hint": "SHP (ZIP), KML, KMZ, GPX, Json/GeoJson",
         "file-error-shapefile": "Problema ao ler o arquivo Shapefile",
@@ -276,10 +274,6 @@ export default {
         remove(index) {
             this.files.splice(index, 1)
             this.removeFileFromMap(index)
-        },
-
-        saveIntoDb(index) {
-            this.saveToDatabase({ index })
         },
 
         removeAllFeatures() {
