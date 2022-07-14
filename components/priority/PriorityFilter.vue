@@ -8,7 +8,7 @@
         </v-row>
 
         <v-row class="px-3 pb-1">
-            <v-select
+            <v-combobox
                 v-model="filters.cr"
                 label="Coordenação Regional (Todas)"
                 :items="filterOptions.regionalFilters"
@@ -17,9 +17,8 @@
                 hide-details
                 clearable
                 multiple
-                required="true"
             >
-            </v-select>
+            </v-combobox>
         </v-row>
 
         <v-slide-y-transition>
@@ -27,17 +26,17 @@
                 v-if="filters.cr && filterOptions.tiFilters"
                 class="px-3 pb-1"
             >
-                <v-select
+                <v-combobox
                     v-model="filters.ti"
                     label="Terras Indigenas (Todas)"
                     :items="filterOptions.tiFilters"
                     item-text="no_ti"
                     item-value="co_funai"
+                    clearable
                     multiple
                     hide-details
-                    required="true"
                 >
-                </v-select>
+                </v-combobox>
             </v-row>
         </v-slide-y-transition>
 
@@ -264,7 +263,11 @@ export default {
     },
     watch: {
         'filters.cr'(value) {
-            this.populateTiOptions(value)
+            let arrayCrPoulate = []
+            Object.values(value).forEach((item) => {
+                arrayCrPoulate.push(item.co_cr)
+            })
+            this.populateTiOptions(arrayCrPoulate)
         },
     },
     computed: {
