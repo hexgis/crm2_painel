@@ -130,8 +130,6 @@ export default {
                     let valueCo_cr = filters.co_cr.join(',')
                     let valueCo_funai = filters.co_funai.join(',')
 
-                    console.log(this.layer.layer_filters)
-
                     if (filters.co_cr.length && filters.co_funai.length) {
                         wmsUrl += `&CQL_FILTER=${firstInput.filter_alias} IN (${
                             firstInput.filter_type == 'co_cr'
@@ -170,11 +168,10 @@ export default {
                     })
                     return wmsUrl
                 }
-
-                let wmsUrlBase = `${
-                    this.layer.wms.geoserver.wms_url
-                }&env=percentage:${this.layer.opacity / 100}`
-                return wmsUrlBase
+                this.$nextTick(() => {
+                    this.$refs.wmsLayer.mapObject.setUrl(wmsUrl)
+                })
+                return wmsUrl
             }
         },
     },
