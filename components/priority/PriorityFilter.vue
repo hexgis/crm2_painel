@@ -127,7 +127,7 @@
                         />
                     </v-col>
 
-                    <v-col cols="4" class="mt-1">
+                    <v-col cols="10" class="mt-1">
                         <v-skeleton-loader type="text" />
                     </v-col>
                 </v-row>
