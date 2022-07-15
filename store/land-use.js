@@ -54,7 +54,7 @@ export const mutations = {
     clearFeatures(state) {
         state.features = null
     },
-    
+
     setTotal(state, total) {
         state.total = total
     },
@@ -177,8 +177,10 @@ export const actions = {
             co_cr: cr.toString(),
         }
 
-        const tis = await this.$api.$get('funai/ti/', { params })
-        
+        const tis = await this.$api.$get('funai/ti/', {
+            params,
+        })
+
         if (tis)
             commit('setFilterOptions', {
                 ...state.filterOptions,
@@ -188,19 +190,21 @@ export const actions = {
 
     async getYearsOptions({ commit, state }, ti) {
         const params = {
-            co_funai: ti.toString()
+            co_funai: ti.toString(),
         }
 
-        const years = await this.$api.$get('land-use/years/', { params })
+        const years = await this.$api.$get('land-use/years/', {
+            params,
+        })
 
         if (years) {
             commit('setFilterOptions', {
                 ...state.filterOptions,
-                year: years
-        })
-    }
+                year: years,
+            })
+        }
     },
-    
+
     async getDataTableLandUse({ commit, state, rootGetters }) {
         commit('setLoadingGeoJson', true)
         commit('setLoadingFeatures', true)
