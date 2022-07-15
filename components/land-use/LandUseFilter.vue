@@ -28,6 +28,7 @@
                     item-text="no_ti"
                     item-value="co_funai"
                     hide-details
+                    clearable
                     required
                     multiple
                 >
