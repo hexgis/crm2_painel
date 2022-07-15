@@ -10,7 +10,7 @@
                 multiple
                 hide-details
                 clearable
-                required="true"
+                required
                 :error="errorRegional"
             >
             </v-select>
@@ -43,10 +43,19 @@
                 item-text="nu_ano"
                 item-value="map_year"
                 clearable
+                :loading="loading"
                 multiple
                 :error="errorAno"
-            ></v-select>
+            >
+            </v-select>
         </v-row>
+        <v-progress-linear
+            :active="loading"
+            :indeterminate="loading"
+            absolute
+            bottom
+            color="deep-purple accent-4"
+        ></v-progress-linear>
 
         <v-row no-gutters align="center">
             <v-col v-show="showFeatures">
@@ -205,6 +214,7 @@ export default {
                 ti: null,
             },
             isLoadingTotal: false,
+            loading: false,
             legendData: legend,
             errorRegional: false,
             errorAno: false,
@@ -217,7 +227,12 @@ export default {
         },
 
         'filters.ti'(value) {
+            this.loading = true
             this.populateYearsOptions(value)
+        },
+
+        'filters.year'() {
+            this.loading = false
         },
     },
 
@@ -286,7 +301,7 @@ export default {
             this.setFilters(this.filters)
             this.$emit('onSearch')
         },
-        
+
         ...mapMutations('land-use', ['setFilters']),
         ...mapActions('land-use', [
             'getFilterOptions',
