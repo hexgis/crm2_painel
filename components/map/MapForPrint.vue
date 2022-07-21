@@ -10,14 +10,14 @@
                     :bounds="bounds"
                 >
                     <l-tile-layer
-                        url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+                        url="//{s}.tile.osm.org/{z}/{x}/{y}.png"
                         :attribution="attribution"
                     ></l-tile-layer>
 
                     <l-control-scale v-if="valueScale" position="bottomleft" />
                     <l-control v-if="valueNorthArrow" position="bottomleft">
                         <img
-                            src="../../assets/north-arrow.png"
+                            src="@/assets/north-arrow.png"
                             alt="northarrow"
                             class="north-arrow"
                         />
@@ -30,14 +30,7 @@
             </client-only>
         </v-col>
         <v-col cols="4" class="pl-1">
-            <div
-                style="
-                    border-right: 0.5px solid gray;
-                    border-top: 0.5px solid gray;
-                    border-bottom: 0.5px solid gray;
-                    height: 100%;
-                "
-            >
+            <div class="border_container">
                 <div class="d-flex justify-center align-center ma-2">
                     <div style="width: 20%">
                         <v-img contain class="mr-4" src="/img/funai.svg" />
@@ -55,10 +48,7 @@
                         Índio
                     </p>
                 </div>
-                <div
-                    class="d-flex justify-center"
-                    style="height: 150px; max-height: 150px; width: 100%"
-                >
+                <div class="d-flex justify-center hight_container_mini_map">
                     <client-only>
                         <l-map
                             ref="miniPrintMap"
@@ -67,7 +57,7 @@
                             :options="optionsMiniMap"
                         >
                             <l-tile-layer
-                                url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+                                url="//{s}.tile.osm.org/{z}/{x}/{y}.png"
                                 :attribution="attribution"
                             ></l-tile-layer>
                             <l-control position="topleft" class="ma-0 pa-0">
@@ -415,8 +405,8 @@ export default {
         optionsMap: {
             name: 'printMap',
             zoomControl: false,
-            scrollWheelZoom: false,
-            doubleClickZoom: false,
+            scrollWheelZoom: true,
+            doubleClickZoom: true,
             boxZoom: true,
             keyboard: false,
         },
@@ -532,6 +522,17 @@ p {
     color: dimgray !important;
     font-size: xx-small;
     white-space: nowrap;
+}
+.border_container {
+    border-right: 0.5px solid gray;
+    border-top: 0.5px solid gray;
+    border-bottom: 0.5px solid gray;
+    height: 100%;
+}
+.hight_container_mini_map {
+    height: 150px;
+    max-height: 150px;
+    width: 100%;
 }
 </style>
 
