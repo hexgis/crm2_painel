@@ -44,15 +44,15 @@
                 item-text="nu_ano"
                 item-value="map_year"
                 clearable
-                :loading="loading"
+                :loading="loadingYears"
                 multiple
                 :error="errorAno"
             >
             </v-select>
         </v-row>
         <v-progress-linear
-            :active="loading"
-            :indeterminate="loading"
+            :active="loadingYears"
+            :indeterminate="loadingYears"
             absolute
             bottom
             color="deep-purple accent-4"
@@ -215,7 +215,7 @@ export default {
                 ti: null,
             },
             isLoadingTotal: false,
-            loading: false,
+            loadingYears: false,
             legendData: legend,
             errorRegional: false,
             errorAno: false,
@@ -228,12 +228,12 @@ export default {
         },
 
         'filters.ti'(value) {
-            this.loading = true
+            this.loadingYears = true
             this.populateYearsOptions(value)
         },
 
         'filters.year'() {
-            this.loading = false
+            this.loadingYears = false
         },
     },
 
