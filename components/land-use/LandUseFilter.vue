@@ -1,6 +1,6 @@
 <template>
     <v-col class="px-4">
-        <v-row class="px-3 py-1">
+        <v-row class="px-3 py-3">
             <v-select
                 v-model="filters.cr"
                 label="Coordenação Regional"
@@ -19,7 +19,7 @@
         <v-slide-y-transition>
             <v-row
                 v-if="filters.cr && filterOptions.tiFilters"
-                class="px-3 pb-1"
+                class="px-3 pb-3"
             >
                 <v-select
                     v-model="filters.ti"
@@ -36,7 +36,10 @@
             </v-row>
         </v-slide-y-transition>
 
-        <v-row class="pt-1 px-3">
+        <v-row 
+            v-if="filters.ti"
+            class="pt-1 px-3" 
+        >
             <v-select
                 label="Ano"
                 v-model="filters.year"
@@ -58,7 +61,7 @@
             color="deep-purple accent-4"
         ></v-progress-linear>
 
-        <v-row no-gutters align="center">
+        <v-row no-gutters align="center" class="pt-3">
             <v-col v-show="showFeatures">
                 <v-btn
                     color="accent"
