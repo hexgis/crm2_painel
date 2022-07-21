@@ -158,7 +158,7 @@ export default {
         async saveImage() {
             this.loadingPrintImage = true
             try {
-                let nameImageDownaload = this.titleMap
+                let nameImageDownload = this.titleMap
                 let options = {
                     quality: 1,
                     bgcolor: 'white',
@@ -173,8 +173,8 @@ export default {
                 await domtoimage.toJpeg(node, options).then(function (image) {
                     var link = document.createElement('a')
                     link.href = image
-                    link.download = nameImageDownaload
-                        ? nameImageDownaload + '.jpeg'
+                    link.download = nameImageDownload
+                        ? nameImageDownload + '.jpeg'
                         : 'Mapa.jpeg'
                     link.click()
                 })
