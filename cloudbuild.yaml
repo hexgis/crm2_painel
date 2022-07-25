@@ -10,5 +10,6 @@ steps:
         "-f",
         "Dockerfile",
       ]
+    timeout: 1200s
   - name: "gcr.io/cloud-builders/docker"
     args: ["push", "gcr.io/${PROJECT_ID}/cmr/painel:latest"]
