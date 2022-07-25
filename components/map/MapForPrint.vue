@@ -1,233 +1,440 @@
 <template>
-    <client-only>
-        <div class="map-container2">
-            <l-map
-                ref="map"
-                :zoom="zoom"
-                :bounds="localBounds"
-                :min-zoom="minZoom"
-                :max-zoom="21"
-                :max-bounds="maxBounds"
-                :max-bounds-viscosity="1"
-                :options="mapOptions"
-                @update:bounds="updateBounds"
-            >
-                <l-control position="topleft">
-                    <div class="pa-1 map-action-buttons">
-                        <div
-                            v-if="user.settings.map_zoom_buttons_visible"
-                        ></div>
-
-                        <div class="div-spacer" />
-                    </div>
-                </l-control>
-
-                <l-control
-                    class="leaflet-coordinates-control"
-                    position="bottomleft"
+    <v-row no-gutters style="width: 1123px; height: 700px">
+        <v-col cols="8" class="pr-0">
+            <client-only>
+                <l-map
+                    ref="printMap"
+                    id="printMap"
+                    :zoom="zoom"
+                    :options="optionsMap"
+                    :bounds="bounds"
                 >
-                    <div v-if="user.settings.map_pointer_coordinates_visible">
-                        {{ cursorCoordinates.lat }},
-                        {{ cursorCoordinates.lng }}
+                    <l-tile-layer
+                        url="//{s}.tile.osm.org/{z}/{x}/{y}.png"
+                        :attribution="attribution"
+                    ></l-tile-layer>
+
+                    <l-control-scale v-if="valueScale" position="bottomleft" />
+                    <l-control v-if="valueNorthArrow" position="bottomleft">
+                        <img
+                            src="@/assets/north-arrow.png"
+                            alt="northarrow"
+                            class="north-arrow"
+                        />
+                    </l-control>
+                    <PriorityLayers :map="map" />
+                    <MonitoringLayers :map="map" />
+                    <SupportLayers />
+                    <AlertLayers :map="map" />
+                </l-map>
+            </client-only>
+        </v-col>
+        <v-col cols="4" class="pl-1">
+            <div class="border_container">
+                <div class="d-flex justify-center align-center ma-2">
+                    <div style="width: 20%">
+                        <v-img contain class="mr-4" src="/img/funai.svg" />
                     </div>
-                </l-control>
-
-                <l-control-scale
-                    v-if="user.settings.map_scale_visible"
-                    position="bottomleft"
-                />
-
-                <l-geo-json
-                    ref="interestArea"
-                    :geojson="interestArea"
-                    :options-style="interestStyle"
-                    :visible="showInterestArea"
-                />
-
-                <SupportLayers />
-
-                <MonitoringLayers v-if="!monitoringGeoserver" :map="map" />
-
-                <BaseWmsMetadataPopup :map="map" />
-
-                <PriorityLayers :map="map" />
-            </l-map>
-
-            <div v-if="loading" class="loading-background">
+                    <div style="width: 25%">
+                        <v-img contain src="/img/logocmr_normal_min.png" />
+                    </div>
+                </div>
+                <div class="text-center font-weight-bold">
+                    <p class="font-weight-bold mb-1">
+                        {{ titleMap }}
+                    </p>
+                    <p class="mb-2">
+                        Centro de Monitoramento Remoto - Fundação Nacional do
+                        Índio
+                    </p>
+                </div>
+                <div class="d-flex justify-center hight_container_mini_map">
+                    <client-only>
+                        <l-map
+                            ref="miniPrintMap"
+                            id="miniPrintMap"
+                            :zoom="zoomMiniMap"
+                            :options="optionsMiniMap"
+                        >
+                            <l-tile-layer
+                                url="//{s}.tile.osm.org/{z}/{x}/{y}.png"
+                                :attribution="attribution"
+                            ></l-tile-layer>
+                            <l-control position="topleft" class="ma-0 pa-0">
+                                <p class="ma-1 pa-0 print-mini-map-text">
+                                    LOCALIZAÇÃO DA ÁREA
+                                </p>
+                            </l-control>
+                        </l-map>
+                    </client-only>
+                </div>
                 <div>
-                    <v-skeleton-loader
-                        type="chip"
-                        width="32"
-                    ></v-skeleton-loader>
-                    <v-skeleton-loader
-                        type="chip"
-                        width="32"
-                    ></v-skeleton-loader>
-                    <v-skeleton-loader
-                        type="chip"
-                        width="32"
-                    ></v-skeleton-loader>
+                    <p class="d-block ma-1">Legenda:</p>
+                    <div class="ma-1 flex-wrap" style="width: 100%">
+                        <div v-if="showFeatures">
+                            <v-row no-gutters align="center">
+                                <v-icon x-small color="#9400D3"
+                                    >mdi-square</v-icon
+                                >
+                                <v-col no-gutters cols="6">
+                                    <p>Polígonos Prioritários: Muito Alta</p>
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters align="center">
+                                <v-icon x-small color="#FF0000"
+                                    >mdi-square</v-icon
+                                >
+                                <v-col no-gutters cols="6">
+                                    <p>Polígonos Prioritários: Alta</p>
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters align="center">
+                                <v-icon x-small color="#FF8C00"
+                                    >mdi-square</v-icon
+                                >
+                                <v-col no-gutters cols="6">
+                                    <p>Polígonos Prioritários: Média</p>
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters align="center">
+                                <v-icon x-small color="#FFD700"
+                                    >mdi-square</v-icon
+                                >
+                                <v-col no-gutters cols="6">
+                                    <p>Polígonos Prioritários: Baixa</p>
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters align="center">
+                                <v-icon x-small color="#008000"
+                                    >mdi-square</v-icon
+                                >
+                                <v-col no-gutters cols="6">
+                                    <p>Polígonos Prioritários: Muito Baixa</p>
+                                </v-col>
+                            </v-row>
+                        </div>
+                        <div v-if="showFeaturesUrgentAlert">
+                            <v-row no-gutters align="center">
+                                <v-icon x-small color="#965213"
+                                    >mdi-square</v-icon
+                                >
+                                <v-col no-gutters cols="6">
+                                    <p>Alerta Urgente: CR</p>
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters align="center">
+                                <v-icon x-small color="#337f1e"
+                                    >mdi-square</v-icon
+                                >
+                                <v-col no-gutters cols="6">
+                                    <p>Alerta Urgente: DR</p>
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters align="center">
+                                <v-icon x-small color="#ba1a1a"
+                                    >mdi-square</v-icon
+                                >
+                                <v-col no-gutters cols="6">
+                                    <p>Alerta Urgente: FF</p>
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters align="center">
+                                <v-icon x-small color="#e0790b"
+                                    >mdi-square</v-icon
+                                >
+                                <v-col no-gutters cols="6">
+                                    <p>Alerta Urgente: DG</p>
+                                </v-col>
+                            </v-row>
+                        </div>
+                        <div v-if="showFeaturesMonitoring">
+                            <v-row no-gutters align="center">
+                                <v-icon x-small color="#dd2c00"
+                                    >mdi-square</v-icon
+                                >
+                                <v-col no-gutters cols="6">
+                                    <p>Monitoramento Diário: CR</p>
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters align="center">
+                                <v-icon x-small color="#800080"
+                                    >mdi-square</v-icon
+                                >
+                                <v-col no-gutters cols="6">
+                                    <p>Monitoramento Diário: DR</p>
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters align="center">
+                                <v-icon x-small color="#a93130"
+                                    >mdi-square</v-icon
+                                >
+                                <v-col no-gutters cols="6">
+                                    <p>Monitoramento Diário: FF</p>
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters align="center">
+                                <v-icon x-small color="#ff7f00"
+                                    >mdi-square</v-icon
+                                >
+                                <v-col no-gutters cols="6">
+                                    <p>Monitoramento Diário: DG</p>
+                                </v-col>
+                            </v-row>
+                        </div>
+                        <div v-if="showFeaturesSupportLayers">
+                            <div
+                                v-for="layer in supportLayersCategoryAntropismo"
+                                :key="layer.id"
+                            >
+                                <v-row
+                                    no-gutters
+                                    align="center"
+                                    v-if="layer.visible"
+                                >
+                                    <img
+                                        :src="
+                                            layer.wms.geoserver.preview_url +
+                                            layer.wms.geoserver_layer_name
+                                        "
+                                        width="13vw"
+                                        alt="CorLayer"
+                                    />
+                                    <v-col>
+                                        <p class="ml-1">{{ layer.name }}</p>
+                                    </v-col>
+                                </v-row>
+                            </div>
+                        </div>
+                        <div v-if="showFeaturesSupportLayers">
+                            <div
+                                v-for="layer in supportLayersCategoryFire"
+                                :key="layer.id"
+                            >
+                                <v-row
+                                    no-gutters
+                                    align="center"
+                                    v-if="layer.visible"
+                                >
+                                    <img
+                                        :src="
+                                            layer.wms.geoserver.preview_url +
+                                            layer.wms.geoserver_layer_name
+                                        "
+                                        width="13vw"
+                                        alt="CorLayer"
+                                    />
+                                    <v-col>
+                                        <p class="ml-1">{{ layer.name }}</p>
+                                    </v-col>
+                                </v-row>
+                            </div>
+                        </div>
+                        <div v-if="showFeaturesSupportLayers">
+                            <div
+                                v-for="layer in supportLayersCategoryRaster"
+                                :key="layer.id"
+                            >
+                                <v-row
+                                    no-gutters
+                                    align="center"
+                                    v-if="layer.visible"
+                                >
+                                    <img
+                                        :src="
+                                            layer.wms.geoserver.preview_url +
+                                            layer.wms.geoserver_layer_name
+                                        "
+                                        width="13vw"
+                                        alt="CorLayer"
+                                    />
+                                    <v-col>
+                                        <p class="ml-1">{{ layer.name }}</p>
+                                    </v-col>
+                                </v-row>
+                            </div>
+                        </div>
+                        <div v-if="showFeaturesSupportLayers">
+                            <div v-for="layer in supportLayers" :key="layer.id">
+                                <v-row
+                                    no-gutters
+                                    align="center"
+                                    v-if="layer.visible"
+                                >
+                                    <img
+                                        :src="
+                                            layer.wms.geoserver.preview_url +
+                                            layer.wms.geoserver_layer_name
+                                        "
+                                        width="13vw"
+                                        alt="CorLayer"
+                                    />
+                                    <v-col>
+                                        <p class="ml-1">{{ layer.name }}</p>
+                                    </v-col>
+                                </v-row>
+                            </div>
+                        </div>
+                    </div>
+                    <v-divider></v-divider>
+                    <div class="ma-1">
+                        <p class="font-weight-bold">Bases Cartográficas:</p>
+                        <div v-if="showFeatures">
+                            <p>
+                                - Polígonos Prioritários presentes no território
+                                Brasileiro. Fonte: Banco de Dados Funai - 2022
+                            </p>
+                        </div>
+                        <div v-if="showFeaturesMonitoring">
+                            <p>
+                                - Monitoramento Diário. Fonte: Banco de Dados
+                                Funai - 2022
+                            </p>
+                        </div>
+                        <div v-if="showFeaturesUrgentAlert">
+                            <p>
+                                - Alerta Urgente. Fonte: Banco de Dados Funai -
+                                2022
+                            </p>
+                        </div>
+                        <div v-if="showFeaturesSupportLayers">
+                            <div
+                                v-for="layer in supportLayers"
+                                :key="layer.name"
+                            >
+                                <v-row no-gutters v-if="layer.visible">
+                                    <v-col>
+                                        <p>
+                                            - {{ layer.name }} presente no
+                                            território brasileiro.
+                                        </p>
+                                    </v-col>
+                                </v-row>
+                            </div>
+                        </div>
+                        <div v-if="supportLayersCategoryAntropismo">
+                            <div
+                                v-for="layer in supportLayersCategoryAntropismo"
+                                :key="layer.name"
+                            >
+                                <v-row no-gutters v-if="layer.visible">
+                                    <v-col>
+                                        <p>
+                                            - {{ layer.name }} presente no
+                                            território brasileiro.
+                                        </p>
+                                    </v-col>
+                                </v-row>
+                            </div>
+                        </div>
+                        <div v-if="supportLayersCategoryFire">
+                            <div
+                                v-for="layer in supportLayersCategoryFire"
+                                :key="layer.id"
+                            >
+                                <v-row no-gutters v-if="layer.visible">
+                                    <v-col>
+                                        <p>
+                                            - {{ layer.name }} presente no
+                                            território brasileiro.
+                                        </p>
+                                    </v-col>
+                                </v-row>
+                            </div>
+                        </div>
+                    </div>
+                    <v-divider></v-divider>
+
+                    <div class="ma-1">
+                        <p>
+                            CENTRO DE MONITORAMENTO REMOTO -
+                            https://cmr.funai.gov.br | Data da impressão:
+                            {{ todayDate() }}
+                        </p>
+                    </div>
+                    <v-divider></v-divider>
+                    <div class="ma-1">
+                        <p>
+                            As informações podem apresentar distorções em função
+                            das bases cartográficas utilizadas.
+                        </p>
+                        <p>Modelo de mapa adaptado para formato A4.</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </client-only>
+        </v-col>
+    </v-row>
 </template>
 
-<i18n>
-{
-    "en": {
-        "zoom-in": "Zoom in",
-        "zoom-out": "Zoom out"
-    },
-    "pt-br": {
-        "zoom-in": "Aproximar",
-        "zoom-out": "Reduzir"
-    }
-}
-</i18n>
-
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex'
-import interestArea from '@/assets/interest_area.json'
-import MapPrinter from '@/components/map/MapPrinter.vue'
-
-import MapSearch from '@/components/map/MapSearch.vue'
-import ZoomToCoords from '@/components/map/ZoomToCoords.vue'
-import FileLoaderControl from '@/components/map/file-loader/FileLoaderControl.vue'
-import FileLoaderLayers from '@/components/map/file-loader/FileLoaderLayers.vue'
-// import ImageryLayers from '@/components/imagery/ImageryLayers'
-// import CatalogLayers from '@/components/catalog/CatalogLayers'
-import MonitoringLayers from '@/components/monitoring/MonitoringLayers'
-// import MonitoringLayersGeoserver from '@/components/monitoring/MonitoringLayersGeoserver'
-import SupportLayers from '@/components/support/SupportLayers'
-// import ChangeDetectionLayers from '@/components/change-detection/ChangeDetectionLayers'
-import BaseWmsMetadataPopup from '@/components/base/BaseWmsMetadataPopup'
-// import AlgorithmLayers from '@/components/algorithms/AlgorithmLayers'
-// import WebhooksLayers from '@/components/webhooks/WebhooksLayers'
+import { mapState } from 'vuex'
+import MiniMapForPrint from '@/components/map/MiniMapForPrint.vue'
 import PriorityLayers from '@/components/priority/PriorityLayers'
-
-import 'leaflet/dist/leaflet.css'
-import 'leaflet-basemaps/L.Control.Basemaps.css'
-import 'leaflet-minimap/dist/Control.MiniMap.min.css'
-
-if (typeof window !== 'undefined') {
-    require('leaflet-basemaps')
-    require('leaflet-minimap')
-}
+import MonitoringLayers from '@/components/monitoring/MonitoringLayers'
+import SupportLayers from '@/components/support/SupportLayers'
+import AlertLayers from '@/components/urgent-alerts/AlertLayers'
+const intervalZooms = require('@/utils/zoomIntervalsGraticule')
 
 export default {
-    name: 'MapForPrint',
-
-    components: {
-        // ImageryLayers,
-        // CatalogLayers,
-        MonitoringLayers,
-        // MonitoringLayersGeoserver,
-        SupportLayers,
-        MapSearch,
-        ZoomToCoords,
-        FileLoaderControl,
-        FileLoaderLayers,
-        // ChangeDetectionLayers,
-        BaseWmsMetadataPopup,
-        // AlgorithmLayers,
-        // WebhooksLayers,
-        MapPrinter,
-        PriorityLayers
+    props: {
+        titleMap: {
+            type: String,
+            default: '',
+        },
+        leafSize: {
+            type: Object,
+            default: '',
+        },
     },
-
+    components: {
+        MiniMapForPrint,
+        PriorityLayers,
+        MonitoringLayers,
+        SupportLayers,
+        AlertLayers,
+    },
     data: () => ({
         map: null,
-        zoom: 4,
-        minZoom: 9,
-        maxBounds: [
-            [-90, -280],
-            [90, 280],
-        ],
-        mapOptions: {
-            zoomControl: false,
-        },
-        areaBounds: null,
-        initialBounds: [],
-
-        loadedFiles: [],
-        mapLoading: false,
-
-        interestArea,
-        showInterestArea: process.env.INTEREST_AREA_OUTLINE === 'true',
-        interestStyle: {
-            fillOpacity: 0,
-            fill: false,
-            color: '#fcd40d',
-            dashArray: '5',
-        },
-
-        showImagery: process.env.IMAGERY === 'true',
-        monitoringGeoserver: process.env.MONITORING_GEOSERVER === 'true',
-
-        baseLayers: [
-            {
-                url: '//{s}.tile.osm.org/{z}/{x}/{y}.png',
-                options: {
-                    label: 'Open Street Map',
-                    tag: 'OSM',
-                    attribution:
-                        '&copy; <a href="//www.openstreetmap.org/">OpenStreetMap</a> contributors',
-                    maxZoom: 21,
-                    maxNativeZoom: 18,
-                    zIndex: 1,
-                },
-            },
-        ],
-        bingKey:
-            'AuhiCJHlGzhg93IqUH_oCpl_-ZUrIE6SPftlyGYUvr9Amx5nzA-WqGcPquyFZl4L',
-
-        lastZoom: null,
-        zoomControlGrid: 7,
-
-        tooltipsRef: null,
-        tooltipsGridRef: null,
-        cursorCoordinates: {
-            lat: '',
-            lng: '',
-        },
         miniMap: null,
-        miniMapLayer: null,
-        miniMapLayerOptions: {
-            minZoom: 0,
-            maxZoom: 18,
+        zoom: 1,
+        zoomMiniMap: 4,
+        valueScale: null,
+        valueNorthArrow: null,
+
+        attribution:
+            '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | <span style="color: red; font-weight: bold; width: 100%">Mapa não oficial</span>',
+        optionsMap: {
+            name: 'printMap',
+            zoomControl: false,
+            scrollWheelZoom: true,
+            doubleClickZoom: true,
+            boxZoom: true,
+            keyboard: false,
         },
-        miniMapOptions: {
-            togglePreview: false,
-            height: 125,
-            width: 125,
+        optionsMiniMap: {
+            name: 'printMiniMap',
+            zoomControl: false,
+            dragging: false,
+            boxZoom: false,
+            touchZoom: false,
+            keyboard: false,
+            attributionControl: false,
+            scrollWheelZoom: false,
+            doubleClickZoom: false,
         },
-        localBounds: [],
     }),
 
     computed: {
-        minimapVisibleSettings() {
-            return this.user.settings.minimap_visible
-        },
-        initialExtentCoords() {
-            return this.user.settings.initial_extent.coordinates
-                ? this.$L.GeoJSON.coordsToLatLngs(
-                      this.user.settings.initial_extent.coordinates[0]
-                  )
-                : []
-        },
-        ...mapState('map', ['bounds', 'boundsZoomed', 'loading']),
-        ...mapState('userProfile', ['user']),
-    },
-
-    watch: {
-        boundsZoomed() {
-            this.map.flyToBounds(this.bounds)
-        },
-
-        minimapVisibleSettings(visible) {
-            visible ? this.miniMap.addTo(this.map) : this.miniMap.remove()
-        },
+        ...mapState('map', ['bounds']),
+        ...mapState('priority', ['showFeatures']),
+        ...mapState('monitoring', ['showFeaturesMonitoring']),
+        ...mapState('urgent-alerts', ['showFeaturesUrgentAlert']),
+        ...mapState('supportLayers', [
+            'showFeaturesSupportLayers',
+            'supportLayers',
+            'supportLayersCategoryAntropismo',
+            'supportLayersCategoryFire',
+            'supportLayersCategoryRaster',
+        ]),
     },
 
     mounted() {
@@ -237,213 +444,125 @@ export default {
     },
 
     methods: {
-        isLoading() {
-            this.setMapLoading(true)
+        todayDate() {
+            let date = new Date()
+            let dd = date.getDate()
+            let mm = date.getMonth() + 1
+            let yyyy = date.getFullYear()
+            return `${dd < 10 ? '0' + dd : dd}/${
+                mm < 10 ? '0' + mm : mm
+            }/${yyyy}`
         },
-        loaded() {
-            this.setMapLoading(false)
-        },
+
         createMap() {
-            this.map = this.$refs.map.mapObject
-            this.map.on('zoomend', this.onZoomEnd)
-            this.map.addEventListener('mousemove', this.refreshCoordinates)
+            try {
+                require('@/plugins/L.SimpleGraticule')
+                require('@/plugins/L.Control.MapBounds')
 
-            this.createMapLayers()
-            // this.createMiniMap()
-            this.createCssRefs()
+                this.map = this.$refs.printMap.mapObject
+                this.miniMap = this.$refs.miniPrintMap.mapObject
 
-            this.$emit('mapCreated')
+                window.L = this.$L // define leaflet global
 
-            if (this.bounds) {
-                this.localBounds = this.bounds
-            } else if (
-                this.user &&
-                (this.user.settings.initial_extent ||
-                    this.user.settings.interest_area_zoom_on_init)
-            ) {
-                let areaBounds
+                let currentBouldMap = this.map.getBounds()
+                this.aimingRect = L.rectangle(currentBouldMap, {
+                    color: '#e31a1c',
+                    weight: 3,
+                    opacity: 0.37,
+                    fillOpacity: 0,
+                }).addTo(this.miniMap)
 
-                if (this.user.settings.initial_extent) {
-                    areaBounds = this.$L.polygon(this.initialExtentCoords)
-                } else areaBounds = this.$refs.interestArea.mapObject
+                this.map.invalidateSize()
+                this.map.on('move', this.onMainMapMoving)
+                this.map.on('moveend', this.onMainMapMoved)
+                this.miniMap.fitBounds(this.map.getBounds())
 
-                this.updateBounds(areaBounds.getBounds())
-                this.localBounds = areaBounds.getBounds()
+                L.control
+                    .mapBounds({
+                        type: 'center',
+                        position: 'bottomleft',
+                        template: 'Centroide do mapa: {y} , {x} ',
+                    })
+                    .addTo(this.map)
+                let options = {
+                    interval: 20,
+                    showOriginLabel: true,
+                    redraw: 'move',
+                    zoomIntervals: intervalZooms.default[this.leafSize.type],
+                }
 
-                setTimeout(() => {
-                    const map = this.$refs.map.mapObject
+                L.simpleGraticule(options).addTo(this.map)
 
-                    map.invalidateSize()
-                    map.setZoom(map.getZoom() + 1)
-                }, 100)
-            } else {
-                this.localBounds = this.initialBounds
-            }
-        },
-        createMiniMap() {
-            const osm = this.baseLayers[0]
+                this.miniMap.setZoom(4)
 
-            const miniMapLayer = this.$L.tileLayer(
-                osm.url,
-                this.miniMapLayerOptions
-            )
-
-            this.miniMap = new this.$L.Control.MiniMap(
-                miniMapLayer,
-                this.miniMapOptions
-            )
-
-            if (this.minimapVisibleSettings) {
-                this.miniMap.addTo(this.map)
+                this.valueScale = true
+                this.valueNorthArrow = true
+            } catch (error) {
+                alert('Erro ao gerar o mapa.' + error)
             }
         },
 
-        createMapLayers() {
-            const tileLayers = []
-            for (const layer of this.baseLayers) {
-                const tileLayer = this.$L.tileLayer(layer.url, layer.options)
-
-                tileLayers.push(tileLayer)
-            }
-
-            this.map.addControl(
-                this.$L.control.basemaps({
-                    basemaps: tileLayers,
-                    tileX: 0,
-                    tileY: 0,
-                    tileZ: 1,
-                })
-            )
+        onMainMapMoved(e) {
+            this.miniMap.setView(this.map.getCenter(), 4)
         },
 
-        createCssRefs() {
-            this.tooltipsRef = this.map.getPane('tooltipPane')
-            this.tooltipsRef.style.visibility = 'hidden'
+        onMainMapMoving(e) {
+            this.aimingRect.setBounds(this.map.getBounds())
         },
-
-        onZoomEnd(event) {
-            const map = event.target
-            const zoom = map.getZoom()
-
-            if (
-                zoom < this.zoomControlGrid &&
-                (!this.lastZoom || this.lastZoom >= this.zoomControlGrid)
-            ) {
-                this.tooltipsRef.style.visibility = 'hidden'
-            } else if (
-                zoom >= this.zoomControlGrid &&
-                (!this.lastZoom || this.lastZoom < this.zoomControlGrid)
-            ) {
-                this.tooltipsRef.style.visibility = 'visible'
-            }
-
-            this.lastZoom = zoom
-        },
-
-        updateBounds(latLngBounds) {
-            this.setBounds(latLngBounds)
-        },
-
-        refreshCoordinates(event) {
-            this.cursorCoordinates.lat = event.latlng.lat.toFixed(4)
-            this.cursorCoordinates.lng = event.latlng.lng.toFixed(4)
-        },
-        ...mapMutations('map', ['setBounds', 'setMapLoading']),
-        ...mapActions('map', ['zoomToBounds']),
     },
 }
 </script>
 
-<style lang="sass">
-.map-action-buttons
-    z-index: 4
-    opacity: 0.84
+<style scoped>
+p {
+    font-size: xx-small;
+    margin: 0;
+}
+.print-mini-map-text {
+    color: dimgray !important;
+    font-size: xx-small;
+    white-space: nowrap;
+}
+.border_container {
+    border-right: 0.5px solid gray;
+    border-top: 0.5px solid gray;
+    border-bottom: 0.5px solid gray;
+    height: 100%;
+}
+.hight_container_mini_map {
+    height: 150px;
+    max-height: 150px;
+    width: 100%;
+}
+</style>
 
-    .v-icon
-        font-size: 18px !important
+<style>
+.leaflet-grid-label .gridlabel-vert {
+    margin-left: 8px;
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
 
-.leaflet-tooltip-right:before,
-.leaflet-tooltip-left:before
-    right: 0
-    left: 0
-    margin-left: 0px
-    border-right-color: transparent !important
-    border-left-color: transparent !important
+.leaflet-grid-label .gridlabel-vert,
+.leaflet-grid-label .gridlabel-horiz {
+    padding-left: 2px;
+    text-shadow: -2px 0 #ffffff, 0 2px #ffffff, 2px 0 #ffffff, 0 -2px #ffffff;
+}
+.leaflet-container .leaflet-control-mapbounds {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+    box-shadow: 0 0 5px #bbb !important;
+    padding: 0 5px !important;
+    margin: 0 !important;
+    color: #333 !important;
+    font: 11px/1.5 'Helvetica Neue', Arial, Helvetica, sans-serif !important;
+}
+.north-arrow,
+.north-arrow:after {
+    height: 35px;
+    width: 30px;
+}
 
-.leaflet-container
-    font-family: 'Roboto', sans-serif !important
-    line-height: 1.5 !important
-
-.card-popup
-    .leaflet-popup-content
-        margin: 0px
-
-    .leaflet-popup-scrolled
-        border: none
-
-.leaflet-popup-content-wrapper
-    padding: 0px
-    border: 0px !important
-    border-radius: 4px !important
-    box-shadow: none
-    -webkit-box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12) !important
-    box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12) !important
-
-.leaflet-coordinates-control
-    background: rgba(255, 255, 255, 0.7)
-    padding: 0 5px
-    font-size: 11px
-    color: #333
-    margin-left: 0 !important
-    margin-bottom: 0 !important
-
-.leaflet-logo-control
-    margin-left: 6px !important
-    margin-bottom: 15px
-
-.nation-logo-container
-    margin-left: -3px
-
-.map-container2
-    height: 75vh
-    width: 40vw
-    overflow: hidden !important
-    padding: 0
-
-.logo-flags
-    margin-left: -3px
-    opacity: 0.4
-    transition: all ease 0.1s
-
-.logo-flags:hover
-    opacity: 1
-    transform: scale(1.1)
-
-.logo-hex
-    opacity: 0.4
-    display: flex
-    flex-direction: row
-
-.basemap.active
-    border: 0
-
-.loading-background
-    position: absolute
-    top: 0px
-    left: 0px
-    height: 100%
-    width: 100%
-    background-color: rgba(245, 245, 245, 0.4)
-    z-index: 3
-    display: flex
-    align-items: center
-    justify-content: center
-
-    div
-        display: flex
-        align-items: center
-        justify-content: space-around
-        width: 140px
-.div-spacer
-    height: 20px
+.leaflet-control-attribution {
+    white-space: nowrap !important;
+}
 </style>

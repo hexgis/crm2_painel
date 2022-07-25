@@ -55,7 +55,7 @@
         </v-row>
 
         <v-row no-gutters align="center">
-            <v-col v-show="showFeatures">
+            <v-col v-show="showFeaturesUrgentAlert">
                 <v-btn
                     color="accent"
                     :loading="isLoadingGeoJson"
@@ -115,7 +115,7 @@
         </div>
 
         <v-row v-if="total && !isLoadingFeatures" class="px-3 py-1 mt-7">
-            <v-row v-if="showFeatures && total">
+            <v-row v-if="showFeaturesUrgentAlert && total">
                 <v-col cols="7" class="grey--text text--darken-2">
                     {{ $t('polygon-label') }}:
                 </v-col>
@@ -126,7 +126,10 @@
 
             <v-row
                 v-if="
-                    showFeatures && total && total.area_ha && !isLoadingFeatures
+                    showFeaturesUrgentAlert &&
+                    total &&
+                    total.area_ha &&
+                    !isLoadingFeatures
                 "
             >
                 <v-col cols="7" class="grey--text text--darken-2">
@@ -143,7 +146,10 @@
             </v-row>
         </v-row>
 
-        <v-row v-if="showFeatures && !isLoadingFeatures" align="center">
+        <v-row
+            v-if="showFeaturesUrgentAlert && !isLoadingFeatures"
+            align="center"
+        >
             <v-col cols="4" class="grey--text text--darken-2 mt-1">
                 {{ $t('opacity-label') }}
             </v-col>
@@ -158,7 +164,7 @@
         </v-row>
 
         <v-row
-            v-if="showFeatures && !isLoadingFeatures"
+            v-if="showFeaturesUrgentAlert && !isLoadingFeatures"
             align="center"
             justify="space-between"
         >
@@ -258,7 +264,7 @@ export default {
             'isLoadingGeoJson',
             'isLoadingFeatures',
             'filterOptions',
-            'showFeatures',
+            'showFeaturesUrgentAlert',
             'total',
             'params',
         ]),

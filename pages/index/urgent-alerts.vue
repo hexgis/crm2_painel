@@ -16,7 +16,7 @@
 
         <ShowDialog />
 
-        <div v-if="showFeatures && !isLoadingFeatures" class="px-4">
+        <div v-if="showFeaturesUrgentAlert && !isLoadingFeatures" class="px-4">
             <v-divider class="mt-1"></v-divider>
             <p class="font-weight-regular pt-2 grey--text text--darken-2">
                 Legenda:
@@ -159,16 +159,20 @@ export default {
 
         showFeaturesAlert: {
             get() {
-                return this.$store.state['urgent-alerts'].showFeatures
+                return this.$store.state['urgent-alerts']
+                    .showFeaturesUrgentAlert
             },
 
             set(value) {
-                this.$store.commit('urgent-alerts/setShowFeatures', value)
+                this.$store.commit(
+                    'urgent-alerts/setshowFeaturesUrgentAlert',
+                    value
+                )
             },
         },
 
         ...mapState('urgent-alerts', [
-            'showFeatures',
+            'showFeaturesUrgentAlert',
             'features',
             'table',
             'visualizationStage',

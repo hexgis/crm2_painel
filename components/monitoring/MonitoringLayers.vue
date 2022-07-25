@@ -1,5 +1,5 @@
 <template>
-    <l-layer-group name="monitoring" :visible="showFeatures">
+    <l-layer-group name="monitoring" :visible="showFeaturesMonitoring">
         <l-layer-group ref="monitoringHeat" :visible="heatMap" />
 
         <l-feature-group ref="monitoringPolygons">
@@ -107,7 +107,7 @@ export default {
             'features',
             'opacity',
             'heatMap',
-            'showFeatures',
+            'showFeaturesMonitoring',
         ]),
         ...mapGetters('monitoring', ['featuresLoaded']),
     },
@@ -150,6 +150,13 @@ export default {
 
     methods: {
         vectorGridStyleFunction(no_estagio) {
+            Object.keys(this.style).forEach((item) => {
+                Object.keys(this.style[item]).forEach((i) => {
+                    if (i == 'fillOpacity') {
+                        this.style[item][i] = this.opacity / 100
+                    }
+                })
+            })
             switch (no_estagio) {
                 case 'CR':
                     return this.style.CR

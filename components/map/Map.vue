@@ -3,6 +3,7 @@
         <div class="map-container">
             <l-map
                 ref="map"
+                id="map"
                 :zoom="zoom"
                 :bounds="localBounds"
                 :min-zoom="minZoom"
@@ -228,6 +229,7 @@ export default {
         ],
         mapOptions: {
             zoomControl: false,
+            name: 'mainMap',
         },
         areaBounds: null,
         initialBounds: [

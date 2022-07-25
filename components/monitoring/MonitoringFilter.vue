@@ -70,7 +70,7 @@
                 </v-col>
             </v-row>
             <v-row no-gutters class="px-3">
-                <v-col v-show="showFeatures">
+                <v-col v-show="showFeaturesMonitoring">
                     <v-btn
                         color="accent"
                         :loading="isLoadingGeoJson"
@@ -129,7 +129,7 @@
                 </div>
             </div>
 
-            <v-row v-if="showFeatures && total && !isLoadingFeatures">
+            <v-row v-if="showFeaturesMonitoring && total && !isLoadingFeatures">
                 <v-col cols="7" class="grey--text text--darken-2">
                     {{ $t('polygon-label') }}:
                 </v-col>
@@ -140,7 +140,10 @@
 
             <v-row
                 v-if="
-                    showFeatures && total && total.area_ha && !isLoadingFeatures
+                    showFeaturesMonitoring &&
+                    total &&
+                    total.area_ha &&
+                    !isLoadingFeatures
                 "
                 class="mt-2"
             >
@@ -157,7 +160,7 @@
                 </v-col>
             </v-row>
             <v-row
-                v-if="showFeatures && !isLoadingFeatures"
+                v-if="showFeaturesMonitoring && !isLoadingFeatures"
                 align="center"
                 class="mt-2"
             >
@@ -169,7 +172,7 @@
                 </v-col>
             </v-row>
             <v-row
-                v-if="showFeatures && !isLoadingFeatures"
+                v-if="showFeaturesMonitoring && !isLoadingFeatures"
                 align="center"
                 justify="space-between"
                 class="mt-2"
@@ -279,7 +282,7 @@ export default {
         ...mapState('monitoring', [
             'isLoadingFeatures',
             'filterOptions',
-            'showFeatures',
+            'showFeaturesMonitoring',
             'total',
             'isLoadingGeoJson',
         ]),

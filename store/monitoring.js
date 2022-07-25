@@ -1,6 +1,6 @@
 export const state = () => ({
     features: null,
-    showFeatures: false,
+    showFeaturesMonitoring: false,
     visualizationStage: 'stage1',
     tableDialogMonitoring: false,
     isLoadingCSVMonitoring: false,
@@ -41,8 +41,8 @@ export const mutations = {
         state.isLoadingFeatures = false
     },
 
-    setShowFeatures(state, showFeatures) {
-        state.showFeatures = showFeatures
+    setshowFeaturesMonitoring(state, showFeaturesMonitoring) {
+        state.showFeaturesMonitoring = showFeaturesMonitoring
     },
 
     setLoadingGeoJson(state, payload) {
@@ -136,7 +136,7 @@ export const actions = {
             })
 
             if (!response.features || !response.features.length) {
-                commit('setShowFeatures', false)
+                commit('setshowFeaturesMonitoring', false)
                 commit(
                     'alert/addAlert',
                     { message: this.$i18n.t('no-result') },
@@ -144,7 +144,7 @@ export const actions = {
                 )
             } else {
                 commit('setFeatures', response)
-                commit('setShowFeatures', true)
+                commit('setshowFeaturesMonitoring', true)
                 const total = await this.$api.$get(
                     'monitoring/consolidated/stats/',
                     {
