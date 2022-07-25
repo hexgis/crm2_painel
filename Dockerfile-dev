@@ -1,0 +1,12 @@
+FROM node:14-alpine as builder
+
+RUN mkdir /app/
+WORKDIR /app/
+
+COPY package.json package-lock.json /app/
+
+RUN apk add --update --no-cache git make python3 g++
+RUN npm set progress=true && npm config set depth 0
+RUN npm install 
+
+CMD ["npm", "run", "dev"]

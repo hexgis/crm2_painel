@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+    web:
+        image: gcr.io/custom-plating-209314/skyviewer:feature-homolog
+        build:
+            context: .
+            args:
+                stage: build
+        ports:
+            - '8000:80'
+        command: "nginx -g 'daemon off;'"
+        restart: always
+
+    dev:
+        build:
+            context: .
+            dockerfile: Dockerfile-dev
+        command: npm run dev
+        ports:
+            - '3000:3000'
+        volumes:
+            - .:/app/
+        environment:
+            HOST: 0.0.0.0

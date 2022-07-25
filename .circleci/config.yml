@@ -1,0 +1,46 @@
+version: 2.0
+
+jobs:
+  run-tests:
+    docker:
+    - image: node:14-alpine
+    working_directory: ~/app
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+      - run: apk add --no-cache git make python3 g++
+      - run: npm set progress=false && npm config set depth 0
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      # Implement npm tests
+
+  build-and-push-image:
+    machine: true
+    steps:
+      - checkout
+      - run: echo ${GOOGLE_AUTH} > ${HOME}/gcp-key.json
+      - run: python replace_all_env.py
+      - run: docker build --rm=false -t us.gcr.io/${GCP_PROJECT}/${IMAGE_NAME}:latest .
+      - run: gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
+      - run: gcloud --quiet config set project ${GCP_PROJECT}
+      - run: gcloud docker -- push us.gcr.io/${GCP_PROJECT}/${IMAGE_NAME}:latest
+
+workflows:
+  version: 2
+  create-build-and-push-image:
+    jobs:
+      - run-tests:
+          filters:
+            branches:
+              only: main
+      - build-and-push-image:
+          filters:
+            branches:
+              only: main
+          requires:
+            - run-tests
