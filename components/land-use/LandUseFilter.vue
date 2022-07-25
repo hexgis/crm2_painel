@@ -1,6 +1,6 @@
 <template>
     <v-col class="px-4">
-        <v-row class="px-3 py-1">
+        <v-row class="px-3 py-3">
             <v-select
                 v-model="filters.cr"
                 label="Coordenação Regional"
@@ -10,7 +10,7 @@
                 multiple
                 hide-details
                 clearable
-                required="true"
+                required
                 :error="errorRegional"
             >
             </v-select>
@@ -19,7 +19,7 @@
         <v-slide-y-transition>
             <v-row
                 v-if="filters.cr && filterOptions.tiFilters"
-                class="px-3 pb-1"
+                class="px-3 pb-3"
             >
                 <v-select
                     v-model="filters.ti"
@@ -28,14 +28,18 @@
                     item-text="no_ti"
                     item-value="co_funai"
                     hide-details
-                    required="true"
+                    clearable
+                    required
                     multiple
                 >
                 </v-select>
             </v-row>
         </v-slide-y-transition>
 
-        <v-row class="pt-1 px-3">
+        <v-row 
+            v-if="filters.ti"
+            class="pt-1 px-3" 
+        >
             <v-select
                 label="Ano"
                 v-model="filters.year"
@@ -43,12 +47,21 @@
                 item-text="nu_ano"
                 item-value="map_year"
                 clearable
+                :loading="isLoadingYears"
                 multiple
                 :error="errorAno"
-            ></v-select>
+            >
+            </v-select>
         </v-row>
+        <v-progress-linear
+            :active="isLoadingYears"
+            :indeterminate="isLoadingYears"
+            absolute
+            bottom
+            color="deep-purple accent-4"
+        ></v-progress-linear>
 
-        <v-row no-gutters align="center">
+        <v-row no-gutters align="center" class="pt-3">
             <v-col v-show="showFeatures">
                 <v-btn
                     color="accent"
@@ -158,22 +171,6 @@
             </v-col>
         </v-row>
     </v-col>
-
-    <!-- <div class="py-11">
-                <template v-for="stage in stageList">
-                    <v-row
-                        :key="stage.identifier"
-                        v-if="showFeatures"
-                        class="layer-legend"
-                        :style="{
-                            '--color': stageColor[stage.identifier],
-                            '--back-color': `${stageColor[stage.identifier]}AA`,
-                        }"
-                    >
-                        {{ stage.name }}
-                    </v-row>
-                </template>
-            </div> -->
 </template>
 
 <i18n>
@@ -221,16 +218,28 @@ export default {
                 ti: null,
             },
             isLoadingTotal: false,
+            isLoadingYears: false,
             legendData: legend,
             errorRegional: false,
             errorAno: false,
         }
     },
+
     watch: {
         'filters.cr'(value) {
             this.populateTiOptions(value)
         },
+
+        'filters.ti'(value) {
+            this.isLoadingYears = true
+            this.populateYearsOptions(value)
+        },
+
+        'filters.year'() {
+            this.isLoadingYears = false
+        },
     },
+
     computed: {
         opacity: {
             get() {
@@ -270,6 +279,11 @@ export default {
             else this.filters.ti = null
         },
 
+        populateYearsOptions(ti) {
+            if (ti) this.$store.dispatch('land-use/getYearsOptions', ti)
+            else this.filters.year = null
+        },
+
         search() {
             if (!this.filters.cr.length && !this.filters.year.length) {
                 this.errorRegional = true
@@ -291,6 +305,7 @@ export default {
             this.setFilters(this.filters)
             this.$emit('onSearch')
         },
+
         ...mapMutations('land-use', ['setFilters']),
         ...mapActions('land-use', [
             'getFilterOptions',

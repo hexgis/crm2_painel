@@ -54,9 +54,11 @@ export const mutations = {
     clearFeatures(state) {
         state.features = null
     },
+
     setTotal(state, total) {
         state.total = total
     },
+
     setVisualizationStage(state, visualizationStage) {
         state.visualizationStage = visualizationStage
     },
@@ -68,6 +70,7 @@ export const mutations = {
     setLoadingFeatures(state, payload) {
         state.isLoadingFeatures = payload
     },
+
     setFilterOptions(state, data) {
         state.filterOptions = data
     },
@@ -75,6 +78,7 @@ export const mutations = {
     setOpacity(state, opacity) {
         state.opacity = opacity
     },
+
     setDownloadTable(state, tableCSVLandUse) {
         state.tableCSVLandUse = tableCSVLandUse
     },
@@ -82,9 +86,11 @@ export const mutations = {
     setHeatMap(state, heatMap) {
         state.heatMap = heatMap
     },
+
     setLoadingCSV(state, payload) {
         state.isLoadingCSV = payload
     },
+
     setTable(state, tableLandUse) {
         state.tableLandUse = tableLandUse
     },
@@ -152,9 +158,9 @@ export const actions = {
             commit('setLoadingGeoJson', false)
         }
     },
+
     async getFilterOptions({ commit }) {
         const regional_coordinators = await this.$api.$get('funai/cr/')
-        const years = await this.$api.$get('land-use/years/')
         const data = {}
 
         if (regional_coordinators) {
@@ -162,18 +168,18 @@ export const actions = {
                 (a, b) => a.ds_cr > b.ds_cr
             )
         }
-        if (years) {
-            data.year = years
-        }
 
         commit('setFilterOptions', data)
     },
+
     async getTiOptions({ commit, state }, cr) {
         const params = {
             co_cr: cr.toString(),
         }
 
-        const tis = await this.$api.$get('funai/ti/', { params })
+        const tis = await this.$api.$get('funai/ti/', {
+            params,
+        })
 
         if (tis)
             commit('setFilterOptions', {
@@ -181,6 +187,24 @@ export const actions = {
                 tiFilters: tis.sort((a, b) => a.no_ti > b.no_ti),
             })
     },
+
+    async getYearsOptions({ commit, state }, ti) {
+        const params = {
+            co_funai: ti.toString(),
+        }
+
+        const years = await this.$api.$get('land-use/years/', {
+            params,
+        })
+
+        if (years) {
+            commit('setFilterOptions', {
+                ...state.filterOptions,
+                year: years,
+            })
+        }
+    },
+
     async getDataTableLandUse({ commit, state, rootGetters }) {
         commit('setLoadingGeoJson', true)
         commit('setLoadingFeatures', true)
@@ -227,6 +251,7 @@ export const actions = {
             commit('setLoadingTable', false)
         }
     },
+
     async downloadTableLandUse({ commit, state, rootGetters }) {
         commit('setLoadingCSV', true)
 
@@ -279,6 +304,7 @@ export const actions = {
             commit('setLoadingCSV', false)
         }
     },
+
     async downloadGeoJsonLandUse({ commit, state, rootGetters }) {
         commit('setLoadingGeoJson', true)
 
