@@ -1,0 +1,14 @@
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "--no-cache",
+        "-t",
+        "gcr.io/${PROJECT_ID}/cmr/painel:latest",
+        ".",
+        "-f",
+        "Dockerfile",
+      ]
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/${PROJECT_ID}/cmr/painel:latest"]
