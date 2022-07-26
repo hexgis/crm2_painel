@@ -72,9 +72,11 @@ export const mutations = {
     clearFeatures(state) {
         state.features = null
     },
+    
     setLoadingCSV(state, payload) {
         state.isLoadingCSV = payload
     },
+
     setLoadingGeoJson(state, payload) {
         state.isLoadingGeoJson = payload
     },
@@ -90,6 +92,7 @@ export const mutations = {
     setTable(state, table) {
         state.table = table
     },
+
     setDownloadTable(state, tableCSV) {
         state.tableCSV = tableCSV
     },
@@ -105,14 +108,14 @@ export const mutations = {
     setHeatMap(state, heatMap) {
         state.heatMap = heatMap
     },
-    //
+
     setUnitMeasurement(state, unitMeasurement) {
         state.unitMeasurement = unitMeasurement
     },
+
     setVisualizationStage(state, visualizationStage) {
         state.visualizationStage = visualizationStage
     },
-    //
 }
 
 export const actions = {
@@ -146,6 +149,7 @@ export const actions = {
         }
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
+
         try {
             const response = await this.$api.$get('priority/consolidated/', {
                 params,
@@ -222,6 +226,7 @@ export const actions = {
                 tiFilters: tis.sort((a, b) => a.no_ti > b.no_ti),
             })
     },
+
     async getDataTable({ commit, state, rootGetters }) {
         commit('setLoadingFeatures', true)
         commit('setLoadingGeoJson', true)
@@ -231,14 +236,24 @@ export const actions = {
             end_date: state.filters.endDate,
         }
 
-        if (state.filters.ti && state.filters.ti.length)
-            params.co_funai = state.filters.ti.toString()
+        if (state.filters.ti && state.filters.ti.length) {
+            let arrayTI = []
+            Object.values(state.filters.ti).forEach((item) => {
+                arrayTI.push(item.co_funai)
+            })
+            params.co_funai = arrayTI.toString()
+        }
+
+        if (state.filters.cr && state.filters.cr.length) {
+            let arrayCR = []
+            Object.values(state.filters.cr).forEach((item) => {
+                arrayCR.push(item.co_cr)
+            })
+            params.co_cr = arrayCR.toString()
+        }
 
         if (state.filters.priority && state.filters.priority.length)
             params.priority = state.filters.priority.toString()
-
-        if (state.filters.cr && state.filters.cr.length)
-            params.co_cr = state.filters.cr.toString()
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
@@ -279,14 +294,24 @@ export const actions = {
             format: state.filters.csv,
         }
 
-        if (state.filters.ti && state.filters.ti.length)
-            params.co_funai = state.filters.ti.toString()
+        if (state.filters.ti && state.filters.ti.length) {
+            let arrayTI = []
+            Object.values(state.filters.ti).forEach((item) => {
+                arrayTI.push(item.co_funai)
+            })
+            params.co_funai = arrayTI.toString()
+        }
+
+        if (state.filters.cr && state.filters.cr.length) {
+            let arrayCR = []
+            Object.values(state.filters.cr).forEach((item) => {
+                arrayCR.push(item.co_cr)
+            })
+            params.co_cr = arrayCR.toString()
+        }
 
         if (state.filters.priority && state.filters.priority.length)
             params.priority = state.filters.priority.toString()
-
-        if (state.filters.cr && state.filters.cr.length)
-            params.co_cr = state.filters.cr.toString()
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
@@ -330,14 +355,24 @@ export const actions = {
             format: state.filters.json,
         }
 
-        if (state.filters.ti && state.filters.ti.length)
-            params.co_funai = state.filters.ti.toString()
+        if (state.filters.ti && state.filters.ti.length) {
+            let arrayTI = []
+            Object.values(state.filters.ti).forEach((item) => {
+                arrayTI.push(item.co_funai)
+            })
+            params.co_funai = arrayTI.toString()
+        }
+
+        if (state.filters.cr && state.filters.cr.length) {
+            let arrayCR = []
+            Object.values(state.filters.cr).forEach((item) => {
+                arrayCR.push(item.co_cr)
+            })
+            params.co_cr = arrayCR.toString()
+        }
 
         if (state.filters.priority && state.filters.priority.length)
             params.priority = state.filters.priority.toString()
-
-        if (state.filters.cr && state.filters.cr.length)
-            params.co_cr = state.filters.cr.toString()
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
