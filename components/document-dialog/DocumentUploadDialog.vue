@@ -36,7 +36,7 @@
                         >
                         </v-select>
                     </v-col>
-                    <v-col >
+                    <v-col class="mt-2">
                         <BaseDateField
                             :label="$t('start-date-label')"
                             required
@@ -45,7 +45,7 @@
                         
                         <v-btn color="secondary">
                             <v-icon>
-                                mdi-file-plus
+                                mdi-paperclip
                             </v-icon>
                         </v-btn>
                         
