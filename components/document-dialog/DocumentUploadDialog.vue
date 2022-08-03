@@ -36,14 +36,22 @@
                         >
                         </v-select>
                     </v-col>
-                    <v-col class="d-inline-flex pa-2">
+                    <v-col >
                         <BaseDateField
                             :label="$t('start-date-label')"
                             required
                             outlined
                         />
+                        
+                        <v-btn color="secondary">
+                            <v-icon>
+                                mdi-file-plus
+                            </v-icon>
+                        </v-btn>
+                        
                     </v-col>
                 </v-card-actions>
+                <v-divider></v-divider>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="secondary" text @click="dialog = false">
