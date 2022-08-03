@@ -99,6 +99,7 @@
                                         {{ $t('search-label') }}
                                     </v-btn>
                                 </v-col>
+                                <DocumentUploadDialog />
                             </v-row>
                         </v-container>
                     </v-card-actions>
@@ -183,11 +184,12 @@
 import BaseDateField from '@/components/base/BaseDateField'
 import { mapMutations, mapState, mapActions } from 'vuex'
 import legend from '@/assets/legend.png'
+import DocumentUploadDialog from '@/components/document-dialog/DocumentUploadDialog'
 
 export default {
     name: 'DocumentDialog',
 
-    components: { BaseDateField },
+    components: { BaseDateField, DocumentUploadDialog },
 
     data() {
         return {
