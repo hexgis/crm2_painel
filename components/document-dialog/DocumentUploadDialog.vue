@@ -68,12 +68,12 @@
 <i18n>
     {
         "en": {
-            "date-label": "Date",
+            "date-label": "Date of Document",
             "action-label": "Actions"
             
         },
         "pt-br": {
-            "date-label": "Data",
+            "date-label": "Data do Documento",
             "action-label": "Ações"
         }
     }
