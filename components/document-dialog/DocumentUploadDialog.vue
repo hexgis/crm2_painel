@@ -1,6 +1,6 @@
 <template>
     <div class="text-center">
-        <v-dialog v-model="dialog" max-width="40vw">
+        <v-dialog v-model="dialog" max-width="40vw" persistent>
             <template v-slot:activator="{ on, attrs }">
                 <v-btn
                     fab
@@ -28,6 +28,9 @@
                         </v-select>
                         <v-select
                             label="Terras Indigenas (Todas)"
+                            :items="filterOptions.tiFiltersUpload"
+                            item-text="no_ti"
+                            item-value="co_funai"
                             multiple
                             clearable
                             hide-details
@@ -37,12 +40,13 @@
                     </v-col>
                     <v-col class="mt-2">
                         <BaseDateField
-                            :label="$t('start-date-label')"
-                            required
+                            v-model="filters.date"
+                            :label="$t('date-label')"
+                            :required="true"
                             outlined
                         />
                         <v-btn color="secondary">
-                            <input @change="onFileChange" type="file">
+                            <input @change="onFileChange" type="file" />
                             <v-icon> mdi-paperclip </v-icon>
                         </v-btn>
                     </v-col>
@@ -64,37 +68,18 @@
 <i18n>
     {
         "en": {
-            "search-label": "Search",
-            "opacity-label": "Opacity",
-            "current-view-label": "Search in current area?",
-            "start-date-label": "Start Date",
-            "total-area-label": "Total area",
-            "heat-map-label": "Heat map",
-            "polygon-label": "Total polygon count",
-            "end-date-label": "End Date",
-            "dialogName": "DOCUMENT SEARCH",
-            "result-label": "Results",
-            "filter-label": "Filter",
+            "date-label": "Date",
             "action-label": "Actions"
             
         },
         "pt-br": {
-            "search-label": "Buscar",
-            "opacity-label": "Opacidade",
-            "current-view-label": "Pesquisar nesta área?",
-            "total-area-label": "Área total",
-            "heat-map-label": "Mapa de calor",
-            "polygon-label": "Total de polígonos",
-            "start-date-label": "Data Início",
-            "end-date-label": "Data Fim",
-            "dialogName": "PESQUISA DE DOCUMENTOS",
-            "result-label": "Resultados",
-            "filter-label": "Filtrar",
+            "date-label": "Data",
             "action-label": "Ações"
         }
     }
 </i18n>
 <script>
+import { mapMutations, mapState, mapActions } from 'vuex'
 import BaseDateField from '@/components/base/BaseDateField'
 export default {
     components: { BaseDateField },
@@ -102,30 +87,50 @@ export default {
     data() {
         return {
             dialog: false,
-            image: ''
+            image: '',
+            isGeoserver: process.env.MONITORING_GEOSERVER === 'true',
+            filters: {
+                date: this.$moment().format('YYYY-MM-DD'),
+                cr: [],
+                ti: null,
+                ac: [],
+            },
         }
     },
 
-  methods: {
-    onFileChange(e) {
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length)
-        return;
-      this.createImage(files[0]);
-    },
-    createImage(file) {
-      var image = new Image();
-      var reader = new FileReader();
-      var vm = this;
+    methods: {
+        onFileChange(e) {
+            var files = e.target.files || e.dataTransfer.files
+            if (!files.length) return
+            this.createImage(files[0])
+        },
 
-      reader.onload = (e) => {
-        vm.image = e.target.result;
-      };
-      reader.readAsDataURL(file);
+        createImage(file) {
+            var image = new Image()
+            var reader = new FileReader()
+            var vm = this
+
+            reader.onload = (e) => {
+                vm.image = e.target.result
+            }
+            reader.readAsDataURL(file)
+        },
+
+        removeImage: function (e) {
+            this.image = ''
+        },
+        
+        ...mapMutations('document', ['setFilters', 'setShowDialogDocument']),
+        ...mapActions('document', ['getTiUploadOptions']),
     },
-    removeImage: function (e) {
-      this.image = '';
-    }
-  }
+
+    computed: {
+        ...mapState('document', ['filterOptions', 'showDialogDocument']),
+    },
+
+    mounted() {
+        this.getTiUploadOptions()
+    },
+
 }
 </script>

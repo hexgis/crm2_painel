@@ -15,6 +15,7 @@ export const state = () => ({
     filterOptions: {
         regionalFilters: [],
         tiFilters: [],
+        tiFiltersUpload: []
     },
 
     filters: {
@@ -202,6 +203,18 @@ export const actions = {
                 tiFilters: tis.sort((a, b) => a.no_ti > b.no_ti),
             })
     },
+
+    async getTiUploadOptions({ commit, state }, cr) {
+
+        const tis = await this.$api.$get('funai/ti/')
+
+        if (tis)
+            commit('setFilterOptions', {
+                ...state.filterOptions,
+                tiFiltersUpload: tis.sort((a, b) => a.no_ti > b.no_ti),
+            })
+    },
+
     async getDataTable({ commit, state, rootGetters }) {
         commit('setLoadingFeatures', true)
         commit('setLoadingGeoJson', true)
