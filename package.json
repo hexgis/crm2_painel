@@ -41,6 +41,7 @@
         "shpjs": "^4.0.2",
         "v-mask": "^2.2.3",
         "vue-chartjs": "^3.5.1",
+        "vue-resource": "^1.5.3",
         "vue2-leaflet": "2.5.2",
         "vue2-leaflet-markercluster": "^3.1.0"
     },

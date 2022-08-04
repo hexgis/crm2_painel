@@ -13,7 +13,6 @@
                     <v-icon rounded> mdi-upload </v-icon>
                 </v-btn>
             </template>
-
             <v-card style="width: 100vw">
                 <v-card-title class="text-h5 grey lighten-2">
                     CADASTRO DE DOCUMENTOS DE TERRAS INDÍGENAS
@@ -42,13 +41,10 @@
                             required
                             outlined
                         />
-                        
                         <v-btn color="secondary">
-                            <v-icon>
-                                mdi-paperclip
-                            </v-icon>
+                            <input @change="onFileChange" type="file">
+                            <v-icon> mdi-paperclip </v-icon>
                         </v-btn>
-                        
                     </v-col>
                 </v-card-actions>
                 <v-divider></v-divider>
@@ -106,7 +102,30 @@ export default {
     data() {
         return {
             dialog: false,
+            image: ''
         }
     },
+
+  methods: {
+    onFileChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length)
+        return;
+      this.createImage(files[0]);
+    },
+    createImage(file) {
+      var image = new Image();
+      var reader = new FileReader();
+      var vm = this;
+
+      reader.onload = (e) => {
+        vm.image = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+    removeImage: function (e) {
+      this.image = '';
+    }
+  }
 }
 </script>
