@@ -15,7 +15,7 @@
             </template>
             <v-card style="width: 100vw">
                 <v-card-title class="text-h5 grey lighten-2">
-                    CADASTRO DE DOCUMENTOS DE TERRAS INDÍGENAS
+                    {{ $t('title-label') }}
                 </v-card-title>
                 <v-card-actions>
                     <v-col class="cols">
@@ -42,7 +42,7 @@
                         <BaseDateField
                             v-model="filters.date"
                             :label="$t('date-label')"
-                            :required="true"
+                            required
                             outlined
                         />
                         <v-btn color="secondary">
@@ -69,12 +69,14 @@
     {
         "en": {
             "date-label": "Date of Document",
-            "action-label": "Actions"
+            "action-label": "Actions",
+            "title-label": "REGISTRATION OF INDIGENOUS LAND DOCUMENTS"
             
         },
         "pt-br": {
             "date-label": "Data do Documento",
-            "action-label": "Ações"
+            "action-label": "Ações",
+            "title-label": "CADASTRO DE DOCUMENTOS DE TERRAS INDÍGENAS"
         }
     }
 </i18n>
@@ -119,7 +121,7 @@ export default {
         removeImage: function (e) {
             this.image = ''
         },
-        
+
         ...mapMutations('document', ['setFilters', 'setShowDialogDocument']),
         ...mapActions('document', ['getTiUploadOptions']),
     },
@@ -131,6 +133,5 @@ export default {
     mounted() {
         this.getTiUploadOptions()
     },
-
 }
 </script>
