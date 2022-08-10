@@ -6,7 +6,7 @@ export const state = () => ({
     isLoadingTable: false,
     isLoadingFeatures: false,
     showDialogDocument: false,
-
+    fileData: '',
     isLoadingGeoJson: false,
     isLoadingCSV: false,
     unitMeasurement: [],
@@ -15,7 +15,7 @@ export const state = () => ({
     filterOptions: {
         regionalFilters: [],
         tiFilters: [],
-        tiFiltersUpload: []
+        tiFiltersUpload: [],
     },
 
     filters: {
@@ -59,6 +59,10 @@ export const mutations = {
 
     setFeatures(state, features) {
         state.features = features
+    },
+
+    setFileData(state, fileData){
+        state.fileData = fileData
     },
 
     settableDialogAlert(state, tableDialogAlert) {
@@ -190,6 +194,21 @@ export const actions = {
         commit('setFilterOptions', data)
     },
 
+    async sendFile({ commit }) {
+        const params = {
+            start_date: state.filters.startDate,
+        }
+
+        if (state.filters.ti && state.filters.ti.length)
+            params.co_funai = state.filters.ti.toString()
+
+        const fileData = await this.$api.$post('', {
+            params,
+        })
+
+        commit('setFileData', fileData)
+    },
+
     async getTiOptions({ commit, state }, cr) {
         const params = {
             co_cr: cr.toString(),
@@ -205,7 +224,6 @@ export const actions = {
     },
 
     async getTiUploadOptions({ commit, state }, cr) {
-
         const tis = await this.$api.$get('funai/ti/')
 
         if (tis)

@@ -57,7 +57,7 @@
                     <v-btn color="secondary" text @click="dialog = false">
                         Cancelar
                     </v-btn>
-                    <v-btn color="secondary" text @click="dialog = false">
+                    <v-btn color="secondary" text @click="sendFile()">
                         Salvar
                     </v-btn>
                 </v-card-actions>
@@ -123,7 +123,7 @@ export default {
         },
 
         ...mapMutations('document', ['setFilters', 'setShowDialogDocument']),
-        ...mapActions('document', ['getTiUploadOptions']),
+        ...mapActions('document', ['getTiUploadOptions', 'sendFile']),
     },
 
     computed: {
