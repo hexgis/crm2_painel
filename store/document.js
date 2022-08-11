@@ -197,7 +197,7 @@ export const actions = {
         commit('setFilterOptions', data)
     },
 
-    async sendData({ commit }) {
+    async sendData({ commit, state }) {
         const params = {
             start_date: state.filters.startDate,
         }

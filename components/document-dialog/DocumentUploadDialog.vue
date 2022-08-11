@@ -57,7 +57,7 @@
                     <v-btn color="secondary" text @click="dialog = false">
                         Cancelar
                     </v-btn>
-                    <v-btn color="secondary" text @click="uploadFile()">
+                    <v-btn color="secondary" text @click="save()">
                         Salvar
                     </v-btn>
                 </v-card-actions>
@@ -101,40 +101,16 @@ export default {
     },
 
     methods: {
-        // save(){
-        //     this.sendData()
-        // },
-
-        onFileChange(e) {
-            var files = e.target.files || e.dataTransfer.files
-            if (!files.length) return
-            this.createImage(files[0])
-        },
-
-        createImage(file) {
-            var image = new Image()
-            var reader = new FileReader()
-            var vm = this
-
-            reader.onload = (e) => {
-                vm.image = e.target.result
-            }
-            reader.readAsDataURL(file)
-        },
-
-        removeImage: function (e) {
-            this.image = ''
+        save() {
+            this.sendData()
+            this.uploadFile()
         },
 
         uploadFile: function () {
-            // try to log $refs object for deep understanding
             let fileToUpload = this.$refs.fileInput.files[0]
             let formData = new FormData()
-
             formData.append('fileToUpload', fileToUpload)
-            this.$api.$post('data/getData.php', formData).then(function () {
-                // success actions
-            })
+            this.$api.$post('url', formData).then(function () {})
         },
 
         ...mapMutations('document', ['setFilters', 'setShowDialogDocument']),
