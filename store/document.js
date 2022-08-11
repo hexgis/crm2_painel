@@ -80,9 +80,11 @@ export const mutations = {
     clearFeatures(state) {
         state.features = null
     },
+
     setLoadingCSV(state, payload) {
         state.isLoadingCSV = payload
     },
+
     setLoadingGeoJson(state, payload) {
         state.isLoadingGeoJson = payload
     },
@@ -98,6 +100,7 @@ export const mutations = {
     setTable(state, table) {
         state.table = table
     },
+
     setDownloadTable(state, tableCSV) {
         state.tableCSV = tableCSV
     },
@@ -113,14 +116,14 @@ export const mutations = {
     setHeatMap(state, heatMap) {
         state.heatMap = heatMap
     },
-    //
+
     setUnitMeasurement(state, unitMeasurement) {
         state.unitMeasurement = unitMeasurement
     },
+
     setVisualizationStage(state, visualizationStage) {
         state.visualizationStage = visualizationStage
     },
-    //
 }
 
 export const actions = {
@@ -194,7 +197,7 @@ export const actions = {
         commit('setFilterOptions', data)
     },
 
-    async sendFile({ commit }) {
+    async sendData({ commit }) {
         const params = {
             start_date: state.filters.startDate,
         }
@@ -278,6 +281,7 @@ export const actions = {
             commit('setLoadingTable', false)
         }
     },
+
     async downloadTable({ commit, state, rootGetters }) {
         commit('setLoadingCSV', true)
 
@@ -325,6 +329,7 @@ export const actions = {
             commit('setLoadingCSV', false)
         }
     },
+
     async downloadGeoJson({ commit, state, rootGetters }) {
         commit('setLoadingGeoJson', true)
 

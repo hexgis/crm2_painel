@@ -46,7 +46,7 @@
                             outlined
                         />
                         <v-btn color="secondary">
-                            <input @change="onFileChange" type="file" />
+                            <input type="file" ref="fileInput" />
                             <v-icon> mdi-paperclip </v-icon>
                         </v-btn>
                     </v-col>
@@ -57,7 +57,7 @@
                     <v-btn color="secondary" text @click="dialog = false">
                         Cancelar
                     </v-btn>
-                    <v-btn color="secondary" text @click="sendFile()">
+                    <v-btn color="secondary" text @click="uploadFile()">
                         Salvar
                     </v-btn>
                 </v-card-actions>
@@ -101,6 +101,10 @@ export default {
     },
 
     methods: {
+        // save(){
+        //     this.sendData()
+        // },
+
         onFileChange(e) {
             var files = e.target.files || e.dataTransfer.files
             if (!files.length) return
@@ -122,8 +126,19 @@ export default {
             this.image = ''
         },
 
+        uploadFile: function () {
+            // try to log $refs object for deep understanding
+            let fileToUpload = this.$refs.fileInput.files[0]
+            let formData = new FormData()
+
+            formData.append('fileToUpload', fileToUpload)
+            this.$api.$post('data/getData.php', formData).then(function () {
+                // success actions
+            })
+        },
+
         ...mapMutations('document', ['setFilters', 'setShowDialogDocument']),
-        ...mapActions('document', ['getTiUploadOptions', 'sendFile']),
+        ...mapActions('document', ['getTiUploadOptions', 'sendData']),
     },
 
     computed: {
