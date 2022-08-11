@@ -16,6 +16,7 @@ export const state = () => ({
         regionalFilters: [],
         tiFilters: [],
         tiFiltersUpload: [],
+        actions: []
     },
 
     filters: {
@@ -59,6 +60,10 @@ export const mutations = {
 
     setFeatures(state, features) {
         state.features = features
+    },
+
+    setFeatures(state, actions) {
+        state.actions = actions
     },
 
     setFileData(state, fileData){
@@ -234,6 +239,12 @@ export const actions = {
                 ...state.filterOptions,
                 tiFiltersUpload: tis.sort((a, b) => a.no_ti > b.no_ti),
             })
+    },
+
+    async getActionsUploadOptions({ commit }) {
+        const tis = await this.$api.$get('')
+
+        commit('setActions', actions)
     },
 
     async getDataTable({ commit, state, rootGetters }) {

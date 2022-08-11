@@ -114,7 +114,7 @@ export default {
         },
 
         ...mapMutations('document', ['setFilters', 'setShowDialogDocument']),
-        ...mapActions('document', ['getTiUploadOptions', 'sendData']),
+        ...mapActions('document', ['getTiUploadOptions', 'sendData', 'getActionsUploadOptions']),
     },
 
     computed: {
