@@ -102,7 +102,6 @@ export default {
 
     methods: {
         save() {
-            this.sendData()
             this.uploadFile()
         },
 
@@ -110,7 +109,7 @@ export default {
             let fileToUpload = this.$refs.fileInput.files[0]
             let formData = new FormData()
             formData.append('fileToUpload', fileToUpload)
-            this.$api.$post('url', formData).then(function () {})
+            this.$api.$post('url', formData, this.ti, this.ac, this.date).then(function () {})
         },
 
         ...mapMutations('document', ['setFilters', 'setShowDialogDocument']),
@@ -123,6 +122,7 @@ export default {
 
     mounted() {
         this.getTiUploadOptions()
+        // this.getActionsUploadOptions()
     },
 }
 </script>
