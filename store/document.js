@@ -61,7 +61,7 @@ export const mutations = {
         state.features = features
     },
 
-    setFeatures(state, actions) {
+    setActions(state, actions) {
         state.actions = actions
     },
 
@@ -223,7 +223,7 @@ export const actions = {
     },
 
     async getActionsUploadOptions({ commit }) {
-        const tis = await this.$api.$get('')
+        const tis = await this.$api.$get('documental/list-actions/')
 
         commit('setActions', actions)
     },

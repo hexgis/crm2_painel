@@ -21,9 +21,12 @@
                     <v-col class="cols">
                         <v-select
                             :label="$t('action-label')"
+                            :items="filterOptions.actions"
+                            item-text="no_acao"
+                            item-value="id_acao"
                             hide-details
-                            multiple
                             required
+                            clearable
                         >
                         </v-select>
                         <v-select
@@ -106,14 +109,26 @@ export default {
         },
 
         uploadFile: function () {
+            const params = {
+                co_cr: this.cr.toString(),
+                co_funai: this.ti,
+                id_acao: this.ac,
+                dt_cadastro: this.date
+            }
             let fileToUpload = this.$refs.fileInput.files[0]
             let formData = new FormData()
             formData.append('fileToUpload', fileToUpload)
-            this.$api.$post('url', formData, this.ti, this.ac, this.date).then(function () {})
+            this.$api
+                .$post('url', formData, params)
+                .then(function () {console.log("Enviado com sucesso")})
         },
 
         ...mapMutations('document', ['setFilters', 'setShowDialogDocument']),
-        ...mapActions('document', ['getTiUploadOptions', 'sendData', 'getActionsUploadOptions']),
+        ...mapActions('document', [
+            'getTiUploadOptions',
+            'sendData',
+            'getActionsUploadOptions',
+        ]),
     },
 
     computed: {
@@ -122,7 +137,7 @@ export default {
 
     mounted() {
         this.getTiUploadOptions()
-        // this.getActionsUploadOptions()
+        this.getActionsUploadOptions()
     },
 }
 </script>
