@@ -188,7 +188,7 @@ export default {
                 },
                 {
                     name: this.$t('mapoteca-tab'),
-                    icon: 'mdi-map',
+                    icon: 'mdi-image-area',
                     route: '/mapoteca',
                     show: process.env.ROUTE_MAPOTECA === 'true',
                 },
