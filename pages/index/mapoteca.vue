@@ -12,9 +12,10 @@
             />
         </div>
         <v-card-text>
-            <p>Ambiente de pesquisa de mapas.</p>
-            <p>Não é permitido adicionar documentos que não são mapas.</p>
-            <p>Somente mapas são permitidos.</p>
+            <p>
+                Ambiente de pesquisa de mapas. Não é permitido adicionar
+                documentos que não são mapas. Somente mapas são permitidos.
+            </p>
 
             <v-list-item-content style="list-style: circle">
                 <v-list-item-title class="list__text mb-4 font-weight-black"
@@ -30,7 +31,7 @@
             {{ $t('input-label') }}
         </v-btn>
         <div v-if="showDialogDocument">
-            <DocumentDialog />
+            <MapotecaDialog />
         </div>
         <v-divider v-if="showFeatures" class="mt-8 mb-5" />
         <div>
@@ -57,33 +58,6 @@
                     </v-col>
                 </v-row>
             </v-row>
-            <v-row v-if="showFeatures" align="center">
-                <v-col cols="4" class="grey--text text--darken-2">
-                    {{ $t('opacity-label') }}
-                </v-col>
-                <v-col cols="8">
-                    <v-slider
-                        v-model="opacity"
-                        class="my-n2"
-                        hide-details
-                        thumb-label
-                    />
-                </v-col>
-            </v-row>
-            <v-row v-if="showFeatures" align="center" justify="space-between">
-                <v-col>
-                    <span class="grey--text text--darken-2">
-                        {{ $t('heat-map-label') }}
-                    </span>
-                </v-col>
-                <v-col cols="3" class="d-flex justify-end">
-                    <v-switch
-                        v-model="heatMap"
-                        class="mt-0 pt-0"
-                        hide-details
-                    />
-                </v-col>
-            </v-row>
         </div>
         <v-footer
             absolute
@@ -103,37 +77,36 @@
 <i18n>
     {
         "en": {
-            "title": "Document",
+            "title": "Map Library",
             "analytics-label": "Analytics",
             "map-label": "Map",
-            "input-label": "Search",
-            "table-name": "Monitoring Table"
+            "input-label": "Search"
         },
         "pt-br": {
-            "title": "Documental",
+            "title": "Mapoteca",
             "analytics-label": "Analytics",
             "map-label": "Mapa",
-            "input-label": "Pesquisar",
-            "table-name": "Tabela de Monitoramento"
+            "input-label": "Pesquisar"
         }
     }
 </i18n>
 
 <script>
-import DocumentDialog from '@/components/document-dialog/DocumentDialog'
+import MapotecaDialog from '@/components/mapoteca/MapotecaDialog'
 import { mapActions, mapMutations, mapState } from 'vuex'
 export default {
-    components: { DocumentDialog },
+    components: { MapotecaDialog },
     data() {
         return {
             items: [
-                { value: 'Terras Indigenas' },
-                { value: 'Amazônia Legal' },
+                { value: 'Imagem de Alta Resolução ​' },
+                { value: 'Uso e Ocupação do Solo' },
+                { value: 'Uso e Ocupação com Imagem de Alta Resolução' },
             ],
         }
     },
     computed: {
-        ...mapState('document', [
+        ...mapState('mapoteca', [
             'showDialogDocument',
             'showFeatures',
             'features',
@@ -145,7 +118,7 @@ export default {
             this.setShowDialogDocument(value)
         },
 
-        ...mapMutations('document', ['setShowDialogDocument']),
+        ...mapMutations('mapoteca', ['setShowDialogDocument']),
     },
 }
 </script>
