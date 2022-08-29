@@ -184,6 +184,12 @@ export default {
                     route: '/document',
                     show: process.env.ROUTE_DOCUMENT === 'true',
                 },
+                {
+                    name: this.$t('catalog-tab'),
+                    icon: 'mdi-folder-multiple-image',
+                    route: '/catalog',
+                    show: process.env.ROUTE_CATALOG === 'true',
+                },
             ]
         },
 
