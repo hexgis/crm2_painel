@@ -6,11 +6,9 @@ export const state = () => ({
     isLoadingTable: false,
     isLoadingFeatures: false,
     showDialogDocument: false,
-
     isLoadingGeoJson: false,
     isLoadingCSV: false,
     unitMeasurement: [],
-    // displayAnalitcs: null, // responsável por exibir qual dos 4 Dashboards será exibido na tela: Filtro Aplicado; CR; TI; Municípios. Também encaminhar o filtro aplicado.
     visualizationStage: 'map',
     filterOptions: {
         regionalFilters: [],
@@ -75,9 +73,11 @@ export const mutations = {
     clearFeatures(state) {
         state.features = null
     },
+
     setLoadingCSV(state, payload) {
         state.isLoadingCSV = payload
     },
+
     setLoadingGeoJson(state, payload) {
         state.isLoadingGeoJson = payload
     },
@@ -93,6 +93,7 @@ export const mutations = {
     setTable(state, table) {
         state.table = table
     },
+
     setDownloadTable(state, tableCSV) {
         state.tableCSV = tableCSV
     },
@@ -108,14 +109,14 @@ export const mutations = {
     setHeatMap(state, heatMap) {
         state.heatMap = heatMap
     },
-    //
+
     setUnitMeasurement(state, unitMeasurement) {
         state.unitMeasurement = unitMeasurement
     },
+
     setVisualizationStage(state, visualizationStage) {
         state.visualizationStage = visualizationStage
     },
-    //
 }
 
 export const actions = {

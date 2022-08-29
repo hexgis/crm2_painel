@@ -44,7 +44,7 @@
                                     >
                                     </v-select>
                                 </v-col>
-                                <v-col>
+                                <v-col v-if="filters.cr && filterOptions.tiFilters">
                                     <v-select
                                         v-model="filters.ti"
                                         label="Terras Indigenas (Todas)"
@@ -80,15 +80,6 @@
                                     </v-subheader>
                                 </v-col>
                                 <v-spacer></v-spacer>
-                                <v-col cols="2">
-                                    <v-text-field
-                                        v-model="filter"
-                                        append-icon="mdi-magnify"
-                                        :label="$t('filter-label')"
-                                        single-line
-                                        hide-details
-                                    ></v-text-field>
-                                </v-col>
                             </v-row>
                         </v-container>
                         <v-container class="pa-0" fluid>
@@ -100,7 +91,6 @@
                                 v-if="!isLoadingTable"
                                 :headers="headers"
                                 :items="values"
-                                :search="filter"
                                 fixed-header
                                 height="52vh"
                                 style="width: 100vw"
@@ -168,7 +158,6 @@ export default {
             },
             isLoadingTotal: false,
             legendData: legend,
-            filter: '',
             headers: [
                 {
                     text: 'Código',
@@ -210,23 +199,6 @@ export default {
         },
     },
     computed: {
-        opacity: {
-            get() {
-                return this.$store.state.alert - urg.opacity
-            },
-            set(value) {
-                this.$store.commit('alert-urg/setOpacity', value)
-            },
-        },
-
-        heatMap: {
-            get() {
-                return this.$store.state.alert - urg.heatMap
-            },
-            set(value) {
-                this.$store.commit('alert-urg/setHeatMap', value)
-            },
-        },
 
         ...mapState('mapoteca', [
             'isLoadingGeoJson',
@@ -246,7 +218,7 @@ export default {
 
     methods: {
         populateTiOptions(cr) {
-            if (cr) this.$store.dispatch('document/getTiOptions', cr)
+            if (cr) this.$store.dispatch('mapoteca/getTiOptions', cr)
             else this.filters.ti = null
         },
 
