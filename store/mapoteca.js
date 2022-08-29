@@ -1,7 +1,6 @@
 export const state = () => ({
     features: null,
     showFeatures: false,
-    heatMap: true,
     tableDialogAlert: false,
     isLoadingTable: false,
     isLoadingFeatures: false,
@@ -22,8 +21,6 @@ export const state = () => ({
         json: 'json',
     },
 
-    opacity: 100,
-    total: null,
     table: [],
     tableCSV: [],
 })
@@ -74,20 +71,8 @@ export const mutations = {
         state.features = null
     },
 
-    setLoadingCSV(state, payload) {
-        state.isLoadingCSV = payload
-    },
-
-    setLoadingGeoJson(state, payload) {
-        state.isLoadingGeoJson = payload
-    },
-
     setShowFeatures(state, showFeatures) {
         state.showFeatures = showFeatures
-    },
-
-    setOpacity(state, opacity) {
-        state.opacity = opacity
     },
 
     setTable(state, table) {
@@ -100,14 +85,6 @@ export const mutations = {
 
     setFilterOptions(state, data) {
         state.filterOptions = data
-    },
-
-    setTotal(state, total) {
-        state.total = total
-    },
-
-    setHeatMap(state, heatMap) {
-        state.heatMap = heatMap
     },
 
     setUnitMeasurement(state, unitMeasurement) {
@@ -297,7 +274,7 @@ export const actions = {
             commit('setLoadingCSV', false)
         }
     },
-    
+
     async downloadGeoJson({ commit, state, rootGetters }) {
         commit('setLoadingGeoJson', true)
 

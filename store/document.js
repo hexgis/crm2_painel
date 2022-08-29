@@ -86,10 +86,6 @@ export const mutations = {
         state.showFeatures = showFeatures
     },
 
-    setOpacity(state, opacity) {
-        state.opacity = opacity
-    },
-
     setTable(state, table) {
         state.table = table
     },
@@ -100,14 +96,6 @@ export const mutations = {
 
     setFilterOptions(state, data) {
         state.filterOptions = data
-    },
-
-    setTotal(state, total) {
-        state.total = total
-    },
-
-    setHeatMap(state, heatMap) {
-        state.heatMap = heatMap
     },
 
     setUnitMeasurement(state, unitMeasurement) {
@@ -203,6 +191,7 @@ export const actions = {
                 tiFilters: tis.sort((a, b) => a.no_ti > b.no_ti),
             })
     },
+
     async getDataTable({ commit, state, rootGetters }) {
         commit('setLoadingFeatures', true)
         commit('setLoadingGeoJson', true)
@@ -248,6 +237,7 @@ export const actions = {
             commit('setLoadingTable', false)
         }
     },
+
     async downloadTable({ commit, state, rootGetters }) {
         commit('setLoadingCSV', true)
 
@@ -295,6 +285,7 @@ export const actions = {
             commit('setLoadingCSV', false)
         }
     },
+    
     async downloadGeoJson({ commit, state, rootGetters }) {
         commit('setLoadingGeoJson', true)
 
