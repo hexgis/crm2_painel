@@ -247,7 +247,7 @@ export default {
                 this.map.flyTo([
                     feature.properties.nu_latitude,
                     feature.properties.nu_longitude,
-                ])
+                ],12)
             })
         },
 
