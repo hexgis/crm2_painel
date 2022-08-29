@@ -67,6 +67,7 @@
                                         {{ $t('search-label') }}
                                     </v-btn>
                                 </v-col>
+                                <MapotecaDialogUpload class="mt-2"/>
                             </v-row>
                         </v-container>
                     </v-card-actions>
@@ -140,9 +141,15 @@
 <script>
 import { mapMutations, mapState, mapActions } from 'vuex'
 import legend from '@/assets/legend.png'
+import MapotecaDialogUpload from '@/components/mapoteca/MapotecaDialogUpload'
+
+
 
 export default {
     name: 'MapotecaDialog',
+
+        components: { MapotecaDialogUpload },
+
 
     data() {
         return {
