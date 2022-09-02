@@ -13,8 +13,8 @@
         </div>
         <v-card-text>
             <p>
-                Ambiente de pesquisa de mapas. Não é permitido adicionar
-                documentos que não são mapas. Somente mapas são permitidos.
+                Ambiente de pesquisa de mapas.
+                Somente mapas são permitidos.
             </p>
 
             <v-list-item-content style="list-style: circle">
@@ -30,34 +30,8 @@
         <v-btn color="accent" class="" @click="showDialog(true)">
             {{ $t('input-label') }}
         </v-btn>
-        <div v-if="showDialogDocument">
+        <div v-if="showDialogMapoteca">
             <MapotecaDialog />
-        </div>
-        <v-divider v-if="showFeatures" class="mt-8 mb-5" />
-        <div>
-            <v-row v-if="total" class="px-3 py-1">
-                <v-row v-if="showFeatures && total">
-                    <v-col cols="7" class="grey--text text--darken-2">
-                        {{ $t('polygon-label') }}:
-                    </v-col>
-                    <v-col cols="5" class="text-right">
-                        {{ total.total }}
-                    </v-col>
-                </v-row>
-                <v-row v-if="showFeatures && total && total.area_ha">
-                    <v-col cols="7" class="grey--text text--darken-2">
-                        {{ $t('total-area-label') }}:
-                    </v-col>
-                    <v-col cols="5" class="text-right">
-                        {{
-                            total.area_ha.toLocaleString($i18n.locale, {
-                                maximumFractionDigits: 2,
-                            })
-                        }}
-                        ha
-                    </v-col>
-                </v-row>
-            </v-row>
         </div>
         <v-footer
             absolute
@@ -107,18 +81,17 @@ export default {
     },
     computed: {
         ...mapState('mapoteca', [
-            'showDialogDocument',
+            'showDialogMapoteca',
             'showFeatures',
             'features',
-            'total',
         ]),
     },
     methods: {
         showDialog(value) {
-            this.setShowDialogDocument(value)
+            this.setShowDialogMapoteca(value)
         },
 
-        ...mapMutations('mapoteca', ['setShowDialogDocument']),
+        ...mapMutations('mapoteca', ['setShowDialogMapoteca']),
     },
 }
 </script>

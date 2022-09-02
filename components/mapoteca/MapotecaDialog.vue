@@ -2,7 +2,7 @@
     <v-row justify="space-around">
         <v-col cols="auto">
             <v-dialog
-                v-model="showDialogDocument"
+                v-model="showDialogMapoteca"
                 transition="dialog-bottom-transition"
                 max-width="95vw"
             >
@@ -166,36 +166,13 @@ export default {
             isLoadingTotal: false,
             legendData: legend,
             headers: [
-                {
-                    text: 'Código',
-                    align: 'start',
-                    value: 'id',
-                },
-                { text: 'Nome da TI', value: 'name' },
-            ],
-            desserts: [
-                {
-                    name: 'Jumina',
-                    id: 159,
-                },
-                {
-                    name: 'Alto Rio Purus',
-                    id: 237,
-                },
-                {
-                    name: 'Boca do Acre',
-                    id: 262,
-                },
-                {
-                    name: 'Rio Mequens',
-                    id: 305,
-                },
-            ],
-            actions: [
-                {
-                    id: 1,
-                    name: 'Alertas Urgentes',
-                },
+                { text: 'Código Funai', value: 'co_funai' },
+                { text: 'Terra Indígena', value: 'no_ti' },
+                { text: 'Coordenação Regional', value: 'ds_cr' },
+                { text: 'Prioridade', value: 'prioridade' },
+                { text: 'Classe', value: 'no_estagio' },
+                { text: 'Data da Imagem', value: 'dt_imagem' },
+                { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
             ],
             values: [],
         }
@@ -208,13 +185,11 @@ export default {
     computed: {
 
         ...mapState('mapoteca', [
-            'isLoadingGeoJson',
             'isLoadingFeatures',
             'filterOptions',
             'showFeatures',
-            'total',
             'params',
-            'showDialogDocument',
+            'showDialogMapoteca',
             'isLoadingTable',
         ]),
     },
@@ -230,7 +205,7 @@ export default {
         },
 
         closeDialog(value) {
-            this.setShowDialogDocument(value)
+            this.setShowDialogMapoteca(value)
         },
 
         search() {
@@ -243,10 +218,10 @@ export default {
 
         ...mapMutations('mapoteca', [
             'setFilters',
-            'setShowDialogDocument',
+            'setShowDialogMapoteca',
             'setLoadingTable',
         ]),
-        ...mapActions('mapoteca', ['getFilterOptions', 'downloadGeoJson']),
+        ...mapActions('mapoteca', ['getFilterOptions']),
     },
 }
 </script>

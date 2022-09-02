@@ -2,11 +2,8 @@ export const state = () => ({
     features: null,
     showFeatures: false,
     tableDialogAlert: false,
-    isLoadingTable: false,
     isLoadingFeatures: false,
-    showDialogDocument: false,
-    isLoadingGeoJson: false,
-    isLoadingCSV: false,
+    showDialogMapoteca: false,
     unitMeasurement: [],
     visualizationStage: 'map',
     filterOptions: {
@@ -17,12 +14,7 @@ export const state = () => ({
     filters: {
         startDate: null,
         endDate: null,
-        csv: 'csv',
-        json: 'json',
     },
-
-    table: [],
-    tableCSV: [],
 })
 
 export const getters = {
@@ -43,8 +35,8 @@ export const mutations = {
         }
     },
 
-    setShowDialogDocument(state, payload) {
-        state.showDialogDocument = payload
+    setShowDialogMapoteca(state, payload) {
+        state.showDialogMapoteca = payload
     },
 
     setParams(state, params) {
@@ -57,10 +49,6 @@ export const mutations = {
 
     settableDialogAlert(state, tableDialogAlert) {
         state.tableDialogAlert = tableDialogAlert
-    },
-
-    setLoadingTable(state, loadingTable) {
-        state.isLoadingTable = loadingTable
     },
 
     setLoadingFeatures(state, payload) {
@@ -77,10 +65,6 @@ export const mutations = {
 
     setTable(state, table) {
         state.table = table
-    },
-
-    setDownloadTable(state, tableCSV) {
-        state.tableCSV = tableCSV
     },
 
     setFilterOptions(state, data) {
@@ -115,7 +99,7 @@ export const actions = {
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
         try {
-            const response = await this.$api.$get('alerts/', {
+            const response = await this.$api.$get('', {
                 params,
             })
 
@@ -130,7 +114,7 @@ export const actions = {
                 commit('setShowFeatures', true)
                 commit('setFeatures', response)
 
-                const total = await this.$api.$get('alerts/total/', {
+                const total = await this.$api.$get('', {
                     params,
                 })
                 if (total) commit('setTotal', total)
@@ -199,13 +183,13 @@ export const actions = {
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
         try {
-            const table = await this.$api.$get('alerts/table/', {
+            const table = await this.$api.$get('', {
                 params,
             })
 
             if (table) commit('setTable', table)
 
-            const total = await this.$api.$get('alerts/total/', {
+            const total = await this.$api.$get('', {
                 params,
             })
             if (total) commit('setTotal', total)
@@ -224,103 +208,6 @@ export const actions = {
             commit('setLoadingFeatures', false)
             commit('setLoadingGeoJson', false)
             commit('setLoadingTable', false)
-        }
-    },
-
-    async downloadTable({ commit, state, rootGetters }) {
-        commit('setLoadingCSV', true)
-
-        const params = {
-            start_date: state.filters.startDate,
-            end_date: state.filters.endDate,
-            format: state.filters.csv,
-        }
-
-        if (state.filters.ti && state.filters.ti.length)
-            params.co_funai = state.filters.ti.toString()
-
-        if (state.filters.cr && state.filters.cr.length)
-            params.co_cr = state.filters.cr.toString()
-
-        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
-
-        const tableCSV = await this.$api.get('alerts/table/', {
-            params,
-        })
-
-        function saveData(data, fileName, type) {
-            var elementBtn, blob, url
-
-            elementBtn = document.createElement('a')
-            elementBtn.style = 'display: none'
-            document.body.appendChild(elementBtn)
-
-            if (type !== 'text/csv') {
-                data = JSON.stringify(data)
-            }
-
-            blob = new Blob([data], { type: type })
-            url = window.URL.createObjectURL(blob)
-
-            elementBtn.href = url
-            elementBtn.download = fileName
-            elementBtn.click()
-            window.URL.revokeObjectURL(url)
-        }
-
-        try {
-            saveData(tableCSV.data, 'alerta-urgente.csv', 'text/csv')
-        } finally {
-            commit('setLoadingCSV', false)
-        }
-    },
-
-    async downloadGeoJson({ commit, state, rootGetters }) {
-        commit('setLoadingGeoJson', true)
-
-        const params = {
-            start_date: state.filters.startDate,
-            end_date: state.filters.endDate,
-            format: state.filters.csv,
-            format: state.filters.json,
-        }
-
-        if (state.filters.ti && state.filters.ti.length)
-            params.co_funai = state.filters.ti.toString()
-
-        if (state.filters.cr && state.filters.cr.length)
-            params.co_cr = state.filters.cr.toString()
-
-        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
-
-        const GeoJson = await this.$api.get('alerts/', {
-            params,
-        })
-
-        function saveData(data, fileName, type) {
-            var elementBtn, blob, url
-
-            elementBtn = document.createElement('a')
-            elementBtn.style = 'display: none'
-            document.body.appendChild(elementBtn)
-
-            if (type !== 'text/csv') {
-                data = JSON.stringify(data)
-            }
-
-            blob = new Blob([data], { type: type })
-            url = window.URL.createObjectURL(blob)
-
-            elementBtn.href = url
-            elementBtn.download = fileName
-            elementBtn.click()
-            window.URL.revokeObjectURL(url)
-        }
-
-        try {
-            saveData(GeoJson.data, 'alerta-urgente.json', 'application/json')
-        } finally {
-            commit('setLoadingGeoJson', false)
         }
     },
 }
