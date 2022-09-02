@@ -51,7 +51,7 @@
                                 </v-col>
                                 <v-col>
                                     <v-select
-                                        v-if="filters.ac.length"
+                                        v-if="filters.cr && filterOptions.tiFilters"
                                         v-model="filters.ti"
                                         label="Terras Indigenas (Todas)"
                                         :items="filterOptions.tiFilters"
@@ -150,12 +150,7 @@
     {
         "en": {
             "search-label": "Search",
-            "opacity-label": "Opacity",
-            "current-view-label": "Search in current area?",
             "start-date-label": "Start Date",
-            "total-area-label": "Total area",
-            "heat-map-label": "Heat map",
-            "polygon-label": "Total polygon count",
             "end-date-label": "End Date",
             "dialogName": "DOCUMENT SEARCH",
             "result-label": "Results",
@@ -165,11 +160,6 @@
         },
         "pt-br": {
             "search-label": "Buscar",
-            "opacity-label": "Opacidade",
-            "current-view-label": "Pesquisar nesta área?",
-            "total-area-label": "Área total",
-            "heat-map-label": "Mapa de calor",
-            "polygon-label": "Total de polígonos",
             "start-date-label": "Data Início",
             "end-date-label": "Data Fim",
             "dialogName": "PESQUISA DE DOCUMENTOS",
@@ -207,36 +197,15 @@ export default {
             legendData: legend,
             filter: '',
             headers: [
-                {
-                    text: 'Código',
-                    align: 'start',
-                    value: 'id',
-                },
-                { text: 'Nome da TI', value: 'name' },
-            ],
-            desserts: [
-                {
-                    name: 'Jumina',
-                    id: 159,
-                },
-                {
-                    name: 'Alto Rio Purus',
-                    id: 237,
-                },
-                {
-                    name: 'Boca do Acre',
-                    id: 262,
-                },
-                {
-                    name: 'Rio Mequens',
-                    id: 305,
-                },
-            ],
-            actions: [
-                {
-                    id: 1,
-                    name: 'Alertas Urgentes',
-                },
+                { text: 'Código Funai', value: 'co_funai' },
+                { text: 'Terra Indígena', value: 'no_ti' },
+                { text: 'Coordenação Regional', value: 'ds_cr' },
+                { text: 'Prioridade', value: 'prioridade' },
+                { text: 'Classe', value: 'no_estagio' },
+                { text: 'Data da Imagem', value: 'dt_imagem' },
+                { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
+                { text: 'Latitude', value: 'nu_latitude' },
+                { text: 'Longitude', value: 'nu_longitude' },
             ],
             values: [],
         }
@@ -247,30 +216,11 @@ export default {
         },
     },
     computed: {
-        opacity: {
-            get() {
-                return this.$store.state.alert - urg.opacity
-            },
-            set(value) {
-                this.$store.commit('alert-urg/setOpacity', value)
-            },
-        },
-
-        heatMap: {
-            get() {
-                return this.$store.state.alert - urg.heatMap
-            },
-            set(value) {
-                this.$store.commit('alert-urg/setHeatMap', value)
-            },
-        },
 
         ...mapState('document', [
-            'isLoadingGeoJson',
             'isLoadingFeatures',
             'filterOptions',
             'showFeatures',
-            'total',
             'params',
             'showDialogDocument',
             'isLoadingTable',
@@ -304,7 +254,7 @@ export default {
             'setShowDialogDocument',
             'setLoadingTable',
         ]),
-        ...mapActions('document', ['getFilterOptions', 'downloadGeoJson']),
+        ...mapActions('document', ['getFilterOptions']),
     },
 }
 </script>
