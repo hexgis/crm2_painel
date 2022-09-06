@@ -32,7 +32,6 @@
                                 </v-col>
                                 <v-col>
                                     <v-select
-                                        v-model="filters.cr"
                                         label="Coordenação Regional (Todas)"
                                         :items="filterOptions.regionalFilters"
                                         item-value="co_cr"

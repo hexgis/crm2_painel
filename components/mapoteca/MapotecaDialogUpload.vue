@@ -103,7 +103,7 @@ export default {
     },
     methods: {
         save() {
-            this.uploadFile()
+            // this.uploadFile()
         },
         uploadFile: function () {
             const params = {
