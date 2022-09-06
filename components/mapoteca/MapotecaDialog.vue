@@ -32,6 +32,7 @@
                                 </v-col>
                                 <v-col>
                                     <v-select
+                                        v-model="filters.cr"
                                         label="Coordenação Regional (Todas)"
                                         :items="filterOptions.regionalFilters"
                                         item-value="co_cr"
@@ -43,7 +44,9 @@
                                     >
                                     </v-select>
                                 </v-col>
-                                <v-col v-if="filters.cr && filterOptions.tiFilters">
+                                <v-col
+                                    v-if="filters.cr && filterOptions.tiFilters"
+                                >
                                     <v-select
                                         v-model="filters.ti"
                                         label="Terras Indigenas (Todas)"
@@ -66,7 +69,7 @@
                                         {{ $t('search-label') }}
                                     </v-btn>
                                 </v-col>
-                                <MapotecaDialogUpload class="mt-2"/>
+                                <MapotecaDialogUpload class="mt-2" />
                             </v-row>
                         </v-container>
                     </v-card-actions>
@@ -142,13 +145,10 @@ import { mapMutations, mapState, mapActions } from 'vuex'
 import legend from '@/assets/legend.png'
 import MapotecaDialogUpload from '@/components/mapoteca/MapotecaDialogUpload'
 
-
-
 export default {
     name: 'MapotecaDialog',
 
-        components: { MapotecaDialogUpload },
-
+    components: { MapotecaDialogUpload },
 
     data() {
         return {
@@ -182,7 +182,6 @@ export default {
         },
     },
     computed: {
-
         ...mapState('mapoteca', [
             'isLoadingFeatures',
             'filterOptions',
