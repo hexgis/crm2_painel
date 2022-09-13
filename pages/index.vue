@@ -150,7 +150,7 @@ export default {
                 },
                 {
                     name: this.$t('urgent-alerts-tab'),
-                    icon: 'mdi-alert-octagram',
+                    icon: 'mdi-alarm-light',
                     route: '/urgent-alerts',
                     show: process.env.ROUTE_URGENT_ALERTS === 'true',
                 },
