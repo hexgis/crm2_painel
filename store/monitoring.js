@@ -19,7 +19,7 @@ export const state = () => ({
     },
 
     opacity: 100,
-    heatMap: true,
+    heatMap: false,
     total: null,
     tableMonitoring: [],
     tableCSVMonitoring: [],
