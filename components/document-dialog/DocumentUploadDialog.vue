@@ -58,10 +58,10 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="secondary" text @click="dialog = false">
-                        Cancelar
+                        {{ $t('cancel-label') }}
                     </v-btn>
                     <v-btn color="secondary" text @click="save()">
-                        Salvar
+                        {{ $t('save-label') }}
                     </v-btn>
                 </v-card-actions>
             </v-card>
@@ -73,13 +73,17 @@
         "en": {
             "date-label": "Date of Document",
             "action-label": "Actions",
-            "title-label": "REGISTRATION OF INDIGENOUS LAND DOCUMENTS"
+            "title-label": "REGISTRATION OF INDIGENOUS LAND DOCUMENTS",
+            "save-label": "Save",
+            "cancel-label": "Cancel"
             
         },
         "pt-br": {
             "date-label": "Data do Documento",
             "action-label": "Ações",
-            "title-label": "CADASTRO DE DOCUMENTOS DE TERRAS INDÍGENAS"
+            "title-label": "CADASTRO DE DOCUMENTOS DE TERRAS INDÍGENAS",
+            "save-label": "Salvar",
+            "cancel-label": "Cancelar"
         }
     }
 </i18n>
@@ -113,14 +117,14 @@ export default {
                 co_cr: this.cr.toString(),
                 co_funai: this.ti,
                 id_acao: this.ac,
-                dt_cadastro: this.date
+                dt_cadastro: this.date,
             }
             let fileToUpload = this.$refs.fileInput.files[0]
             let formData = new FormData()
             formData.append('fileToUpload', fileToUpload)
-            this.$api
-                .$post('url', formData, params)
-                .then(function () {console.log("Enviado com sucesso")})
+            this.$api.$post('url', formData, params).then(function () {
+                console.log('Enviado com sucesso')
+            })
         },
 
         ...mapMutations('document', ['setFilters', 'setShowDialogDocument']),
