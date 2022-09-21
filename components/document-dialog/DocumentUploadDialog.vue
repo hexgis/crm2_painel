@@ -71,7 +71,7 @@
 <i18n>
     {
         "en": {
-            "date-label": "Date of Document",
+            "date-label": "Document Date",
             "action-label": "Actions",
             "title-label": "REGISTRATION OF INDIGENOUS LAND DOCUMENTS",
             "save-label": "Save",

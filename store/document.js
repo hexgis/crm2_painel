@@ -165,7 +165,6 @@ export const actions = {
         commit('setFilterOptions', data)
     },
 
-
     async getTiOptions({ commit, state }, cr) {
         const params = {
             co_cr: cr.toString(),
