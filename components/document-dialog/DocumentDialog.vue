@@ -3,6 +3,7 @@
         <v-col cols="auto">
             <v-dialog
                 v-model="showDialogDocument"
+                persistent
                 transition="dialog-bottom-transition"
                 max-width="95vw"
             >
@@ -25,12 +26,14 @@
                                     <v-select
                                         v-model="filters.ac"
                                         :label="$t('action-label')"
-                                        item-value="id"
-                                        :items="actions"
-                                        item-text="name"
+                                        item-value="id_action"
+                                        :items="filterOptions.actions"
+                                        item-text="no_action"
                                         hide-details
                                         multiple
                                         required
+                                        :loading="isLoadingDocumentActions"
+                                        :disabled="isLoadingDocumentActions"
                                     >
                                     </v-select>
                                 </v-col>
@@ -51,7 +54,10 @@
                                 </v-col>
                                 <v-col>
                                     <v-select
-                                        v-if="filters.cr && filterOptions.tiFilters"
+                                        v-if="
+                                            filters.cr &&
+                                            filterOptions.tiFilters
+                                        "
                                         v-model="filters.ti"
                                         label="Terras Indigenas (Todas)"
                                         :items="filterOptions.tiFilters"
@@ -156,7 +162,7 @@
             "result-label": "Results",
             "filter-label": "Filter",
             "action-label": "Actions"
-            
+
         },
         "pt-br": {
             "search-label": "Buscar",
@@ -208,6 +214,8 @@ export default {
                 { text: 'Longitude', value: 'nu_longitude' },
             ],
             values: [],
+
+
         }
     },
     watch: {
@@ -224,11 +232,14 @@ export default {
             'params',
             'showDialogDocument',
             'isLoadingTable',
+            'isLoadingDocumentActions',
+            'actions'
         ]),
     },
 
     mounted() {
         this.getFilterOptions()
+        this.getDocumentActions()
     },
 
     methods: {
@@ -254,7 +265,7 @@ export default {
             'setShowDialogDocument',
             'setLoadingTable',
         ]),
-        ...mapActions('document', ['getFilterOptions']),
+        ...mapActions('document', ['getFilterOptions', 'getDocumentActions']),
     },
 }
 </script>

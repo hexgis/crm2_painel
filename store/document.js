@@ -5,6 +5,7 @@ export const state = () => ({
     tableDialogAlert: false,
     isLoadingTable: false,
     isLoadingFeatures: false,
+    isLoadingDocumentActions: false,
     showDialogDocument: false,
     unitMeasurement: [],
     // displayAnalitcs: null, // responsável por exibir qual dos 4 Dashboards será exibido na tela: Filtro Aplicado; CR; TI; Municípios. Também encaminhar o filtro aplicado.
@@ -52,6 +53,17 @@ export const mutations = {
 
     setFeatures(state, features) {
         state.features = features
+    },
+
+    setLoadingDocumentActions(state, payload) {
+        state.isLoadingDocumentActions = payload
+    },
+
+    setDocumentActions(state, payload) {
+        state.filterOptions = {
+            ...state.filterOptions,
+            actions: payload
+        }
     },
 
     setActions(state, actions) {
@@ -148,6 +160,33 @@ export const actions = {
             commit('setLoadingFeatures', false)
             commit('setParams', params)
             commit('setLoadingGeoJson', false)
+        }
+    },
+
+    async getDocumentActions({ state, commit }) {
+        commit('setLoadingDocumentActions', true)
+
+        try {
+            const documentActions = await this.$api.$get(
+                'documental/list-actions/'
+            )
+
+            if (documentActions) {
+                commit('setDocumentActions', documentActions)
+            }
+        } catch (exception) {
+            commit(
+                'alert/addAlert',
+                {
+                    message: this.$i18n.t('default-error', {
+                        action: this.$i18n.t('retrieve'),
+                        resource: this.$i18n.t('monitoring'),
+                    }),
+                },
+                { root: true }
+            )
+        } finally {
+            commit('setLoadingDocumentActions', false)
         }
     },
 
