@@ -76,7 +76,7 @@
             "title-label": "REGISTRATION OF INDIGENOUS LAND DOCUMENTS",
             "save-label": "Save",
             "cancel-label": "Cancel"
-            
+
         },
         "pt-br": {
             "date-label": "Data do Documento",
@@ -127,7 +127,7 @@ export default {
             })
         },
 
-        ...mapMutations('document', ['setFilters', 'setShowDialogDocument']),
+        ...mapMutations('document', [ 'setShowDialogDocument']),
         ...mapActions('document', [
             'getTiUploadOptions',
             'sendData',
@@ -141,7 +141,7 @@ export default {
 
     mounted() {
         this.getTiUploadOptions()
-        this.getActionsUploadOptions()
+        // this.getActionsUploadOptions()
     },
 }
 </script>

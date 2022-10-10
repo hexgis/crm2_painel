@@ -15,14 +15,14 @@
                             <v-icon>mdi-close</v-icon>
                         </v-btn>
                     </v-toolbar>
-                    <v-card-actions>
+                    <v-card-text>
                         <v-container fluid>
                             <v-row
                                 align="center"
                                 class="column"
                                 justify="space-around"
                             >
-                                <v-col class="cols">
+                                <v-col>
                                     <v-select
                                         v-model="filters.ac"
                                         :label="$t('action-label')"
@@ -54,10 +54,7 @@
                                 </v-col>
                                 <v-col>
                                     <v-select
-                                        v-if="
-                                            filters.cr &&
-                                            filterOptions.tiFilters
-                                        "
+                                        v-if="filters.ac.length"
                                         v-model="filters.ti"
                                         label="Terras Indigenas (Todas)"
                                         :items="filterOptions.tiFilters"
@@ -70,7 +67,7 @@
                                     >
                                     </v-select>
                                 </v-col>
-                                <v-col class="mt-9">
+                                <v-col class="mt-7">
                                     <v-row>
                                         <v-col>
                                             <BaseDateField
@@ -94,7 +91,7 @@
                                         </v-col>
                                     </v-row>
                                 </v-col>
-                                <v-col class="mt-2">
+                                <v-col>
                                     <v-btn
                                         v-if="filters.ac.length"
                                         block
@@ -108,7 +105,7 @@
                                 <DocumentUploadDialog />
                             </v-row>
                         </v-container>
-                    </v-card-actions>
+                    </v-card-text>
                     <v-divider></v-divider>
                     <v-card-actions class="d-flex flex-column">
                         <v-container fluid class="pa-0">
@@ -132,17 +129,16 @@
                         </v-container>
                         <v-container class="pa-0" fluid>
                             <v-skeleton-loader
-                                v-if="isLoadingTable"
-                                type="table-row-divider@12"
+                                v-if="isLoadingFeatures"
+                                type="table-row-divider@11"
                             ></v-skeleton-loader>
                             <v-data-table
-                                v-if="!isLoadingTable"
+                                v-if="!isLoadingFeatures"
                                 :headers="headers"
                                 :items="values"
                                 :search="filter"
                                 fixed-header
                                 height="52vh"
-                                style="width: 100vw"
                             ></v-data-table>
                         </v-container>
                     </v-card-actions>
@@ -196,7 +192,7 @@ export default {
                     .format('YYYY-MM-DD'),
                 endDate: this.$moment().format('YYYY-MM-DD'),
                 cr: [],
-                ti: null,
+                ti: [],
                 ac: [],
             },
             isLoadingTotal: false,
@@ -214,26 +210,25 @@ export default {
                 { text: 'Longitude', value: 'nu_longitude' },
             ],
             values: [],
-
-
         }
     },
     watch: {
         'filters.cr'(value) {
             this.populateTiOptions(value)
         },
+        features(val) {
+            this.values = val
+        },
     },
     computed: {
-
         ...mapState('document', [
+            'features',
             'isLoadingFeatures',
             'filterOptions',
             'showFeatures',
-            'params',
             'showDialogDocument',
-            'isLoadingTable',
             'isLoadingDocumentActions',
-            'actions'
+            'actions',
         ]),
     },
 
@@ -253,11 +248,12 @@ export default {
         },
 
         search() {
-            this.setLoadingTable(true)
-            this.values = this.desserts
-            setInterval(() => {
-                this.setLoadingTable(false)
-            }, 3000)
+            this.getFeatures({ ...this.filters })
+            // this.setLoadingTable(true)
+            // this.values = this.desserts
+            // setInterval(() => {
+            //     this.setLoadingTable(false)
+            // }, 3000)
         },
 
         ...mapMutations('document', [
@@ -265,7 +261,11 @@ export default {
             'setShowDialogDocument',
             'setLoadingTable',
         ]),
-        ...mapActions('document', ['getFilterOptions', 'getDocumentActions']),
+        ...mapActions('document', [
+            'getFilterOptions',
+            'getDocumentActions',
+            'getFeatures',
+        ]),
     },
 }
 </script>
