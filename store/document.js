@@ -14,7 +14,7 @@ export const state = () => ({
         regionalFilters: [],
         tiFilters: [],
         tiFiltersUpload: [],
-        actions: []
+        actions: [],
     },
 
     filters: {
@@ -47,10 +47,6 @@ export const mutations = {
         state.showDialogDocument = payload
     },
 
-    setParams(state, params) {
-        state.params = params
-    },
-
     setFeatures(state, features) {
         state.features = features
     },
@@ -62,7 +58,7 @@ export const mutations = {
     setDocumentActions(state, payload) {
         state.filterOptions = {
             ...state.filterOptions,
-            actions: payload
+            actions: payload,
         }
     },
 
@@ -112,39 +108,20 @@ export const mutations = {
 }
 
 export const actions = {
-    async getFeatures({ state, commit, rootGetters }) {
-        commit('setLoadingGeoJson', true)
+    async getFeatures({ state, commit, rootGetters }, filters) {
         commit('setLoadingFeatures', true)
-        commit('clearFeatures')
-
-        const params = {
-            start_date: state.filters.startDate,
-            end_date: state.filters.endDate,
-        }
-
-        if (state.filters.ti && state.filters.ti.length)
-            params.co_funai = state.filters.ti.toString()
-
-        if (state.filters.cr && state.filters.cr.length)
-            params.co_cr = state.filters.cr.toString()
-
-        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
         try {
-            const response = await this.$api.$get('', {
+            const params = {
+                id_acao: filters.ac.toString(),
+                co_cr: filters.cr.toString(),
+                co_funai: filters.ti.toString(),
+                startDate: filters.startDate,
+                endDate: filters.endDate
+            }
+            const response = await this.$api.$get('/documental/list/', {
                 params,
             })
-
-            if (!response.features || !response.features.length) {
-                commit('setShowFeatures', false)
-                commit(
-                    'alert/addAlert',
-                    { message: this.$i18n.t('no-result') },
-                    { root: true }
-                )
-            } else {
-                commit('setShowFeatures', true)
-                commit('setFeatures', response)
-            }
+            commit('setFeatures', response)
         } catch (exception) {
             commit(
                 'alert/addAlert',
@@ -158,8 +135,6 @@ export const actions = {
             )
         } finally {
             commit('setLoadingFeatures', false)
-            commit('setParams', params)
-            commit('setLoadingGeoJson', false)
         }
     },
 
@@ -168,7 +143,7 @@ export const actions = {
 
         try {
             const documentActions = await this.$api.$get(
-                'documental/list-actions/'
+                'documental/list-actions/?action_type=DOCUMENTS_TI'
             )
 
             if (documentActions) {
@@ -232,45 +207,5 @@ export const actions = {
         const tis = await this.$api.$get('documental/list-actions/')
 
         commit('setActions', actions)
-    },
-
-    async getDataTable({ commit, state, rootGetters }) {
-        commit('setLoadingFeatures', true)
-        commit('setLoadingTable', true)
-        const params = {
-            start_date: state.filters.startDate,
-            end_date: state.filters.endDate,
-        }
-
-        if (state.filters.ti && state.filters.ti.length)
-            params.co_funai = state.filters.ti.toString()
-
-        if (state.filters.cr && state.filters.cr.length)
-            params.co_cr = state.filters.cr.toString()
-
-        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
-
-        try {
-            const table = await this.$api.$get('', {
-                params,
-            })
-
-            if (table) commit('setTable', table)
-
-        } catch (error) {
-            commit(
-                'alert/addAlert',
-                {
-                    message: this.$i18n.t('default-error', {
-                        action: this.$i18n.t('retrieve'),
-                        resource: this.$i18n.t('monitoring'),
-                    }),
-                },
-                { root: true }
-            )
-        } finally {
-            commit('setLoadingFeatures', false)
-            commit('setLoadingTable', false)
-        }
     },
 }
