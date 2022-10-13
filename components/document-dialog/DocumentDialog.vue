@@ -1,12 +1,7 @@
 <template>
     <v-row justify="space-around">
         <v-col cols="auto">
-            <v-dialog
-                v-model="showDialogDocument"
-                persistent
-                transition="dialog-bottom-transition"
-                max-width="95vw"
-            >
+            <v-dialog v-model="showDialogDocument" persistent transition="dialog-bottom-transition" max-width="95vw">
                 <v-card style="width: 100vw">
                     <v-toolbar class="background__toolbar" dark color="primary">
                         <h3>{{ $t('dialogName') }}</h3>
@@ -17,88 +12,43 @@
                     </v-toolbar>
                     <v-card-text>
                         <v-container fluid>
-                            <v-row
-                                align="center"
-                                class="column"
-                                justify="space-around"
-                            >
+                            <v-row align="center" class="column" justify="space-around">
                                 <v-col>
-                                    <v-select
-                                        v-model="filters.ac"
-                                        :label="$t('action-label')"
-                                        item-value="id_action"
-                                        :items="filterOptions.actions"
-                                        item-text="no_action"
-                                        hide-details
-                                        multiple
-                                        required
-                                        :loading="isLoadingDocumentActions"
-                                        :disabled="isLoadingDocumentActions"
-                                    >
+                                    <v-select v-model="filters.ac" :label="$t('action-label')" item-value="id_action"
+                                        :items="filterOptions.actions" item-text="no_action" hide-details multiple
+                                        required :loading="isLoadingDocumentActions"
+                                        :disabled="isLoadingDocumentActions">
                                     </v-select>
                                 </v-col>
                                 <v-col>
-                                    <v-select
-                                        v-if="filters.ac.length"
-                                        v-model="filters.cr"
-                                        label="Coordenação Regional (Todas)"
-                                        :items="filterOptions.regionalFilters"
-                                        item-value="co_cr"
-                                        item-text="ds_cr"
-                                        hide-details
-                                        clearable
-                                        multiple
-                                        required
-                                    >
+                                    <v-select v-if="filters.ac.length" v-model="filters.cr"
+                                        label="Coordenação Regional (Todas)" :items="filterOptions.regionalFilters"
+                                        item-value="co_cr" item-text="ds_cr" hide-details clearable multiple required>
                                     </v-select>
                                 </v-col>
                                 <v-col>
-                                    <v-select
-                                        v-if="filters.ac.length"
-                                        v-model="filters.ti"
-                                        label="Terras Indigenas (Todas)"
-                                        :items="filterOptions.tiFilters"
-                                        item-text="no_ti"
-                                        item-value="co_funai"
-                                        multiple
-                                        clearable
-                                        hide-details
-                                        required
-                                    >
+                                    <v-select v-if="filters.ac.length" v-model="filters.ti"
+                                        label="Terras Indigenas (Todas)" :items="filterOptions.tiFilters"
+                                        :disabled="!filterOptions.tiFilters.length" item-text="no_ti"
+                                        item-value="co_funai" multiple clearable hide-details required>
                                     </v-select>
                                 </v-col>
                                 <v-col class="mt-7">
                                     <v-row>
                                         <v-col>
-                                            <BaseDateField
-                                                v-if="filters.ac.length"
-                                                v-model="filters.startDate"
-                                                :label="$t('start-date-label')"
-                                                :required="true"
-                                                outlined
-                                            />
+                                            <BaseDateField v-if="filters.ac.length" v-model="filters.startDate"
+                                                :label="$t('start-date-label')" :required="true" outlined />
                                         </v-col>
                                         <v-col>
-                                            <BaseDateField
-                                                v-if="filters.ac.length"
-                                                v-model="filters.endDate"
-                                                :label="$t('end-date-label')"
-                                                :required="true"
-                                                :min-date="filters.startDate"
-                                                flex-row
-                                                outlined
-                                            />
+                                            <BaseDateField v-if="filters.ac.length" v-model="filters.endDate"
+                                                :label="$t('end-date-label')" :required="true"
+                                                :min-date="filters.startDate" flex-row outlined />
                                         </v-col>
                                     </v-row>
                                 </v-col>
                                 <v-col>
-                                    <v-btn
-                                        v-if="filters.ac.length"
-                                        block
-                                        color="accent"
-                                        :loading="isLoadingFeatures"
-                                        @click="search"
-                                    >
+                                    <v-btn v-if="filters.ac.length" block color="accent" :loading="isLoadingFeatures"
+                                        @click="search">
                                         {{ $t('search-label') }}
                                     </v-btn>
                                 </v-col>
@@ -117,29 +67,24 @@
                                 </v-col>
                                 <v-spacer></v-spacer>
                                 <v-col cols="2">
-                                    <v-text-field
-                                        v-model="filter"
-                                        append-icon="mdi-magnify"
-                                        :label="$t('filter-label')"
-                                        single-line
-                                        hide-details
-                                    ></v-text-field>
+                                    <v-text-field v-model="filter" append-icon="mdi-magnify" :label="$t('filter-label')"
+                                        single-line hide-details></v-text-field>
                                 </v-col>
                             </v-row>
                         </v-container>
                         <v-container class="pa-0" fluid>
-                            <v-skeleton-loader
-                                v-if="isLoadingFeatures"
-                                type="table-row-divider@11"
-                            ></v-skeleton-loader>
-                            <v-data-table
-                                v-if="!isLoadingFeatures"
-                                :headers="headers"
-                                :items="values"
-                                :search="filter"
-                                fixed-header
-                                height="52vh"
-                            ></v-data-table>
+                            <v-skeleton-loader v-if="isLoadingFeatures" type="table-row-divider@11"></v-skeleton-loader>
+                            <v-data-table v-if="!isLoadingFeatures" :headers="headers" :items="values" :search="filter"
+                                fixed-header height="52vh">
+                                <template v-slot:item.actions="{ item }">
+                                    <v-icon dense class="mr-2" @click="">
+                                        mdi-download
+                                    </v-icon>
+                                    <v-icon dense @click="">
+                                        mdi-eye
+                                    </v-icon>
+                                </template>
+                            </v-data-table>
                         </v-container>
                     </v-card-actions>
                 </v-card>
@@ -195,21 +140,55 @@ export default {
                 ti: [],
                 ac: [],
             },
+            filtersData: {},
             isLoadingTotal: false,
             legendData: legend,
             filter: '',
             headers: [
-                { text: 'Código Funai', value: 'co_funai' },
-                { text: 'Terra Indígena', value: 'no_ti' },
-                { text: 'Coordenação Regional', value: 'ds_cr' },
-                { text: 'Prioridade', value: 'prioridade' },
-                { text: 'Classe', value: 'no_estagio' },
-                { text: 'Data da Imagem', value: 'dt_imagem' },
-                { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
-                { text: 'Latitude', value: 'nu_latitude' },
-                { text: 'Longitude', value: 'nu_longitude' },
+                { text: 'Nome do Documento', value: 'no_document' },
+                { text: 'Extensão', value: 'no_extension' },
+                { text: 'Data Cadastro', value: 'dt_registration' },
+                { text: 'Inserido Por', value: 'usercmr_id.first_name' },
+                // { text: 'Código Funai', value: 'co_funai' },
+                // { text: 'Terra Indígena', value: 'no_ti' },
+                // { text: 'Coordenação Regional', value: 'ds_cr' },
+                // { text: 'Prioridade', value: 'prioridade' },
+                // { text: 'Classe', value: 'no_estagio' },
+                // { text: 'Data da Imagem', value: 'dt_imagem' },
+                // { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
+                // { text: 'Latitude', value: 'nu_latitude' },
+                // { text: 'Longitude', value: 'nu_longitude' },
+                { text: 'Ações', value: 'actions' },
             ],
-            values: [],
+            values: [
+                {
+                    "dt_document": null,
+                    "no_extension": ".pdf",
+                    "id_document": 1735,
+                    "path_document": "documentos_terra_indigena/Taego Ãwa/SPO_nº._465_CR_Araguaia_Tocantins_-_NC3348.pdf",
+                    "no_document": "SPO nº. 465 CR Araguaia Tocantins - NC3348",
+                    "st_available": true,
+                    "st_excluded": false,
+                    "dt_registration": "2017-12-07T11:09:30.580000Z",
+                    "dt_update": "2017-12-07T11:09:30.580000Z",
+                    "co_funai": 73301,
+                    "co_cr": 30202001962,
+                    "ds_cr": "COORDENACAO REGIONAL ARAGUAIA TOCANTINS",
+                    "no_ti": "Taego Ãwa",
+                    "action_id": {
+                        "id_action": 8,
+                        "no_action": "Prevenção (2017)",
+                        "action_type": "DOCUMENTS_TI",
+                        "action_type_group": null,
+                        "description": "Documento TI"
+                    },
+                    "usercmr_id": {
+                        "id_user": 76,
+                        "first_name": "JOAO BENEDITO VILHENA DOS SANTOS  Vilhena dos Santos"
+                    },
+                    "url_doc": "https://cmr.funai.gov.br/media/documental/documentos_terra_indigena/Taego Ãwa/SPO_nº._465_CR_Araguaia_Tocantins_-_NC3348.pdf"
+                }
+            ],
         }
     },
     watch: {
@@ -233,8 +212,8 @@ export default {
     },
 
     mounted() {
+        this.getDocumentActions('DOCUMENTS_TI')
         this.getFilterOptions()
-        this.getDocumentActions()
     },
 
     methods: {

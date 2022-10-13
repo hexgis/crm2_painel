@@ -56,10 +56,7 @@ export const mutations = {
     },
 
     setDocumentActions(state, payload) {
-        state.filterOptions = {
-            ...state.filterOptions,
-            actions: payload,
-        }
+        state.filterOptions.actions = payload
     },
 
     setActions(state, actions) {
@@ -94,8 +91,12 @@ export const mutations = {
         state.tableCSV = tableCSV
     },
 
-    setFilterOptions(state, data) {
-        state.filterOptions = data
+    setFilterOptionsCr(state, data) {
+        state.filterOptions.regionalFilters = data.regionalFilters
+    },
+
+    setFilterOptionsTi(state, data) {
+        state.filterOptions.tiFilters = data
     },
 
     setUnitMeasurement(state, unitMeasurement) {
@@ -111,16 +112,7 @@ export const actions = {
     async getFeatures({ state, commit, rootGetters }, filters) {
         commit('setLoadingFeatures', true)
         try {
-            const params = {
-                id_acao: filters.ac.toString(),
-                co_cr: filters.cr.toString(),
-                co_funai: filters.ti.toString(),
-                startDate: filters.startDate,
-                endDate: filters.endDate
-            }
-            const response = await this.$api.$get('/documental/list/', {
-                params,
-            })
+            const response = await this.$api.$get('/documental/list/', filters)
             commit('setFeatures', response)
         } catch (exception) {
             commit(
@@ -138,17 +130,15 @@ export const actions = {
         }
     },
 
-    async getDocumentActions({ state, commit }) {
+    async getDocumentActions({ state, commit }, actionType) {
         commit('setLoadingDocumentActions', true)
 
         try {
             const documentActions = await this.$api.$get(
-                'documental/list-actions/?action_type=DOCUMENTS_TI'
+                `documental/list-actions/?action_type=${actionType}`
             )
 
-            if (documentActions) {
-                commit('setDocumentActions', documentActions)
-            }
+            if (documentActions) commit('setDocumentActions', documentActions)
         } catch (exception) {
             commit(
                 'alert/addAlert',
@@ -167,35 +157,29 @@ export const actions = {
 
     async getFilterOptions({ commit }) {
         const regional_coordinators = await this.$api.$get('funai/cr/')
-
         const data = {}
-
         if (regional_coordinators) {
             data.regionalFilters = regional_coordinators.sort(
                 (a, b) => a.ds_cr > b.ds_cr
             )
         }
-
-        commit('setFilterOptions', data)
+        commit('setFilterOptionsCr', data)
     },
 
     async getTiOptions({ commit, state }, cr) {
         const params = {
             co_cr: cr.toString(),
         }
-
         const tis = await this.$api.$get('funai/ti/', { params })
-
         if (tis)
-            commit('setFilterOptions', {
-                ...state.filterOptions,
-                tiFilters: tis.sort((a, b) => a.no_ti > b.no_ti),
-            })
+            commit(
+                'setFilterOptionsTi',
+                tis.sort((a, b) => a.no_ti > b.no_ti)
+            )
     },
 
     async getTiUploadOptions({ commit, state }, cr) {
         const tis = await this.$api.$get('funai/ti/')
-
         if (tis)
             commit('setFilterOptions', {
                 ...state.filterOptions,
