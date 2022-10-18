@@ -149,16 +149,41 @@
                                 height="45vh"
                             >
                                 <template v-slot:item.actions="{ item }">
-                                    <v-icon
-                                        dense
-                                        class="mr-2"
-                                        @click="downloadDocument(item)"
-                                    >
-                                        mdi-download
-                                    </v-icon>
-                                    <v-icon dense @click="showDocument(item)">
-                                        mdi-eye
-                                    </v-icon>
+                                    <v-tooltip bottom>
+                                        <template
+                                            v-slot:activator="{ on, attrs }"
+                                        >
+                                            <v-icon
+                                                v-bind="attrs"
+                                                v-on="on"
+                                                dense
+                                                class="mr-2"
+                                                @click="downloadDocument(item)"
+                                            >
+                                                mdi-download
+                                            </v-icon>
+                                        </template>
+                                        <span>{{
+                                            $t('download-label-tooltip')
+                                        }}</span>
+                                    </v-tooltip>
+                                    <v-tooltip bottom>
+                                        <template
+                                            v-slot:activator="{ on, attrs }"
+                                        >
+                                            <v-icon
+                                                v-bind="attrs"
+                                                v-on="on"
+                                                dense
+                                                @click="showDocument(item)"
+                                            >
+                                                mdi-eye
+                                            </v-icon>
+                                        </template>
+                                        <span>{{
+                                            $t('view-label-tooltip')
+                                        }}</span>
+                                    </v-tooltip>
                                 </template>
                             </v-data-table>
                         </v-container>
@@ -178,7 +203,9 @@
             "dialogName": "DOCUMENT SEARCH",
             "result-label": "Results",
             "filter-label": "Filter",
-            "action-label": "Actions"
+            "action-label": "Actions",
+            "download-label-tooltip": "Download",
+            "view-label-tooltip": "Preview"
 
         },
         "pt-br": {
@@ -188,7 +215,9 @@
             "dialogName": "PESQUISA DE DOCUMENTOS",
             "result-label": "Resultados",
             "filter-label": "Filtrar",
-            "action-label": "Ações"
+            "action-label": "Ações",
+            "download-label-tooltip": "Download",
+            "view-label-tooltip": "Visualizar"
         }
     }
 </i18n>
