@@ -22,8 +22,8 @@
                         <v-select
                             :label="$t('action-label')"
                             :items="filterOptions.actions"
-                            item-text="no_acao"
-                            item-value="id_acao"
+                            item-text="no_action"
+                            item-value="id_action"
                             hide-details
                             required
                             clearable
@@ -127,7 +127,7 @@ export default {
             })
         },
 
-        ...mapMutations('document', [ 'setShowDialogDocument']),
+        ...mapMutations('document', ['setShowDialogDocument']),
         ...mapActions('document', [
             'getTiUploadOptions',
             'sendData',
@@ -141,7 +141,7 @@ export default {
 
     mounted() {
         this.getTiUploadOptions()
-        // this.getActionsUploadOptions()
+        this.getActionsUploadOptions()
     },
 }
 </script>

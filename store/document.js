@@ -99,6 +99,10 @@ export const mutations = {
         state.filterOptions.tiFilters = data
     },
 
+    setFilterOptionsTiUpload(state, { tiFiltersUpload }) {
+        state.filterOptions.tiFiltersUpload = tiFiltersUpload
+    },
+
     setUnitMeasurement(state, unitMeasurement) {
         state.unitMeasurement = unitMeasurement
     },
@@ -109,10 +113,15 @@ export const mutations = {
 }
 
 export const actions = {
-    async getFeatures({ state, commit, rootGetters }, filters) {
+    async getFeatures({ state, commit, rootGetters }, data) {
         commit('setLoadingFeatures', true)
+        // commit('setFeatures', null)
+        const params = { ...data }
+        params.id_acao = params.id_acao.toString()
         try {
-            const response = await this.$api.$get('/documental/list/', filters)
+            const response = await this.$api.$get('/documental/list/', {
+                params,
+            })
             commit('setFeatures', response)
         } catch (exception) {
             commit(
@@ -181,8 +190,7 @@ export const actions = {
     async getTiUploadOptions({ commit, state }, cr) {
         const tis = await this.$api.$get('funai/ti/')
         if (tis)
-            commit('setFilterOptions', {
-                ...state.filterOptions,
+            commit('setFilterOptionsTiUpload', {
                 tiFiltersUpload: tis.sort((a, b) => a.no_ti > b.no_ti),
             })
     },
