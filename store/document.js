@@ -6,7 +6,6 @@ export const state = () => ({
     isLoadingTable: false,
     isLoadingFeatures: false,
     showDialogDocument: false,
-
     isLoadingGeoJson: false,
     isLoadingCSV: false,
     unitMeasurement: [],
@@ -15,14 +14,12 @@ export const state = () => ({
         regionalFilters: [],
         tiFilters: [],
         tiFiltersUpload: [],
-        actions: []
+        actions: [],
     },
-
     filters: {
         startDate: null,
         endDate: null,
     },
-
     table: [],
 })
 
@@ -75,9 +72,11 @@ export const mutations = {
     clearFeatures(state) {
         state.features = null
     },
+
     setLoadingCSV(state, payload) {
         state.isLoadingCSV = payload
     },
+
     setLoadingGeoJson(state, payload) {
         state.isLoadingGeoJson = payload
     },
@@ -89,6 +88,7 @@ export const mutations = {
     setTable(state, table) {
         state.table = table
     },
+
     setDownloadTable(state, tableCSV) {
         state.tableCSV = tableCSV
     },
@@ -100,7 +100,6 @@ export const mutations = {
     setUnitMeasurement(state, unitMeasurement) {
         state.unitMeasurement = unitMeasurement
     },
-
 
     setVisualizationStage(state, visualizationStage) {
         state.visualizationStage = visualizationStage
@@ -187,7 +186,6 @@ export const actions = {
             })
     },
 
-
     async getTiUploadOptions({ commit, state }, cr) {
         const tis = await this.$api.$get('funai/ti/')
 
@@ -226,7 +224,6 @@ export const actions = {
             })
 
             if (table) commit('setTable', table)
-
         } catch (error) {
             commit(
                 'alert/addAlert',
