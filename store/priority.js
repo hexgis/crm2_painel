@@ -1,7 +1,7 @@
 export const state = () => ({
     features: null,
     showFeatures: false,
-    heatMap: true,
+    heatMap: false,
     tableDialogPriority: false,
     isLoadingTable: true,
     isLoadingFeatures: false,

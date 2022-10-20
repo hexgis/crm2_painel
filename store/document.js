@@ -6,6 +6,7 @@ export const state = () => ({
     isLoadingTable: false,
     isLoadingFeatures: false,
     showDialogDocument: false,
+
     isLoadingGeoJson: false,
     isLoadingCSV: false,
     unitMeasurement: [],
@@ -13,19 +14,16 @@ export const state = () => ({
     filterOptions: {
         regionalFilters: [],
         tiFilters: [],
+        tiFiltersUpload: [],
+        actions: []
     },
 
     filters: {
         startDate: null,
         endDate: null,
-        csv: 'csv',
-        json: 'json',
     },
 
-    opacity: 100,
-    total: null,
     table: [],
-    tableCSV: [],
 })
 
 export const getters = {
@@ -58,6 +56,10 @@ export const mutations = {
         state.features = features
     },
 
+    setActions(state, actions) {
+        state.actions = actions
+    },
+
     settableDialogAlert(state, tableDialogAlert) {
         state.tableDialogAlert = tableDialogAlert
     },
@@ -73,11 +75,9 @@ export const mutations = {
     clearFeatures(state) {
         state.features = null
     },
-
     setLoadingCSV(state, payload) {
         state.isLoadingCSV = payload
     },
-
     setLoadingGeoJson(state, payload) {
         state.isLoadingGeoJson = payload
     },
@@ -89,7 +89,6 @@ export const mutations = {
     setTable(state, table) {
         state.table = table
     },
-
     setDownloadTable(state, tableCSV) {
         state.tableCSV = tableCSV
     },
@@ -101,6 +100,7 @@ export const mutations = {
     setUnitMeasurement(state, unitMeasurement) {
         state.unitMeasurement = unitMeasurement
     },
+
 
     setVisualizationStage(state, visualizationStage) {
         state.visualizationStage = visualizationStage
@@ -126,7 +126,7 @@ export const actions = {
 
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
         try {
-            const response = await this.$api.$get('alerts/', {
+            const response = await this.$api.$get('', {
                 params,
             })
 
@@ -140,11 +140,6 @@ export const actions = {
             } else {
                 commit('setShowFeatures', true)
                 commit('setFeatures', response)
-
-                const total = await this.$api.$get('alerts/total/', {
-                    params,
-                })
-                if (total) commit('setTotal', total)
             }
         } catch (exception) {
             commit(
@@ -192,9 +187,25 @@ export const actions = {
             })
     },
 
+
+    async getTiUploadOptions({ commit, state }, cr) {
+        const tis = await this.$api.$get('funai/ti/')
+
+        if (tis)
+            commit('setFilterOptions', {
+                ...state.filterOptions,
+                tiFiltersUpload: tis.sort((a, b) => a.no_ti > b.no_ti),
+            })
+    },
+
+    async getActionsUploadOptions({ commit }) {
+        const tis = await this.$api.$get('documental/list-actions/')
+
+        commit('setActions', actions)
+    },
+
     async getDataTable({ commit, state, rootGetters }) {
         commit('setLoadingFeatures', true)
-        commit('setLoadingGeoJson', true)
         commit('setLoadingTable', true)
         const params = {
             start_date: state.filters.startDate,
@@ -210,16 +221,12 @@ export const actions = {
         if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
 
         try {
-            const table = await this.$api.$get('alerts/table/', {
+            const table = await this.$api.$get('', {
                 params,
             })
 
             if (table) commit('setTable', table)
 
-            const total = await this.$api.$get('alerts/total/', {
-                params,
-            })
-            if (total) commit('setTotal', total)
         } catch (error) {
             commit(
                 'alert/addAlert',
@@ -233,7 +240,6 @@ export const actions = {
             )
         } finally {
             commit('setLoadingFeatures', false)
-            commit('setLoadingGeoJson', false)
             commit('setLoadingTable', false)
         }
     },
@@ -285,7 +291,7 @@ export const actions = {
             commit('setLoadingCSV', false)
         }
     },
-    
+
     async downloadGeoJson({ commit, state, rootGetters }) {
         commit('setLoadingGeoJson', true)
 

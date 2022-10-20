@@ -178,6 +178,7 @@ export default {
                 this.features.features.length
             ) {
                 this.createMonitoramentoHeatLayer()
+                this.flyTo()
 
                 this.vectorGrid = this.$L.vectorGrid
                     .slicer(this.features, {
@@ -257,6 +258,15 @@ export default {
                     message: this.$t('detail-api-error'),
                 })
             }
+        },
+
+        flyTo() {
+            this.features.features.forEach((feature) => {
+                this.map.flyTo([
+                    feature.properties.nu_latitude,
+                    feature.properties.nu_longitude,
+                ],10)
+            })
         },
 
         createMonitoramentoHeatLayer() {

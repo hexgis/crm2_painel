@@ -165,6 +165,7 @@ export default {
             this.$refs.priorityPolygons.mapObject.clearLayers()
             if (this.isVectorGrid && this.featuresLoaded()) {
                 this.createMonitoramentoHeatLayer()
+                this.flyTo()
 
                 this.vectorGrid = this.$L.vectorGrid
                     .slicer(this.features, {
@@ -239,6 +240,15 @@ export default {
                     break
             }
             return style
+        },
+
+        flyTo() {
+            this.features.features.forEach((feature) => {
+                this.map.flyTo([
+                    feature.properties.nu_latitude,
+                    feature.properties.nu_longitude,
+                ],10)
+            })
         },
 
         createMonitoramentoHeatLayer() {
