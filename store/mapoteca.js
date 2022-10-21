@@ -3,14 +3,15 @@ export const state = () => ({
     showFeatures: false,
     tableDialogAlert: false,
     isLoadingFeatures: false,
+    isLoadingMapotecainstitution: false,
     showDialogMapoteca: false,
     unitMeasurement: [],
     visualizationStage: 'map',
     filterOptions: {
         regionalFilters: [],
         tiFilters: [],
+        actions: [],
     },
-
     filters: {
         startDate: null,
         endDate: null,
@@ -39,6 +40,10 @@ export const mutations = {
         state.showDialogMapoteca = payload
     },
 
+    setActions(state, actions) {
+        state.actions = actions
+    },
+
     setParams(state, params) {
         state.params = params
     },
@@ -55,6 +60,18 @@ export const mutations = {
         state.isLoadingFeatures = payload
     },
 
+    setMapotecaActions(state, payload) {
+        state.filterOptions.actions = payload
+    },
+
+    setisLoadingMapotecaInstitution(state, payload) {
+        state.isLoadingMapotecainstitution = payload
+    },
+
+    setFilterOptionsTi(state, data) {
+        state.filterOptions.tiFilters = data
+    },
+
     clearFeatures(state) {
         state.features = null
     },
@@ -68,7 +85,7 @@ export const mutations = {
     },
 
     setFilterOptions(state, data) {
-        state.filterOptions = data
+        state.filterOptions.regionalFilters = data.regionalFilters
     },
 
     setUnitMeasurement(state, unitMeasurement) {
@@ -81,44 +98,17 @@ export const mutations = {
 }
 
 export const actions = {
-    async getFeatures({ state, commit, rootGetters }) {
-        commit('setLoadingGeoJson', true)
+    async getFeatures({ state, commit }, data) {
         commit('setLoadingFeatures', true)
-        commit('clearFeatures')
-
-        const params = {
-            start_date: state.filters.startDate,
-            end_date: state.filters.endDate,
-        }
-
-        if (state.filters.ti && state.filters.ti.length)
-            params.co_funai = state.filters.ti.toString()
-
-        if (state.filters.cr && state.filters.cr.length)
-            params.co_cr = state.filters.cr.toString()
-
-        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
+        const params = { ...data }
+        params.id_acao = params.id_acao.toString()
+        params.cr ? (params.cr = params.cr.toString()) : null
+        params.ti ? (params.ti = params.ti.toString()) : null
         try {
-            const response = await this.$api.$get('', {
+            const response = await this.$api.$get('/documental/list/', {
                 params,
             })
-
-            if (!response.features || !response.features.length) {
-                commit('setShowFeatures', false)
-                commit(
-                    'alert/addAlert',
-                    { message: this.$i18n.t('no-result') },
-                    { root: true }
-                )
-            } else {
-                commit('setShowFeatures', true)
-                commit('setFeatures', response)
-
-                const total = await this.$api.$get('', {
-                    params,
-                })
-                if (total) commit('setTotal', total)
-            }
+            commit('setFeatures', response)
         } catch (exception) {
             commit(
                 'alert/addAlert',
@@ -132,68 +122,19 @@ export const actions = {
             )
         } finally {
             commit('setLoadingFeatures', false)
-            commit('setParams', params)
-            commit('setLoadingGeoJson', false)
         }
     },
 
-    async getFilterOptions({ commit }) {
-        const regional_coordinators = await this.$api.$get('funai/cr/')
-
-        const data = {}
-
-        if (regional_coordinators) {
-            data.regionalFilters = regional_coordinators.sort(
-                (a, b) => a.ds_cr > b.ds_cr
-            )
-        }
-
-        commit('setFilterOptions', data)
-    },
-
-    async getTiOptions({ commit, state }, cr) {
-        const params = {
-            co_cr: cr.toString(),
-        }
-
-        const tis = await this.$api.$get('funai/ti/', { params })
-
-        if (tis)
-            commit('setFilterOptions', {
-                ...state.filterOptions,
-                tiFilters: tis.sort((a, b) => a.no_ti > b.no_ti),
-            })
-    },
-
-    async getDataTable({ commit, state, rootGetters }) {
-        commit('setLoadingFeatures', true)
-        commit('setLoadingGeoJson', true)
-        commit('setLoadingTable', true)
-        const params = {
-            start_date: state.filters.startDate,
-            end_date: state.filters.endDate,
-        }
-
-        if (state.filters.ti && state.filters.ti.length)
-            params.co_funai = state.filters.ti.toString()
-
-        if (state.filters.cr && state.filters.cr.length)
-            params.co_cr = state.filters.cr.toString()
-
-        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
+    async getMapotecaActions({ state, commit }, actionType) {
+        commit('setisLoadingMapotecaInstitution', true)
 
         try {
-            const table = await this.$api.$get('', {
-                params,
-            })
+            const documentActions = await this.$api.$get(
+                `documental/list-actions/?action_type=${actionType}`
+            )
 
-            if (table) commit('setTable', table)
-
-            const total = await this.$api.$get('', {
-                params,
-            })
-            if (total) commit('setTotal', total)
-        } catch (error) {
+            if (documentActions) commit('setMapotecaActions', documentActions)
+        } catch (exception) {
             commit(
                 'alert/addAlert',
                 {
@@ -205,9 +146,35 @@ export const actions = {
                 { root: true }
             )
         } finally {
-            commit('setLoadingFeatures', false)
-            commit('setLoadingGeoJson', false)
-            commit('setLoadingTable', false)
+            commit('setisLoadingMapotecaInstitution', false)
         }
+    },
+
+    async getFilterOptions({ commit }) {
+        const regional_coordinators = await this.$api.$get('funai/cr/')
+        const data = {}
+        if (regional_coordinators) {
+            data.regionalFilters = regional_coordinators.sort(
+                (a, b) => a.ds_cr > b.ds_cr
+            )
+        }
+        commit('setFilterOptions', data)
+    },
+
+    async getTiOptions({ commit, state }, cr) {
+        const params = {
+            co_cr: cr.toString(),
+        }
+        const tis = await this.$api.$get('funai/ti/', { params })
+        if (tis)
+            commit(
+                'setFilterOptionsTi',
+                tis.sort((a, b) => a.no_ti > b.no_ti)
+            )
+    },
+
+    async getActionsUploadOptions({ commit }) {
+        const tis = await this.$api.$get('documental/list-actions/')
+        commit('setActions', actions)
     },
 }

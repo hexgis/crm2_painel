@@ -4,12 +4,12 @@
             <h4 class="subtitle-2 text-uppercase font-weight-regular">
                 {{ $t('title') }}
             </h4>
-            <v-switch
+            <!-- <v-switch
                 v-if="features"
                 v-model="showFeaturesMonitoring"
                 class="mt-n1 ml-5"
                 hide-details
-            />
+            /> -->
         </div>
         <v-card-text>
             <p>
