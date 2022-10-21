@@ -173,7 +173,7 @@ export const actions = {
             )
     },
 
-    async getActionsUploadOptions({ commit }) {
+    async getActionsUploadMapoteca({ commit }) {
         const tis = await this.$api.$get('documental/list-actions/')
         commit('setActions', actions)
     },

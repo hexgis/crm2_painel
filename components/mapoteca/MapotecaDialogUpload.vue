@@ -1,6 +1,6 @@
 <template>
     <div class="text-center">
-        <v-dialog v-model="dialog" max-width="40vw" persistent>
+        <v-dialog v-model="dialog" max-width="60vw" persistent>
             <template v-slot:activator="{ on, attrs }">
                 <v-btn
                     fab
@@ -20,10 +20,10 @@
                 <v-card-actions>
                     <v-col class="cols">
                         <v-select
-                            :label="$t('action-label')"
+                            :label="$t('institution-label')"
                             :items="filterOptions.actions"
-                            item-text="no_acao"
-                            item-value="id_acao"
+                            item-text="no_action"
+                            item-value="id_action"
                             hide-details
                             required
                             clearable
@@ -72,13 +72,13 @@
     {
         "en": {
             "date-label": "Date of Map",
-            "action-label": "Actions",
+            "institution-label": "Institution",
             "title-label": "REGISTRATION OF MAPAS"
-            
+
         },
         "pt-br": {
             "date-label": "Data do Mapa",
-            "action-label": "Ações",
+            "institution-label": "Instituição",
             "title-label": "CADASTRO DE MAPAS"
         }
     }
@@ -109,28 +109,28 @@ export default {
             const params = {
                 co_funai: this.ti,
                 id_acao: this.ac,
-                dt_cadastro: this.date
+                dt_cadastro: this.date,
             }
             let fileToUpload = this.$refs.fileInput.files[0]
             let formData = new FormData()
             formData.append('fileToUpload', fileToUpload)
-            this.$api
-                .$post('url', formData, params)
-                .then(function () {console.log("Enviado com sucesso")})
+            this.$api.$post('url', formData, params).then(function () {
+                console.log('Enviado com sucesso')
+            })
         },
         ...mapMutations('mapoteca', ['setFilters', 'setShowDialogDocument']),
         ...mapActions('mapoteca', [
-            'getTiUploadOptions',
+            'getTiUploadMapoteca',
             'sendData',
-            'getActionsUploadOptions',
+            'getActionsUploadMapoteca',
         ]),
     },
     computed: {
         ...mapState('mapoteca', ['filterOptions', 'showDialogDocument']),
     },
     mounted() {
-        this.getTiUploadOptions()
-        this.getActionsUploadOptions()
+        this.getActionsUploadMapoteca()
+        this.getTiUploadMapoteca()
     },
 }
 </script>
