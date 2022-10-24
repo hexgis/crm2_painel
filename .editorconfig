@@ -1,13 +1,25 @@
-# editorconfig.org
+# Documentation: https://editorconfig.org/
+# VSCode Extension: https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig
+
+# Defines this as the top-most EditorConfig file (project scoped)
 root = true
 
 [*]
-indent_style = space
-indent_size = 4
-end_of_line = lf
 charset = utf-8
-trim_trailing_whitespace = true
+# Soft tabs (space character) set to 2 spaces
+# @see https://github.com/airbnb/javascript#whitespace--spaces
+indent_style = space
+indent_size = 2
+# End files with a single newline character (LF)
+# @see https://github.com/airbnb/javascript#whitespace--newline-at-end
 insert_final_newline = true
+end_of_line = lf
+#  Avoid trailing spaces at the end of lines (trim whitespace)
+# @see https://github.com/airbnb/javascript#whitespace--no-trailing-spaces
+trim_trailing_whitespace = true
+# Avoid having lines of code that are longer than 100 characters
+# @see https://github.com/airbnb/javascript#whitespace--max-len
+max_line_length = 100
 
 [*.md]
 trim_trailing_whitespace = false
