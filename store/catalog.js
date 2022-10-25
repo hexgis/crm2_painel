@@ -259,7 +259,7 @@ export const mutations = {
 export const actions = {
     async getSatellites({ commit }) {
         try {
-            const response = await this.$api.$get('catalog/satellites/')
+            const response = await this.$api.$get('catalog/satellite/')
 
             commit('setSatellites', response)
         } catch (exception) {
@@ -299,7 +299,7 @@ export const actions = {
         }
 
         try {
-            const response = await this.$api.$get('catalog/images/', {
+            const response = await this.$api.$get('catalog/', {
                 params,
             })
             commit('setSceneCount', response.count)
