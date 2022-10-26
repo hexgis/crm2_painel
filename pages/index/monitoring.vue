@@ -81,7 +81,6 @@
                     </v-btn>
                     <v-btn
                         icon
-                        disabled
                         color="accent"
                         @click="changeVisualizationStage('chart')"
                     >
