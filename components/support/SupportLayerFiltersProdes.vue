@@ -86,7 +86,7 @@
                 </v-col>
             </template>
 
-            <v-col cols="12">
+            <v-col cols="12" class="my-2">
                 <v-btn
                     block
                     color="primary"

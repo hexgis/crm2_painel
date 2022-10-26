@@ -192,6 +192,12 @@ export default {
                     route: '/mapoteca',
                     show: process.env.ROUTE_MAPOTECA === 'true',
                 },
+                {
+                    name: this.$t('catalog-tab'),
+                    icon: 'mdi-folder-multiple-image',
+                    route: '/catalog',
+                    show: process.env.ROUTE_CATALOG === 'true',
+                },
             ]
         },
 
