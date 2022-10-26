@@ -30,59 +30,6 @@
         <div v-if="showDialogDocument">
             <DocumentDialog />
         </div>
-        <v-divider v-if="showFeatures" class="mt-8 mb-5" />
-        <div>
-            <v-row v-if="total" class="px-3 py-1">
-                <v-row v-if="showFeatures && total">
-                    <v-col cols="7" class="grey--text text--darken-2">
-                        {{ $t('polygon-label') }}:
-                    </v-col>
-                    <v-col cols="5" class="text-right">
-                        {{ total.total }}
-                    </v-col>
-                </v-row>
-                <v-row v-if="showFeatures && total && total.area_ha">
-                    <v-col cols="7" class="grey--text text--darken-2">
-                        {{ $t('total-area-label') }}:
-                    </v-col>
-                    <v-col cols="5" class="text-right">
-                        {{
-                            total.area_ha.toLocaleString($i18n.locale, {
-                                maximumFractionDigits: 2,
-                            })
-                        }}
-                        ha
-                    </v-col>
-                </v-row>
-            </v-row>
-            <v-row v-if="showFeatures" align="center">
-                <v-col cols="4" class="grey--text text--darken-2">
-                    {{ $t('opacity-label') }}
-                </v-col>
-                <v-col cols="8">
-                    <v-slider
-                        v-model="opacity"
-                        class="my-n2"
-                        hide-details
-                        thumb-label
-                    />
-                </v-col>
-            </v-row>
-            <v-row v-if="showFeatures" align="center" justify="space-between">
-                <v-col>
-                    <span class="grey--text text--darken-2">
-                        {{ $t('heat-map-label') }}
-                    </span>
-                </v-col>
-                <v-col cols="3" class="d-flex justify-end">
-                    <v-switch
-                        v-model="heatMap"
-                        class="mt-0 pt-0"
-                        hide-details
-                    />
-                </v-col>
-            </v-row>
-        </div>
         <v-footer
             absolute
             class="priority-footer"
@@ -143,7 +90,6 @@ export default {
             'showDialogDocument',
             'showFeatures',
             'features',
-            'total',
         ]),
     },
     methods: {

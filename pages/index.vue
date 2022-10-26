@@ -150,7 +150,7 @@ export default {
                 },
                 {
                     name: this.$t('urgent-alerts-tab'),
-                    icon: 'mdi-alert-octagram',
+                    icon: 'mdi-alarm-light',
                     route: '/urgent-alerts',
                     show: process.env.ROUTE_URGENT_ALERTS === 'true',
                 },
@@ -183,6 +183,12 @@ export default {
                     icon: 'mdi-file-document',
                     route: '/document',
                     show: process.env.ROUTE_DOCUMENT === 'true',
+                },
+                {
+                    name: this.$t('catalog-tab'),
+                    icon: 'mdi-folder-multiple-image',
+                    route: '/catalog',
+                    show: process.env.ROUTE_CATALOG === 'true',
                 },
             ]
         },
