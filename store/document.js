@@ -6,21 +6,20 @@ export const state = () => ({
     isLoadingTable: false,
     isLoadingFeatures: false,
     showDialogDocument: false,
+    isLoadingGeoJson: false,
+    isLoadingCSV: false,
     unitMeasurement: [],
-    // displayAnalitcs: null, // responsável por exibir qual dos 4 Dashboards será exibido na tela: Filtro Aplicado; CR; TI; Municípios. Também encaminhar o filtro aplicado.
     visualizationStage: 'map',
     filterOptions: {
         regionalFilters: [],
         tiFilters: [],
         tiFiltersUpload: [],
-        actions: []
+        actions: [],
     },
-
     filters: {
         startDate: null,
         endDate: null,
     },
-
     table: [],
 })
 
@@ -72,6 +71,14 @@ export const mutations = {
 
     clearFeatures(state) {
         state.features = null
+    },
+
+    setLoadingCSV(state, payload) {
+        state.isLoadingCSV = payload
+    },
+
+    setLoadingGeoJson(state, payload) {
+        state.isLoadingGeoJson = payload
     },
 
     setShowFeatures(state, showFeatures) {
@@ -217,7 +224,6 @@ export const actions = {
             })
 
             if (table) commit('setTable', table)
-
         } catch (error) {
             commit(
                 'alert/addAlert',
@@ -232,6 +238,103 @@ export const actions = {
         } finally {
             commit('setLoadingFeatures', false)
             commit('setLoadingTable', false)
+        }
+    },
+
+    async downloadTable({ commit, state, rootGetters }) {
+        commit('setLoadingCSV', true)
+
+        const params = {
+            start_date: state.filters.startDate,
+            end_date: state.filters.endDate,
+            format: state.filters.csv,
+        }
+
+        if (state.filters.ti && state.filters.ti.length)
+            params.co_funai = state.filters.ti.toString()
+
+        if (state.filters.cr && state.filters.cr.length)
+            params.co_cr = state.filters.cr.toString()
+
+        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
+
+        const tableCSV = await this.$api.get('alerts/table/', {
+            params,
+        })
+
+        function saveData(data, fileName, type) {
+            var elementBtn, blob, url
+
+            elementBtn = document.createElement('a')
+            elementBtn.style = 'display: none'
+            document.body.appendChild(elementBtn)
+
+            if (type !== 'text/csv') {
+                data = JSON.stringify(data)
+            }
+
+            blob = new Blob([data], { type: type })
+            url = window.URL.createObjectURL(blob)
+
+            elementBtn.href = url
+            elementBtn.download = fileName
+            elementBtn.click()
+            window.URL.revokeObjectURL(url)
+        }
+
+        try {
+            saveData(tableCSV.data, 'alerta-urgente.csv', 'text/csv')
+        } finally {
+            commit('setLoadingCSV', false)
+        }
+    },
+
+    async downloadGeoJson({ commit, state, rootGetters }) {
+        commit('setLoadingGeoJson', true)
+
+        const params = {
+            start_date: state.filters.startDate,
+            end_date: state.filters.endDate,
+            format: state.filters.csv,
+            format: state.filters.json,
+        }
+
+        if (state.filters.ti && state.filters.ti.length)
+            params.co_funai = state.filters.ti.toString()
+
+        if (state.filters.cr && state.filters.cr.length)
+            params.co_cr = state.filters.cr.toString()
+
+        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
+
+        const GeoJson = await this.$api.get('alerts/', {
+            params,
+        })
+
+        function saveData(data, fileName, type) {
+            var elementBtn, blob, url
+
+            elementBtn = document.createElement('a')
+            elementBtn.style = 'display: none'
+            document.body.appendChild(elementBtn)
+
+            if (type !== 'text/csv') {
+                data = JSON.stringify(data)
+            }
+
+            blob = new Blob([data], { type: type })
+            url = window.URL.createObjectURL(blob)
+
+            elementBtn.href = url
+            elementBtn.download = fileName
+            elementBtn.click()
+            window.URL.revokeObjectURL(url)
+        }
+
+        try {
+            saveData(GeoJson.data, 'alerta-urgente.json', 'application/json')
+        } finally {
+            commit('setLoadingGeoJson', false)
         }
     },
 }
