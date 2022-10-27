@@ -1,72 +1,82 @@
 <template>
-    <v-tabs
-        v-model="activeTab"
-        vertical
-        dark
-        optional
-        background-color="secondary"
-        class="right-tabs fill-height"
+  <v-tabs
+    v-model="activeTab"
+    vertical
+    dark
+    optional
+    background-color="secondary"
+    class="right-tabs fill-height"
+  >
+    <div class="top-buttons d-sm-none">
+      <v-btn
+        key="close"
+        class="back-mobile-button"
+        @click.prevent="closeRightDrawer()"
+      >
+        <v-tooltip left>
+          <template #activator="{ on }">
+            <v-icon v-on="on">
+              mdi-close
+            </v-icon>
+          </template>
+          <span>Fechar Menu</span>
+        </v-tooltip>
+      </v-btn>
+    </div>
+
+    <v-tab
+      v-for="(tab, i) in tabs"
+      :key="i"
+      :to="localePath(tab.route)"
+      exact
+      nuxt
+      :disabled="showTableDialog"
     >
-        <div class="top-buttons d-sm-none">
-            <v-btn
-                key="close"
-                class="back-mobile-button"
-                @click.prevent="closeRightDrawer()"
-            >
-                <v-tooltip left>
-                    <template #activator="{ on }">
-                        <v-icon v-on="on"> mdi-close </v-icon>
-                    </template>
-                    <span>Fechar Menu</span>
-                </v-tooltip>
-            </v-btn>
-        </div>
+      <v-tooltip left>
+        <template #activator="{ on }">
+          <v-icon v-on="on">
+            {{ tab.icon }}
+          </v-icon>
+        </template>
+        <span>{{ tab.name }}</span>
+      </v-tooltip>
+    </v-tab>
 
-        <v-tab
-            v-for="(tab, i) in tabs"
-            :key="i"
-            :to="localePath(tab.route)"
-            exact
-            nuxt
-            :disabled="showTableDialog"
-        >
-            <v-tooltip left>
-                <template #activator="{ on }">
-                    <v-icon v-on="on">{{ tab.icon }}</v-icon>
-                </template>
-                <span>{{ tab.name }}</span>
-            </v-tooltip>
-        </v-tab>
+    <v-tab-item
+      :transition="false"
+      :reverse-transition="false"
+    >
+      <nuxt-child keep-alive />
 
-        <v-tab-item :transition="false" :reverse-transition="false">
-            <nuxt-child keep-alive />
-
-            <div
-                v-if="isIndex"
-                class="
+      <div
+        v-if="isIndex"
+        class="
                     info
                     fill-height
                     d-flex
                     flex-column
                     align-content-space-between
                 "
-            >
-                <v-list class="pt-0" dark>
-                    <v-list-item
-                        v-for="(tab, i) in tabs"
-                        :key="i"
-                        :to="localePath(tab.route)"
-                    >
-                        <v-list-item-title class="text-right">
-                            {{ tab.name }}
-                        </v-list-item-title>
-                    </v-list-item>
-                </v-list>
-            </div>
-        </v-tab-item>
+      >
+        <v-list
+          class="pt-0"
+          dark
+        >
+          <v-list-item
+            v-for="(tab, i) in tabs"
+            :key="i"
+            :to="localePath(tab.route)"
+          >
+            <v-list-item-title class="text-right">
+              {{ tab.name }}
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </div>
+    </v-tab-item>
 
-        <ProfilePanel v-model="settings" />
-    </v-tabs>
+    <ProfilePanel v-model="settings" />
+  </v-tabs>
 </template>
 
 <i18n>
@@ -109,135 +119,141 @@
 </i18n>
 
 <script>
-import { mapState } from 'vuex'
-import ProfilePanel from '@/components/profile/ProfilePanel'
+import { mapState } from 'vuex';
+import ProfilePanel from '@/components/profile/ProfilePanel';
 
 export default {
-    name: 'MapLayersPanel',
+  name: 'MapLayersPanel',
 
-    components: { ProfilePanel },
+  components: { ProfilePanel },
 
-    transition: 'scroll-y-transition',
+  transition: 'scroll-y-transition',
 
-    data: () => ({
-        activeTab: 0,
-        compareTabIndex: null,
-        settings: false,
-    }),
+  data: () => ({
+    activeTab: 0,
+    compareTabIndex: null,
+    settings: false,
+  }),
 
-    computed: {
-        isIndex() {
-            return this.getRouteBaseName() === 'index'
-        },
-
-        allTabs() {
-            return [
-                {
-                    name: this.$t('layers-tab'),
-                    icon: 'mdi-layers',
-                    route: '/support',
-                    show: process.env.ROUTE_SUPPORT === 'true',
-                },
-                {
-                    name: this.$t('priority-tab'),
-                    icon: 'mdi-map-marker-alert',
-                    route: '/priority',
-                    show: process.env.ROUTE_PRIORITY === 'true',
-                },
-                {
-                    name: this.$t('search-tab'),
-                    icon: 'mdi-map-search',
-                    route: '/monitoring',
-                    show: process.env.ROUTE_MONITORING === 'true',
-                },
-                {
-                    name: this.$t('urgent-alerts-tab'),
-                    icon: 'mdi-alarm-light',
-                    route: '/urgent-alerts',
-                    show: process.env.ROUTE_URGENT_ALERTS === 'true',
-                },
-                {
-                    name: this.$t('high-resolution-mosaics-tab'),
-                    icon: 'mdi-book-open-page-variant',
-                    route: '/support-raster',
-                    show: process.env.ROUTE_SUPPORT_RASTER === 'true',
-                },
-                {
-                    name: this.$t('support-fire-tab'),
-                    icon: 'mdi-fire',
-                    route: '/support-hazard',
-                    show: process.env.ROUTE_SUPPORT_HAZARD === 'true',
-                },
-                {
-                    name: this.$t('landuse-tab'),
-                    icon: 'mdi-sprout',
-                    route: '/land-use',
-                    show: process.env.ROUTE_LAND_USE === 'true',
-                },
-                {
-                    name: this.$t('prodes-tab'),
-                    icon: 'mdi-view-dashboard',
-                    route: '/support-prodes',
-                    show: process.env.ROUTE_SUPPORT_PRODES === 'true',
-                },
-                {
-                    name: this.$t('document-tab'),
-                    icon: 'mdi-file-document',
-                    route: '/document',
-                    show: process.env.ROUTE_DOCUMENT === 'true',
-                },
-                {
-                    name: this.$t('mapoteca-tab'),
-                    icon: 'mdi-dresser',
-                    route: '/mapoteca',
-                    show: process.env.ROUTE_MAPOTECA === 'true',
-                },
-            ]
-        },
-
-        tabs() {
-            return this.allTabs.filter((t) => t.show)
-        },
-
-        ...mapState('catalog', ['isComparing']),
-        ...mapState('tableDialog', ['showTableDialog']),
+  computed: {
+    isIndex() {
+      return this.getRouteBaseName() === 'index';
     },
 
-    watch: {
-        isComparing() {
-            this.handleCompareTab()
+    allTabs() {
+      return [
+        {
+          name: this.$t('layers-tab'),
+          icon: 'mdi-layers',
+          route: '/support',
+          show: process.env.ROUTE_SUPPORT === 'true',
         },
+        {
+          name: this.$t('priority-tab'),
+          icon: 'mdi-map-marker-alert',
+          route: '/priority',
+          show: process.env.ROUTE_PRIORITY === 'true',
+        },
+        {
+          name: this.$t('search-tab'),
+          icon: 'mdi-map-search',
+          route: '/monitoring',
+          show: process.env.ROUTE_MONITORING === 'true',
+        },
+        {
+          name: this.$t('urgent-alerts-tab'),
+          icon: 'mdi-alarm-light',
+          route: '/urgent-alerts',
+          show: process.env.ROUTE_URGENT_ALERTS === 'true',
+        },
+        {
+          name: this.$t('high-resolution-mosaics-tab'),
+          icon: 'mdi-book-open-page-variant',
+          route: '/support-raster',
+          show: process.env.ROUTE_SUPPORT_RASTER === 'true',
+        },
+        {
+          name: this.$t('support-fire-tab'),
+          icon: 'mdi-fire',
+          route: '/support-hazard',
+          show: process.env.ROUTE_SUPPORT_HAZARD === 'true',
+        },
+        {
+          name: this.$t('landuse-tab'),
+          icon: 'mdi-sprout',
+          route: '/land-use',
+          show: process.env.ROUTE_LAND_USE === 'true',
+        },
+        {
+          name: this.$t('prodes-tab'),
+          icon: 'mdi-view-dashboard',
+          route: '/support-prodes',
+          show: process.env.ROUTE_SUPPORT_PRODES === 'true',
+        },
+        {
+          name: this.$t('document-tab'),
+          icon: 'mdi-file-document',
+          route: '/document',
+          show: process.env.ROUTE_DOCUMENT === 'true',
+        },
+        {
+          name: this.$t('catalog-tab'),
+          icon: 'mdi-folder-multiple-image',
+          route: '/catalog',
+          show: process.env.ROUTE_CATALOG === 'true',
+        },
+        {
+          name: this.$t('mapoteca-tab'),
+          icon: 'mdi-dresser',
+          route: '/mapoteca',
+          show: process.env.ROUTE_MAPOTECA === 'true',
+        },
+      ];
     },
 
-    created() {
-        if (process.env.IMAGERY === 'false') {
-            this.tabs.splice(1, 1)
-        }
-
-        this.handleCompareTab()
+    tabs() {
+      return this.allTabs.filter((t) => t.show);
     },
 
-    methods: {
-        handleCompareTab() {
-            if (this.isComparing) {
-                this.tabs.push({
-                    name: this.$t('compare-tab'),
-                    icon: 'mdi-compare',
-                    route: '/catalog/comparator',
-                })
-                this.compareTabIndex = this.tabs.length - 1
-                this.$router.push(this.localePath('/catalog/comparator'))
-            } else if (this.compareTabIndex) {
-                this.tabs.splice(this.compareTabIndex, 1)
-                this.compareTabIndex = null
-            }
-        },
+    ...mapState('catalog', ['isComparing']),
+    ...mapState('tableDialog', ['showTableDialog']),
+  },
 
-        closeRightDrawer() {
-            this.$emit('closedrawer')
-        },
+  watch: {
+    isComparing() {
+      this.handleCompareTab();
     },
-}
+  },
+
+  created() {
+    if (process.env.IMAGERY === 'false') {
+      this.tabs.splice(1, 1);
+    }
+
+    this.handleCompareTab();
+  },
+
+  methods: {
+    handleCompareTab() {
+      if (this.isComparing) {
+        this.tabs.push({
+          name: this.$t('compare-tab'),
+          icon: 'mdi-compare',
+          route: '/catalog/comparator',
+        });
+        this.compareTabIndex = this.tabs.length - 1;
+        this.$router.push(this.localePath('/catalog/comparator'));
+      } else if (this.compareTabIndex) {
+        this.tabs.splice(this.compareTabIndex, 1);
+        this.compareTabIndex = null;
+      }
+    },
+
+    closeRightDrawer() {
+      this.$emit('closedrawer');
+    },
+  },
+};
 </script>
 
 <style lang="sass">
