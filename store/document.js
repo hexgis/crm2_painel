@@ -172,10 +172,10 @@ export const actions = {
   },
 
   async getFilterOptions({ commit }) {
-    const regional_coordinators = await this.$api.$get('funai/cr/');
+    const regionalCoordinates = await this.$api.$get('funai/cr/');
     const data = {};
-    if (regional_coordinators) {
-      data.regionalFilters = regional_coordinators.sort(
+    if (regionalCoordinates) {
+      data.regionalFilters = regionalCoordinates.sort(
         (a, b) => a.ds_cr > b.ds_cr,
       );
     }
@@ -207,7 +207,7 @@ export const actions = {
   async getActionsUploadOptions({ commit }) {
     const tis = await this.$api.$get('documental/list-actions/');
 
-    commit('setActions', actions);
+    commit('setActions', tis);
   },
 
   async getDataTable({ commit, state, rootGetters }) {
@@ -218,7 +218,9 @@ export const actions = {
       end_date: state.filters.endDate,
     };
 
-    if (state.filters.ti && state.filters.ti.length) { params.co_funai = state.filters.ti.toString(); }
+    if (state.filters.ti && state.filters.ti.length) {
+      params.co_funai = state.filters.ti.toString();
+    }
 
     if (state.filters.cr && state.filters.cr.length) { params.co_cr = state.filters.cr.toString(); }
 
@@ -256,7 +258,9 @@ export const actions = {
       format: state.filters.csv,
     };
 
-    if (state.filters.ti && state.filters.ti.length) { params.co_funai = state.filters.ti.toString(); }
+    if (state.filters.ti && state.filters.ti.length) {
+      params.co_funai = state.filters.ti.toString();
+    }
 
     if (state.filters.cr && state.filters.cr.length) { params.co_cr = state.filters.cr.toString(); }
 
@@ -267,8 +271,9 @@ export const actions = {
     });
 
     function saveData(data, fileName, type) {
-      let elementBtn; let blob; let
-        url;
+      let elementBtn = null;
+      let blob = null;
+      let url = null;
 
       elementBtn = document.createElement('a');
       elementBtn.style = 'display: none';
@@ -304,7 +309,9 @@ export const actions = {
       format: state.filters.json,
     };
 
-    if (state.filters.ti && state.filters.ti.length) { params.co_funai = state.filters.ti.toString(); }
+    if (state.filters.ti && state.filters.ti.length) {
+      params.co_funai = state.filters.ti.toString();
+    }
 
     if (state.filters.cr && state.filters.cr.length) { params.co_cr = state.filters.cr.toString(); }
 
@@ -315,8 +322,9 @@ export const actions = {
     });
 
     function saveData(data, fileName, type) {
-      let elementBtn; let blob; let
-        url;
+      let elementBtn = null;
+      let blob = null;
+      let url = null;
 
       elementBtn = document.createElement('a');
       elementBtn.style = 'display: none';
