@@ -85,7 +85,8 @@
         "urgent-alerts-tab": "Urgent Alerts",
         "webhooks-tab": "Webhooks",
         "priority-tab": "Priorities",
-        "document-tab": "Document"
+        "document-tab": "Document",
+        "mapoteca-tab": "Map Library"
     },
     "pt-br": {
         "catalog-tab": "Meu acervo de imagens",
@@ -101,7 +102,8 @@
         "urgent-alerts-tab": "Alerta Urgente",
         "webhooks-tab": "Webhooks",
         "priority-tab": "Polígonos Prioritários",
-        "document-tab": "Documental"
+        "document-tab": "Documental",
+        "mapoteca-tab": "Mapoteca"
     }
 }
 </i18n>
@@ -183,6 +185,12 @@ export default {
                     icon: 'mdi-file-document',
                     route: '/document',
                     show: process.env.ROUTE_DOCUMENT === 'true',
+                },
+                {
+                    name: this.$t('mapoteca-tab'),
+                    icon: 'mdi-dresser',
+                    route: '/mapoteca',
+                    show: process.env.ROUTE_MAPOTECA === 'true',
                 },
                 {
                     name: this.$t('catalog-tab'),
