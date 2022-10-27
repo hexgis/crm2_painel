@@ -218,7 +218,9 @@ export const actions = {
       end_date: state.filters.endDate,
     };
 
-    if (state.filters.ti && state.filters.ti.length) { params.co_funai = state.filters.ti.toString(); }
+    if (state.filters.ti && state.filters.ti.length) {
+      params.co_funai = state.filters.ti.toString();
+    }
 
     if (state.filters.cr && state.filters.cr.length) { params.co_cr = state.filters.cr.toString(); }
 
@@ -256,7 +258,9 @@ export const actions = {
       format: state.filters.csv,
     };
 
-    if (state.filters.ti && state.filters.ti.length) { params.co_funai = state.filters.ti.toString(); }
+    if (state.filters.ti && state.filters.ti.length) {
+      params.co_funai = state.filters.ti.toString();
+    }
 
     if (state.filters.cr && state.filters.cr.length) { params.co_cr = state.filters.cr.toString(); }
 
@@ -304,7 +308,9 @@ export const actions = {
       format: state.filters.json,
     };
 
-    if (state.filters.ti && state.filters.ti.length) { params.co_funai = state.filters.ti.toString(); }
+    if (state.filters.ti && state.filters.ti.length) {
+      params.co_funai = state.filters.ti.toString();
+    }
 
     if (state.filters.cr && state.filters.cr.length) { params.co_cr = state.filters.cr.toString(); }
 
