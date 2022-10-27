@@ -107,6 +107,10 @@ export default {
         }
     },
 
+    computed: {
+        ...mapState('document', ['filterOptions', 'showDialogDocument']),
+    },
+
     methods: {
         save() {
             // this.uploadFile()
@@ -133,10 +137,6 @@ export default {
             'sendData',
             'getActionsUploadOptions',
         ]),
-    },
-
-    computed: {
-        ...mapState('document', ['filterOptions', 'showDialogDocument']),
     },
 
     mounted() {

@@ -60,7 +60,7 @@
 
 <script>
 import DocumentDialog from '@/components/document-dialog/DocumentDialog'
-import { mapActions, mapMutations, mapState } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 export default {
     components: { DocumentDialog },
     data() {

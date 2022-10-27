@@ -54,7 +54,6 @@
                                 </v-col>
                                 <v-col>
                                     <v-select
-                                        disabled="!filters.id_acao.length"
                                         v-model="filters.ti"
                                         label="Terras Indigenas (Todas)"
                                         :items="filterOptions.tiFilters"
