@@ -33,6 +33,33 @@
             <v-tab-item>
               <v-card>
                 <v-container grid-list-xs>
+                  <div class="mb-2">
+                    <v-chip
+                      :outlined="chipSelected === 'ti'"
+                      @click="chipSelected = 'ti'"
+                    >
+                      Terra Indigena
+                    </v-chip>
+                    <v-chip
+                      :outlined="chipSelected === 'ano'"
+                      @click="chipSelected = 'ano'"
+                    >
+                      Ano
+                    </v-chip>
+                    <v-chip
+                      :outlined="chipSelected === 'dia'"
+                      @click="chipSelected = 'dia'"
+                    >
+                      Dia
+                    </v-chip>
+                    <v-chip
+                      :outlined="chipSelected === 'tiano'"
+                      @click="chipSelected = 'tiano'"
+                    >
+                      Terra Indigena e Ano
+                    </v-chip>
+                  </div>
+                  <v-divider class="mb-2" />
                   <v-data-table
                     :headers="headers"
                     :items="desserts"
@@ -290,7 +317,7 @@ export default {
 
 @media (min-width: 1264px) {
     .v-dialog__content {
-        width: 70%;
+        width: 68%;
     }
 }
 
