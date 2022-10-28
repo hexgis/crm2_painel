@@ -20,8 +20,6 @@
                 </template>
             </v-list>
         </v-container>
-
-        <v-divider />
     </v-list-group>
 </template>
 

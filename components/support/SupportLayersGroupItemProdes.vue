@@ -51,15 +51,6 @@
                 class="black--text text--lighten-2"
                 align="center"
             >
-                <v-col cols="4">Opacidade</v-col>
-                <v-col cols="8">
-                    <v-slider
-                        :value="layer.opacity"
-                        class="mb-n4"
-                        thumb-label
-                        @input="updateLayerOpacity($event)"
-                    />
-                </v-col>
             </v-row>
 
             <v-row
@@ -78,14 +69,6 @@
                 </v-col>
             </v-row>
         </v-container>
-
-        <v-divider
-            v-if="
-                layer.layer_type === 'wms' &&
-                layer.visible &&
-                layer.wms.has_opacity
-            "
-        />
     </v-list-group>
 </template>
 
