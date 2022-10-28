@@ -1,4 +1,4 @@
-<template></template>
+<template />
 
 <i18n>
 {

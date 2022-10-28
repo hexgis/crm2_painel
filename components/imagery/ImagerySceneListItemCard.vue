@@ -1,53 +1,56 @@
 <template>
-    <v-card
-        :key="index"
-        ref="cards"
-        tile
-        outlined
-        width="100%"
-        :color="hover ? 'grey lighten-4' : 'transparent'"
-        @mouseenter="setHoveredScene(index)"
-        @mouseleave="setHoveredScene(null)"
-    >
-        <ImagerySceneListItem :scene="scene" :index="index" />
+  <v-card
+    :key="index"
+    ref="cards"
+    tile
+    outlined
+    width="100%"
+    :color="hover ? 'grey lighten-4' : 'transparent'"
+    @mouseenter="setHoveredScene(index)"
+    @mouseleave="setHoveredScene(null)"
+  >
+    <ImagerySceneListItem
+      :scene="scene"
+      :index="index"
+    />
 
-        <v-divider />
+    <v-divider />
 
-        <ImagerySceneListItemActions
-            :scene="scene"
-            :index="index"
-            @openDetails="$emit('selectScene')"
-        />
-    </v-card>
+    <ImagerySceneListItemActions
+      :scene="scene"
+      :index="index"
+      @openDetails="$emit('selectScene')"
+    />
+  </v-card>
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations } from 'vuex';
 
-import ImagerySceneListItem from './ImagerySceneListItem'
-import ImagerySceneListItemActions from './ImagerySceneListItemActions'
+import ImagerySceneListItem from './ImagerySceneListItem';
+import ImagerySceneListItemActions from './ImagerySceneListItemActions';
 
 export default {
-    props: {
-        scene: {
-            type: Object,
-            required: true,
-        },
-        index: {
-            type: Number,
-            required: true,
-        },
-        hover: {
-            type: Boolean,
-            required: true,
-        },
+  components: {
+    ImagerySceneListItem,
+    ImagerySceneListItemActions,
+  },
+  props: {
+    scene: {
+      type: Object,
+      required: true,
     },
-    components: {
-        ImagerySceneListItem,
-        ImagerySceneListItemActions,
+    index: {
+      type: Number,
+      required: true,
     },
-    methods: {
-        ...mapMutations('imagery', ['setHoveredScene']),
+    hover: {
+      type: Boolean,
+      required: true,
     },
-}
+  },
+  methods: {
+    ...mapMutations('imagery', ['setHoveredScene']),
+  },
+};
 </script>

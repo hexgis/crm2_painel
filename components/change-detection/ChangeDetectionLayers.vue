@@ -1,49 +1,51 @@
 <template>
-    <l-layer-group :visible="showFeatures">
-        <l-feature-group ref="detectionsGeom">
-            <l-popup
-                ref="popup"
-                :options="{
-                    className: 'card-popup',
-                    minWidth: 300,
-                }"
-            ></l-popup>
-        </l-feature-group>
+  <l-layer-group :visible="showFeatures">
+    <l-feature-group ref="detectionsGeom">
+      <l-popup
+        ref="popup"
+        :options="{
+          className: 'card-popup',
+          minWidth: 300,
+        }"
+      />
+    </l-feature-group>
 
-        <BaseMetadataPopup
-            v-show="false"
-            ref="popupComponent"
-            :feature="selectedDetectionFeature"
+    <BaseMetadataPopup
+      v-show="false"
+      ref="popupComponent"
+      :feature="selectedDetectionFeature"
+    />
+
+    <l-feature-group
+      ref="detectionGrid"
+      name="detectionGrid"
+    >
+      <l-geo-json
+        v-for="(grid, i) in detectionsGrid"
+        :key="i"
+        :geojson="grid"
+        :options-style="styles.default"
+      />
+    </l-feature-group>
+
+    <l-layer-group>
+      <template v-for="(detection, i) in changeDetections">
+        <l-image-overlay
+          :key="`${i}_t0`"
+          :url="detection.scene_t0.preview"
+          :bounds="getBounds(detection, i)"
+          :visible="detection.visibleT0"
         />
 
-        <l-feature-group ref="detectionGrid" name="detectionGrid">
-            <l-geo-json
-                v-for="(grid, i) in detectionsGrid"
-                :key="i"
-                :geojson="grid"
-                :options-style="styles.default"
-            >
-            </l-geo-json>
-        </l-feature-group>
-
-        <l-layer-group>
-            <template v-for="(detection, i) in changeDetections">
-                <l-image-overlay
-                    :key="`${i}_t0`"
-                    :url="detection.scene_t0.preview"
-                    :bounds="getBounds(detection, i)"
-                    :visible="detection.visibleT0"
-                />
-
-                <l-image-overlay
-                    :key="`${i}_t1`"
-                    :url="detection.scene_t1.preview"
-                    :bounds="getBounds(detection, i)"
-                    :visible="detection.visibleT1"
-                />
-            </template>
-        </l-layer-group>
+        <l-image-overlay
+          :key="`${i}_t1`"
+          :url="detection.scene_t1.preview"
+          :bounds="getBounds(detection, i)"
+          :visible="detection.visibleT1"
+        />
+      </template>
     </l-layer-group>
+  </l-layer-group>
 </template>
 
 <i18n>
@@ -58,201 +60,199 @@
 </i18n>
 
 <script>
-import { mapState, mapMutations, mapGetters } from 'vuex'
+import { mapState, mapMutations, mapGetters } from 'vuex';
 
-import BaseMetadataPopup from '@/components/base/BaseMetadataPopup'
+import BaseMetadataPopup from '@/components/base/BaseMetadataPopup';
 
 if (typeof window !== 'undefined') {
-    require('leaflet.vectorgrid')
+  require('leaflet.vectorgrid');
 }
 
 export default {
-    name: 'ChangeDetectionLayers',
+  name: 'ChangeDetectionLayers',
 
-    components: { BaseMetadataPopup },
+  components: { BaseMetadataPopup },
 
-    props: {
-        map: {
-            type: Object,
-            default: null,
-        },
+  props: {
+    map: {
+      type: Object,
+      default: null,
+    },
+  },
+
+  data: () => ({
+    selectedGridLayer: null,
+    selectedDetectionFeature: null,
+    vectorGrids: [],
+
+    styles: {
+      default: {
+        weight: 1,
+        color: '#4C527C',
+        fill: null,
+      },
+      hover: {
+        weight: 2.5,
+        color: '#C2293D',
+      },
+      diff: {
+        weight: 1,
+        color: '#4C527C',
+        fill: true,
+        fillOpacity: 0.3,
+      },
+    },
+  }),
+
+  computed: {
+    detectionsGrid() {
+      const grid = [];
+
+      this.changeDetections.forEach((detection) => {
+        const geom = {
+          type: 'Feature',
+          geometry: detection.grid_geom,
+        };
+
+        geom.properties = {
+          id: detection.id,
+        };
+
+        grid.push(geom);
+      });
+
+      return grid;
     },
 
-    data: () => ({
-        selectedGridLayer: null,
-        selectedDetectionFeature: null,
-        vectorGrids: [],
+    ...mapGetters('change-detection', ['detectionsGeom']),
 
-        styles: {
-            default: {
-                weight: 1,
-                color: '#4C527C',
-                fill: null,
-            },
-            hover: {
-                weight: 2.5,
-                color: '#C2293D',
-            },
-            diff: {
-                weight: 1,
-                color: '#4C527C',
-                fill: true,
-                fillOpacity: 0.3,
-            },
-        },
-    }),
+    ...mapState('change-detection', [
+      'changeDetections',
+      'hoveredDetection',
+      'zoomedDetection',
+      'showFeatures',
+    ]),
+  },
 
-    computed: {
-        detectionsGrid() {
-            const grid = []
+  watch: {
+    detectionsGeom() {
+      this.addDetectionsGeom();
+    },
 
-            this.changeDetections.forEach((detection) => {
-                const geom = {
-                    type: 'Feature',
-                    geometry: detection.grid_geom,
-                }
+    hoveredDetection(index) {
+      if (index !== null) {
+        const detection = this.changeDetections[index];
+        if (detection) {
+          this.$refs.detectionGrid.mapObject.eachLayer((layer) => {
+            if (
+              layer.getLayers()[0].feature.properties.id
+                            === detection.id
+            ) {
+              this.highlightLayer(layer);
+            }
+          });
+        }
+      } else if (this.selectedGridLayer) {
+        this.clearHighlight();
+      }
+    },
 
-                geom.properties = {
-                    id: detection.id,
-                }
+    zoomedDetection(index) {
+      if (index !== null) {
+        const detection = this.changeDetections[index];
+        if (detection) {
+          this.$refs.detectionGrid.mapObject.eachLayer((layer) => {
+            if (
+              layer.getLayers()[0].feature.properties.id
+                            === detection.id
+            ) {
+              this.map.flyToBounds(layer.getBounds());
+            }
+          });
+          this.setZoomedDetection(null);
+        }
+      }
+    },
+  },
 
-                grid.push(geom)
+  mounted() {
+    this.$nextTick(() => {
+      this.addDetectionsGeom();
+    });
+  },
+
+  methods: {
+    highlightLayer(layer) {
+      if (this.selectedGridLayer) {
+        this.selectedGridLayer.setStyle(this.styles.default);
+      }
+      this.selectedGridLayer = layer;
+      this.selectedGridLayer.setStyle(this.styles.hover);
+    },
+
+    clearHighlight() {
+      this.selectedGridLayer.setStyle(this.styles.default);
+      this.selectedGridLayer = null;
+    },
+
+    getBounds(detection) {
+      return this.$L.geoJSON(detection.grid_geom).getBounds();
+    },
+
+    addDetectionsGeom() {
+      this.$refs.detectionsGeom.mapObject.clearLayers();
+      this.vectorGrids = [];
+
+      if (this.detectionsGeom.length) {
+        this.detectionsGeom.forEach((detection) => {
+          const newGrid = this.$L.vectorGrid
+            .slicer(detection, {
+              maxZoom: 21,
+              zIndex: 2,
+              vectorTileLayerStyles: {
+                sliced: () => this.styles.diff,
+              },
+              interactive: true,
+              getFeatureId: (_) => 1,
             })
+            .on('click', (e) => {
+              this.getFeatureDetails(e.layer.properties.id);
+            })
+            .addTo(this.$refs.detectionsGeom.mapObject);
 
-            return grid
-        },
-
-        ...mapGetters('change-detection', ['detectionsGeom']),
-
-        ...mapState('change-detection', [
-            'changeDetections',
-            'hoveredDetection',
-            'zoomedDetection',
-            'showFeatures',
-        ]),
+          this.vectorGrids.push(newGrid);
+        });
+      }
     },
 
-    watch: {
-        detectionsGeom() {
-            this.addDetectionsGeom()
-        },
+    async getFeatureDetails(featureId) {
+      this.selectedDetectionFeature = null;
+      this.$nextTick(() => {
+        this.$refs.popup.mapObject.setContent(
+          this.$refs.popupComponent.$el.innerHTML,
+        );
+      });
 
-        hoveredDetection(index) {
-            if (index !== null) {
-                const detection = this.changeDetections[index]
-                if (detection) {
-                    this.$refs.detectionGrid.mapObject.eachLayer((layer) => {
-                        if (
-                            layer.getLayers()[0].feature.properties.id ===
-                            detection.id
-                        ) {
-                            this.highlightLayer(layer)
-                        }
-                    })
-                }
-            } else if (this.selectedGridLayer) {
-                this.clearHighlight()
-            }
-        },
+      try {
+        this.selectedDetectionFeature = await this.$apiSkynet.$get(
+          `landsat/changes/detail/${featureId}/`,
+        );
 
-        zoomedDetection(index) {
-            if (index !== null) {
-                const detection = this.changeDetections[index]
-                if (detection) {
-                    this.$refs.detectionGrid.mapObject.eachLayer((layer) => {
-                        if (
-                            layer.getLayers()[0].feature.properties.id ===
-                            detection.id
-                        ) {
-                            this.map.flyToBounds(layer.getBounds())
-                        }
-                    })
-                    this.setZoomedDetection(null)
-                }
-            }
-        },
-    },
-
-    mounted() {
         this.$nextTick(() => {
-            this.addDetectionsGeom()
-        })
+          this.$refs.popup.mapObject.setContent(
+            this.$refs.popupComponent.$el.innerHTML,
+          );
+        });
+      } catch (exception) {
+        this.$store.commit('alert/addAlert', {
+          message: this.$t('feature-details-error'),
+        });
+      }
     },
 
-    methods: {
-        highlightLayer(layer) {
-            if (this.selectedGridLayer) {
-                this.selectedGridLayer.setStyle(this.styles.default)
-            }
-            this.selectedGridLayer = layer
-            this.selectedGridLayer.setStyle(this.styles.hover)
-        },
-
-        clearHighlight() {
-            this.selectedGridLayer.setStyle(this.styles.default)
-            this.selectedGridLayer = null
-        },
-
-        getBounds(detection) {
-            return this.$L.geoJSON(detection.grid_geom).getBounds()
-        },
-
-        addDetectionsGeom() {
-            this.$refs.detectionsGeom.mapObject.clearLayers()
-            this.vectorGrids = []
-
-            if (this.detectionsGeom.length) {
-                this.detectionsGeom.forEach((detection) => {
-                    const newGrid = this.$L.vectorGrid
-                        .slicer(detection, {
-                            maxZoom: 21,
-                            zIndex: 2,
-                            vectorTileLayerStyles: {
-                                sliced: () => this.styles.diff,
-                            },
-                            interactive: true,
-                            getFeatureId: (_) => {
-                                return 1
-                            },
-                        })
-                        .on('click', (e) => {
-                            this.getFeatureDetails(e.layer.properties.id)
-                        })
-                        .addTo(this.$refs.detectionsGeom.mapObject)
-
-                    this.vectorGrids.push(newGrid)
-                })
-            }
-        },
-
-        async getFeatureDetails(featureId) {
-            this.selectedDetectionFeature = null
-            this.$nextTick(() => {
-                this.$refs.popup.mapObject.setContent(
-                    this.$refs.popupComponent.$el.innerHTML
-                )
-            })
-
-            try {
-                this.selectedDetectionFeature = await this.$apiSkynet.$get(
-                    'landsat/changes/detail/' + featureId + '/'
-                )
-
-                this.$nextTick(() => {
-                    this.$refs.popup.mapObject.setContent(
-                        this.$refs.popupComponent.$el.innerHTML
-                    )
-                })
-            } catch (exception) {
-                this.$store.commit('alert/addAlert', {
-                    message: this.$t('feature-details-error'),
-                })
-            }
-        },
-
-        ...mapMutations('change-detection', ['setZoomedDetection']),
-    },
-}
+    ...mapMutations('change-detection', ['setZoomedDetection']),
+  },
+};
 </script>
 
 <style lang="sass">

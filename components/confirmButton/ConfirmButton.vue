@@ -1,58 +1,72 @@
 <template>
-    <div>
-        <div v-if="confirmAction === true">
-            <v-btn icon class="cancel" @click="confirmAction = false">
-                <v-icon size="50">mdi-close-circle-outline</v-icon>
-            </v-btn>
-            <v-btn icon class="confirm" @click="remove()">
-                <v-icon size="50">mdi-check-circle-outline</v-icon></v-btn
-            >
-        </div>
-        <div v-else>
-            <v-tooltip top>
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                        icon
-                        class="button-icon"
-                        v-bind="attrs"
-                        @click="confirmAction = true"
-                        v-on="on"
-                    >
-                        <v-icon size="50">{{ icon }}</v-icon>
-                    </v-btn>
-                </template>
-                <span> {{ iconTooltip }}</span>
-            </v-tooltip>
-        </div>
+  <div>
+    <div v-if="confirmAction === true">
+      <v-btn
+        icon
+        class="cancel"
+        @click="confirmAction = false"
+      >
+        <v-icon size="50">
+          mdi-close-circle-outline
+        </v-icon>
+      </v-btn>
+      <v-btn
+        icon
+        class="confirm"
+        @click="remove()"
+      >
+        <v-icon size="50">
+          mdi-check-circle-outline
+        </v-icon>
+      </v-btn>
     </div>
+    <div v-else>
+      <v-tooltip top>
+        <template #activator="{ on, attrs }">
+          <v-btn
+            icon
+            class="button-icon"
+            v-bind="attrs"
+            @click="confirmAction = true"
+            v-on="on"
+          >
+            <v-icon size="50">
+              {{ icon }}
+            </v-icon>
+          </v-btn>
+        </template>
+        <span> {{ iconTooltip }}</span>
+      </v-tooltip>
+    </div>
+  </div>
 </template>
 <script>
 export default {
-    props: {
-        icon: {
-            type: String,
-            required: true,
-        },
-        iconTooltip: {
-            type: String,
-            default: '',
-        },
+  props: {
+    icon: {
+      type: String,
+      required: true,
     },
-    data() {
-        return {
-            confirmAction: {
-                type: Boolean,
-                default: false,
-            },
-        }
+    iconTooltip: {
+      type: String,
+      default: '',
     },
-    methods: {
-        remove() {
-            this.confirmAction = false
-            this.$emit('remove')
-        },
+  },
+  data() {
+    return {
+      confirmAction: {
+        type: Boolean,
+        default: false,
+      },
+    };
+  },
+  methods: {
+    remove() {
+      this.confirmAction = false;
+      this.$emit('remove');
     },
-}
+  },
+};
 </script>
 <style scoped lang="sass">
 .button-icon

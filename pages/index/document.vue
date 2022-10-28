@@ -1,42 +1,52 @@
 <template>
-    <v-container class="d-flex flex-column">
-        <div class="tab-header flex justify-space-between">
-            <h4 class="subtitle-2 text-uppercase font-weight-regular">
-                {{ $t('title') }}
-            </h4>
-        </div>
-        <v-card-text>
-            <p>Ambiente de pesquisa de documentos de acordo com as ações.</p>
+  <v-container class="d-flex flex-column">
+    <div class="tab-header flex justify-space-between">
+      <h4 class="subtitle-2 text-uppercase font-weight-regular">
+        {{ $t('title') }}
+      </h4>
+    </div>
+    <v-card-text>
+      <p>Ambiente de pesquisa de documentos de acordo com as ações.</p>
 
-            <v-list-item-content style="list-style: circle">
-                <v-list-item-title class="list__text mb-4 font-weight-black"
-                    >Ações Disponíveis:</v-list-item-title
-                >
-                <ul v-for="(item, index) in items" :key="index">
-                    <li>{{ item.value }}</li>
-                </ul>
-            </v-list-item-content>
-        </v-card-text>
-
-        <v-btn color="accent" class="" @click="showDialog(true)">
-            {{ $t('input-label') }}
-        </v-btn>
-        <div v-if="showDialogDocument">
-            <DocumentDialog />
-        </div>
-        <v-footer
-            absolute
-            class="priority-footer"
-            color="#FFFFFF"
-            elevation="4"
+      <v-list-item-content style="list-style: circle">
+        <v-list-item-title class="list__text mb-4 font-weight-black">
+          Ações Disponíveis:
+        </v-list-item-title>
+        <ul
+          v-for="(item, index) in items"
+          :key="index"
         >
-            <v-col>
-                <v-row class="d-flex justify-center">
-                    <v-img max-width="200" src="/img/logocmr_normal.png" />
-                </v-row>
-            </v-col>
-        </v-footer>
-    </v-container>
+          <li>{{ item.value }}</li>
+        </ul>
+      </v-list-item-content>
+    </v-card-text>
+
+    <v-btn
+      color="accent"
+      class=""
+      @click="showDialog(true)"
+    >
+      {{ $t('input-label') }}
+    </v-btn>
+    <div v-if="showDialogDocument">
+      <DocumentDialog />
+    </div>
+    <v-footer
+      absolute
+      class="priority-footer"
+      color="#FFFFFF"
+      elevation="4"
+    >
+      <v-col>
+        <v-row class="d-flex justify-center">
+          <v-img
+            max-width="200"
+            src="/img/logocmr_normal.png"
+          />
+        </v-row>
+      </v-col>
+    </v-footer>
+  </v-container>
 </template>
 
 <i18n>
@@ -59,41 +69,42 @@
 </i18n>
 
 <script>
-import DocumentDialog from '@/components/document-dialog/DocumentDialog'
-import { mapMutations, mapState } from 'vuex'
-export default {
-    components: { DocumentDialog },
-    data() {
-        return {
-            items: [
-                { value: 'Alertas Urgentes' },
-                { value: 'FIP DGM' },
-                { value: 'Fiscalização(2016)' },
-                { value: 'Fiscalização(2017)' },
-                { value: 'Fundo Amazônia' },
-                { value: 'Gestão Territorial e Ambiental' },
-                { value: 'Prevenção (2016)' },
-                { value: 'Prevenção (2017)' },
-                { value: 'Projeto PNUD (TIs Vulveráveis)' },
-                { value: 'Vigilância' },
-            ],
-        }
-    },
-    computed: {
-        ...mapState('document', [
-            'showDialogDocument',
-            'showFeatures',
-            'features',
-        ]),
-    },
-    methods: {
-        showDialog(value) {
-            this.setShowDialogDocument(value)
-        },
+import { mapMutations, mapState } from 'vuex';
+import DocumentDialog from '@/components/document-dialog/DocumentDialog';
 
-        ...mapMutations('document', ['setShowDialogDocument']),
+export default {
+  components: { DocumentDialog },
+  data() {
+    return {
+      items: [
+        { value: 'Alertas Urgentes' },
+        { value: 'FIP DGM' },
+        { value: 'Fiscalização(2016)' },
+        { value: 'Fiscalização(2017)' },
+        { value: 'Fundo Amazônia' },
+        { value: 'Gestão Territorial e Ambiental' },
+        { value: 'Prevenção (2016)' },
+        { value: 'Prevenção (2017)' },
+        { value: 'Projeto PNUD (TIs Vulveráveis)' },
+        { value: 'Vigilância' },
+      ],
+    };
+  },
+  computed: {
+    ...mapState('document', [
+      'showDialogDocument',
+      'showFeatures',
+      'features',
+    ]),
+  },
+  methods: {
+    showDialog(value) {
+      this.setShowDialogDocument(value);
     },
-}
+
+    ...mapMutations('document', ['setShowDialogDocument']),
+  },
+};
 </script>
 
 <style scoped>

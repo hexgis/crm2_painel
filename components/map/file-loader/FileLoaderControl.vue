@@ -1,169 +1,178 @@
 <template>
-    <div class="d-flex mt-3">
-        <v-tooltip right :disabled="showOptions">
-            <template #activator="{ on }">
-                <v-btn
-                    fab
-                    ripple
-                    height="36"
-                    width="36"
-                    class="button-drawer"
-                    @click="removeAllFeatures()"
-                    v-on="on"
-                >
-                    <transition name="slide-x-file-drawer-button">
-                        <v-icon v-if="!showOptions">mdi-folder-upload</v-icon>
-                        <v-icon
-                            v-if="showOptions"
-                            :class="showOptions ? 'back-icon' : ''"
-                            >mdi-arrow-up</v-icon
-                        >
-                    </transition>
-                </v-btn>
-            </template>
-            <span> {{ $t('file-drawer') }} </span>
-        </v-tooltip>
+  <div class="d-flex mt-3">
+    <v-tooltip
+      right
+      :disabled="showOptions"
+    >
+      <template #activator="{ on }">
+        <v-btn
+          fab
+          ripple
+          height="36"
+          width="36"
+          class="button-drawer"
+          @click="removeAllFeatures()"
+          v-on="on"
+        >
+          <transition name="slide-x-file-drawer-button">
+            <v-icon v-if="!showOptions">
+              mdi-folder-upload
+            </v-icon>
+            <v-icon
+              v-if="showOptions"
+              :class="showOptions ? 'back-icon' : ''"
+            >
+              mdi-arrow-up
+            </v-icon>
+          </transition>
+        </v-btn>
+      </template>
+      <span> {{ $t('file-drawer') }} </span>
+    </v-tooltip>
 
-        <div class="drawer-block">
-            <transition name="slide-x-file-drawer">
-                <div
-                    v-if="showOptions"
-                    class="upload-options-drawer file-button"
-                >
-                    <span> {{ $t('upload-hint') }}</span>
+    <div class="drawer-block">
+      <transition name="slide-x-file-drawer">
+        <div
+          v-if="showOptions"
+          class="upload-options-drawer file-button"
+        >
+          <span> {{ $t('upload-hint') }}</span>
 
-                    <v-file-input
-                        type="file"
-                        hide-details
-                        hide-input
-                        ripple="false"
-                        prepend-icon="mdi-folder-upload"
-                        full-width
-                        @change="loadFile"
-                    >
-                    </v-file-input>
-                </div>
-            </transition>
-            <transition name="slide-y-file-drawer">
-                <div v-if="showOptions" class="file-list">
-                    <div
-                        v-for="(file, i) of fileList"
-                        :key="i"
-                        class="file-list-box"
-                    >
-                        <div class="file-block">
-                            <div class="file-button-area">
-                                <ConfirmButton
-                                    icon="mdi-delete-outline"
-                                    :icon-tooltip="$t('remove-feature-tooltip')"
-                                    @remove="remove(i)"
-                                />
-                                <v-tooltip top>
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <v-btn
-                                            icon
-                                            class="go-to-icon"
-                                            v-bind="attrs"
-                                            v-on="on"
-                                            @click="flyToBound(file.feature)"
-                                        >
-                                            <v-icon size="50">
-                                                {{ 'mdi-navigation-outline' }}
-                                            </v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <span>{{ $t('go-to-tooltip') }}</span>
-                                </v-tooltip>
-                            </div>
-
-                            <span
-                                class="file-name-span"
-                                :title="file.name.length > 25 ? file.name : ''"
-                            >
-                                {{ file.name }}
-                            </span>
-
-                            <div
-                                class="right-icon-class"
-                                @click="openFileOptions(i)"
-                            >
-                                <div
-                                    v-if="showFileOptions !== i"
-                                    class="file-legend"
-                                    :style="{
-                                        '--background-color': `${file.color}30`,
-                                        '--color': file.color,
-                                        '--radius': hasGeometryOnFeature(
-                                            file.feature,
-                                            [
-                                                'Polygon',
-                                                'MultiPolygon',
-                                                'LineString',
-                                                'MultiLineString',
-                                            ]
-                                        )
-                                            ? '2px'
-                                            : '20px',
-                                    }"
-                                ></div>
-                                <v-icon v-else>
-                                    {{ 'mdi-close' }}
-                                </v-icon>
-                            </div>
-                        </div>
-
-                        <v-row style="overflow: hidden; margin: 0">
-                            <transition name="slide-y-file-option-drawer">
-                                <div
-                                    v-if="showFileOptions === i"
-                                    class="file-option"
-                                >
-                                    <div
-                                        class="slide-up-class"
-                                        @click="openFileOptions(i)"
-                                    >
-                                        <v-icon>
-                                            {{ 'mdi-chevron-up' }}
-                                        </v-icon>
-                                    </div>
-                                    <v-color-picker
-                                        dot-size="15"
-                                        :value="file.color"
-                                        hide-inputs
-                                        @update:color="
-                                            (color) => setFileColor(i, color)
-                                        "
-                                    >
-                                    </v-color-picker>
-
-                                    <v-row
-                                        class="black--text text--lighten-2"
-                                        align="center"
-                                    >
-                                        <v-col cols="4">Opacidade</v-col>
-                                        <v-col cols="8">
-                                            <v-slider
-                                                thumb-label
-                                                hide-details
-                                                :value="file.opacity * 100"
-                                                @change="
-                                                    (opacity) =>
-                                                        setFileOpacity(
-                                                            i,
-                                                            opacity / 100
-                                                        )
-                                                "
-                                            />
-                                        </v-col>
-                                    </v-row>
-                                </div>
-                            </transition>
-                        </v-row>
-                    </div>
-                </div>
-            </transition>
+          <v-file-input
+            type="file"
+            hide-details
+            hide-input
+            ripple="false"
+            prepend-icon="mdi-folder-upload"
+            full-width
+            @change="loadFile"
+          />
         </div>
+      </transition>
+      <transition name="slide-y-file-drawer">
+        <div
+          v-if="showOptions"
+          class="file-list"
+        >
+          <div
+            v-for="(file, i) of fileList"
+            :key="i"
+            class="file-list-box"
+          >
+            <div class="file-block">
+              <div class="file-button-area">
+                <ConfirmButton
+                  icon="mdi-delete-outline"
+                  :icon-tooltip="$t('remove-feature-tooltip')"
+                  @remove="remove(i)"
+                />
+                <v-tooltip top>
+                  <template #activator="{ on, attrs }">
+                    <v-btn
+                      icon
+                      class="go-to-icon"
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="flyToBound(file.feature)"
+                    >
+                      <v-icon size="50">
+                        {{ 'mdi-navigation-outline' }}
+                      </v-icon>
+                    </v-btn>
+                  </template>
+                  <span>{{ $t('go-to-tooltip') }}</span>
+                </v-tooltip>
+              </div>
+
+              <span
+                class="file-name-span"
+                :title="file.name.length > 25 ? file.name : ''"
+              >
+                {{ file.name }}
+              </span>
+
+              <div
+                class="right-icon-class"
+                @click="openFileOptions(i)"
+              >
+                <div
+                  v-if="showFileOptions !== i"
+                  class="file-legend"
+                  :style="{
+                    '--background-color': `${file.color}30`,
+                    '--color': file.color,
+                    '--radius': hasGeometryOnFeature(
+                      file.feature,
+                      [
+                        'Polygon',
+                        'MultiPolygon',
+                        'LineString',
+                        'MultiLineString',
+                      ]
+                    )
+                      ? '2px'
+                      : '20px',
+                  }"
+                />
+                <v-icon v-else>
+                  {{ 'mdi-close' }}
+                </v-icon>
+              </div>
+            </div>
+
+            <v-row style="overflow: hidden; margin: 0">
+              <transition name="slide-y-file-option-drawer">
+                <div
+                  v-if="showFileOptions === i"
+                  class="file-option"
+                >
+                  <div
+                    class="slide-up-class"
+                    @click="openFileOptions(i)"
+                  >
+                    <v-icon>
+                      {{ 'mdi-chevron-up' }}
+                    </v-icon>
+                  </div>
+                  <v-color-picker
+                    dot-size="15"
+                    :value="file.color"
+                    hide-inputs
+                    @update:color="
+                      (color) => setFileColor(i, color)
+                    "
+                  />
+
+                  <v-row
+                    class="black--text text--lighten-2"
+                    align="center"
+                  >
+                    <v-col cols="4">
+                      Opacidade
+                    </v-col>
+                    <v-col cols="8">
+                      <v-slider
+                        thumb-label
+                        hide-details
+                        :value="file.opacity * 100"
+                        @change="
+                          (opacity) =>
+                            setFileOpacity(
+                              i,
+                              opacity / 100
+                            )
+                        "
+                      />
+                    </v-col>
+                  </v-row>
+                </div>
+              </transition>
+            </v-row>
+          </div>
+        </div>
+      </transition>
     </div>
+  </div>
 </template>
 
 <i18n>
@@ -196,258 +205,245 @@
 </i18n>
 
 <script>
-import { mapMutations, mapState, mapActions } from 'vuex'
-import shp from 'shpjs'
-import omnivore from 'leaflet-omnivore'
-import JSZip from 'jszip'
-import ConfirmButton from '@/components/confirmButton/ConfirmButton.vue'
+import { mapMutations, mapState, mapActions } from 'vuex';
+import shp from 'shpjs';
+import omnivore from 'leaflet-omnivore';
+import JSZip from 'jszip';
+import ConfirmButton from '@/components/confirmButton/ConfirmButton.vue';
+
 export default {
 
-    components: {
-        ConfirmButton,
+  components: {
+    ConfirmButton,
+  },
+
+  props: {
+    map: {
+      type: Object,
+      default: null,
+    },
+    files: {
+      type: Array,
+      required: true,
+    },
+  },
+
+  data() {
+    return {
+      showOptions: false,
+      showFileOptions: {
+        type: Number,
+        default: null,
+      },
+    };
+  },
+
+  computed: {
+    fileLayer() {
+      return this.$L.geoJSON(this.file);
+    },
+    ...mapState('map', ['fileList']),
+  },
+
+  methods: {
+    setFileColor(fileIndex, color) {
+      this.changeStyle({
+        fileIndex,
+        color: color.hex,
+        opacity: this.fileList[fileIndex].opacity,
+      });
     },
 
-    props: {
-        map: {
-            type: Object,
-            default: null,
-        },
-        files: {
-            type: Array,
-            required: true,
-        },
+    setFileOpacity(fileIndex, opacity) {
+      this.changeStyle({
+        fileIndex,
+        opacity: opacity.toFixed(2),
+        color: this.fileList[fileIndex].color,
+      });
     },
 
-    data() {
-        return {
-            showOptions: false,
-            showFileOptions: {
-                type: Number,
-                default: null,
-            },
-        }
+    openFileOptions(file) {
+      if (file === this.showFileOptions) this.showFileOptions = null;
+      else this.showFileOptions = file;
     },
 
-    computed: {
-        fileLayer() {
-            return this.$L.geoJSON(this.file)
-        },
-        ...mapState('map', ['fileList']),
+    flyToBound(feature) {
+      const bounds = this.$L.geoJSON(feature).getBounds();
+      if (bounds.getNorthEast() && bounds.getSouthWest()) { this.map.flyToBounds(bounds); }
     },
 
-    methods: {
-        setFileColor(fileIndex, color) {
-            this.changeStyle({
-                fileIndex,
-                color: color.hex,
-                opacity: this.fileList[fileIndex].opacity,
-            })
-        },
-
-        setFileOpacity(fileIndex, opacity) {
-            this.changeStyle({
-                fileIndex,
-                opacity: opacity.toFixed(2),
-                color: this.fileList[fileIndex].color,
-            })
-        },
-
-        openFileOptions(file) {
-            if (file === this.showFileOptions) this.showFileOptions = null
-            else this.showFileOptions = file
-        },
-
-        flyToBound(feature) {
-            const bounds = this.$L.geoJSON(feature).getBounds()
-            if (bounds.getNorthEast() && bounds.getSouthWest())
-                this.map.flyToBounds(bounds)
-        },
-
-        hasGeometryOnFeature(feature, geometries) {
-            return (
-                feature.features.some((f) =>
-                    geometries.includes(f.geometry.type)
-                ) || false
-            )
-        },
-
-        remove(index) {
-            this.files.splice(index, 1)
-            this.removeFileFromMap(index)
-        },
-
-        removeAllFeatures() {
-            this.showOptions = !this.showOptions
-        },
-
-        addToMap(data, name) {
-            const isPoint = this.hasGeometryOnFeature(data, [
-                'Point',
-                'MultiPoint',
-            ])
-            const file = {
-                name,
-                feature: data,
-                color: this.getRandomColor(),
-                opacity: isPoint ? 0.8 : 0,
-            }
-            this.files.push(file)
-            this.addFileToMap(file)
-        },
-
-        rgbToHex(color) {
-            const hexColor = color.toString(16)
-            return hexColor.length < 2 ? `0${hexColor}` : hexColor
-        },
-
-        getRandomColor() {
-            const COLORDIFF = 40
-            const value = [
-                Math.random() * 255,
-                Math.random() * 255,
-                Math.random() * 255,
-            ]
-            const red = value[0] > COLORDIFF ? value[0] - COLORDIFF : 0
-            const green = value[1] > COLORDIFF ? value[1] - COLORDIFF : 0
-            const blue = value[2] > COLORDIFF ? value[2] - COLORDIFF : 0
-            return (
-                '#' +
-                this.rgbToHex(parseInt(red)) +
-                this.rgbToHex(parseInt(green)) +
-                this.rgbToHex(parseInt(blue))
-            )
-        },
-
-        fileError(error, message) {
-            this.$emit('loads')
-            this.$store.commit('alert/addAlert', {
-                message: `${message}. ${
-                    error
-                        ? `${this.$i18n.t('file-error-internal')} ${
-                              error.message
-                          }`
-                        : ''
-                }`,
-            })
-        },
-
-        loadGeojsonFile(evt, name) {
-            const json = JSON.parse(evt.result)
-            this.addToMap(json, name)
-        },
-
-        loadShpFile(evt, name) {
-            shp(evt.result)
-                .then((data) => {
-                    this.addToMap(this.$L.geoJSON(data).toGeoJSON(), name)
-                })
-                .catch((error) =>
-                    this.fileError(error, this.$i18n.t('file-error-shapefile'))
-                )
-        },
-
-        loadKmlFile(evt, name) {
-            const geoJson = omnivore.kml.parse(evt.result).toGeoJSON()
-            if (geoJson.features && geoJson.features.length)
-                this.addToMap(geoJson, name)
-            else this.fileError(null, this.$i18n.t('file-error-parsing-kmlz'))
-        },
-
-        loadGpxFile(evt, name) {
-            const geoJson = omnivore.gpx.parse(evt.result).toGeoJSON()
-            if (geoJson.features && geoJson.features.length)
-                this.addToMap(geoJson, name)
-            else this.fileError(null, this.$i18n.t('file-error-parsing-gpx'))
-        },
-
-        loadKmzFile(evt, name) {
-            const zip = new JSZip()
-            zip.loadAsync(evt.result)
-                .then((e) => {
-                    const firstFile = Object.keys(e.files)[0]
-                    return e.file(firstFile).async('string')
-                })
-                .then((data) => {
-                    const geoJson = omnivore.kml.parse(data).toGeoJSON()
-                    if (geoJson.features && geoJson.features.length)
-                        this.addToMap(geoJson, name)
-                    else
-                        this.fileError(
-                            null,
-                            this.$i18n.t('file-error-parsing-kmlz')
-                        )
-                })
-                .catch((error) =>
-                    this.fileError(error, this.$i18n.t('file-error-kmz'))
-                )
-        },
-
-        loadFileMethod(type) {
-            switch (type) {
-                case 'application/zip':
-                case 'application/x-zip-compressed':
-                    return this.loadShpFile
-                case 'application/vnd.google-earth.kmz':
-                case 'kmz':
-                    return this.loadKmzFile
-                case 'application/gpx+xml':
-                case 'gpx':
-                    return this.loadGpxFile
-                case 'application/vnd.google-earth.kml+xml':
-                case 'kml':
-                    return this.loadKmlFile
-                case 'application/geo+json':
-                case 'application/json':
-                case 'geojson':
-                    return this.loadGeojsonFile
-                default:
-                    return null
-            }
-        },
-
-        readFile(file, fileReader, type) {
-            switch (type) {
-                case 'application/zip':
-                case 'application/x-zip-compressed':
-                case 'application/vnd.google-earth.kmz':
-                case 'kmz':
-                    return fileReader.readAsArrayBuffer(file)
-                case 'application/gpx+xml':
-                case 'application/vnd.google-earth.kml+xml':
-                case 'application/geo+json':
-                case 'application/json':
-                case 'geojson':
-                case 'kml':
-                case 'gpx':
-                    return fileReader.readAsText(file)
-                default:
-                    return this.fileError(
-                        null,
-                        this.$i18n.t('file-error-general')
-                    )
-            }
-        },
-
-        loadFile(f) {
-            var type = null
-            this.$emit('loading')
-            const reader = new FileReader()
-            if (!f.type) {
-                type = f.name.substr(f.name.indexOf('.')).replace('.', '')
-            } else {
-                type = f.type
-            }
-            reader.onload = (e) => this.$emit('load', e.target.result)
-            const loadMethod = this.loadFileMethod(type)
-            reader.addEventListener('load', (evt) =>
-                loadMethod(evt.target, f.name)
-            )
-            this.readFile(f, reader, type)
-        },
-        ...mapMutations('map', ['addFileToMap', 'removeFileFromMap']),
-        ...mapActions('map', ['changeStyle']),
+    hasGeometryOnFeature(feature, geometries) {
+      return (
+        feature.features.some((f) => geometries.includes(f.geometry.type)) || false
+      );
     },
-}
+
+    remove(index) {
+      this.files.splice(index, 1);
+      this.removeFileFromMap(index);
+    },
+
+    removeAllFeatures() {
+      this.showOptions = !this.showOptions;
+    },
+
+    addToMap(data, name) {
+      const isPoint = this.hasGeometryOnFeature(data, [
+        'Point',
+        'MultiPoint',
+      ]);
+      const file = {
+        name,
+        feature: data,
+        color: this.getRandomColor(),
+        opacity: isPoint ? 0.8 : 0,
+      };
+      this.files.push(file);
+      this.addFileToMap(file);
+    },
+
+    rgbToHex(color) {
+      const hexColor = color.toString(16);
+      return hexColor.length < 2 ? `0${hexColor}` : hexColor;
+    },
+
+    getRandomColor() {
+      const COLORDIFF = 40;
+      const value = [
+        Math.random() * 255,
+        Math.random() * 255,
+        Math.random() * 255,
+      ];
+      const red = value[0] > COLORDIFF ? value[0] - COLORDIFF : 0;
+      const green = value[1] > COLORDIFF ? value[1] - COLORDIFF : 0;
+      const blue = value[2] > COLORDIFF ? value[2] - COLORDIFF : 0;
+      return (
+        `#${
+          this.rgbToHex(parseInt(red))
+        }${this.rgbToHex(parseInt(green))
+        }${this.rgbToHex(parseInt(blue))}`
+      );
+    },
+
+    fileError(error, message) {
+      this.$emit('loads');
+      this.$store.commit('alert/addAlert', {
+        message: `${message}. ${
+          error
+            ? `${this.$i18n.t('file-error-internal')} ${
+              error.message
+            }`
+            : ''
+        }`,
+      });
+    },
+
+    loadGeojsonFile(evt, name) {
+      const json = JSON.parse(evt.result);
+      this.addToMap(json, name);
+    },
+
+    loadShpFile(evt, name) {
+      shp(evt.result)
+        .then((data) => {
+          this.addToMap(this.$L.geoJSON(data).toGeoJSON(), name);
+        })
+        .catch((error) => this.fileError(error, this.$i18n.t('file-error-shapefile')));
+    },
+
+    loadKmlFile(evt, name) {
+      const geoJson = omnivore.kml.parse(evt.result).toGeoJSON();
+      if (geoJson.features && geoJson.features.length) { this.addToMap(geoJson, name); } else this.fileError(null, this.$i18n.t('file-error-parsing-kmlz'));
+    },
+
+    loadGpxFile(evt, name) {
+      const geoJson = omnivore.gpx.parse(evt.result).toGeoJSON();
+      if (geoJson.features && geoJson.features.length) { this.addToMap(geoJson, name); } else this.fileError(null, this.$i18n.t('file-error-parsing-gpx'));
+    },
+
+    loadKmzFile(evt, name) {
+      const zip = new JSZip();
+      zip.loadAsync(evt.result)
+        .then((e) => {
+          const firstFile = Object.keys(e.files)[0];
+          return e.file(firstFile).async('string');
+        })
+        .then((data) => {
+          const geoJson = omnivore.kml.parse(data).toGeoJSON();
+          if (geoJson.features && geoJson.features.length) { this.addToMap(geoJson, name); } else {
+            this.fileError(
+              null,
+              this.$i18n.t('file-error-parsing-kmlz'),
+            );
+          }
+        })
+        .catch((error) => this.fileError(error, this.$i18n.t('file-error-kmz')));
+    },
+
+    loadFileMethod(type) {
+      switch (type) {
+        case 'application/zip':
+        case 'application/x-zip-compressed':
+          return this.loadShpFile;
+        case 'application/vnd.google-earth.kmz':
+        case 'kmz':
+          return this.loadKmzFile;
+        case 'application/gpx+xml':
+        case 'gpx':
+          return this.loadGpxFile;
+        case 'application/vnd.google-earth.kml+xml':
+        case 'kml':
+          return this.loadKmlFile;
+        case 'application/geo+json':
+        case 'application/json':
+        case 'geojson':
+          return this.loadGeojsonFile;
+        default:
+          return null;
+      }
+    },
+
+    readFile(file, fileReader, type) {
+      switch (type) {
+        case 'application/zip':
+        case 'application/x-zip-compressed':
+        case 'application/vnd.google-earth.kmz':
+        case 'kmz':
+          return fileReader.readAsArrayBuffer(file);
+        case 'application/gpx+xml':
+        case 'application/vnd.google-earth.kml+xml':
+        case 'application/geo+json':
+        case 'application/json':
+        case 'geojson':
+        case 'kml':
+        case 'gpx':
+          return fileReader.readAsText(file);
+        default:
+          return this.fileError(
+            null,
+            this.$i18n.t('file-error-general'),
+          );
+      }
+    },
+
+    loadFile(f) {
+      let type = null;
+      this.$emit('loading');
+      const reader = new FileReader();
+      if (!f.type) {
+        type = f.name.substr(f.name.indexOf('.')).replace('.', '');
+      } else {
+        type = f.type;
+      }
+      reader.onload = (e) => this.$emit('load', e.target.result);
+      const loadMethod = this.loadFileMethod(type);
+      reader.addEventListener('load', (evt) => loadMethod(evt.target, f.name));
+      this.readFile(f, reader, type);
+    },
+    ...mapMutations('map', ['addFileToMap', 'removeFileFromMap']),
+    ...mapActions('map', ['changeStyle']),
+  },
+};
 </script>
 
 <style lang="sass">

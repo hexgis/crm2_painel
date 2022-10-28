@@ -1,122 +1,142 @@
 <template>
-    <v-col :cols="columns" :class="`chart-col-${columns}`">
-        <v-card class="custom-card" :class="height">
-            <div v-if="height != 'full' && value" class="chart-data">
-                <div class="val" :class="isAlert">
-                    {{ value }}
-                    <span v-if="detail">( {{ detail }} )</span>
-                </div>
-                <div class="lab">{{ label }}</div>
-            </div>
+  <v-col
+    :cols="columns"
+    :class="`chart-col-${columns}`"
+  >
+    <v-card
+      class="custom-card"
+      :class="height"
+    >
+      <div
+        v-if="height != 'full' && value"
+        class="chart-data"
+      >
+        <div
+          class="val"
+          :class="isAlert"
+        >
+          {{ value }}
+          <span v-if="detail">( {{ detail }} )</span>
+        </div>
+        <div class="lab">
+          {{ label }}
+        </div>
+      </div>
 
-            <div v-if="height === 'full' && valueMulti" class="chart-data">
-                <div class="lab-multi">{{ label }}</div>
+      <div
+        v-if="height === 'full' && valueMulti"
+        class="chart-data"
+      >
+        <div class="lab-multi">
+          {{ label }}
+        </div>
 
-                <div
-                    v-for="(val, key, index) in valueMulti"
-                    :key="`${val}-${key}`"
-                    class="vertical-data"
-                >
-                    <div class="val-multi">
-                        <div>{{ key }}</div>
-                        <span> {{ val }} </span>
-                    </div>
-                    <div
-                        v-if="Object.keys(valueMulti).length - 1 != index"
-                        class="custom-spacer custom-spacer-hor"
-                    />
-                </div>
+        <div
+          v-for="(val, key, index) in valueMulti"
+          :key="`${val}-${key}`"
+          class="vertical-data"
+        >
+          <div class="val-multi">
+            <div>{{ key }}</div>
+            <span> {{ val }} </span>
+          </div>
+          <div
+            v-if="Object.keys(valueMulti).length - 1 != index"
+            class="custom-spacer custom-spacer-hor"
+          />
+        </div>
+      </div>
+
+      <div
+        v-if="height != 'full' && valueMulti"
+        class="chart-data chart-row"
+      >
+        <div class="lab-multi-row">
+          {{ label }}
+        </div>
+
+        <div class="horizontal-data">
+          <template v-for="(val, key, index) in valueMulti">
+            <div :key="`${val}-${key}`">
+              <div class="val-multi-row">
+                <span>{{ val }}</span>
+                <div>{{ key }}</div>
+              </div>
             </div>
 
             <div
-                v-if="height != 'full' && valueMulti"
-                class="chart-data chart-row"
-            >
-                <div class="lab-multi-row">{{ label }}</div>
-
-                <div class="horizontal-data">
-                    <template v-for="(val, key, index) in valueMulti">
-                        <div :key="`${val}-${key}`">
-                            <div class="val-multi-row">
-                                <span>{{ val }}</span>
-                                <div>{{ key }}</div>
-                            </div>
-                        </div>
-
-                        <div
-                            v-if="Object.keys(valueMulti).length - 1 != index"
-                            :key="index"
-                            class="custom-spacer custom-spacer-ver"
-                        />
-                    </template>
-                </div>
-            </div>
-        </v-card>
-    </v-col>
+              v-if="Object.keys(valueMulti).length - 1 != index"
+              :key="index"
+              class="custom-spacer custom-spacer-ver"
+            />
+          </template>
+        </div>
+      </div>
+    </v-card>
+  </v-col>
 </template>
 
 <script>
 export default {
-    props: {
-        width: {
-            type: String,
-            default: 'shortest',
-        },
-        height: {
-            type: String,
-            default: 'short',
-        },
-        value: {
-            type: String,
-            default: '',
-        },
-        detail: {
-            type: String,
-            default: '',
-        },
-        label: {
-            type: String,
-            default: '',
-        },
-        valueMulti: {
-            type: Object,
-            default: () => {},
-        },
-        alert: {
-            type: Boolean,
-        },
-        cols: {
-            type: String,
-            default: null,
-        },
+  props: {
+    width: {
+      type: String,
+      default: 'shortest',
+    },
+    height: {
+      type: String,
+      default: 'short',
+    },
+    value: {
+      type: String,
+      default: '',
+    },
+    detail: {
+      type: String,
+      default: '',
+    },
+    label: {
+      type: String,
+      default: '',
+    },
+    valueMulti: {
+      type: Object,
+      default: () => {},
+    },
+    alert: {
+      type: Boolean,
+    },
+    cols: {
+      type: String,
+      default: null,
+    },
+  },
+
+  computed: {
+    isAlert() {
+      return this.alert ? 'alert' : '';
     },
 
-    computed: {
-        isAlert() {
-            return this.alert ? 'alert' : ''
-        },
-
-        columns() {
-            if (this.cols) return this.cols
-            else
-                switch (this.width) {
-                    default:
-                    case 'shortest':
-                        return 3
-                    case 'short':
-                        return 4
-                    case 'medium':
-                        return 5
-                    case 'long':
-                        return 7
-                    case 'longer':
-                        return 9
-                    case 'full':
-                        return 12
-                }
-        },
+    columns() {
+      if (this.cols) return this.cols;
+      switch (this.width) {
+        default:
+        case 'shortest':
+          return 3;
+        case 'short':
+          return 4;
+        case 'medium':
+          return 5;
+        case 'long':
+          return 7;
+        case 'longer':
+          return 9;
+        case 'full':
+          return 12;
+      }
     },
-}
+  },
+};
 </script>
 
 <style scoped lang="sass">

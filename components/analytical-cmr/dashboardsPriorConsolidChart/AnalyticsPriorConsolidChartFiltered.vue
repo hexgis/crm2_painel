@@ -1,48 +1,50 @@
 <template>
-    <div v-if="!isLoadingData">
-        <AnalyticsPCRatesChart
-            :totol-poligons="total"
-            :poligons-data="priorityDataPC"
-            :area-km="area_km"
-            :area-ha="area_ha"
-            :unit-measurement="unitMeasurement"
-        />
-        <v-row>
-            <AnalyticsPCBarChart />
-            <AnalyticsPCBarChart />
-        </v-row>
-    </div>
+  <div v-if="!isLoadingData">
+    <AnalyticsPCRatesChart
+      :totol-poligons="total"
+      :poligons-data="priorityDataPC"
+      :area-km="area_km"
+      :area-ha="area_ha"
+      :unit-measurement="unitMeasurement"
+    />
+    <v-row>
+      <AnalyticsPCBarChart />
+      <AnalyticsPCBarChart />
+    </v-row>
+  </div>
 </template>
 
 <script>
-//Descrição:
-//Dashboard Filtrado, contendo a aplicação dos filtros iseridos em Funai
-import AnalyticsPCRatesChart from '@/components/analytics/analyticsPriorConsolid/AnalyticsPCRatesChart'
+// Descrição:
+// Dashboard Filtrado, contendo a aplicação dos filtros iseridos em Funai
+import AnalyticsPCRatesChart from '@/components/analytics/analyticsPriorConsolid/AnalyticsPCRatesChart';
 
 export default {
-    name: 'AnalyticsPriorConsolidChartFiltered',
+  name: 'AnalyticsPriorConsolidChartFiltered',
 
-    data() {
-        return {}
-    },
+  components: {
+    AnalyticsPCRatesChart,
+    AnalyticsPCLineChart,
+    AnalyticsPCBarChart,
+  },
 
-    props: {},
+  props: {},
 
-    watch: {},
+  data() {
+    return {};
+  },
 
-    components: {
-        AnalyticsPCRatesChart,
-        AnalyticsPCLineChart,
-        AnalyticsPCBarChart,
-    },
+  watch: {},
 
-    computed: {
-        ...mapState('analytics-prior-consolid', ['isLoadingData']),
-    },
-    data: {},
+  computed: {
+    ...mapState('analytics-prior-consolid', ['isLoadingData']),
+  },
+  data() {
+    return {};
+  },
 
-    methods: {},
-}
+  methods: {},
+};
 </script>
 
 <style scoped></style>
