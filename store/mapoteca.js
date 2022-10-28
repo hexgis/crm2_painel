@@ -1,213 +1,181 @@
 export const state = () => ({
-    features: null,
-    showFeatures: false,
-    tableDialogAlert: false,
-    isLoadingFeatures: false,
-    showDialogMapoteca: false,
-    unitMeasurement: [],
-    visualizationStage: 'map',
-    filterOptions: {
-        regionalFilters: [],
-        tiFilters: [],
-    },
-
-    filters: {
-        startDate: null,
-        endDate: null,
-    },
-})
+  features: null,
+  showFeatures: false,
+  tableDialogAlert: false,
+  isLoadingFeatures: false,
+  isLoadingMapotecainstitution: false,
+  showDialogMapoteca: false,
+  unitMeasurement: [],
+  visualizationStage: 'map',
+  filterOptions: {
+    regionalFilters: [],
+    tiFilters: [],
+    actions: [],
+  },
+  filters: {
+    startDate: null,
+    endDate: null,
+  },
+});
 
 export const getters = {
-    featuresLoaded(state) {
-        return (
-            !!state.features &&
-            state.features.features &&
-            state.features.features.length > 0
-        )
-    },
-}
+  featuresLoaded(state) {
+    return (
+      !!state.features
+            && state.features.features
+            && state.features.features.length > 0
+    );
+  },
+};
 
 export const mutations = {
-    setFilters(state, filters) {
-        state.filters = {
-            ...state.filters,
-            ...filters,
-        }
-    },
+  setFilters(state, filters) {
+    state.filters = {
+      ...state.filters,
+      ...filters,
+    };
+  },
 
-    setShowDialogMapoteca(state, payload) {
-        state.showDialogMapoteca = payload
-    },
+  setShowDialogMapoteca(state, payload) {
+    state.showDialogMapoteca = payload;
+  },
 
-    setParams(state, params) {
-        state.params = params
-    },
+  setActions(state, actions) {
+    state.actions = actions;
+  },
 
-    setFeatures(state, features) {
-        state.features = features
-    },
+  setParams(state, params) {
+    state.params = params;
+  },
 
-    settableDialogAlert(state, tableDialogAlert) {
-        state.tableDialogAlert = tableDialogAlert
-    },
+  setFeatures(state, features) {
+    state.features = features;
+  },
 
-    setLoadingFeatures(state, payload) {
-        state.isLoadingFeatures = payload
-    },
+  settableDialogAlert(state, tableDialogAlert) {
+    state.tableDialogAlert = tableDialogAlert;
+  },
 
-    clearFeatures(state) {
-        state.features = null
-    },
+  setLoadingFeatures(state, payload) {
+    state.isLoadingFeatures = payload;
+  },
 
-    setShowFeatures(state, showFeatures) {
-        state.showFeatures = showFeatures
-    },
+  setMapotecaActions(state, payload) {
+    state.filterOptions.actions = payload;
+  },
 
-    setTable(state, table) {
-        state.table = table
-    },
+  setisLoadingMapotecaInstitution(state, payload) {
+    state.isLoadingMapotecainstitution = payload;
+  },
 
-    setFilterOptions(state, data) {
-        state.filterOptions = data
-    },
+  setFilterOptionsTi(state, data) {
+    state.filterOptions.tiFilters = data;
+  },
 
-    setUnitMeasurement(state, unitMeasurement) {
-        state.unitMeasurement = unitMeasurement
-    },
+  clearFeatures(state) {
+    state.features = null;
+  },
 
-    setVisualizationStage(state, visualizationStage) {
-        state.visualizationStage = visualizationStage
-    },
-}
+  setShowFeatures(state, showFeatures) {
+    state.showFeatures = showFeatures;
+  },
+
+  setTable(state, table) {
+    state.table = table;
+  },
+
+  setFilterOptions(state, data) {
+    state.filterOptions.regionalFilters = data.regionalFilters;
+  },
+
+  setUnitMeasurement(state, unitMeasurement) {
+    state.unitMeasurement = unitMeasurement;
+  },
+
+  setVisualizationStage(state, visualizationStage) {
+    state.visualizationStage = visualizationStage;
+  },
+};
 
 export const actions = {
-    async getFeatures({ state, commit, rootGetters }) {
-        commit('setLoadingGeoJson', true)
-        commit('setLoadingFeatures', true)
-        commit('clearFeatures')
+  async getFeatures({ commit }, data) {
+    commit('setLoadingFeatures', true);
+    const params = { ...data };
+    params.id_acao = params.id_acao.toString();
+    if (params.cr) params.cr = params.cr.toString();
+    if (params.ti) params.ti = params.ti.toString();
+    try {
+      const response = await this.$api.$get('/documental/list/', {
+        params,
+      });
+      commit('setFeatures', response);
+    } catch (exception) {
+      commit(
+        'alert/addAlert',
+        {
+          message: this.$i18n.t('default-error', {
+            action: this.$i18n.t('retrieve'),
+            resource: this.$i18n.t('monitoring'),
+          }),
+        },
+        { root: true },
+      );
+    } finally {
+      commit('setLoadingFeatures', false);
+    }
+  },
 
-        const params = {
-            start_date: state.filters.startDate,
-            end_date: state.filters.endDate,
-        }
+  async getMapotecaActions({ commit }, actionType) {
+    commit('setisLoadingMapotecaInstitution', true);
 
-        if (state.filters.ti && state.filters.ti.length)
-            params.co_funai = state.filters.ti.toString()
+    try {
+      const documentActions = await this.$api.$get(
+        `documental/list-actions/?action_type=${actionType}`,
+      );
 
-        if (state.filters.cr && state.filters.cr.length)
-            params.co_cr = state.filters.cr.toString()
+      if (documentActions) commit('setMapotecaActions', documentActions);
+    } catch (exception) {
+      commit(
+        'alert/addAlert',
+        {
+          message: this.$i18n.t('default-error', {
+            action: this.$i18n.t('retrieve'),
+            resource: this.$i18n.t('monitoring'),
+          }),
+        },
+        { root: true },
+      );
+    } finally {
+      commit('setisLoadingMapotecaInstitution', false);
+    }
+  },
 
-        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
-        try {
-            const response = await this.$api.$get('', {
-                params,
-            })
+  async getFilterOptions({ commit }) {
+    const regionalCoordinates = await this.$api.$get('funai/cr/');
+    const data = {};
+    if (regionalCoordinates) {
+      data.regionalFilters = regionalCoordinates.sort(
+        (a, b) => a.ds_cr > b.ds_cr,
+      );
+    }
+    commit('setFilterOptions', data);
+  },
 
-            if (!response.features || !response.features.length) {
-                commit('setShowFeatures', false)
-                commit(
-                    'alert/addAlert',
-                    { message: this.$i18n.t('no-result') },
-                    { root: true }
-                )
-            } else {
-                commit('setShowFeatures', true)
-                commit('setFeatures', response)
+  async getTiOptions({ commit }, cr) {
+    const params = {
+      co_cr: cr.toString(),
+    };
+    const tis = await this.$api.$get('funai/ti/', { params });
+    if (tis) {
+      commit(
+        'setFilterOptionsTi',
+        tis.sort((a, b) => a.no_ti > b.no_ti),
+      );
+    }
+  },
 
-                const total = await this.$api.$get('', {
-                    params,
-                })
-                if (total) commit('setTotal', total)
-            }
-        } catch (exception) {
-            commit(
-                'alert/addAlert',
-                {
-                    message: this.$i18n.t('default-error', {
-                        action: this.$i18n.t('retrieve'),
-                        resource: this.$i18n.t('monitoring'),
-                    }),
-                },
-                { root: true }
-            )
-        } finally {
-            commit('setLoadingFeatures', false)
-            commit('setParams', params)
-            commit('setLoadingGeoJson', false)
-        }
-    },
-
-    async getFilterOptions({ commit }) {
-        const regional_coordinators = await this.$api.$get('funai/cr/')
-
-        const data = {}
-
-        if (regional_coordinators) {
-            data.regionalFilters = regional_coordinators.sort(
-                (a, b) => a.ds_cr > b.ds_cr
-            )
-        }
-
-        commit('setFilterOptions', data)
-    },
-
-    async getTiOptions({ commit, state }, cr) {
-        const params = {
-            co_cr: cr.toString(),
-        }
-
-        const tis = await this.$api.$get('funai/ti/', { params })
-
-        if (tis)
-            commit('setFilterOptions', {
-                ...state.filterOptions,
-                tiFilters: tis.sort((a, b) => a.no_ti > b.no_ti),
-            })
-    },
-
-    async getDataTable({ commit, state, rootGetters }) {
-        commit('setLoadingFeatures', true)
-        commit('setLoadingGeoJson', true)
-        commit('setLoadingTable', true)
-        const params = {
-            start_date: state.filters.startDate,
-            end_date: state.filters.endDate,
-        }
-
-        if (state.filters.ti && state.filters.ti.length)
-            params.co_funai = state.filters.ti.toString()
-
-        if (state.filters.cr && state.filters.cr.length)
-            params.co_cr = state.filters.cr.toString()
-
-        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
-
-        try {
-            const table = await this.$api.$get('', {
-                params,
-            })
-
-            if (table) commit('setTable', table)
-
-            const total = await this.$api.$get('', {
-                params,
-            })
-            if (total) commit('setTotal', total)
-        } catch (error) {
-            commit(
-                'alert/addAlert',
-                {
-                    message: this.$i18n.t('default-error', {
-                        action: this.$i18n.t('retrieve'),
-                        resource: this.$i18n.t('monitoring'),
-                    }),
-                },
-                { root: true }
-            )
-        } finally {
-            commit('setLoadingFeatures', false)
-            commit('setLoadingGeoJson', false)
-            commit('setLoadingTable', false)
-        }
-    },
-}
+  async getActionsUploadMapoteca({ commit }) {
+    const response = await this.$api.$get('documental/list-actions/');
+    commit('setActions', response);
+  },
+};

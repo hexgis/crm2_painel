@@ -4,12 +4,12 @@
       <h4 class="subtitle-2 text-uppercase font-weight-regular">
         {{ $t('title') }}
       </h4>
-      <v-switch
-        v-if="features"
-        v-model="showFeaturesMonitoring"
-        class="mt-n1 ml-5"
-        hide-details
-      />
+      <!-- <v-switch
+                v-if="features"
+                v-model="showFeaturesMonitoring"
+                class="mt-n1 ml-5"
+                hide-details
+            /> -->
     </div>
     <v-card-text>
       <p>
@@ -81,7 +81,9 @@ import MapotecaDialog from '@/components/mapoteca/MapotecaDialog';
 
 export default {
   name: 'PageMapoteca',
+
   components: { MapotecaDialog },
+
   data() {
     return {
       items: [
@@ -91,6 +93,7 @@ export default {
       ],
     };
   },
+
   computed: {
     ...mapState('mapoteca', [
       'showDialogMapoteca',
@@ -98,6 +101,7 @@ export default {
       'features',
     ]),
   },
+
   methods: {
     showDialog(value) {
       this.setShowDialogMapoteca(value);

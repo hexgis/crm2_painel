@@ -5,6 +5,7 @@
                 v-model="showDialogMapoteca"
                 transition="dialog-bottom-transition"
                 max-width="95vw"
+                persistent
             >
                 <v-card style="width: 100vw">
                     <v-toolbar class="background__toolbar" dark color="primary">
@@ -23,7 +24,11 @@
                             >
                                 <v-col class="cols">
                                     <v-select
-                                        :label="$t('title-label')"
+                                        v-model="filters.id_acao"
+                                        :label="$t('institution-label')"
+                                        :items="filterOptions.actions"
+                                        item-value="id_action"
+                                        item-text="no_action"
                                         hide-details
                                         multiple
                                         required
@@ -65,6 +70,7 @@
                                         block
                                         color="accent"
                                         :loading="isLoadingFeatures"
+                                        @click="search"
                                     >
                                         {{ $t('search-label') }}
                                     </v-btn>
@@ -87,17 +93,55 @@
                         </v-container>
                         <v-container class="pa-0" fluid>
                             <v-skeleton-loader
-                                v-if="isLoadingTable"
+                                v-if="isLoadingFeatures"
                                 type="table-row-divider@12"
                             ></v-skeleton-loader>
                             <v-data-table
-                                v-if="!isLoadingTable"
+                                v-if="!isLoadingFeatures"
                                 :headers="headers"
                                 :items="values"
                                 fixed-header
                                 height="52vh"
                                 style="width: 100vw"
-                            ></v-data-table>
+                            >
+                                <template v-slot:item.actions="{ item }">
+                                    <v-tooltip bottom>
+                                        <template
+                                            v-slot:activator="{ on, attrs }"
+                                        >
+                                            <v-icon
+                                                v-bind="attrs"
+                                                v-on="on"
+                                                dense
+                                                class="mr-2"
+                                                @click="downloadDocument(item)"
+                                            >
+                                                mdi-download
+                                            </v-icon>
+                                        </template>
+                                        <span>{{
+                                            $t('download-label-tooltip')
+                                        }}</span>
+                                    </v-tooltip>
+                                    <v-tooltip bottom>
+                                        <template
+                                            v-slot:activator="{ on, attrs }"
+                                        >
+                                            <v-icon
+                                                v-bind="attrs"
+                                                v-on="on"
+                                                dense
+                                                @click="showDocument(item)"
+                                            >
+                                                mdi-eye
+                                            </v-icon>
+                                        </template>
+                                        <span>{{
+                                            $t('view-label-tooltip')
+                                        }}</span>
+                                    </v-tooltip>
+                                </template>
+                            </v-data-table>
                         </v-container>
                     </v-card-actions>
                 </v-card>
@@ -120,8 +164,10 @@
             "dialogName": " MAP SEARCH",
             "result-label": "Results",
             "filter-label": "Filter",
-            "title-label": "Title"
-            
+            "institution-label": "Institution",
+            "download-label-tooltip": "Download",
+            "view-label-tooltip": "Preview"
+
         },
         "pt-br": {
             "search-label": "Buscar",
@@ -135,7 +181,9 @@
             "dialogName": "PESQUISA DE MAPAS",
             "result-label": "Resultados",
             "filter-label": "Filtrar",
-            "title-label": "Título"
+            "institution-label": "Instituição",
+            "download-label-tooltip": "Download",
+            "view-label-tooltip": "Visualizar"
         }
     }
 </i18n>
@@ -159,19 +207,21 @@ export default {
                     .format('YYYY-MM-DD'),
                 endDate: this.$moment().format('YYYY-MM-DD'),
                 cr: [],
-                ti: null,
-                ac: [],
+                ti: [],
+                id_acao: [],
             },
             isLoadingTotal: false,
             legendData: legend,
             headers: [
-                { text: 'Código Funai', value: 'co_funai' },
                 { text: 'Terra Indígena', value: 'no_ti' },
-                { text: 'Coordenação Regional', value: 'ds_cr' },
-                { text: 'Prioridade', value: 'prioridade' },
-                { text: 'Classe', value: 'no_estagio' },
-                { text: 'Data da Imagem', value: 'dt_imagem' },
-                { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
+                { text: 'Título', value: 'no_document' },
+                { text: 'Inserido por', value: 'usercmr_id.first_name' },
+                { text: 'Instituição', value: 'action_id.no_action' },
+                { text: 'Descrição', value: 'no_description' },
+                { text: 'Formato', value: 'map_dimension' },
+                { text: 'Extensão do arquivo', value: 'no_ti' },
+                { text: 'Data', value: 'dt_registration' },
+                { text: 'Ação', value: 'actions' },
             ],
             values: [],
         }
@@ -180,46 +230,65 @@ export default {
         'filters.cr'(value) {
             this.populateTiOptions(value)
         },
+        features(data) {
+            this.values = data
+        },
     },
     computed: {
         ...mapState('mapoteca', [
+            'features',
             'isLoadingFeatures',
+            'isLoadingMapotecainstitution',
             'filterOptions',
-            'showFeatures',
-            'params',
             'showDialogMapoteca',
-            'isLoadingTable',
         ]),
     },
 
     mounted() {
+        this.getMapotecaActions('MAPOTECA')
         this.getFilterOptions()
     },
 
     methods: {
         populateTiOptions(cr) {
             if (cr) this.$store.dispatch('mapoteca/getTiOptions', cr)
-            else this.filters.ti = null
+            else this.filters.ti = []
         },
 
         closeDialog(value) {
             this.setShowDialogMapoteca(value)
         },
 
+        downloadDocument(item) {
+            let link = document.createElement('a')
+            link.href = item.url_doc
+            link.download = item.no_document
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+        },
+
+        showDocument(item) {
+            if (item.url_doc) {
+                window.open(item.url_doc, '_blank')
+            }
+        },
+
         search() {
-            this.setLoadingTable(true)
-            this.values = this.desserts
-            setInterval(() => {
-                this.setLoadingTable(false)
-            }, 3000)
+            if (this.filters.id_acao.length) {
+                this.getFeatures({ ...this.filters })
+            }
         },
 
         ...mapMutations('mapoteca', [
-            'setFilters',
             'setShowDialogMapoteca',
             'setLoadingTable',
         ]),
-        ...mapActions('mapoteca', ['getFilterOptions']),
+        ...mapActions('mapoteca', [
+            'getFeatures',
+            'getFilterOptions',
+            'getMapotecaActions',
+        ]),
     },
 }
 </script>
