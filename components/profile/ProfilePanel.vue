@@ -1,46 +1,65 @@
 <template>
-    <div class="bottom-buttons">
-        <v-menu left offset-x>
-            <template #activator="{ on: onMenu }">
-                <v-btn icon large class="mx-auto" v-on="onMenu">
-                    <v-tooltip left>
-                        <template #activator="{ on: onTooltip }">
-                            <v-icon v-on="onTooltip">
-                                mdi-account-circle
-                            </v-icon>
-                        </template>
-                        <span>{{ $t('profile-tooltip') }}</span>
-                    </v-tooltip>
-                </v-btn>
+  <div class="bottom-buttons">
+    <v-menu
+      left
+      offset-x
+    >
+      <template #activator="{ on: onMenu }">
+        <v-btn
+          icon
+          large
+          class="mx-auto"
+          v-on="onMenu"
+        >
+          <v-tooltip left>
+            <template #activator="{ on: onTooltip }">
+              <v-icon v-on="onTooltip">
+                mdi-account-circle
+              </v-icon>
             </template>
-            <v-card>
-                <v-card-title v-if="hasFirstOrLastName" class="username">
-                    <v-icon dark> mdi-account</v-icon>
-                    <span v-if="!!user.first_name" class="pl-2">
-                        {{ user.first_name }}
-                    </span>
-                    <span v-if="!!user.last_name" class="pl-2">
-                        {{ user.last_name }}
-                    </span>
-                </v-card-title>
-                <v-list-item @click="openSettings()">
-                    <v-icon> mdi-cog </v-icon>
-                    <span class="pl-2">
-                        {{ $t('preferences-button') }}
-                    </span>
-                </v-list-item>
-                <v-list-item @click="logout()">
-                    <v-icon> mdi-logout </v-icon>
-                    <span class="pl-2"> {{ $t('logout-button') }} </span>
-                </v-list-item>
-            </v-card>
-        </v-menu>
+            <span>{{ $t('profile-tooltip') }}</span>
+          </v-tooltip>
+        </v-btn>
+      </template>
+      <v-card>
+        <v-card-title
+          v-if="hasFirstOrLastName"
+          class="username"
+        >
+          <v-icon dark>
+            mdi-account
+          </v-icon>
+          <span
+            v-if="!!user.first_name"
+            class="pl-2"
+          >
+            {{ user.first_name }}
+          </span>
+          <span
+            v-if="!!user.last_name"
+            class="pl-2"
+          >
+            {{ user.last_name }}
+          </span>
+        </v-card-title>
+        <v-list-item @click="openSettings()">
+          <v-icon> mdi-cog </v-icon>
+          <span class="pl-2">
+            {{ $t('preferences-button') }}
+          </span>
+        </v-list-item>
+        <v-list-item @click="logout()">
+          <v-icon> mdi-logout </v-icon>
+          <span class="pl-2"> {{ $t('logout-button') }} </span>
+        </v-list-item>
+      </v-card>
+    </v-menu>
 
-        <ProfilePanelSettings
-            v-if="settingsOpened"
-            @onDialogClose="settingsOpened = false"
-        />
-    </div>
+    <ProfilePanelSettings
+      v-if="settingsOpened"
+      @onDialogClose="settingsOpened = false"
+    />
+  </div>
 </template>
 
 <i18n>
@@ -59,59 +78,59 @@
 </i18n>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex';
 
-import ProfilePanelSettings from '@/components/profile/ProfilePanelSettings'
+import ProfilePanelSettings from '@/components/profile/ProfilePanelSettings';
 
 export default {
-    name: 'ProfileButtons',
+  name: 'ProfileButtons',
 
-    components: {
-        ProfilePanelSettings,
+  components: {
+    ProfilePanelSettings,
+  },
+
+  model: {
+    prop: 'settings',
+    event: 'update',
+  },
+
+  props: {
+    settings: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  data: () => ({
+    settingsOpened: false,
+    hasAnalytics: process.env.ANALYTICS === 'true',
+  }),
+
+  watch: {
+    settings(value) {
+      this.settingsOpened = value;
     },
 
-    model: {
-        prop: 'settings',
-        event: 'update',
+    settingsOpened(value) {
+      this.$emit('update', value);
+    },
+  },
+
+  methods: {
+    openSettings() {
+      this.settingsOpened = true;
     },
 
-    props: {
-        settings: {
-            type: Boolean,
-            default: false,
-        },
+    ...mapActions('auth', ['logout']),
+  },
+
+  computed: {
+    hasFirstOrLastName() {
+      return this.user && (this.user.first_name || this.user.last_name);
     },
-
-    data: () => ({
-        settingsOpened: false,
-        hasAnalytics: process.env.ANALYTICS === 'true',
-    }),
-
-    watch: {
-        settings(value) {
-            this.settingsOpened = value
-        },
-
-        settingsOpened(value) {
-            this.$emit('update', value)
-        },
-    },
-
-    methods: {
-        openSettings() {
-            this.settingsOpened = true
-        },
-
-        ...mapActions('auth', ['logout']),
-    },
-
-    computed: {
-        hasFirstOrLastName() {
-            return this.user && (this.user.first_name || this.user.last_name)
-        },
-        ...mapState('userProfile', ['user']),
-    },
-}
+    ...mapState('userProfile', ['user']),
+  },
+};
 </script>
 
 <style lang="sass">

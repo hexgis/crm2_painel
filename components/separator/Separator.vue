@@ -1,20 +1,20 @@
 <template>
-    <v-row justify="center">
-        <div
-            :class="vertical ? 'separator-vertical' : 'separator-horizontal'"
-        />
-    </v-row>
+  <v-row justify="center">
+    <div
+      :class="vertical ? 'separator-vertical' : 'separator-horizontal'"
+    />
+  </v-row>
 </template>
 
 <script>
 export default {
-    props: {
-        vertical: {
-            type: Boolean,
-            default: false,
-        },
+  props: {
+    vertical: {
+      type: Boolean,
+      default: false,
     },
-}
+  },
+};
 </script>
 
 <style scoped lang="sass">

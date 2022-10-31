@@ -1,5 +1,5 @@
 <script>
-import { Bar } from "vue-chartjs";
+import { Bar } from 'vue-chartjs';
 
 export default {
   extends: Bar,
@@ -7,29 +7,29 @@ export default {
     this.renderChart(
       {
         labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-          "August",
-          "September",
-          "October",
-          "November",
-          "December"
+          'January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+          'July',
+          'August',
+          'September',
+          'October',
+          'November',
+          'December',
         ],
         datasets: [
           {
-            label: "Polígono: Prioridade Alta",
-            backgroundColor: "#f87979",
-            data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11]
-          }
-        ]
+            label: 'Polígono: Prioridade Alta',
+            backgroundColor: '#f87979',
+            data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11],
+          },
+        ],
       },
-      { responsive: true, maintainAspectRatio: false }
+      { responsive: true, maintainAspectRatio: false },
     );
-  }
+  },
 };
 </script>

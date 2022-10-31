@@ -1,134 +1,150 @@
 <template>
-    <div class="d-flex mt-3">
-        <v-tooltip right :disabled="zooming">
-            <template #activator="{ on }">
-                <v-btn
-                    fab
-                    ripple
-                    height="36"
-                    width="36"
-                    class="button-drawer"
-                    @click="toggleDrawer()"
-                    v-on="on"
-                >
-                    <transition name="slide-x">
-                        <v-icon v-if="!zooming" class="zoomin-icon"
-                            >mdi-navigation-outline</v-icon
-                        >
-                        <v-icon v-if="zooming" class="back-icon"
-                            >mdi-arrow-left</v-icon
-                        >
-                    </transition>
-                </v-btn>
-            </template>
-            <span> {{ $t('zoom-to') }} </span>
-        </v-tooltip>
-        <div class="coords-block">
-            <transition name="slide-x">
-                <div v-if="zooming" class="drawer">
-                    <template v-if="coordType == $t('decimal-label')">
-                        <v-text-field
-                            v-model="lat"
-                            placeholder="Latitude"
-                            class="decimal-field"
-                            :class="latError"
-                            suffix="°"
-                            solo
-                            flat
-                        />
-                        <span class="separator"></span>
-                        <v-text-field
-                            v-if="coordType == $t('decimal-label')"
-                            v-model="lng"
-                            class="decimal-field"
-                            :class="lngError"
-                            placeholder="Longitude"
-                            suffix="°"
-                            solo
-                            flat
-                        />
-                        <span class="separator"></span>
-                    </template>
-                    <template v-if="coordType == $t('dms-label')">
-                        <v-text-field
-                            v-model="degN"
-                            :placeholder="$t('degree-label')"
-                            class="dms-field"
-                            :class="degNError"
-                            suffix="°"
-                            solo
-                            hide-details
-                            flat
-                        />
-                        <v-text-field
-                            v-model="minN"
-                            :placeholder="$t('minute-label')"
-                            class="dms-field"
-                            :class="minNError"
-                            suffix="'"
-                            solo
-                            hide-details
-                            flat
-                        />
-                        <v-text-field
-                            v-model="secN"
-                            :placeholder="$t('second-label')"
-                            class="dms-field"
-                            :class="secNError"
-                            suffix='"'
-                            solo
-                            hide-details
-                            flat
-                        />
-                        <span class="separator"></span>
-                        <v-text-field
-                            v-model="degW"
-                            :placeholder="$t('degree-label')"
-                            class="dms-field"
-                            :class="degWError"
-                            suffix="°"
-                            solo
-                            hide-details
-                            flat
-                        />
-                        <v-text-field
-                            v-model="minW"
-                            :placeholder="$t('minute-label')"
-                            class="dms-field"
-                            :class="minWError"
-                            suffix="'"
-                            solo
-                            hide-details
-                            flat
-                        />
-                        <v-text-field
-                            v-model="secW"
-                            :placeholder="$t('second-label')"
-                            class="dms-field"
-                            :class="secWError"
-                            suffix='"'
-                            solo
-                            hide-details
-                            flat
-                        />
-                        <span class="separator"></span>
-                    </template>
-                    <v-select
-                        v-model="coordType"
-                        solo
-                        hide-details
-                        flat
-                        :items="[$t('dms-label'), $t('decimal-label')]"
-                    ></v-select>
-                    <v-btn height="36" width="36" @click="zooms()">
-                        <v-icon class="zoomin-icon"
-                            >mdi-navigation-outline</v-icon
-                        >
-                    </v-btn>
-                </div>
-            </transition>
+  <div class="d-flex mt-3">
+    <v-tooltip
+      right
+      :disabled="zooming"
+    >
+      <template #activator="{ on }">
+        <v-btn
+          fab
+          ripple
+          height="36"
+          width="36"
+          class="button-drawer"
+          @click="toggleDrawer()"
+          v-on="on"
+        >
+          <transition name="slide-x">
+            <v-icon
+              v-if="!zooming"
+              class="zoomin-icon"
+            >
+              mdi-navigation-outline
+            </v-icon>
+            <v-icon
+              v-if="zooming"
+              class="back-icon"
+            >
+              mdi-arrow-left
+            </v-icon>
+          </transition>
+        </v-btn>
+      </template>
+      <span> {{ $t('zoom-to') }} </span>
+    </v-tooltip>
+    <div class="coords-block">
+      <transition name="slide-x">
+        <div
+          v-if="zooming"
+          class="drawer"
+        >
+          <template v-if="coordType == $t('decimal-label')">
+            <v-text-field
+              v-model="lat"
+              placeholder="Latitude"
+              class="decimal-field"
+              :class="latError"
+              suffix="°"
+              solo
+              flat
+            />
+            <span class="separator" />
+            <v-text-field
+              v-if="coordType == $t('decimal-label')"
+              v-model="lng"
+              class="decimal-field"
+              :class="lngError"
+              placeholder="Longitude"
+              suffix="°"
+              solo
+              flat
+            />
+            <span class="separator" />
+          </template>
+          <template v-if="coordType == $t('dms-label')">
+            <v-text-field
+              v-model="degN"
+              :placeholder="$t('degree-label')"
+              class="dms-field"
+              :class="degNError"
+              suffix="°"
+              solo
+              hide-details
+              flat
+            />
+            <v-text-field
+              v-model="minN"
+              :placeholder="$t('minute-label')"
+              class="dms-field"
+              :class="minNError"
+              suffix="'"
+              solo
+              hide-details
+              flat
+            />
+            <v-text-field
+              v-model="secN"
+              :placeholder="$t('second-label')"
+              class="dms-field"
+              :class="secNError"
+              suffix="&quot;"
+              solo
+              hide-details
+              flat
+            />
+            <span class="separator" />
+            <v-text-field
+              v-model="degW"
+              :placeholder="$t('degree-label')"
+              class="dms-field"
+              :class="degWError"
+              suffix="°"
+              solo
+              hide-details
+              flat
+            />
+            <v-text-field
+              v-model="minW"
+              :placeholder="$t('minute-label')"
+              class="dms-field"
+              :class="minWError"
+              suffix="'"
+              solo
+              hide-details
+              flat
+            />
+            <v-text-field
+              v-model="secW"
+              :placeholder="$t('second-label')"
+              class="dms-field"
+              :class="secWError"
+              suffix="&quot;"
+              solo
+              hide-details
+              flat
+            />
+            <span class="separator" />
+          </template>
+          <v-select
+            v-model="coordType"
+            solo
+            hide-details
+            flat
+            :items="[$t('dms-label'), $t('decimal-label')]"
+          />
+          <v-btn
+            height="36"
+            width="36"
+            @click="zooms()"
+          >
+            <v-icon class="zoomin-icon">
+              mdi-navigation-outline
+            </v-icon>
+          </v-btn>
         </div>
+      </transition>
     </div>
+  </div>
 </template>
 
 <i18n>
@@ -162,124 +178,120 @@
 
 <script>
 export default {
-    props: {
-        map: {
-            type: Object,
-            default: null,
-        },
+  props: {
+    map: {
+      type: Object,
+      default: null,
+    },
+  },
+
+  data() {
+    return {
+      zooming: false,
+      coordType: this.$i18n.t('decimal-label'),
+      center: null,
+      lat: '',
+      lng: '',
+      degN: '',
+      minN: '',
+      secN: '',
+      degW: '',
+      minW: '',
+      secW: '',
+      hasError: true,
+    };
+  },
+
+  computed: {
+    latError() {
+      return this.addErrorOnField(this.lat, 180, -180);
+    },
+    lngError() {
+      return this.addErrorOnField(this.lng, 90, -90);
+    },
+    degNError() {
+      return this.addErrorOnField(this.degN, 180, -180);
+    },
+    minNError() {
+      return this.addErrorOnField(this.minN, 59, 0);
+    },
+    secNError() {
+      return this.addErrorOnField(this.secN, 59, 0);
+    },
+    degWError() {
+      return this.addErrorOnField(this.degW, 90, -90);
+    },
+    minWError() {
+      return this.addErrorOnField(this.minW, 59, 0);
+    },
+    secWError() {
+      return this.addErrorOnField(this.secW, 59, 0);
+    },
+  },
+
+  methods: {
+    toggleDrawer() {
+      this.zooming = !this.zooming;
     },
 
-    data() {
-        return {
-            zooming: false,
-            coordType: this.$i18n.t('decimal-label'),
-            center: null,
-            lat: '',
-            lng: '',
-            degN: '',
-            minN: '',
-            secN: '',
-            degW: '',
-            minW: '',
-            secW: '',
-            hasError: true,
-        }
+    addErrorOnField(fieldValue, maxValue, minValue) {
+      const formattedValue = parseFloat(fieldValue);
+
+      if (!fieldValue || formattedValue.toString() !== fieldValue) { return 'error-field'; }
+      if (!!maxValue && formattedValue > maxValue) { return 'error-field'; }
+      if (!!minValue && formattedValue < minValue) { return 'error-field'; }
+
+      return '';
     },
 
-    computed: {
-        latError() {
-            return this.addErrorOnField(this.lat, 180, -180)
-        },
-        lngError() {
-            return this.addErrorOnField(this.lng, 90, -90)
-        },
-        degNError() {
-            return this.addErrorOnField(this.degN, 180, -180)
-        },
-        minNError() {
-            return this.addErrorOnField(this.minN, 59, 0)
-        },
-        secNError() {
-            return this.addErrorOnField(this.secN, 59, 0)
-        },
-        degWError() {
-            return this.addErrorOnField(this.degW, 90, -90)
-        },
-        minWError() {
-            return this.addErrorOnField(this.minW, 59, 0)
-        },
-        secWError() {
-            return this.addErrorOnField(this.secW, 59, 0)
-        },
+    calculteDecimal(deg, min, sec) {
+      return (
+        parseFloat(deg) + parseFloat(min / 60) + parseFloat(sec / 3600)
+      );
     },
 
-    methods: {
-        toggleDrawer() {
-            this.zooming = !this.zooming
-        },
+    zooms() {
+      let latitude;
+      let longitude;
 
-        addErrorOnField(fieldValue, maxValue, minValue) {
-            const formattedValue = parseFloat(fieldValue)
+      if (this.coordType === this.$i18n.t('dms-label')) {
+        if (
+          this.degNError
+                    || this.degWError
+                    || this.minNError
+                    || this.minWError
+                    || this.secNError
+                    || this.secWError
+        ) { return; }
 
-            if (!fieldValue || formattedValue.toString() !== fieldValue)
-                return 'error-field'
-            else if (!!maxValue && formattedValue > maxValue)
-                return 'error-field'
-            else if (!!minValue && formattedValue < minValue)
-                return 'error-field'
+        latitude = this.calculteDecimal(this.degN, this.minN, this.secN);
+        longitude = this.calculteDecimal(
+          this.degW,
+          this.minW,
+          this.secW,
+        );
+      } else if (this.coordType === this.$i18n.t('decimal-label')) {
+        if (this.latError || this.lngError) return;
 
-            return ''
-        },
+        latitude = parseFloat(this.lat);
+        longitude = parseFloat(this.lng);
+      } else return;
 
-        calculteDecimal(deg, min, sec) {
-            return (
-                parseFloat(deg) + parseFloat(min / 60) + parseFloat(sec / 3600)
-            )
-        },
+      this.map.flyTo([latitude, longitude], 12);
 
-        zooms() {
-            let latitude
-            let longitude
+      if (this.center) this.center.remove();
 
-            if (this.coordType === this.$i18n.t('dms-label')) {
-                if (
-                    this.degNError ||
-                    this.degWError ||
-                    this.minNError ||
-                    this.minWError ||
-                    this.secNError ||
-                    this.secWError
-                )
-                    return
+      this.center = this.$L.circleMarker([latitude, longitude], {
+        color: '#2c3649',
+        fillOpacity: '0.8',
+      });
 
-                latitude = this.calculteDecimal(this.degN, this.minN, this.secN)
-                longitude = this.calculteDecimal(
-                    this.degW,
-                    this.minW,
-                    this.secW
-                )
-            } else if (this.coordType === this.$i18n.t('decimal-label')) {
-                if (this.latError || this.lngError) return
+      this.center.addTo(this.map);
 
-                latitude = parseFloat(this.lat)
-                longitude = parseFloat(this.lng)
-            } else return
-
-            this.map.flyTo([latitude, longitude], 12)
-
-            if (this.center) this.center.remove()
-
-            this.center = this.$L.circleMarker([latitude, longitude], {
-                color: '#2c3649',
-                fillOpacity: '0.8',
-            })
-
-            this.center.addTo(this.map)
-
-            this.toggleDrawer()
-        },
+      this.toggleDrawer();
     },
-}
+  },
+};
 </script>
 
 <style lang="sass">
