@@ -345,7 +345,7 @@ export const actions = {
         }
 
         try {
-            const response = await this.$api.$get('catalog/images/', {
+            const response = await this.$api.$get('catalog/', {
                 params,
             })
             commit('setScenes', { scenes: response.features, page: state.page })
