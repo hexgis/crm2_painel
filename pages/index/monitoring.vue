@@ -120,7 +120,7 @@
           <v-btn
             icon
             color="accent"
-            @click="changeVisualizationStage('chart')"
+            @click="dialog = true"
           >
             <v-icon large>
               mdi-chart-box
@@ -159,7 +159,15 @@
             />
           </div>
         </v-row>
-
+        <div
+          v-if="dialog"
+          class="d-none"
+        >
+          <AnalyticalDialog
+            :value="dialog"
+            :close-dialog="closeAnalyticalDialog"
+          />
+        </div>
         <v-row class="py-2">
           <v-divider />
         </v-row>
@@ -199,6 +207,7 @@ import MonitoringFilter from '@/components/monitoring/MonitoringFilter';
 import ShowDialog from '@/components/show-dialog/ShowDialog';
 import SupportLayersGroupAntropismo from '@/components/support/SupportLayersGroupAntropismo';
 import TableDialog from '@/components/table-dialog/TableDialog.vue';
+import AnalyticalDialog from '../../components/analytical-dialog/AnalyticalDialog.vue';
 
 export default {
   components: {
@@ -206,6 +215,7 @@ export default {
     ShowDialog,
     SupportLayersGroupAntropismo,
     TableDialog,
+    AnalyticalDialog,
   },
 
   data() {
@@ -213,6 +223,7 @@ export default {
       tab: null,
       items: ['MapStage', 'AnalytcalStage'],
       text: 'Texto de teste.',
+      timer: '',
       headers: [
         { text: 'Código Funai', value: 'co_funai' },
         { text: 'Terra Indígena', value: 'no_ti' },
@@ -223,6 +234,7 @@ export default {
         { text: 'Latitude', value: 'nu_latitude' },
         { text: 'Longitude', value: 'nu_longitude' },
       ],
+      dialog: false,
       checkNewFilters: false,
     };
   },
@@ -301,6 +313,10 @@ export default {
 
     changeVisualizationStage(tab) {
       this.setVisualizationStage(tab);
+    },
+
+    closeAnalyticalDialog(value) {
+      this.dialog = value;
     },
 
     showTableDialog(value) {
