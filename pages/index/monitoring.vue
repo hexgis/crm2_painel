@@ -291,6 +291,7 @@ export default {
 
     ...mapState('monitoring', [
       'showFeaturesMonitoring',
+      'analyticsMonitoring',
       'features',
       'total',
       'visualizationStage',
@@ -307,6 +308,11 @@ export default {
       if (this.tableDialogMonitoring) {
         this.checkNewFilters = true;
         this.getDataTableMonitoring();
+        this.getDataAnalyticsMonitoring();
+      }
+      if (this.analyticsMonitoring) {
+        this.checkNewFilters = true;
+        this.getDataAnalyticsMonitoring();
       }
       if (!this.tableDialogMonitoring) this.getFeatures();
     },
@@ -326,6 +332,23 @@ export default {
         this.getDataTableMonitoring();
       }
     },
+    closeTableAnalytics(value) {
+      if (!this.checkNewFilters) {
+        this.setanalyticsMonitoringDialog(value);
+        this.setshowTableDialog(value);
+      } else {
+        this.setanalyticsMonitoringDialog(value);
+        this.setshowTableDialog(value);
+        this.checkNewFilters = false;
+      }
+    },
+
+    showTableDialogAnalytics(value) {
+      if (this.features) {
+        this.setshowTableDialog(value);
+        this.getDataAnalyticsMonitoring();
+      }
+    },
 
     closeTable(value) {
       if (!this.checkNewFilters) {
@@ -343,6 +366,7 @@ export default {
       'getFeatures',
       'getDataTableMonitoring',
       'downloadTableMonitoring',
+      'getDataAnalyticsMonitoring',
     ]),
 
     ...mapMutations('priority', ['setVisualizationStage']),
