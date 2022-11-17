@@ -29,113 +29,56 @@
             <v-tab v-ripple="{ center: true }">
               <span> Tabela </span>
             </v-tab>
-            <v-tab>Gráfico</v-tab>
             <v-tab-item>
-              <v-card>
-                <v-container grid-list-xs>
-                  <div class="mb-2">
-                    <v-chip
-                      :outlined="chipSelected === 'ti'"
-                      @click="chipSelected = 'ti'"
-                    >
-                      Terra Indigena
-                    </v-chip>
-                    <v-chip
-                      :outlined="chipSelected === 'ano'"
-                      @click="chipSelected = 'ano'"
-                    >
-                      Ano
-                    </v-chip>
-                    <v-chip
-                      :outlined="chipSelected === 'dia'"
-                      @click="chipSelected = 'dia'"
-                    >
-                      Dia
-                    </v-chip>
-                    <v-chip
-                      :outlined="chipSelected === 'tiano'"
-                      @click="chipSelected = 'tiano'"
-                    >
-                      Terra Indigena e Ano
-                    </v-chip>
-                  </div>
-                  <v-divider class="mb-2" />
-                  <v-data-table
-                    :headers="headers"
-                    :items="analyticsMonitoring"
-                    :items-per-page="5"
-                    class="elevation-1"
-                  />
-                </v-container>
-              </v-card>
-            </v-tab-item>
-            <v-tab-item>
-              <v-card>
-                <v-container
-                  grid-list-xs
-                  fluid
-                >
-                  <div class="mt-2">
-                    <v-chip
-                      v-model="filters.byFunai"
-                      :outlined="chipSelected === 'ti'"
-                      @click="search()"
-                    >
-                      Terra Indigena
-                    </v-chip>
-                    <v-chip
-                      v-model="filters.byYear"
-                      :outlined="chipSelected === 'ano'"
-                      @click="search()"
-                    >
-                      Ano
-                    </v-chip>
-                    <v-chip
-                      v-model="filters.byDay"
-                      :outlined="chipSelected === 'dia'"
-                      @click="search()"
-                    >
-                      Dia
-                    </v-chip>
-                    <v-chip
-                      v-model="filters.byFunaiYear"
-                      :outlined="chipSelected === 'tiano'"
-                      @click="search()"
-                    >
-                      Terra Indigena e Ano
-                    </v-chip>
-                  </div>
-                  <v-divider class="mt-2" />
-                </v-container>
-                <v-container
-                  grid-list-xs
-                  fluid
-                >
-                  <div class="d-flex justify-space-around">
-                    <div
-                      style="width: 300px"
-                      class="mr-8"
-                    >
-                      <PieChart />
+              <v-container grid-list-xs>
+                <v-row>
+                  <v-col cols="11">
+                    <div class="mb-2">
+                      <v-chip
+                        @click="groupByFunai()"
+                      >
+                        Terra Indigena
+                      </v-chip>
+                      <v-chip
+                        @click="groupByYear()"
+                      >
+                        Ano
+                      </v-chip>
+                      <v-chip
+                        @click="groupByDay()"
+                      >
+                        Dia
+                      </v-chip>
+                      <v-chip
+                        @click="groupByFunaiYear()"
+                      >
+                        Terra Indigena e Ano
+                      </v-chip>
                     </div>
-                    <div style="width: 600px">
-                      <AreaChart />
-                    </div>
-                  </div>
-                  <v-divider class="mt-4" />
-                  <div class="d-flex justify-space-around">
-                    <div
-                      style="width: 500px"
-                      class="mr-8"
+                  </v-col>
+                  <v-spacer />
+
+                  <v-col>
+                    <!-- <v-btn
+                      color="accent"
+                      :loading="isLoadingGeoJson"
+                      fab
+                      small
+                      @click="downloadTableMonitoringAnalytics()"
                     >
-                      <LineChart />
-                    </div>
-                    <div style="width: 500px">
-                      <RadarChart />
-                    </div>
-                  </div>
-                </v-container>
-              </v-card>
+                      <v-icon>mdi-download</v-icon>
+                    </v-btn> -->
+                  </v-col>
+                </v-row>
+                <v-divider class="my-2" />
+                <v-data-table
+                  :headers="headers"
+                  :items="analyticsMonitoring"
+                  :items-per-page="5"
+                  class="elevation-1"
+                  multi-sort
+                />
+              </v-container>
             </v-tab-item>
           </v-tabs>
         </v-container>
@@ -197,10 +140,7 @@ export default {
         { text: 'Data', value: 'dt_t_um' },
       ],
       filters: {
-        byFunai: 'monitoring_by_co_funai',
-        byYear: 'monitoring_by_year',
-        byDay: 'monitoring_by_day',
-        byFunaiYear: 'monitoring_by_co_funai_and_year',
+        grouping: '',
       },
       checkNewFilters: false,
 
@@ -214,13 +154,10 @@ export default {
       'features',
     ]),
 
-    ...mapActions('monitoring', [
-      'getDataAnalyticsMonitoring',
-    ]),
-
     ...mapMutations('monitoring', [
       'setanalyticsMonitoringDialog',
       'setFilters',
+      'isLoadingGeoJson',
     ]),
 
     ...mapMutations('tableDialog', ['setshowTableDialog']),
@@ -232,11 +169,28 @@ export default {
   },
 
   methods: {
-    search() {
-      this.setFilters(this.filters);
-      this.getDataAnalyticsMonitoring();
+    groupByFunaiYear() {
+      this.getDataAnalyticsMonitoringByFunaiYear();
     },
+    groupByDay() {
+      this.getDataAnalyticsMonitoringByDay();
+    },
+    groupByFunai() {
+      this.getDataAnalyticsMonitoringByFunai();
+    },
+    groupByYear() {
+      this.getDataAnalyticsMonitoringByYear();
+    },
+
+    ...mapActions('monitoring', [
+      'getDataAnalyticsMonitoringByFunaiYear',
+      'getDataAnalyticsMonitoringByDay',
+      'getDataAnalyticsMonitoringByFunai',
+      'getDataAnalyticsMonitoringByYear',
+      'downloadTableMonitoringAnalytics',
+    ]),
   },
+
 };
 </script>
 

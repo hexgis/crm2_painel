@@ -15,7 +15,10 @@ export const state = () => ({
   filters: {
     startDate: null,
     endDate: null,
-    grouping: 'monitoring_by_day',
+    grouping_by_year: 'monitoring_by_year',
+    grouping_by_funai: 'monitoring_by_co_funai',
+    grouping_by_co_funai_year: 'monitoring_by_co_funai_and_year',
+    grouping_by_day: 'monitoring_by_day',
     csv: 'csv',
     json: 'json',
   },
@@ -275,7 +278,7 @@ export const actions = {
     }
   },
 
-  async getDataAnalyticsMonitoring({ commit, state, rootGetters }) {
+  async getDataAnalyticsMonitoringByYear({ commit, state, rootGetters }) {
     commit('setLoadingGeoJson', true);
     commit('setLoadingFeatures', true);
     commit('setLoadingTableMonitoring', true);
@@ -283,7 +286,7 @@ export const actions = {
     const params = {
       start_date: state.filters.startDate,
       end_date: state.filters.endDate,
-      grouping: state.filters.grouping,
+      grouping: state.filters.grouping_by_year,
     };
 
     if (state.filters.ti && state.filters.ti.length) {
@@ -328,6 +331,266 @@ export const actions = {
       commit('setLoadingFeatures', false);
       commit('setLoadingGeoJson', false);
       commit('setLoadingTableMonitoring', false);
+    }
+  },
+
+  async getDataAnalyticsMonitoringByFunai({ commit, state, rootGetters }) {
+    commit('setLoadingGeoJson', true);
+    commit('setLoadingFeatures', true);
+    commit('setLoadingTableMonitoring', true);
+
+    const params = {
+      start_date: state.filters.startDate,
+      end_date: state.filters.endDate,
+      grouping: state.filters.grouping_by_funai,
+    };
+
+    if (state.filters.ti && state.filters.ti.length) {
+      const arrayTI = [];
+      Object.values(state.filters.ti).forEach((item) => {
+        arrayTI.push(item.co_funai);
+      });
+      params.co_funai = arrayTI.toString();
+    }
+
+    if (state.filters.cr && state.filters.cr.length) {
+      const arrayCR = [];
+      Object.values(state.filters.cr).forEach((item) => {
+        arrayCR.push(item.co_cr);
+      });
+      params.co_cr = arrayCR.toString();
+    }
+
+    if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox'];
+
+    try {
+      const analyticsMonitoring = await this.$api.$get(
+        'monitoring/consolidated/table-stats/',
+        {
+          params,
+        },
+      );
+
+      if (analyticsMonitoring) commit('setAnalytics', analyticsMonitoring);
+    } catch (error) {
+      commit(
+        'alert/addAlert',
+        {
+          message: this.$i18n.t('default-error', {
+            action: this.$i18n.t('retrieve'),
+            resource: this.$i18n.t('monitoring'),
+          }),
+        },
+        { root: true },
+      );
+    } finally {
+      commit('setLoadingFeatures', false);
+      commit('setLoadingGeoJson', false);
+      commit('setLoadingTableMonitoring', false);
+    }
+  },
+
+  async getDataAnalyticsMonitoringByFunaiYear({ commit, state, rootGetters }) {
+    commit('setLoadingGeoJson', true);
+    commit('setLoadingFeatures', true);
+    commit('setLoadingTableMonitoring', true);
+
+    const params = {
+      start_date: state.filters.startDate,
+      end_date: state.filters.endDate,
+      grouping: state.filters.grouping_by_co_funai_year
+      ,
+    };
+
+    if (state.filters.ti && state.filters.ti.length) {
+      const arrayTI = [];
+      Object.values(state.filters.ti).forEach((item) => {
+        arrayTI.push(item.co_funai);
+      });
+      params.co_funai = arrayTI.toString();
+    }
+
+    if (state.filters.cr && state.filters.cr.length) {
+      const arrayCR = [];
+      Object.values(state.filters.cr).forEach((item) => {
+        arrayCR.push(item.co_cr);
+      });
+      params.co_cr = arrayCR.toString();
+    }
+
+    if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox'];
+
+    try {
+      const analyticsMonitoring = await this.$api.$get(
+        'monitoring/consolidated/table-stats/',
+        {
+          params,
+        },
+      );
+
+      if (analyticsMonitoring) commit('setAnalytics', analyticsMonitoring);
+    } catch (error) {
+      commit(
+        'alert/addAlert',
+        {
+          message: this.$i18n.t('default-error', {
+            action: this.$i18n.t('retrieve'),
+            resource: this.$i18n.t('monitoring'),
+          }),
+        },
+        { root: true },
+      );
+    } finally {
+      commit('setLoadingFeatures', false);
+      commit('setLoadingGeoJson', false);
+      commit('setLoadingTableMonitoring', false);
+    }
+  },
+
+  async getDataAnalyticsMonitoringByFunai({ commit, state, rootGetters }) {
+    commit('setLoadingGeoJson', true);
+    commit('setLoadingFeatures', true);
+    commit('setLoadingTableMonitoring', true);
+
+    const params = {
+      start_date: state.filters.startDate,
+      end_date: state.filters.endDate,
+      grouping: state.filters.grouping_by_funai,
+    };
+
+    if (state.filters.ti && state.filters.ti.length) {
+      const arrayTI = [];
+      Object.values(state.filters.ti).forEach((item) => {
+        arrayTI.push(item.co_funai);
+      });
+      params.co_funai = arrayTI.toString();
+    }
+
+    if (state.filters.cr && state.filters.cr.length) {
+      const arrayCR = [];
+      Object.values(state.filters.cr).forEach((item) => {
+        arrayCR.push(item.co_cr);
+      });
+      params.co_cr = arrayCR.toString();
+    }
+
+    if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox'];
+
+    try {
+      const analyticsMonitoring = await this.$api.$get(
+        'monitoring/consolidated/table-stats/',
+        {
+          params,
+        },
+      );
+
+      if (analyticsMonitoring) commit('setAnalytics', analyticsMonitoring);
+    } catch (error) {
+      commit(
+        'alert/addAlert',
+        {
+          message: this.$i18n.t('default-error', {
+            action: this.$i18n.t('retrieve'),
+            resource: this.$i18n.t('monitoring'),
+          }),
+        },
+        { root: true },
+      );
+    } finally {
+      commit('setLoadingFeatures', false);
+      commit('setLoadingGeoJson', false);
+      commit('setLoadingTableMonitoring', false);
+    }
+  },
+
+  async getDataAnalyticsMonitoringByDay({ commit, state, rootGetters }) {
+    commit('setLoadingGeoJson', true);
+    commit('setLoadingFeatures', true);
+    commit('setLoadingTableMonitoring', true);
+
+    const params = {
+      start_date: state.filters.startDate,
+      end_date: state.filters.endDate,
+      grouping: state.filters.grouping_by_day,
+    };
+
+    if (state.filters.ti && state.filters.ti.length) {
+      const arrayTI = [];
+      Object.values(state.filters.ti).forEach((item) => {
+        arrayTI.push(item.co_funai);
+      });
+      params.co_funai = arrayTI.toString();
+    }
+
+    if (state.filters.cr && state.filters.cr.length) {
+      const arrayCR = [];
+      Object.values(state.filters.cr).forEach((item) => {
+        arrayCR.push(item.co_cr);
+      });
+      params.co_cr = arrayCR.toString();
+    }
+
+    if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox'];
+
+    try {
+      const analyticsMonitoring = await this.$api.$get(
+        'monitoring/consolidated/table-stats/',
+        {
+          params,
+        },
+      );
+
+      if (analyticsMonitoring) commit('setAnalytics', analyticsMonitoring);
+    } catch (error) {
+      commit(
+        'alert/addAlert',
+        {
+          message: this.$i18n.t('default-error', {
+            action: this.$i18n.t('retrieve'),
+            resource: this.$i18n.t('monitoring'),
+          }),
+        },
+        { root: true },
+      );
+    } finally {
+      commit('setLoadingFeatures', false);
+      commit('setLoadingGeoJson', false);
+      commit('setLoadingTableMonitoring', false);
+    }
+  },
+
+  async downloadTableMonitoringAnalytics({ commit, state, rootGetters }) {
+    commit('setLoadingCSV', true);
+
+    function saveData(data, fileName, type) {
+      let elementBtn; let blob; let
+        url;
+
+      elementBtn = document.createElement('a');
+      elementBtn.style = 'display: none';
+      document.body.appendChild(elementBtn);
+
+      if (type !== 'text/csv') {
+        data = JSON.stringify(data);
+      }
+
+      blob = new Blob([data], { type });
+      url = window.URL.createObjectURL(blob);
+
+      elementBtn.href = url;
+      elementBtn.download = fileName;
+      elementBtn.click();
+      window.URL.revokeObjectURL(url);
+    }
+
+    try {
+      saveData(
+        state.analyticsMonitoring.data,
+        'poligono_monitoramento_estatisticas.csv',
+        'text/csv',
+      );
+    } finally {
+      commit('setLoadingCSV', false);
     }
   },
 

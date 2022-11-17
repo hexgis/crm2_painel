@@ -308,11 +308,11 @@ export default {
       if (this.tableDialogMonitoring) {
         this.checkNewFilters = true;
         this.getDataTableMonitoring();
-        this.getDataAnalyticsMonitoring();
+        this.getDataAnalyticsMonitoringByDay();
       }
       if (this.analyticsMonitoring) {
         this.checkNewFilters = true;
-        this.getDataAnalyticsMonitoring();
+        this.getDataAnalyticsMonitoringByDay();
       }
       if (!this.tableDialogMonitoring) this.getFeatures();
     },
@@ -346,7 +346,7 @@ export default {
     showTableDialogAnalytics(value) {
       if (this.features) {
         this.setshowTableDialog(value);
-        this.getDataAnalyticsMonitoring();
+        this.getDataAnalyticsMonitoringByDay();
       }
     },
 
@@ -366,7 +366,7 @@ export default {
       'getFeatures',
       'getDataTableMonitoring',
       'downloadTableMonitoring',
-      'getDataAnalyticsMonitoring',
+      'getDataAnalyticsMonitoringByDay',
     ]),
 
     ...mapMutations('priority', ['setVisualizationStage']),
