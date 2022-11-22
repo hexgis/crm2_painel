@@ -29,109 +29,56 @@
             <v-tab v-ripple="{ center: true }">
               <span> Tabela </span>
             </v-tab>
-            <v-tab>Gráfico</v-tab>
             <v-tab-item>
-              <v-card>
-                <v-container grid-list-xs>
-                  <div class="mb-2">
-                    <v-chip
-                      :outlined="chipSelected === 'ti'"
-                      @click="chipSelected = 'ti'"
-                    >
-                      Terra Indigena
-                    </v-chip>
-                    <v-chip
-                      :outlined="chipSelected === 'ano'"
-                      @click="chipSelected = 'ano'"
-                    >
-                      Ano
-                    </v-chip>
-                    <v-chip
-                      :outlined="chipSelected === 'dia'"
-                      @click="chipSelected = 'dia'"
-                    >
-                      Dia
-                    </v-chip>
-                    <v-chip
-                      :outlined="chipSelected === 'tiano'"
-                      @click="chipSelected = 'tiano'"
-                    >
-                      Terra Indigena e Ano
-                    </v-chip>
-                  </div>
-                  <v-divider class="mb-2" />
-                  <v-data-table
-                    :headers="headers"
-                    :items="desserts"
-                    :items-per-page="5"
-                    class="elevation-1"
-                  />
-                </v-container>
-              </v-card>
-            </v-tab-item>
-            <v-tab-item>
-              <v-card>
-                <v-container
-                  grid-list-xs
-                  fluid
-                >
-                  <div class="mt-2">
-                    <v-chip
-                      :outlined="chipSelected === 'ti'"
-                      @click="chipSelected = 'ti'"
-                    >
-                      Terra Indigena
-                    </v-chip>
-                    <v-chip
-                      :outlined="chipSelected === 'ano'"
-                      @click="chipSelected = 'ano'"
-                    >
-                      Ano
-                    </v-chip>
-                    <v-chip
-                      :outlined="chipSelected === 'dia'"
-                      @click="chipSelected = 'dia'"
-                    >
-                      Dia
-                    </v-chip>
-                    <v-chip
-                      :outlined="chipSelected === 'tiano'"
-                      @click="chipSelected = 'tiano'"
-                    >
-                      Terra Indigena e Ano
-                    </v-chip>
-                  </div>
-                  <v-divider class="mt-2" />
-                </v-container>
-                <v-container
-                  grid-list-xs
-                  fluid
-                >
-                  <div class="d-flex justify-space-around">
-                    <div
-                      style="width: 300px"
-                      class="mr-8"
-                    >
-                      <PieChart />
+              <v-container grid-list-xs>
+                <v-row>
+                  <v-col cols="11">
+                    <div class="mb-2">
+                      <v-chip
+                        @click="groupByFunai()"
+                      >
+                        Terra Indigena
+                      </v-chip>
+                      <v-chip
+                        @click="groupByYear()"
+                      >
+                        Ano
+                      </v-chip>
+                      <v-chip
+                        @click="groupByDay()"
+                      >
+                        Dia
+                      </v-chip>
+                      <v-chip
+                        @click="groupByFunaiYear()"
+                      >
+                        Terra Indigena e Ano
+                      </v-chip>
                     </div>
-                    <div style="width: 600px">
-                      <AreaChart />
-                    </div>
-                  </div>
-                  <v-divider class="mt-4" />
-                  <div class="d-flex justify-space-around">
-                    <div
-                      style="width: 500px"
-                      class="mr-8"
+                  </v-col>
+                  <v-spacer />
+
+                  <v-col>
+                    <!-- <v-btn
+                      color="accent"
+                      :loading="isLoadingGeoJson"
+                      fab
+                      small
+                      @click="downloadTableMonitoringAnalytics()"
                     >
-                      <LineChart />
-                    </div>
-                    <div style="width: 500px">
-                      <RadarChart />
-                    </div>
-                  </div>
-                </v-container>
-              </v-card>
+                      <v-icon>mdi-download</v-icon>
+                    </v-btn> -->
+                  </v-col>
+                </v-row>
+                <v-divider class="my-2" />
+                <v-data-table
+                  :headers="headers"
+                  :items="analyticsMonitoring"
+                  :items-per-page="5"
+                  class="elevation-1"
+                  multi-sort
+                />
+              </v-container>
             </v-tab-item>
           </v-tabs>
         </v-container>
@@ -141,6 +88,7 @@
 </template>
 
 <script>
+import { mapActions, mapMutations, mapState } from 'vuex';
 import AnalyticsFilter from '@/components/analytics/AnalyticsFilter';
 import AreaChart from '@/components/graphics/AreaChart.vue';
 import PieChart from '@/components/graphics/PieChart.vue';
@@ -180,106 +128,69 @@ export default {
       dialog: false,
       chipSelected: false,
       headers: [
-        {
-          text: 'Dessert (100g serving)',
-          align: 'start',
-          sortable: false,
-          value: 'name',
-        },
-        { text: 'Calories', value: 'calories' },
-        { text: 'Fat (g)', value: 'fat' },
-        { text: 'Carbs (g)', value: 'carbs' },
-        { text: 'Protein (g)', value: 'protein' },
-        { text: 'Iron (%)', value: 'iron' },
+        { text: 'Código Funai', value: 'co_funai' },
+        { text: 'Nome TI', value: 'no_ti' },
+        { text: 'Ano', value: 'ano' },
+        { text: 'CR Área Ha', value: 'cr_nu_area_ha' },
+        { text: 'DG Área Ha', value: 'dg_nu_area_ha' },
+        { text: 'DR Área Ha', value: 'dr_nu_area_ha' },
+        { text: 'FF Área Ha', value: 'ff_nu_area_ha' },
+        { text: 'Total Área Ha', value: 'total_nu_area_ha' },
+        { text: 'TI Área Ha', value: 'ti_nu_area_ha' },
+        { text: 'Data', value: 'dt_t_um' },
       ],
-      desserts: [
-        {
-          name: 'Frozen Yogurt',
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          iron: '1%',
-        },
-        {
-          name: 'Ice cream sandwich',
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-          iron: '1%',
-        },
-        {
-          name: 'Eclair',
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-          iron: '7%',
-        },
-        {
-          name: 'Cupcake',
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-          iron: '8%',
-        },
-        {
-          name: 'Gingerbread',
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-          iron: '16%',
-        },
-        {
-          name: 'Jelly bean',
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-          iron: '0%',
-        },
-        {
-          name: 'Lollipop',
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-          iron: '2%',
-        },
-        {
-          name: 'Honeycomb',
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-          iron: '45%',
-        },
-        {
-          name: 'Donut',
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-          iron: '22%',
-        },
-        {
-          name: 'KitKat',
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-          iron: '6%',
-        },
-      ],
+      filters: {
+        grouping: '',
+      },
+      checkNewFilters: false,
+
     };
+  },
+
+  computed: {
+
+    ...mapState('monitoring', [
+      'analyticsMonitoring',
+      'features',
+    ]),
+
+    ...mapMutations('monitoring', [
+      'setanalyticsMonitoringDialog',
+      'setFilters',
+      'isLoadingGeoJson',
+    ]),
+
+    ...mapMutations('tableDialog', ['setshowTableDialog']),
+
   },
 
   mounted() {
     this.dialog = this.value;
   },
+
+  methods: {
+    groupByFunaiYear() {
+      this.getDataAnalyticsMonitoringByFunaiYear();
+    },
+    groupByDay() {
+      this.getDataAnalyticsMonitoringByDay();
+    },
+    groupByFunai() {
+      this.getDataAnalyticsMonitoringByFunai();
+    },
+    groupByYear() {
+      this.getDataAnalyticsMonitoringByYear();
+    },
+
+    ...mapActions('monitoring', [
+      'getDataAnalyticsMonitoringByFunaiYear',
+      'getDataAnalyticsMonitoringByDay',
+      'getDataAnalyticsMonitoringByFunai',
+      'getDataAnalyticsMonitoringByYear',
+      'downloadTableMonitoringAnalytics',
+    ]),
+  },
+
 };
 </script>
 
