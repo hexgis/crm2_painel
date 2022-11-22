@@ -216,7 +216,140 @@ export const mutations = {
             }
           }
 
-          postRemove.push(index);
+    setShowFilters(state, payload) {
+        state.showFilters = payload
+    },
+}
+
+export const actions = {
+    async getSatellites({ commit }) {
+        try {
+            const response = await this.$api.$get('catalog/satellite/')
+
+            commit('setSatellites', response)
+        } catch (exception) {
+            commit(
+                'alert/addAlert',
+                {
+                    message: this.$i18n.t('default-error', {
+                        action: this.$i18n.t('retrieve'),
+                        resource: this.$i18n.tc('satellite', 2),
+                    }),
+                },
+                { root: true }
+            )
+        }
+    },
+
+    async getScenes({ state, commit, rootGetters }, filters) {
+        commit('setLoadingScenes', true)
+        commit('clearScenes')
+        commit('setPage', 1)
+
+        if (filters.currentView) {
+            filters.bbox = rootGetters['map/bbox']
+        }
+
+        commit('setFilters', filters)
+
+        const params = {
+            start_date: state.filters.startDate,
+            end_date: state.filters.endDate,
+            max_cloud: state.filters.cloudCover,
+            in_bbox: state.filters.bbox,
+            satellite: state.filters.satellites
+                ? state.filters.satellites.join(',')
+                : '',
+            page: 1,
+        }
+
+        try {
+            const response = await this.$api.$get('catalog/', {
+                params,
+            })
+            commit('setSceneCount', response.count)
+            commit('setScenes', { scenes: response.features, page: 1 })
+            commit('setShowFeatures', true)
+            if (!response.features.length) {
+                commit(
+                    'alert/addAlert',
+                    { message: this.$i18n.t('no-result') },
+                    { root: true }
+                )
+            }
+        } catch (exception) {
+            commit(
+                'alert/addAlert',
+                {
+                    message: this.$i18n.t('default-error', {
+                        action: this.$i18n.t('retrieve'),
+                        resource: this.$i18n.tc('catalog', 2),
+                    }),
+                },
+                { root: true }
+            )
+        } finally {
+            commit('setLoadingScenes', false)
+            commit('setShowFilters', false)
+        }
+    },
+
+    async changeScenePage({ state, commit }) {
+        commit('setLoadingScenes', true)
+        commit('storeActivePageScenes')
+
+        const params = {
+            start_date: state.filters.startDate,
+            end_date: state.filters.endDate,
+            max_cloud: state.filters.cloudCover,
+            in_bbox: state.filters.bbox,
+            satellite: state.filters.satellites
+                ? state.filters.satellites.join(',')
+                : '',
+            page: state.page,
+        }
+
+        try {
+            const response = await this.$api.$get('catalog/', {
+                params,
+            })
+            commit('setScenes', { scenes: response.features, page: state.page })
+            if (!response.features.length) {
+                commit(
+                    'alert/addAlert',
+                    { message: this.$i18n.t('no-result') },
+                    { root: true }
+                )
+            } else {
+                commit('checkPreviousActiveScenes', state.page)
+            }
+        } catch (exception) {
+            commit(
+                'alert/addAlert',
+                {
+                    message: this.$i18n.t('default-error', {
+                        action: this.$i18n.t('retrieve'),
+                        resource: this.$i18n.tc('catalog', 2),
+                    }),
+                },
+                { root: true }
+            )
+        } finally {
+            commit('setLoadingScenes', false)
+        }
+    },
+
+    async getImagesOnDates({ commit, rootGetters }, filters) {
+        const { t0, t1, satIds, locator } = filters
+
+        const catalogFilters = {
+            startDate: t0,
+            endDate: t1,
+            cloudCover: filters.cloudCover || 100,
+            satellites: satIds.join(','),
+            locator,
+            page: 1,
+            currentView: filters.currentView,
         }
       }
     });
