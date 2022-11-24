@@ -19,6 +19,8 @@ export const state = () => ({
     grouping_by_funai: 'monitoring_by_co_funai',
     grouping_by_co_funai_year: 'monitoring_by_co_funai_and_year',
     grouping_by_day: 'monitoring_by_day',
+    grouping_by_co_funai_and_monthyear: 'monitoring_by_co_funai_and_monthyear',
+    grouping_by_monthyear: 'monitoring_by_monthyear',
     csv: 'csv',
     json: 'json',
   },
@@ -334,6 +336,62 @@ export const actions = {
     }
   },
 
+  async getDataAnalyticsMonitoringByMonthYear({ commit, state, rootGetters }) {
+    commit('setLoadingGeoJson', true);
+    commit('setLoadingFeatures', true);
+    commit('setLoadingTableMonitoring', true);
+
+    const params = {
+      start_date: state.filters.startDate,
+      end_date: state.filters.endDate,
+      grouping: state.filters.grouping_by_monthyear,
+    };
+
+    if (state.filters.ti && state.filters.ti.length) {
+      const arrayTI = [];
+      Object.values(state.filters.ti).forEach((item) => {
+        arrayTI.push(item.co_funai);
+      });
+      params.co_funai = arrayTI.toString();
+    }
+
+    if (state.filters.cr && state.filters.cr.length) {
+      const arrayCR = [];
+      Object.values(state.filters.cr).forEach((item) => {
+        arrayCR.push(item.co_cr);
+      });
+      params.co_cr = arrayCR.toString();
+    }
+
+    if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox'];
+
+    try {
+      const analyticsMonitoring = await this.$api.$get(
+        'monitoring/consolidated/table-stats/',
+        {
+          params,
+        },
+      );
+
+      if (analyticsMonitoring) commit('setAnalytics', analyticsMonitoring);
+    } catch (error) {
+      commit(
+        'alert/addAlert',
+        {
+          message: this.$i18n.t('default-error', {
+            action: this.$i18n.t('retrieve'),
+            resource: this.$i18n.t('monitoring'),
+          }),
+        },
+        { root: true },
+      );
+    } finally {
+      commit('setLoadingFeatures', false);
+      commit('setLoadingGeoJson', false);
+      commit('setLoadingTableMonitoring', false);
+    }
+  },
+
   async getDataAnalyticsMonitoringByFunai({ commit, state, rootGetters }) {
     commit('setLoadingGeoJson', true);
     commit('setLoadingFeatures', true);
@@ -343,6 +401,62 @@ export const actions = {
       start_date: state.filters.startDate,
       end_date: state.filters.endDate,
       grouping: state.filters.grouping_by_funai,
+    };
+
+    if (state.filters.ti && state.filters.ti.length) {
+      const arrayTI = [];
+      Object.values(state.filters.ti).forEach((item) => {
+        arrayTI.push(item.co_funai);
+      });
+      params.co_funai = arrayTI.toString();
+    }
+
+    if (state.filters.cr && state.filters.cr.length) {
+      const arrayCR = [];
+      Object.values(state.filters.cr).forEach((item) => {
+        arrayCR.push(item.co_cr);
+      });
+      params.co_cr = arrayCR.toString();
+    }
+
+    if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox'];
+
+    try {
+      const analyticsMonitoring = await this.$api.$get(
+        'monitoring/consolidated/table-stats/',
+        {
+          params,
+        },
+      );
+
+      if (analyticsMonitoring) commit('setAnalytics', analyticsMonitoring);
+    } catch (error) {
+      commit(
+        'alert/addAlert',
+        {
+          message: this.$i18n.t('default-error', {
+            action: this.$i18n.t('retrieve'),
+            resource: this.$i18n.t('monitoring'),
+          }),
+        },
+        { root: true },
+      );
+    } finally {
+      commit('setLoadingFeatures', false);
+      commit('setLoadingGeoJson', false);
+      commit('setLoadingTableMonitoring', false);
+    }
+  },
+
+  async getDataAnalyticsMonitoringByFunaiMonthYear({ commit, state, rootGetters }) {
+    commit('setLoadingGeoJson', true);
+    commit('setLoadingFeatures', true);
+    commit('setLoadingTableMonitoring', true);
+
+    const params = {
+      start_date: state.filters.startDate,
+      end_date: state.filters.endDate,
+      grouping: state.filters.grouping_by_co_funai_and_monthyear,
     };
 
     if (state.filters.ti && state.filters.ti.length) {

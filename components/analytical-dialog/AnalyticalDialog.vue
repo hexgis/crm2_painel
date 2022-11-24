@@ -40,6 +40,16 @@
                         Terra Indigena
                       </v-chip>
                       <v-chip
+                        @click="groupByFunaiMonthYear()"
+                      >
+                        Terra Indigena, Mês e Ano
+                      </v-chip>
+                      <v-chip
+                        @click="groupByMonthYear()"
+                      >
+                        Mês e Ano
+                      </v-chip>
+                      <v-chip
                         @click="groupByYear()"
                       >
                         Ano
@@ -59,20 +69,31 @@
                   <v-spacer />
 
                   <v-col>
-                    <!-- <v-btn
-                      color="accent"
-                      :loading="isLoadingGeoJson"
-                      fab
-                      small
-                      @click="downloadTableMonitoringAnalytics()"
-                    >
-                      <v-icon>mdi-download</v-icon>
-                    </v-btn> -->
+                    <div>
+                      <v-select
+                        v-model="selectedHeaders"
+                        :items="headers"
+                        label="Selecione as Colunas que Serão Apresentadas"
+                        multiple
+                        outlined
+                        return-object
+                      >
+                        <template #selection="{ item, index }">
+                          <v-chip v-if="index < 8">
+                            <span>{{ item.text }}</span>
+                          </v-chip>
+                          <span
+                            v-if="index === 8"
+                            class="grey--text caption"
+                          >(+{{ selectedHeaders.length - 8 }} colunas)</span>
+                        </template>
+                      </v-select>
+                    </div>
                   </v-col>
                 </v-row>
                 <v-divider class="my-2" />
                 <v-data-table
-                  :headers="headers"
+                  :headers="showHeaders"
                   :items="analyticsMonitoring"
                   :items-per-page="5"
                   class="elevation-1"
@@ -138,7 +159,12 @@ export default {
         { text: 'Total Área Ha', value: 'total_nu_area_ha' },
         { text: 'TI Área Ha', value: 'ti_nu_area_ha' },
         { text: 'Data', value: 'dt_t_um' },
+        { text: 'CR Área Perc', value: 'cr_nu_area_perc' },
+        { text: 'DG Área Perc', value: 'dg_nu_area_perc' },
+        { text: 'DR Área Perc', value: 'dr_nu_area_perc' },
+        { text: 'FF Área Perc', value: 'ff_nu_area_perc' },
       ],
+      selectedHeaders: [],
       filters: {
         grouping: '',
       },
@@ -148,6 +174,9 @@ export default {
   },
 
   computed: {
+    showHeaders() {
+      return this.headers.filter((s) => this.selectedHeaders.includes(s));
+    },
 
     ...mapState('monitoring', [
       'analyticsMonitoring',
@@ -164,6 +193,10 @@ export default {
 
   },
 
+  created() {
+    this.headers = Object.values(this.headers);
+    this.selectedHeaders = this.headers;
+  },
   mounted() {
     this.dialog = this.value;
   },
@@ -181,6 +214,12 @@ export default {
     groupByYear() {
       this.getDataAnalyticsMonitoringByYear();
     },
+    groupByMonthYear() {
+      this.getDataAnalyticsMonitoringByMonthYear();
+    },
+    groupByFunaiMonthYear() {
+      this.getDataAnalyticsMonitoringByFunaiMonthYear();
+    },
 
     ...mapActions('monitoring', [
       'getDataAnalyticsMonitoringByFunaiYear',
@@ -188,6 +227,9 @@ export default {
       'getDataAnalyticsMonitoringByFunai',
       'getDataAnalyticsMonitoringByYear',
       'downloadTableMonitoringAnalytics',
+      'getDataAnalyticsMonitoringByPercentage',
+      'getDataAnalyticsMonitoringByMonthYear',
+      'getDataAnalyticsMonitoringByFunaiMonthYear',
     ]),
   },
 
