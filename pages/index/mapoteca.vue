@@ -4,13 +4,22 @@
       <h4 class="subtitle-2 text-uppercase font-weight-regular">
         {{ $t('title') }}
       </h4>
+      <!-- <v-switch
+                v-if="features"
+                v-model="showFeaturesMonitoring"
+                class="mt-n1 ml-5"
+                hide-details
+            /> -->
     </div>
     <v-card-text>
-      <p>Ambiente de pesquisa de documentos de acordo com as ações.</p>
+      <p>
+        Ambiente de pesquisa de mapas.
+        Somente mapas são permitidos.
+      </p>
 
       <v-list-item-content style="list-style: circle">
         <v-list-item-title class="list__text mb-4 font-weight-black">
-          Ações Disponíveis:
+          Relacionados:
         </v-list-item-title>
         <ul
           v-for="(item, index) in items"
@@ -28,8 +37,8 @@
     >
       {{ $t('input-label') }}
     </v-btn>
-    <div v-if="showDialogDocument">
-      <DocumentDialog />
+    <div v-if="showDialogMapoteca">
+      <MapotecaDialog />
     </div>
     <v-footer
       absolute
@@ -52,57 +61,53 @@
 <i18n>
     {
         "en": {
-            "title": "Document",
+            "title": "Map Library",
             "analytics-label": "Analytics",
             "map-label": "Map",
-            "input-label": "Search",
-            "table-name": "Monitoring Table"
+            "input-label": "Search"
         },
         "pt-br": {
-            "title": "Documental",
+            "title": "Mapoteca",
             "analytics-label": "Analytics",
             "map-label": "Mapa",
-            "input-label": "Pesquisar",
-            "table-name": "Tabela de Monitoramento"
+            "input-label": "Pesquisar"
         }
     }
 </i18n>
 
 <script>
 import { mapMutations, mapState } from 'vuex';
-import DocumentDialog from '@/components/document-dialog/DocumentDialog';
+import MapotecaDialog from '@/components/mapoteca/MapotecaDialog';
 
 export default {
-  components: { DocumentDialog },
+  name: 'PageMapoteca',
+
+  components: { MapotecaDialog },
+
   data() {
     return {
       items: [
-        { value: 'Alertas Urgentes' },
-        { value: 'FIP DGM' },
-        { value: 'Fiscalização(2016)' },
-        { value: 'Fiscalização(2017)' },
-        { value: 'Fundo Amazônia' },
-        { value: 'Gestão Territorial e Ambiental' },
-        { value: 'Prevenção (2016)' },
-        { value: 'Prevenção (2017)' },
-        { value: 'Projeto PNUD (TIs Vulveráveis)' },
-        { value: 'Vigilância' },
+        { value: 'Imagem de Alta Resolução ​' },
+        { value: 'Uso e Ocupação do Solo' },
+        { value: 'Uso e Ocupação com Imagem de Alta Resolução' },
       ],
     };
   },
+
   computed: {
-    ...mapState('document', [
-      'showDialogDocument',
+    ...mapState('mapoteca', [
+      'showDialogMapoteca',
       'showFeatures',
       'features',
     ]),
   },
+
   methods: {
     showDialog(value) {
-      this.setShowDialogDocument(value);
+      this.setShowDialogMapoteca(value);
     },
 
-    ...mapMutations('document', ['setShowDialogDocument']),
+    ...mapMutations('mapoteca', ['setShowDialogMapoteca']),
   },
 };
 </script>

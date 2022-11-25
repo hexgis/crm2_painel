@@ -1,68 +1,71 @@
 <template>
-    <client-only>
-        <div class="map-container3">
-            <l-map
-                ref="map"
-                :zoom="zoom"
-                :bounds="localBounds"
-                :min-zoom="minZoom"
-                :max-zoom="21"
-                :max-bounds="maxBounds"
-                :max-bounds-viscosity="1"
-                :options="mapOptions"
-                @update:bounds="updateBounds"
-            >
-                <l-control position="topleft">
-                    <div class="pa-1 map-action-buttons">
-                        <div
-                            v-if="user.settings.map_zoom_buttons_visible"
-                        ></div>
+  <client-only>
+    <div class="map-container3">
+      <l-map
+        ref="map"
+        :zoom="zoom"
+        :bounds="localBounds"
+        :min-zoom="minZoom"
+        :max-zoom="21"
+        :max-bounds="maxBounds"
+        :max-bounds-viscosity="1"
+        :options="mapOptions"
+        @update:bounds="updateBounds"
+      >
+        <l-control position="topleft">
+          <div class="pa-1 map-action-buttons">
+            <div
+              v-if="user.settings.map_zoom_buttons_visible"
+            />
 
-                        <div class="div-spacer" />
-                    </div>
-                </l-control>
+            <div class="div-spacer" />
+          </div>
+        </l-control>
 
-                <l-control
-                    class="leaflet-coordinates-control"
-                    position="bottomleft"
-                >
-                    <div v-if="user.settings.map_pointer_coordinates_visible">
-                        {{ cursorCoordinates.lat }},
-                        {{ cursorCoordinates.lng }}
-                    </div>
-                </l-control>
+        <l-control
+          class="leaflet-coordinates-control"
+          position="bottomleft"
+        >
+          <div v-if="user.settings.map_pointer_coordinates_visible">
+            {{ cursorCoordinates.lat }},
+            {{ cursorCoordinates.lng }}
+          </div>
+        </l-control>
 
-                <l-control-scale
-                    v-if="user.settings.map_scale_visible"
-                    position="bottomleft"
-                />
+        <l-control-scale
+          v-if="user.settings.map_scale_visible"
+          position="bottomleft"
+        />
 
-                <l-geo-json
-                    ref="interestArea"
-                    :geojson="interestArea"
-                    :options-style="interestStyle"
-                    :visible="showInterestArea"
-                />
-            </l-map>
+        <l-geo-json
+          ref="interestArea"
+          :geojson="interestArea"
+          :options-style="interestStyle"
+          :visible="showInterestArea"
+        />
+      </l-map>
 
-            <div v-if="loading" class="loading-background">
-                <div>
-                    <v-skeleton-loader
-                        type="chip"
-                        width="32"
-                    ></v-skeleton-loader>
-                    <v-skeleton-loader
-                        type="chip"
-                        width="32"
-                    ></v-skeleton-loader>
-                    <v-skeleton-loader
-                        type="chip"
-                        width="32"
-                    ></v-skeleton-loader>
-                </div>
-            </div>
+      <div
+        v-if="loading"
+        class="loading-background"
+      >
+        <div>
+          <v-skeleton-loader
+            type="chip"
+            width="32"
+          />
+          <v-skeleton-loader
+            type="chip"
+            width="32"
+          />
+          <v-skeleton-loader
+            type="chip"
+            width="32"
+          />
         </div>
-    </client-only>
+      </div>
+    </div>
+  </client-only>
 </template>
 
 <i18n>
@@ -79,275 +82,275 @@
 </i18n>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
-import interestArea from '@/assets/interest_area.json'
-import MapPrinter from '@/components/map/MapPrinter.vue'
+import { mapState, mapMutations } from 'vuex';
+import interestArea from '@/assets/interest_area.json';
+import MapPrinter from '@/components/map/MapPrinter.vue';
 
-import MapSearch from '@/components/map/MapSearch.vue'
-import ZoomToCoords from '@/components/map/ZoomToCoords.vue'
-import FileLoaderControl from '@/components/map/file-loader/FileLoaderControl.vue'
-import FileLoaderLayers from '@/components/map/file-loader/FileLoaderLayers.vue'
+import MapSearch from '@/components/map/MapSearch.vue';
+import ZoomToCoords from '@/components/map/ZoomToCoords.vue';
+import FileLoaderControl from '@/components/map/file-loader/FileLoaderControl.vue';
+import FileLoaderLayers from '@/components/map/file-loader/FileLoaderLayers.vue';
 // import ImageryLayers from '@/components/imagery/ImageryLayers'
 // import CatalogLayers from '@/components/catalog/CatalogLayers'
-import MonitoringLayers from '@/components/monitoring/MonitoringLayers'
+import MonitoringLayers from '@/components/monitoring/MonitoringLayers';
 // import MonitoringLayersGeoserver from '@/components/monitoring/MonitoringLayersGeoserver'
-import SupportLayers from '@/components/support/SupportLayers'
+import SupportLayers from '@/components/support/SupportLayers';
 // import ChangeDetectionLayers from '@/components/change-detection/ChangeDetectionLayers'
-import BaseWmsMetadataPopup from '@/components/base/BaseWmsMetadataPopup'
+import BaseWmsMetadataPopup from '@/components/base/BaseWmsMetadataPopup';
 // import AlgorithmLayers from '@/components/algorithms/AlgorithmLayers'
 // import WebhooksLayers from '@/components/webhooks/WebhooksLayers'
-import PriorityLayers from '@/components/priority/PriorityLayers'
+import PriorityLayers from '@/components/priority/PriorityLayers';
 
-import 'leaflet/dist/leaflet.css'
-import 'leaflet-basemaps/L.Control.Basemaps.css'
-import 'leaflet-minimap/dist/Control.MiniMap.min.css'
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-basemaps/L.Control.Basemaps.css';
+import 'leaflet-minimap/dist/Control.MiniMap.min.css';
 
 if (typeof window !== 'undefined') {
-    require('leaflet-basemaps')
-    require('leaflet-minimap')
+  require('leaflet-basemaps');
+  require('leaflet-minimap');
 }
 
 export default {
-    name: 'MiniMapForPrint',
+  name: 'MiniMapForPrint',
 
-    components: {
-        // ImageryLayers,
-        // CatalogLayers,
-        MonitoringLayers,
-        // MonitoringLayersGeoserver,
-        SupportLayers,
-        MapSearch,
-        ZoomToCoords,
-        FileLoaderControl,
-        FileLoaderLayers,
-        // ChangeDetectionLayers,
-        BaseWmsMetadataPopup,
-        // AlgorithmLayers,
-        // WebhooksLayers,
-        MapPrinter,
-        PriorityLayers,
+  components: {
+    // ImageryLayers,
+    // CatalogLayers,
+    MonitoringLayers,
+    // MonitoringLayersGeoserver,
+    SupportLayers,
+    MapSearch,
+    ZoomToCoords,
+    FileLoaderControl,
+    FileLoaderLayers,
+    // ChangeDetectionLayers,
+    BaseWmsMetadataPopup,
+    // AlgorithmLayers,
+    // WebhooksLayers,
+    MapPrinter,
+    PriorityLayers,
+  },
+
+  data: () => ({
+    map: null,
+    zoom: 4,
+    minZoom: 6,
+    maxBounds: [
+      [-90, -280],
+      [90, 280],
+    ],
+    mapOptions: {
+      zoomControl: false,
+      dragging: false,
+      boxZoom: false,
+      scrollWheelZoom: false,
+      doubleClickZoom: false,
+      touchZoom: false,
+      keyboard: false,
+      attributionControl: false,
+      height: 125,
+    },
+    areaBounds: null,
+    initialBounds: [
+      [-33.8689056, -73.9830625],
+      [5.2842873, -28.6341164],
+    ],
+    loadedFiles: [],
+    mapLoading: false,
+
+    interestArea,
+    showInterestArea: process.env.INTEREST_AREA_OUTLINE === 'true',
+    interestStyle: {
+      fillOpacity: 0,
+      fill: false,
+      color: '#fcd40d',
+      dashArray: '5',
     },
 
-    data: () => ({
-        map: null,
-        zoom: 4,
-        minZoom: 6,
-        maxBounds: [
-            [-90, -280],
-            [90, 280],
-        ],
-        mapOptions: {
-            zoomControl: false,
-            dragging: false,
-            boxZoom: false,
-            scrollWheelZoom: false,
-            doubleClickZoom: false,
-            touchZoom: false,
-            keyboard: false,
-            attributionControl: false,
-            height: 125,
-        },
-        areaBounds: null,
-        initialBounds: [
-            [-33.8689056, -73.9830625],
-            [5.2842873, -28.6341164],
-        ],
-        loadedFiles: [],
-        mapLoading: false,
+    showImagery: process.env.IMAGERY === 'true',
+    monitoringGeoserver: process.env.MONITORING_GEOSERVER === 'true',
 
-        interestArea,
-        showInterestArea: process.env.INTEREST_AREA_OUTLINE === 'true',
-        interestStyle: {
-            fillOpacity: 0,
-            fill: false,
-            color: '#fcd40d',
-            dashArray: '5',
-        },
-
-        showImagery: process.env.IMAGERY === 'true',
-        monitoringGeoserver: process.env.MONITORING_GEOSERVER === 'true',
-
-        baseLayers: [
-            {
-                url: '//{s}.tile.osm.org/{z}/{x}/{y}.png',
-                options: {
-                    label: 'Open Street Map',
-                    tag: 'OSM',
-                    attribution:
+    baseLayers: [
+      {
+        url: '//{s}.tile.osm.org/{z}/{x}/{y}.png',
+        options: {
+          label: 'Open Street Map',
+          tag: 'OSM',
+          attribution:
                         '&copy; <a href="//www.openstreetmap.org/">OpenStreetMap</a> contributors',
-                    maxZoom: 21,
-                    maxNativeZoom: 18,
-                    zIndex: 1,
-                },
-            },
-        ],
-        bingKey:
+          maxZoom: 21,
+          maxNativeZoom: 18,
+          zIndex: 1,
+        },
+      },
+    ],
+    bingKey:
             'AuhiCJHlGzhg93IqUH_oCpl_-ZUrIE6SPftlyGYUvr9Amx5nzA-WqGcPquyFZl4L',
 
-        lastZoom: null,
-        zoomControlGrid: 7,
+    lastZoom: null,
+    zoomControlGrid: 7,
 
-        tooltipsRef: null,
-        tooltipsGridRef: null,
-        cursorCoordinates: {
-            lat: '',
-            lng: '',
-        },
-        miniMap: null,
-        miniMapLayer: null,
-        miniMapLayerOptions: {
-            minZoom: 0,
-            maxZoom: 18,
-        },
-        miniMapOptions: {
-            togglePreview: false,
-            height: 125,
-            width: 125,
-        },
-        localBounds: [],
-    }),
+    tooltipsRef: null,
+    tooltipsGridRef: null,
+    cursorCoordinates: {
+      lat: '',
+      lng: '',
+    },
+    miniMap: null,
+    miniMapLayer: null,
+    miniMapLayerOptions: {
+      minZoom: 0,
+      maxZoom: 18,
+    },
+    miniMapOptions: {
+      togglePreview: false,
+      height: 125,
+      width: 125,
+    },
+    localBounds: [],
+  }),
 
-    computed: {
-        minimapVisibleSettings() {
-            return this.user.settings.minimap_visible
-        },
-        initialExtentCoords() {
-            return this.user.settings.initial_extent.coordinates
-                ? this.$L.GeoJSON.coordsToLatLngs(
-                      this.user.settings.initial_extent.coordinates[0]
-                  )
-                : []
-        },
-        ...mapState('map', ['bounds', 'boundsZoomed', 'loading']),
-        ...mapState('userProfile', ['user']),
+  computed: {
+    minimapVisibleSettings() {
+      return this.user.settings.minimap_visible;
+    },
+    initialExtentCoords() {
+      return this.user.settings.initial_extent.coordinates
+        ? this.$L.GeoJSON.coordsToLatLngs(
+          this.user.settings.initial_extent.coordinates[0],
+        )
+        : [];
+    },
+    ...mapState('map', ['bounds', 'boundsZoomed', 'loading']),
+    ...mapState('userProfile', ['user']),
+  },
+
+  watch: {
+    boundsZoomed() {
+      this.map.flyToBounds(this.bounds);
     },
 
-    watch: {
-        boundsZoomed() {
-            this.map.flyToBounds(this.bounds)
-        },
+    minimapVisibleSettings(visible) {
+      visible ? this.miniMap.addTo(this.map) : this.miniMap.remove();
+    },
+  },
 
-        minimapVisibleSettings(visible) {
-            visible ? this.miniMap.addTo(this.map) : this.miniMap.remove()
-        },
+  mounted() {
+    this.$nextTick(() => {
+      this.createMap();
+    });
+  },
+
+  methods: {
+    isLoading() {
+      this.setMapLoading(true);
+    },
+    loaded() {
+      this.setMapLoading(false);
+    },
+    createMap() {
+      this.map = this.$refs.map.mapObject;
+      this.map.on('zoomend', this.onZoomEnd);
+      this.map.addEventListener('mousemove', this.refreshCoordinates);
+
+      this.createMapLayers();
+      this.createCssRefs();
+
+      this.$emit('mapCreated');
+
+      if (this.bounds) {
+        this.localBounds = this.bounds;
+      } else if (
+        this.user
+                && (this.user.settings.initial_extent
+                    || this.user.settings.interest_area_zoom_on_init)
+      ) {
+        let areaBounds;
+
+        if (this.user.settings.initial_extent) {
+          areaBounds = this.$L.polygon(this.initialExtentCoords);
+        } else areaBounds = this.$refs.interestArea.mapObject;
+
+        this.updateBounds(areaBounds.getBounds());
+        this.localBounds = areaBounds.getBounds();
+
+        setTimeout(() => {
+          const map = this.$refs.map.mapObject;
+
+          map.invalidateSize();
+          map.setZoom(map.getZoom() + 1);
+        }, 100);
+      } else {
+        this.localBounds = this.initialBounds;
+      }
     },
 
-    mounted() {
-        this.$nextTick(() => {
-            this.createMap()
-        })
+    createMapLayers() {
+      const tileLayers = [];
+      for (const layer of this.baseLayers) {
+        const tileLayer = this.$L.tileLayer(layer.url, layer.options);
+
+        tileLayers.push(tileLayer);
+      }
+
+      this.map.addControl(
+        this.$L.control.basemaps({
+          basemaps: tileLayers,
+          tileX: 0,
+          tileY: 0,
+          tileZ: 1,
+        }),
+      );
+    },
+    createMiniMap() {
+      const osm = this.baseLayers[0];
+
+      const miniMapLayer = this.$L.tileLayer(
+        osm.url,
+        this.miniMapLayerOptions,
+      );
+
+      this.miniMap = new this.$L.Control.MiniMap(
+        miniMapLayer,
+        this.miniMapOptions,
+      );
+
+      if (this.minimapVisibleSettings) {
+        this.miniMap.addTo(this.map);
+      }
     },
 
-    methods: {
-        isLoading() {
-            this.setMapLoading(true)
-        },
-        loaded() {
-            this.setMapLoading(false)
-        },
-        createMap() {
-            this.map = this.$refs.map.mapObject
-            this.map.on('zoomend', this.onZoomEnd)
-            this.map.addEventListener('mousemove', this.refreshCoordinates)
-
-            this.createMapLayers()
-            this.createCssRefs()
-
-            this.$emit('mapCreated')
-
-            if (this.bounds) {
-                this.localBounds = this.bounds
-            } else if (
-                this.user &&
-                (this.user.settings.initial_extent ||
-                    this.user.settings.interest_area_zoom_on_init)
-            ) {
-                let areaBounds
-
-                if (this.user.settings.initial_extent) {
-                    areaBounds = this.$L.polygon(this.initialExtentCoords)
-                } else areaBounds = this.$refs.interestArea.mapObject
-
-                this.updateBounds(areaBounds.getBounds())
-                this.localBounds = areaBounds.getBounds()
-
-                setTimeout(() => {
-                    const map = this.$refs.map.mapObject
-
-                    map.invalidateSize()
-                    map.setZoom(map.getZoom() + 1)
-                }, 100)
-            } else {
-                this.localBounds = this.initialBounds
-            }
-        },
-
-        createMapLayers() {
-            const tileLayers = []
-            for (const layer of this.baseLayers) {
-                const tileLayer = this.$L.tileLayer(layer.url, layer.options)
-
-                tileLayers.push(tileLayer)
-            }
-
-            this.map.addControl(
-                this.$L.control.basemaps({
-                    basemaps: tileLayers,
-                    tileX: 0,
-                    tileY: 0,
-                    tileZ: 1,
-                })
-            )
-        },
-        createMiniMap() {
-            const osm = this.baseLayers[0]
-
-            const miniMapLayer = this.$L.tileLayer(
-                osm.url,
-                this.miniMapLayerOptions
-            )
-
-            this.miniMap = new this.$L.Control.MiniMap(
-                miniMapLayer,
-                this.miniMapOptions
-            )
-
-            if (this.minimapVisibleSettings) {
-                this.miniMap.addTo(this.map)
-            }
-        },
-
-        createCssRefs() {
-            this.tooltipsRef = this.map.getPane('tooltipPane')
-            this.tooltipsRef.style.visibility = 'hidden'
-        },
-
-        onZoomEnd(event) {
-            const map = event.target
-            const zoom = map.getZoom()
-
-            if (
-                zoom < this.zoomControlGrid &&
-                (!this.lastZoom || this.lastZoom >= this.zoomControlGrid)
-            ) {
-                this.tooltipsRef.style.visibility = 'hidden'
-            } else if (
-                zoom >= this.zoomControlGrid &&
-                (!this.lastZoom || this.lastZoom < this.zoomControlGrid)
-            ) {
-                this.tooltipsRef.style.visibility = 'visible'
-            }
-
-            this.lastZoom = zoom
-        },
-
-        updateBounds(latLngBounds) {
-            this.setBounds(latLngBounds)
-        },
-
-        ...mapMutations('map', ['setBounds', 'setMapLoading']),
+    createCssRefs() {
+      this.tooltipsRef = this.map.getPane('tooltipPane');
+      this.tooltipsRef.style.visibility = 'hidden';
     },
-}
+
+    onZoomEnd(event) {
+      const map = event.target;
+      const zoom = map.getZoom();
+
+      if (
+        zoom < this.zoomControlGrid
+                && (!this.lastZoom || this.lastZoom >= this.zoomControlGrid)
+      ) {
+        this.tooltipsRef.style.visibility = 'hidden';
+      } else if (
+        zoom >= this.zoomControlGrid
+                && (!this.lastZoom || this.lastZoom < this.zoomControlGrid)
+      ) {
+        this.tooltipsRef.style.visibility = 'visible';
+      }
+
+      this.lastZoom = zoom;
+    },
+
+    updateBounds(latLngBounds) {
+      this.setBounds(latLngBounds);
+    },
+
+    ...mapMutations('map', ['setBounds', 'setMapLoading']),
+  },
+};
 </script>
 
 <style lang="sass">

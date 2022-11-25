@@ -1,66 +1,87 @@
 <template>
-    <v-layout align-center justify-center>
-        <v-flex xs12 sm8 md4 lg3 xl3>
-            <v-form @submit.prevent="login">
-                <v-card tile class="elevation-6">
-                    <v-toolbar flat dark color="secondary">
-                        <v-progress-linear
-                            v-show="isLoading"
-                            class="my-0 progress"
-                            :indeterminate="true"
-                            height="3"
-                            color="accent"
-                        />
-                        <v-toolbar-title class="flex text-center pa-5">
-                            <v-container class="d-flex justify-center">
-                                <v-img
-                                    max-width="200"
-                                    contain
-                                    src="/img/logocmr.png"
-                                />
-                            </v-container>
-                        </v-toolbar-title>
-                    </v-toolbar>
+  <v-layout
+    align-center
+    justify-center
+  >
+    <v-flex
+      xs12
+      sm8
+      md4
+      lg3
+      xl3
+    >
+      <v-form @submit.prevent="login">
+        <v-card
+          tile
+          class="elevation-6"
+        >
+          <v-toolbar
+            flat
+            dark
+            color="secondary"
+          >
+            <v-progress-linear
+              v-show="isLoading"
+              class="my-0 progress"
+              :indeterminate="true"
+              height="3"
+              color="accent"
+            />
+            <v-toolbar-title class="flex text-center pa-5">
+              <v-container class="d-flex justify-center">
+                <v-img
+                  max-width="200"
+                  contain
+                  src="/img/logocmr.png"
+                />
+              </v-container>
+            </v-toolbar-title>
+          </v-toolbar>
 
-                    <v-card-text class="px-6 pt-6 pb-0">
-                        <v-alert
-                            v-show="showAuthenticationError"
-                            type="error"
-                            class="mb-3"
-                        >
-                            {{ $t('error') }}
-                        </v-alert>
+          <v-card-text class="px-6 pt-6 pb-0">
+            <v-alert
+              v-show="showAuthenticationError"
+              type="error"
+              class="mb-3"
+            >
+              {{ $t('error') }}
+            </v-alert>
 
-                        <div class="text-subtitle-1 text-center mb-2">
-                            {{ $t('title') }}
-                        </div>
+            <div class="text-subtitle-1 text-center mb-2">
+              {{ $t('title') }}
+            </div>
 
-                        <v-text-field
-                            v-model="username"
-                            outlined
-                            prepend-inner-icon="mdi-account"
-                            :label="$t('user-label')"
-                            single-line
-                        ></v-text-field>
-                        <v-text-field
-                            v-model="password"
-                            outlined
-                            prepend-inner-icon="mdi-lock"
-                            :label="$t('password-label')"
-                            single-line
-                            type="password"
-                        ></v-text-field>
-                    </v-card-text>
+            <v-text-field
+              v-model="username"
+              outlined
+              prepend-inner-icon="mdi-account"
+              :label="$t('user-label')"
+              single-line
+            />
+            <v-text-field
+              v-model="password"
+              outlined
+              prepend-inner-icon="mdi-lock"
+              :label="$t('password-label')"
+              single-line
+              type="password"
+            />
+          </v-card-text>
 
-                    <v-card-actions class="justify-center pa-6 flex-column">
-                        <v-btn block large color="accent" type="submit">
-                            {{ $t('login-button') }}
-                        </v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-form>
-        </v-flex>
-    </v-layout>
+          <v-card-actions class="justify-center pa-6 flex-column">
+            <v-btn
+              block
+              large
+              color="accent"
+              type="submit"
+            >
+              {{ $t('login-button') }}
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-form>
+    </v-flex>
+  </v-layout>
 </template>
 
 <i18n>
@@ -83,48 +104,48 @@
 </i18n>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions } from 'vuex';
 
 export default {
-    layout: 'login',
 
-    middleware: false,
+  name: 'Login',
+  layout: 'login',
 
-    name: 'Login',
+  middleware: false,
 
-    data: () => ({
-        username: '',
-        password: '',
-        isLoading: false,
-        showAuthenticationError: false,
-        appName: process.env.APP_NAME,
-    }),
+  data: () => ({
+    username: '',
+    password: '',
+    isLoading: false,
+    showAuthenticationError: false,
+    appName: process.env.APP_NAME,
+  }),
 
-    methods: {
-        login() {
-            this.isLoading = true
-            this.showAuthenticationError = false
+  methods: {
+    login() {
+      this.isLoading = true;
+      this.showAuthenticationError = false;
 
-            this.authenticate({
-                username: this.username,
-                password: this.password,
-            })
-                .then((_) => {
-                    this.isLoading = false
-                    this.$router.go(this.localePath('/'))
-                })
-                .catch((_) => {
-                    this.isLoading = false
-                    this.showAuthenticationError = true
-                })
-        },
-        ...mapActions('auth', ['authenticate']),
+      this.authenticate({
+        username: this.username,
+        password: this.password,
+      })
+        .then((_) => {
+          this.isLoading = false;
+          this.$router.go(this.localePath('/'));
+        })
+        .catch((_) => {
+          this.isLoading = false;
+          this.showAuthenticationError = true;
+        });
     },
+    ...mapActions('auth', ['authenticate']),
+  },
 
-    head: () => ({
-        title: 'Login',
-    }),
-}
+  head: () => ({
+    title: 'Login',
+  }),
+};
 </script>
 
 <style scoped>

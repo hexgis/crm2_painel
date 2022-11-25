@@ -1,29 +1,29 @@
 <template>
-    <div
-        class="box-class"
-        :style="{
-            '--top-padding': `${topPadding}px`,
-        }"
-    >
-        <span class="box topleft filling"></span>
-        <span class="box top border-style"></span>
-        <span class="box topright filling"></span>
-        <span class="box left border-style"></span>
-        <span class="box right border-style"></span>
-        <span class="box bottomleft filling"></span>
-        <span class="box bottom border-style"></span>
-        <span class="box bottomright filling"></span>
-    </div>
+  <div
+    class="box-class"
+    :style="{
+      '--top-padding': `${topPadding}px`,
+    }"
+  >
+    <span class="box topleft filling" />
+    <span class="box top border-style" />
+    <span class="box topright filling" />
+    <span class="box left border-style" />
+    <span class="box right border-style" />
+    <span class="box bottomleft filling" />
+    <span class="box bottom border-style" />
+    <span class="box bottomright filling" />
+  </div>
 </template>
 <script>
 export default {
-    props: {
-        topPadding: {
-            type: Number,
-            default: 0,
-        },
+  props: {
+    topPadding: {
+      type: Number,
+      default: 0,
     },
-}
+  },
+};
 </script>
 <style scoped lang="sass">
 .box-class
@@ -45,7 +45,6 @@ export default {
     border-style: dashed
     border-color: lightgray
     border-width: 0px
-
 
 .topleft
     top: 0

@@ -2,10 +2,10 @@
   <v-row justify="space-around">
     <v-col cols="auto">
       <v-dialog
-        v-model="showDialogDocument"
-        persistent
+        v-model="showDialogMapoteca"
         transition="dialog-bottom-transition"
         max-width="95vw"
+        persistent
       >
         <v-card style="width: 100vw">
           <v-toolbar
@@ -22,31 +22,28 @@
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-toolbar>
-          <v-card-text>
+          <v-card-actions>
             <v-container fluid>
               <v-row
                 align="center"
                 class="column"
                 justify="space-around"
               >
-                <v-col>
+                <v-col class="cols">
                   <v-select
                     v-model="filters.id_acao"
-                    :label="$t('action-label')"
-                    item-value="id_action"
+                    :label="$t('institution-label')"
                     :items="filterOptions.actions"
+                    item-value="id_action"
                     item-text="no_action"
                     hide-details
                     multiple
                     required
-                    :loading="isLoadingDocumentActions"
-                    :disabled="isLoadingDocumentActions"
                   />
                 </v-col>
                 <v-col>
                   <v-select
                     v-model="filters.cr"
-                    :disabled="!filters.id_acao.length"
                     label="Coordenação Regional (Todas)"
                     :items="filterOptions.regionalFilters"
                     item-value="co_cr"
@@ -57,15 +54,13 @@
                     required
                   />
                 </v-col>
-                <v-col>
+                <v-col
+                  v-if="filters.cr && filterOptions.tiFilters"
+                >
                   <v-select
                     v-model="filters.ti"
                     label="Terras Indigenas (Todas)"
                     :items="filterOptions.tiFilters"
-                    :disabled="
-                      !filters.id_acao.length &&
-                        !filterOptions.tiFilters.length
-                    "
                     item-text="no_ti"
                     item-value="co_funai"
                     multiple
@@ -74,37 +69,8 @@
                     required
                   />
                 </v-col>
-                <v-col class="mt-7">
-                  <v-row>
-                    <v-col>
-                      <BaseDateField
-                        v-model="filters.startDate"
-                        :disabled="
-                          !filters.id_acao.length
-                        "
-                        :label="$t('start-date-label')"
-                        :required="true"
-                        outlined
-                      />
-                    </v-col>
-                    <v-col>
-                      <BaseDateField
-                        v-model="filters.endDate"
-                        :disabled="
-                          !filters.id_acao.length
-                        "
-                        :label="$t('end-date-label')"
-                        :required="true"
-                        :min-date="filters.startDate"
-                        flex-row
-                        outlined
-                      />
-                    </v-col>
-                  </v-row>
-                </v-col>
-                <v-col>
+                <v-col class="mt-2">
                   <v-btn
-                    :disabled="!filters.id_acao.length"
                     block
                     color="accent"
                     :loading="isLoadingFeatures"
@@ -113,10 +79,10 @@
                     {{ $t('search-label') }}
                   </v-btn>
                 </v-col>
-                <DocumentUploadDialog />
+                <MapotecaDialogUpload class="mt-2" />
               </v-row>
             </v-container>
-          </v-card-text>
+          </v-card-actions>
           <v-divider />
           <v-card-actions class="d-flex flex-column">
             <v-container
@@ -133,32 +99,23 @@
                   </v-subheader>
                 </v-col>
                 <v-spacer />
-                <v-col cols="2">
-                  <v-text-field
-                    v-model="filter"
-                    append-icon="mdi-magnify"
-                    :label="$t('filter-label')"
-                    single-line
-                    hide-details
-                  />
-                </v-col>
               </v-row>
             </v-container>
             <v-container
-              class=""
+              class="pa-0"
               fluid
             >
               <v-skeleton-loader
                 v-if="isLoadingFeatures"
-                type="table-row-divider@10"
+                type="table-row-divider@12"
               />
               <v-data-table
                 v-if="!isLoadingFeatures"
                 :headers="headers"
                 :items="values"
-                :search="filter"
                 fixed-header
-                height="45vh"
+                height="52vh"
+                style="width: 100vw"
               >
                 <template #item.actions="{ item }">
                   <v-tooltip bottom>
@@ -210,24 +167,34 @@
     {
         "en": {
             "search-label": "Search",
+            "opacity-label": "Opacity",
+            "current-view-label": "Search in current area?",
             "start-date-label": "Start Date",
+            "total-area-label": "Total area",
+            "heat-map-label": "Heat map",
+            "polygon-label": "Total polygon count",
             "end-date-label": "End Date",
-            "dialogName": "DOCUMENT SEARCH",
+            "dialogName": " MAP SEARCH",
             "result-label": "Results",
             "filter-label": "Filter",
-            "action-label": "Actions",
+            "institution-label": "Institution",
             "download-label-tooltip": "Download",
             "view-label-tooltip": "Preview"
 
         },
         "pt-br": {
             "search-label": "Buscar",
+            "opacity-label": "Opacidade",
+            "current-view-label": "Pesquisar nesta área?",
+            "total-area-label": "Área total",
+            "heat-map-label": "Mapa de calor",
+            "polygon-label": "Total de polígonos",
             "start-date-label": "Data Início",
             "end-date-label": "Data Fim",
-            "dialogName": "PESQUISA DE DOCUMENTOS",
+            "dialogName": "PESQUISA DE MAPAS",
             "result-label": "Resultados",
             "filter-label": "Filtrar",
-            "action-label": "Ações",
+            "institution-label": "Instituição",
             "download-label-tooltip": "Download",
             "view-label-tooltip": "Visualizar"
         }
@@ -236,14 +203,13 @@
 
 <script>
 import { mapMutations, mapState, mapActions } from 'vuex';
-import BaseDateField from '@/components/base/BaseDateField';
 import legend from '@/assets/legend.png';
-import DocumentUploadDialog from '@/components/document-dialog/DocumentUploadDialog';
+import MapotecaDialogUpload from '@/components/mapoteca/MapotecaDialogUpload';
 
 export default {
-  name: 'DocumentDialog',
+  name: 'MapotecaDialog',
 
-  components: { BaseDateField, DocumentUploadDialog },
+  components: { MapotecaDialogUpload },
 
   data() {
     return {
@@ -257,25 +223,18 @@ export default {
         ti: [],
         id_acao: [],
       },
-      filtersData: {},
       isLoadingTotal: false,
       legendData: legend,
-      filter: '',
       headers: [
-        { text: 'Nome do Documento', value: 'no_document' },
-        { text: 'Inserido Por', value: 'usercmr_id.first_name' },
-        { text: 'Data Cadastro', value: 'dt_registration' },
-        { text: 'Extensão', value: 'no_extension' },
-        // { text: 'Código Funai', value: 'co_funai' },
-        // { text: 'Terra Indígena', value: 'no_ti' },
-        // { text: 'Coordenação Regional', value: 'ds_cr' },
-        // { text: 'Prioridade', value: 'prioridade' },
-        // { text: 'Classe', value: 'no_estagio' },
-        // { text: 'Data da Imagem', value: 'dt_imagem' },
-        // { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
-        // { text: 'Latitude', value: 'nu_latitude' },
-        // { text: 'Longitude', value: 'nu_longitude' },
-        { text: 'Ações', value: 'actions' },
+        { text: 'Terra Indígena', value: 'no_ti' },
+        { text: 'Título', value: 'no_document' },
+        { text: 'Inserido por', value: 'usercmr_id.first_name' },
+        { text: 'Instituição', value: 'action_id.no_action' },
+        { text: 'Descrição', value: 'no_description' },
+        { text: 'Formato', value: 'map_dimension' },
+        { text: 'Extensão do arquivo', value: 'no_ti' },
+        { text: 'Data', value: 'dt_registration' },
+        { text: 'Ação', value: 'actions' },
       ],
       values: [],
     };
@@ -284,35 +243,33 @@ export default {
     'filters.cr': function (value) {
       this.populateTiOptions(value);
     },
-    features(val) {
-      this.values = val;
+    features(data) {
+      this.values = data;
     },
   },
   computed: {
-    ...mapState('document', [
+    ...mapState('mapoteca', [
       'features',
       'isLoadingFeatures',
+      'isLoadingMapotecainstitution',
       'filterOptions',
-      'showFeatures',
-      'showDialogDocument',
-      'isLoadingDocumentActions',
-      'actions',
+      'showDialogMapoteca',
     ]),
   },
 
   mounted() {
-    this.getDocumentActions('DOCUMENTS_TI');
+    this.getMapotecaActions('MAPOTECA');
     this.getFilterOptions();
   },
 
   methods: {
     populateTiOptions(cr) {
-      if (cr) this.$store.dispatch('document/getTiOptions', cr);
-      else this.filters.ti = null;
+      if (cr) this.$store.dispatch('mapoteca/getTiOptions', cr);
+      else this.filters.ti = [];
     },
 
     closeDialog(value) {
-      this.setShowDialogDocument(value);
+      this.setShowDialogMapoteca(value);
     },
 
     downloadDocument(item) {
@@ -331,23 +288,19 @@ export default {
     },
 
     search() {
-      this.getFeatures({ ...this.filters });
-      // this.setLoadingTable(true)
-      // this.values = this.desserts
-      // setInterval(() => {
-      //     this.setLoadingTable(false)
-      // }, 3000)
+      if (this.filters.id_acao.length) {
+        this.getFeatures({ ...this.filters });
+      }
     },
 
-    ...mapMutations('document', [
-      'setFilters',
-      'setShowDialogDocument',
+    ...mapMutations('mapoteca', [
+      'setShowDialogMapoteca',
       'setLoadingTable',
     ]),
-    ...mapActions('document', [
-      'getFilterOptions',
-      'getDocumentActions',
+    ...mapActions('mapoteca', [
       'getFeatures',
+      'getFilterOptions',
+      'getMapotecaActions',
     ]),
   },
 };

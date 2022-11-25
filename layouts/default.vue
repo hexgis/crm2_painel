@@ -1,83 +1,95 @@
 <template>
-    <v-app>
-        <v-snackbar
-            v-if="hasFirstOrLastName"
-            v-model="snackbar"
-            :timeout="timeout"
-        >
-            <span>
-                {{
-                    `${this.$t('welcome')}${
-                        !!user.first_name ? ` ${user.first_name}` : ''
-                    }${!!user.last_name ? ` ${user.last_name}` : ''}!`
-                }}
-            </span>
-            <template v-slot:action="{ attrs }">
-                <v-btn v-bind="attrs" text @click="snackbar = false">
-                    <v-icon> mdi-close </v-icon>
-                </v-btn>
-            </template>
-        </v-snackbar>
-        <v-snackbar v-else v-model="snackbar" :timeout="timeout">
-            {{ $t('no-expected') }}
-            <template v-slot:action="{ attrs }">
-                <v-btn v-bind="attrs" text @click="snackbar = false">
-                    <v-icon> mdi-close </v-icon>
-                </v-btn>
-            </template>
-        </v-snackbar>
+  <v-app>
+    <v-snackbar
+      v-if="hasFirstOrLastName"
+      v-model="snackbar"
+      :timeout="timeout"
+    >
+      <span>
+        {{
+          `${$t('welcome')}${
+            !!user.first_name ? ` ${user.first_name}` : ''
+          }${!!user.last_name ? ` ${user.last_name}` : ''}!`
+        }}
+      </span>
+      <template #action="{ attrs }">
         <v-btn
-            ripple
-            class="right-drawer-btn"
-            :class="{ 'drawer-btn-opened': layerDrawer }"
-            color="secondary"
-            @click.stop="layerDrawer = !layerDrawer"
+          v-bind="attrs"
+          text
+          @click="snackbar = false"
         >
-            <v-tooltip bottom>
-                <template #activator="{ on }">
-                    <v-icon v-on="on">
-                        {{
-                            layerDrawer
-                                ? 'mdi-chevron-right'
-                                : 'mdi-chevron-left'
-                        }}
-                    </v-icon>
-                </template>
-                <span> {{ $t('tooltip') }} </span>
-            </v-tooltip>
+          <v-icon> mdi-close </v-icon>
         </v-btn>
-        <v-overlay :value="showTableDialog"></v-overlay>
-        <v-navigation-drawer
-            v-model="layerDrawer"
-            absolute
-            right
-            clipped
-            app
-            width="420"
-            disable-resize-watcher
-            class="elevation-4 navigation-drawer"
-            @input="changeControlsStyle()"
+      </template>
+    </v-snackbar>
+    <v-snackbar
+      v-else
+      v-model="snackbar"
+      :timeout="timeout"
+    >
+      {{ $t('no-expected') }}
+      <template #action="{ attrs }">
+        <v-btn
+          v-bind="attrs"
+          text
+          @click="snackbar = false"
         >
-            <nuxt @closedrawer="layerDrawer = false" />
-        </v-navigation-drawer>
-        <div v-if="$store.state.priority.visualizationStage == 'map'">
-            <v-main class="pa-0">
-                <Map
-                    v-if="!$fetchState.pending && $store.state.userProfile.user"
-                    @mapCreated="
-                        getLeafletControlRef()
-                        changeControlsStyle()
-                    "
-                />
-            </v-main>
-        </div>
-        <div v-if="$store.state.priority.visualizationStage == 'chart'">
-            <v-main class="pa-0">
-                <AnalyticsPCDashboard />
-            </v-main>
-        </div>
-        <BaseAlert />
-    </v-app>
+          <v-icon> mdi-close </v-icon>
+        </v-btn>
+      </template>
+    </v-snackbar>
+    <v-btn
+      ripple
+      class="right-drawer-btn"
+      :class="{ 'drawer-btn-opened': layerDrawer }"
+      color="secondary"
+      @click.stop="layerDrawer = !layerDrawer"
+    >
+      <v-tooltip bottom>
+        <template #activator="{ on }">
+          <v-icon v-on="on">
+            {{
+              layerDrawer
+                ? 'mdi-chevron-right'
+                : 'mdi-chevron-left'
+            }}
+          </v-icon>
+        </template>
+        <span> {{ $t('tooltip') }} </span>
+      </v-tooltip>
+    </v-btn>
+    <v-overlay :value="showTableDialog" />
+    <v-navigation-drawer
+      v-model="layerDrawer"
+      absolute
+      right
+      clipped
+      app
+      width="420"
+      disable-resize-watcher
+      class="elevation-4 navigation-drawer"
+      @input="changeControlsStyle()"
+    >
+      <nuxt @closedrawer="layerDrawer = false" />
+    </v-navigation-drawer>
+    <div v-if="$store.state.priority.visualizationStage == 'map'">
+      <v-main class="pa-0">
+        <Map
+          v-if="!$fetchState.pending && $store.state.userProfile.user"
+          @mapCreated="
+            getLeafletControlRef()
+            changeControlsStyle()
+          "
+        />
+      </v-main>
+    </div>
+    <div v-if="$store.state.priority.visualizationStage == 'chart'">
+      <v-main class="pa-0">
+        <AnalyticsPCDashboard />
+      </v-main>
+    </div>
+    <BaseAlert />
+  </v-app>
 </template>
 <i18n>
 {
@@ -94,79 +106,78 @@
 }
 </i18n>
 <script>
-import { mapState } from 'vuex'
-import Map from '@/components/map/Map'
-import BaseAlert from '@/components/base/BaseAlert'
-import AnalyticsPCDashboard from '@/components/analytical-cmr/AnalyticsPriorConsolidDashboard'
+import { mapState } from 'vuex';
+import Map from '@/components/map/Map';
+import BaseAlert from '@/components/base/BaseAlert';
+import AnalyticsPCDashboard from '@/components/analytical-cmr/AnalyticsPriorConsolidDashboard';
 
 export default {
-    name: 'App',
-    components: {
-        Map,
-        BaseAlert,
-        AnalyticsPCDashboard,
+  name: 'App',
+  components: {
+    Map,
+    BaseAlert,
+    AnalyticsPCDashboard,
+  },
+
+  data: () => ({
+    layerDrawer: false,
+    leafletRightControl: null,
+    snackbar: true,
+    timeout: 3000,
+  }),
+
+  fetch() {
+    if (!this.$store.state.userProfile.user) {
+      this.$store.dispatch('userProfile/getUserData');
+    }
+  },
+
+  computed: {
+    hasFirstOrLastName() {
+      return this.user && (this.user.first_name || this.user.last_name);
+    },
+    ...mapState('userProfile', ['user']),
+    ...mapState('priority', ['visualizationStage']),
+    ...mapState('monitoring', ['visualizationStageMonitoring']),
+    ...mapState('tableDialog', ['showTableDialog']),
+  },
+  watch: {
+    user() {
+      if (this.user && this.user.settings.drawer_open_on_init) {
+        this.layerDrawer = true;
+      }
+    },
+  },
+  mounted() {
+    this.$nextTick(function () {
+      this.getLeafletControlRef();
+
+      if (this.user && this.user.settings.drawer_open_on_init) {
+        this.layerDrawer = true;
+      }
+    });
+  },
+  methods: {
+    getLeafletControlRef() {
+      this.leafletRightControl = document.getElementsByClassName('leaflet-right');
     },
 
-    fetch() {
-        if (!this.$store.state.userProfile.user) {
-            this.$store.dispatch('userProfile/getUserData')
-        }
+    changeControlsStyle() {
+      if (this.layerDrawer) {
+        Array.from(this.leafletRightControl).forEach((element) => {
+          element.classList.add('leaflet-right-drawer--offset');
+        });
+      } else {
+        Array.from(this.leafletRightControl).forEach((element) => {
+          element.classList.remove('leaflet-right-drawer--offset');
+        });
+      }
     },
-
-    data: () => ({
-        layerDrawer: false,
-        leafletRightControl: null,
-        snackbar: true,
-        timeout: 3000,
-    }),
-
-    computed: {
-        hasFirstOrLastName() {
-            return this.user && (this.user.first_name || this.user.last_name)
-        },
-        ...mapState('userProfile', ['user']),
-        ...mapState('priority', ['visualizationStage']),
-        ...mapState('monitoring', ['visualizationStageMonitoring']),
-        ...mapState('tableDialog', ['showTableDialog']),
-    },
-    watch: {
-        user() {
-            if (this.user && this.user.settings.drawer_open_on_init) {
-                this.layerDrawer = true
-            }
-        },
-    },
-    mounted() {
-        this.$nextTick(function () {
-            this.getLeafletControlRef()
-
-            if (this.user && this.user.settings.drawer_open_on_init) {
-                this.layerDrawer = true
-            }
-        })
-    },
-    methods: {
-        getLeafletControlRef() {
-            this.leafletRightControl =
-                document.getElementsByClassName('leaflet-right')
-        },
-
-        changeControlsStyle() {
-            if (this.layerDrawer) {
-                Array.from(this.leafletRightControl).forEach((element) => {
-                    element.classList.add('leaflet-right-drawer--offset')
-                })
-            } else {
-                Array.from(this.leafletRightControl).forEach((element) => {
-                    element.classList.remove('leaflet-right-drawer--offset')
-                })
-            }
-        },
-    },
-    head: () => ({
-        title: 'Skyviewer',
-    }),
-}
+  },
+  head: () => ({
+    title: 'Skyviewer',
+  }),
+};
 </script>
 
 <style lang="sass">

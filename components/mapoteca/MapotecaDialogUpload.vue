@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-dialog
       v-model="dialog"
-      max-width="40vw"
+      max-width="60vw"
       persistent
     >
       <template #activator="{ on, attrs }">
@@ -26,7 +26,7 @@
         <v-card-actions>
           <v-col class="cols">
             <v-select
-              :label="$t('action-label')"
+              :label="$t('institution-label')"
               :items="filterOptions.actions"
               item-text="no_action"
               item-value="id_action"
@@ -69,14 +69,14 @@
             text
             @click="dialog = false"
           >
-            {{ $t('cancel-label') }}
+            Cancelar
           </v-btn>
           <v-btn
             color="secondary"
             text
             @click="save()"
           >
-            {{ $t('save-label') }}
+            Salvar
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -86,19 +86,15 @@
 <i18n>
     {
         "en": {
-            "date-label": "Document Date",
-            "action-label": "Actions",
-            "title-label": "REGISTRATION OF INDIGENOUS LAND DOCUMENTS",
-            "save-label": "Save",
-            "cancel-label": "Cancel"
+            "date-label": "Date of Map",
+            "institution-label": "Institution",
+            "title-label": "REGISTRATION OF MAPAS"
 
         },
         "pt-br": {
-            "date-label": "Data do Documento",
-            "action-label": "Ações",
-            "title-label": "CADASTRO DE DOCUMENTOS DE TERRAS INDÍGENAS",
-            "save-label": "Salvar",
-            "cancel-label": "Cancelar"
+            "date-label": "Data do Mapa",
+            "institution-label": "Instituição",
+            "title-label": "CADASTRO DE MAPAS"
         }
     }
 </i18n>
@@ -107,6 +103,8 @@ import { mapMutations, mapState, mapActions } from 'vuex';
 import BaseDateField from '@/components/base/BaseDateField';
 
 export default {
+  name: 'MapotecaDialogUpload',
+
   components: { BaseDateField },
 
   data() {
@@ -116,7 +114,6 @@ export default {
       isGeoserver: process.env.MONITORING_GEOSERVER === 'true',
       filters: {
         date: this.$moment().format('YYYY-MM-DD'),
-        cr: [],
         ti: null,
         ac: [],
       },
@@ -124,17 +121,20 @@ export default {
   },
 
   computed: {
-    ...mapState('document', ['filterOptions', 'showDialogDocument']),
+    ...mapState('mapoteca', ['filterOptions', 'showDialogDocument']),
+  },
+
+  mounted() {
+    this.getActionsUploadMapoteca();
+    this.getTiUploadMapoteca();
   },
 
   methods: {
     save() {
       // this.uploadFile()
     },
-
     uploadFile() {
       const params = {
-        co_cr: this.cr.toString(),
         co_funai: this.ti,
         id_acao: this.ac,
         dt_cadastro: this.date,
@@ -146,18 +146,12 @@ export default {
         console.log('Enviado com sucesso');
       });
     },
-
-    ...mapMutations('document', ['setShowDialogDocument']),
-    ...mapActions('document', [
-      'getTiUploadOptions',
+    ...mapMutations('mapoteca', ['setFilters', 'setShowDialogDocument']),
+    ...mapActions('mapoteca', [
+      'getTiUploadMapoteca',
       'sendData',
-      'getActionsUploadOptions',
+      'getActionsUploadMapoteca',
     ]),
-  },
-
-  mounted() {
-    this.getTiUploadOptions();
-    this.getActionsUploadOptions();
   },
 };
 </script>

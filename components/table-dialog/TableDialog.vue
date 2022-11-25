@@ -1,129 +1,139 @@
 <template>
-    <v-row>
-        <v-dialog
-            v-model="table"
-            transition="dialog-bottom-transition"
-            persistent
-            no-click-animation
-            hide-overlay
-            width="75vw"
+  <v-row>
+    <v-dialog
+      v-model="table"
+      transition="dialog-bottom-transition"
+      persistent
+      no-click-animation
+      hide-overlay
+      width="75vw"
+    >
+      <v-card>
+        <v-toolbar
+          class="background__toolbar"
+          dark
+          color="primary"
         >
-            <v-card>
-                <v-toolbar class="background__toolbar" dark color="primary">
-                    <h3>{{ tableName }}</h3>
-                    <v-spacer></v-spacer>
-                    <v-btn icon @click="fCloseTable(false)">
-                        <v-icon>mdi-close</v-icon>
-                    </v-btn>
-                </v-toolbar>
-            </v-card>
-            <v-container fluid white>
-                <v-skeleton-loader
-                    v-if="loadingTable"
-                    type="table-row-divider@8"
-                ></v-skeleton-loader>
-                <v-card v-if="!loadingTable">
-                    <a class="d-flex justify-end">
-                        <v-btn
-                            small
-                            fab
-                            class="mx-2 my-2"
-                            color="secondary"
-                            @click="fDownloadCSV()"
-                            :loading="loadingCSV"
-                        >
-                            <v-icon>mdi-download</v-icon>
-                        </v-btn>
-                    </a>
-                    <v-data-table
-                        :headers="headers"
-                        :items-per-page="15"
-                        :items="value"
-                        class="font-weight-regular"
-                        multi-sort
-                        fixed-header
-                        height="65vh"
-                    >
-                        <template
-                            v-if="[item.prioridade]"
-                            v-slot:[`item.prioridade`]="{ item }"
-                        >
-                            <v-chip
-                                :color="getColor(item.prioridade)"
-                                :dark="getColor(item.prioridade) !== 'yellow'"
-                            >
-                                {{ item.prioridade }}
-                            </v-chip>
-                        </template>
-                    </v-data-table>
-                </v-card>
-            </v-container>
-        </v-dialog>
-    </v-row>
+          <h3>{{ tableName }}</h3>
+          <v-spacer />
+          <v-btn
+            icon
+            @click="fCloseTable(false)"
+          >
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+      </v-card>
+      <v-container
+        fluid
+        white
+      >
+        <v-skeleton-loader
+          v-if="loadingTable"
+          type="table-row-divider@8"
+        />
+        <v-card v-if="!loadingTable">
+          <a class="d-flex justify-end">
+            <v-btn
+              small
+              fab
+              class="mx-2 my-2"
+              color="secondary"
+              :loading="loadingCSV"
+              @click="fDownloadCSV()"
+            >
+              <v-icon>mdi-download</v-icon>
+            </v-btn>
+          </a>
+          <v-data-table
+            :headers="headers"
+            :items-per-page="15"
+            :items="value"
+            class="font-weight-regular"
+            multi-sort
+            fixed-header
+            height="65vh"
+          >
+            <template
+              v-if="[item.prioridade]"
+              #[`item.prioridade`]="{ item }"
+            >
+              <v-chip
+                :color="getColor(item.prioridade)"
+                :dark="getColor(item.prioridade) !== 'yellow'"
+              >
+                {{ item.prioridade }}
+              </v-chip>
+            </template>
+          </v-data-table>
+        </v-card>
+      </v-container>
+    </v-dialog>
+  </v-row>
 </template>
 
 <script>
 export default {
-    name: 'TableDialog',
-    props: {
-        table: {
-            type: Boolean,
-            require: true,
-        },
-        headers: {
-            type: Array,
-            require: true,
-        },
-        value: {
-            type: Array,
-            require: true,
-        },
-        loadingTable: {
-            type: Boolean,
-            require: true,
-        },
-        loadingCSV: {
-            type: Boolean,
-            require: true,
-        },
-        fDownloadCSV: {
-            type: Function,
-            require: true,
-        },
-        fCloseTable: {
-            type: Function,
-            require: true,
-        },
-        tableName: {
-            type: String,
-            require: true,
-        },
+  name: 'TableDialog',
+  props: {
+    table: {
+      type: Boolean,
+      require: true,
     },
+    headers: {
+      type: Array,
+      require: true,
+    },
+    value: {
+      type: Array,
+      require: true,
+    },
+    loadingTable: {
+      type: Boolean,
+      require: true,
+    },
+    loadingCSV: {
+      type: Boolean,
+      require: true,
+    },
+    fDownloadCSV: {
+      type: Function,
+      require: true,
+    },
+    fCloseTable: {
+      type: Function,
+      require: true,
+    },
+    tableName: {
+      type: String,
+      require: true,
+    },
+  },
 
-    methods: {
-        getColor(prioridade) {
-            switch (prioridade) {
-                case 'Muito Alta':
-                    return '#9400D3'
-                    break
-                case 'Alta':
-                    return 'red'
-                    break
-                case 'Media':
-                    return 'orange'
-                    break
-                case 'Baixa':
-                    return 'yellow'
-                    break
-                case 'Muito Baixa':
-                    return 'green'
-                    break
-                default:
-                    break
-            }
-        },
+  methods: {
+    getColor(prioridade) {
+      switch (prioridade) {
+        case 'Muito Alta':
+          return '#9400D3';
+          break;
+        case 'Alta':
+          return 'red';
+          break;
+        case 'Media':
+          return 'orange';
+          break;
+        case 'Baixa':
+          return 'yellow';
+          break;
+        case 'Muito Baixa':
+          return 'green';
+          break;
+        default:
+          break;
+      }
     },
-}
+  },
+};
 </script>
 
 <style scoped>

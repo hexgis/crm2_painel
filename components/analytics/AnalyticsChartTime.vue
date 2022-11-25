@@ -1,16 +1,19 @@
 <template>
-    <v-col v-if="data.length" :cols="cols">
-        <v-card class="elevation-5 chart-card">
-            <v-card-title> {{ name }}</v-card-title>
-            <client-only>
-                <component
-                    :is="chartComponent"
-                    :data="generateData()"
-                    :options="chartOptions"
-                />
-            </client-only>
-        </v-card>
-    </v-col>
+  <v-col
+    v-if="data.length"
+    :cols="cols"
+  >
+    <v-card class="elevation-5 chart-card">
+      <v-card-title> {{ name }}</v-card-title>
+      <client-only>
+        <component
+          :is="chartComponent"
+          :data="generateData()"
+          :options="chartOptions"
+        />
+      </client-only>
+    </v-card>
+  </v-col>
 </template>
 
 <i18n>
@@ -25,193 +28,189 @@
 </i18n>
 
 <script>
-import Vue from 'vue'
-import { mapState } from 'vuex'
-import moment from 'moment'
+import Vue from 'vue';
+import { mapState } from 'vuex';
+import moment from 'moment';
 
-const BarChart = Vue.component('BarChart')
-const LineChart = Vue.component('LineChart')
+const BarChart = Vue.component('BarChart');
+const LineChart = Vue.component('LineChart');
 
 function getTooltipDate(date) {
-    return moment(date).format('LL')
+  return moment(date).format('LL');
 }
 
 export default {
-    name: 'AnalyticsChartTime',
+  name: 'AnalyticsChartTime',
 
-    props: {
-        name: {
-            type: String,
-            default: '',
-        },
-        data: {
-            type: Array,
-            default: () => {
-                return []
+  props: {
+    name: {
+      type: String,
+      default: '',
+    },
+    data: {
+      type: Array,
+      default: () => [],
+    },
+    xAxis: {
+      type: String,
+      default: 'type',
+    },
+    yAxis: {
+      type: String,
+      default: 'time',
+    },
+    valueIdentifier: {
+      type: String,
+      default: 'area_km',
+    },
+    chartType: {
+      type: String,
+      default: 'bar',
+    },
+    cumulative: {
+      type: Boolean,
+      default: false,
+    },
+    filled: {
+      type: Boolean,
+      default: false,
+    },
+    cols: {
+      type: Number,
+      default: 6,
+    },
+  },
+
+  data: () => ({
+    chartComponent: BarChart,
+  }),
+
+  computed: {
+    chartOptions() {
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        tooltips: {
+          mode: 'x',
+          callbacks: {
+            title(tooltip) {
+              return getTooltipDate(tooltip[0].xLabel);
             },
+            label(tooltipItem, data) {
+              let label = data.datasets[tooltipItem.datasetIndex].label
+                                || '';
+
+              if (label) {
+                label += ': ';
+              }
+              label += `${tooltipItem.yLabel.toFixed(2)} km²`;
+              return label;
+            },
+          },
         },
-        xAxis: {
-            type: String,
-            default: 'type',
+        scales: {
+          xAxes: [
+            {
+              type: 'time',
+              time: {
+                unit: 'day',
+                displayFormats: {
+                  day: this.$t('date-axis-format'),
+                },
+              },
+              ticks: {
+                padding: 1,
+              },
+              offset: true,
+            },
+          ],
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
         },
-        yAxis: {
-            type: String,
-            default: 'time',
+        legend: {
+          position: 'bottom',
         },
-        valueIdentifier: {
-            type: String,
-            default: 'area_km',
+        elements: {
+          point: {
+            radius: 1,
+          },
         },
-        chartType: {
-            type: String,
-            default: 'bar',
-        },
-        cumulative: {
-            type: Boolean,
-            default: false,
-        },
-        filled: {
-            type: Boolean,
-            default: false,
-        },
-        cols: {
-            type: Number,
-            default: 6,
-        },
+      };
     },
 
-    data: () => ({
-        chartComponent: BarChart,
-    }),
+    ...mapState('analytics', ['colors']),
+  },
 
-    computed: {
-        chartOptions() {
-            return {
-                responsive: true,
-                maintainAspectRatio: false,
-                tooltips: {
-                    mode: 'x',
-                    callbacks: {
-                        title(tooltip) {
-                            return getTooltipDate(tooltip[0].xLabel)
-                        },
-                        label(tooltipItem, data) {
-                            let label =
-                                data.datasets[tooltipItem.datasetIndex].label ||
-                                ''
+  mounted() {
+    if (this.chartType === 'line') {
+      this.chartComponent = LineChart;
+    } else if (this.chartType === 'bar') {
+      this.chartComponent = BarChart;
+    }
+  },
 
-                            if (label) {
-                                label += ': '
-                            }
-                            label += tooltipItem.yLabel.toFixed(2) + ' km²'
-                            return label
-                        },
-                    },
-                },
-                scales: {
-                    xAxes: [
-                        {
-                            type: 'time',
-                            time: {
-                                unit: 'day',
-                                displayFormats: {
-                                    day: this.$t('date-axis-format'),
-                                },
-                            },
-                            ticks: {
-                                padding: 1,
-                            },
-                            offset: true,
-                        },
-                    ],
-                    yAxes: [
-                        {
-                            ticks: {
-                                beginAtZero: true,
-                            },
-                        },
-                    ],
-                },
-                legend: {
-                    position: 'bottom',
-                },
-                elements: {
-                    point: {
-                        radius: 1,
-                    },
-                },
-            }
-        },
+  methods: {
+    generateData() {
+      const values = {};
+      const previousValue = {};
+      const returnData = {
+        datasets: [],
+      };
 
-        ...mapState('analytics', ['colors']),
-    },
+      this.data.forEach((item) => {
+        const xIdentifier = item[this.xAxis];
+        const yIdentifier = item[this.yAxis];
 
-    mounted() {
-        if (this.chartType === 'line') {
-            this.chartComponent = LineChart
-        } else if (this.chartType === 'bar') {
-            this.chartComponent = BarChart
+        if (!values[xIdentifier]) {
+          values[xIdentifier] = {};
         }
+
+        if (!previousValue[xIdentifier]) {
+          previousValue[xIdentifier] = 0;
+        }
+
+        if (!values[xIdentifier][yIdentifier]) {
+          values[xIdentifier][yIdentifier] = item[this.valueIdentifier];
+          if (this.cumulative) {
+            values[xIdentifier][yIdentifier]
+                            += previousValue[xIdentifier];
+          }
+        } else {
+          values[xIdentifier][yIdentifier]
+                        += item[this.valueIdentifier];
+        }
+
+        previousValue[xIdentifier] = values[xIdentifier][yIdentifier];
+      });
+
+      for (const label in values) {
+        const points = [];
+        for (const time in values[label]) {
+          points.push({
+            x: this.$moment(time),
+            y: values[label][time],
+          });
+        }
+
+        returnData.datasets.push({
+          label,
+          data: points,
+          fill: this.filled,
+          lineTension: 0,
+          backgroundColor: this.colors[this.xAxis][label],
+          borderColor: this.colors[this.xAxis][label],
+          borderWidth: 2,
+          pointHitRadius: 6,
+        });
+      }
+
+      return returnData;
     },
-
-    methods: {
-        generateData() {
-            const values = {}
-            const previousValue = {}
-            const returnData = {
-                datasets: [],
-            }
-
-            this.data.forEach((item) => {
-                const xIdentifier = item[this.xAxis]
-                const yIdentifier = item[this.yAxis]
-
-                if (!values[xIdentifier]) {
-                    values[xIdentifier] = {}
-                }
-
-                if (!previousValue[xIdentifier]) {
-                    previousValue[xIdentifier] = 0
-                }
-
-                if (!values[xIdentifier][yIdentifier]) {
-                    values[xIdentifier][yIdentifier] =
-                        item[this.valueIdentifier]
-                    if (this.cumulative) {
-                        values[xIdentifier][yIdentifier] +=
-                            previousValue[xIdentifier]
-                    }
-                } else {
-                    values[xIdentifier][yIdentifier] +=
-                        item[this.valueIdentifier]
-                }
-
-                previousValue[xIdentifier] = values[xIdentifier][yIdentifier]
-            })
-
-            for (const label in values) {
-                const points = []
-                for (const time in values[label]) {
-                    points.push({
-                        x: this.$moment(time),
-                        y: values[label][time],
-                    })
-                }
-
-                returnData.datasets.push({
-                    label,
-                    data: points,
-                    fill: this.filled,
-                    lineTension: 0,
-                    backgroundColor: this.colors[this.xAxis][label],
-                    borderColor: this.colors[this.xAxis][label],
-                    borderWidth: 2,
-                    pointHitRadius: 6,
-                })
-            }
-
-            return returnData
-        },
-    },
-}
+  },
+};
 </script>
