@@ -62,10 +62,7 @@
                     v-model="filters.ti"
                     label="Terras Indigenas (Todas)"
                     :items="filterOptions.tiFilters"
-                    :disabled="
-                      !filters.id_acao.length &&
-                        !filterOptions.tiFilters.length
-                    "
+                    :disabled="!filters.id_acao.length &&!filterOptions.tiFilters.length"
                     item-text="no_ti"
                     item-value="co_funai"
                     multiple
@@ -79,9 +76,7 @@
                     <v-col>
                       <BaseDateField
                         v-model="filters.startDate"
-                        :disabled="
-                          !filters.id_acao.length
-                        "
+                        :disabled="!filters.id_acao.length"
                         :label="$t('start-date-label')"
                         :required="true"
                         outlined
@@ -90,9 +85,7 @@
                     <v-col>
                       <BaseDateField
                         v-model="filters.endDate"
-                        :disabled="
-                          !filters.id_acao.length
-                        "
+                        :disabled="!filters.id_acao.length"
                         :label="$t('end-date-label')"
                         :required="true"
                         :min-date="filters.startDate"
@@ -144,10 +137,7 @@
                 </v-col>
               </v-row>
             </v-container>
-            <v-container
-              class=""
-              fluid
-            >
+            <v-container fluid>
               <v-skeleton-loader
                 v-if="isLoadingFeatures"
                 type="table-row-divider@10"
@@ -160,11 +150,9 @@
                 fixed-header
                 height="45vh"
               >
-                <template #item.actions="{ item }">
+                <template #[`item.actions`]="{ item }">
                   <v-tooltip bottom>
-                    <template
-                      #activator="{ on, attrs }"
-                    >
+                    <template #activator="{ on, attrs }">
                       <v-icon
                         v-bind="attrs"
                         dense
@@ -175,14 +163,10 @@
                         mdi-download
                       </v-icon>
                     </template>
-                    <span>{{
-                      $t('download-label-tooltip')
-                    }}</span>
+                    <span>{{ $t('download-label-tooltip') }}</span>
                   </v-tooltip>
                   <v-tooltip bottom>
-                    <template
-                      #activator="{ on, attrs }"
-                    >
+                    <template #activator="{ on, attrs }">
                       <v-icon
                         v-bind="attrs"
                         dense
@@ -192,9 +176,7 @@
                         mdi-eye
                       </v-icon>
                     </template>
-                    <span>{{
-                      $t('view-label-tooltip')
-                    }}</span>
+                    <span>{{ $t('view-label-tooltip') }}</span>
                   </v-tooltip>
                 </template>
               </v-data-table>
@@ -280,14 +262,7 @@ export default {
       values: [],
     };
   },
-  watch: {
-    'filters.cr': function (value) {
-      this.populateTiOptions(value);
-    },
-    features(val) {
-      this.values = val;
-    },
-  },
+
   computed: {
     ...mapState('document', [
       'features',
@@ -298,6 +273,15 @@ export default {
       'isLoadingDocumentActions',
       'actions',
     ]),
+  },
+
+  watch: {
+    'filters.cr': function filterCr(value) {
+      this.populateTiOptions(value);
+    },
+    features(val) {
+      this.values = val;
+    },
   },
 
   mounted() {
@@ -332,11 +316,6 @@ export default {
 
     search() {
       this.getFeatures({ ...this.filters });
-      // this.setLoadingTable(true)
-      // this.values = this.desserts
-      // setInterval(() => {
-      //     this.setLoadingTable(false)
-      // }, 3000)
     },
 
     ...mapMutations('document', [
