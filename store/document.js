@@ -122,13 +122,17 @@ export const mutations = {
 export const actions = {
   async getFeatures({ state, commit, rootGetters }, data) {
     commit('setLoadingFeatures', true);
-    // commit('setFeatures', null)
+    commit('setFeatures', null);
     const params = { ...data };
     params.id_acao = params.id_acao.toString();
+    if (params.ti) {
+      params.ti = params.ti.toString();
+    }
+    if (params.cr) {
+      params.cr = params.cr.toString();
+    }
     try {
-      const response = await this.$api.$get('/documental/list/', {
-        params,
-      });
+      const response = await this.$api.$get('/documental/list/', { params });
       commit('setFeatures', response);
     } catch (exception) {
       commit(
@@ -150,9 +154,7 @@ export const actions = {
     commit('setLoadingDocumentActions', true);
 
     try {
-      const documentActions = await this.$api.$get(
-        `documental/list-actions/?action_type=${actionType}`,
-      );
+      const documentActions = await this.$api.$get(`documental/list-actions/?action_type=${actionType}`);
 
       if (documentActions) commit('setDocumentActions', documentActions);
     } catch (exception) {
