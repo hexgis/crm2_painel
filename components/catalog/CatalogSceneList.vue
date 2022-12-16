@@ -17,13 +17,13 @@
       </v-hover>
       <v-divider :key="i + '_divider'" />
     </template>
+    <!-- :length="paginationLength" -->
 
     <v-row class="mx-0">
       <v-col>
         <v-pagination
           v-model="page"
           color="primary"
-          :length="paginationLength"
           total-visible="5"
           @input="reloadScenes"
         />
@@ -97,9 +97,9 @@ export default {
   methods: {
     openMetadata(scene) {
       this.selectedScene = {
-        ...scene.properties,
-        cloud_cover: scene.properties.cloud_cover
-          ? scene.properties.cloud_cover
+        ...scene,
+        cloud_cover: scene.cloud_cover
+          ? scene.cloud_cover
           : 'Indisponível',
       };
     },

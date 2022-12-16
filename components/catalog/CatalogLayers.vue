@@ -22,14 +22,14 @@
         ref="tms"
         :tms="true"
         :url="
-          scene.properties.url_tms.replace('.xml', '.tms') +
+          scene.url_tms.replace('.xml', '.tms') +
             '/{z}/{x}/{y}.png'
         "
         :visible="scene.tmsVisible"
         :options="{
           zIndex: 2,
           maxZoom: 21,
-          maxNativeZoom: scene.properties.max_native_zoom || 15,
+          maxNativeZoom: scene.max_native_zoom || 15,
         }"
       />
     </l-layer-group>
@@ -38,18 +38,18 @@
       <template v-for="(bookmark, i) in bookmarks">
         <l-tile-layer
           v-for="layer in bookmark.catalogs"
-          :key="i + layer.properties.image"
+          :key="i + layer.image"
           ref="tms"
           :tms="true"
           :url="
-            layer.properties.url_tms.replace('.xml', '.tms') +
+            layer.url_tms.replace('.xml', '.tms') +
               '/{z}/{x}/{y}.png'
           "
           :visible="layer.visible"
           :options="{
             zIndex: 2,
             maxZoom: 21,
-            maxNativeZoom: layer.properties.max_native_zoom || 15,
+            maxNativeZoom: layer.max_native_zoom || 15,
           }"
         />
       </template>
@@ -120,8 +120,8 @@ export default {
       if (scene !== null) {
         this.$refs.sceneGrid.mapObject.eachLayer((layer) => {
           if (
-            layer.getLayers()[0].feature.properties.image
-                        === this.scenes[scene].properties.image
+            layer.getLayers()[0].image
+                        === this.scenes[scene].image
           ) {
             this.map.flyToBounds(layer.getBounds());
           }
@@ -158,8 +158,8 @@ export default {
       if (scene !== null) {
         this.$refs.sceneGrid.mapObject.eachLayer((layer) => {
           if (
-            layer.getLayers()[0].feature.properties.image
-                        === this.scenes[scene].properties.image
+            layer.getLayers()[0].image
+                        === this.scenes[scene].image
           ) {
             this.highlightLayer(layer);
           }
@@ -182,8 +182,8 @@ export default {
       this.selectedGridLayer = null;
     },
 
-    onEachFeature(feature, layer) {
-      layer.bindTooltip(feature.properties.locator, {
+    onEachFeature(locator, layer) {
+      layer.bindTooltip(locator, {
         permanent: true,
         direction: 'right',
         className: 'tooltip-grid',
