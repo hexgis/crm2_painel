@@ -140,7 +140,7 @@
           </v-tooltip>
         </v-col>
 
-        <v-col>
+        <!-- <v-col>
           <v-tooltip bottom>
             <template #activator="{ on }">
               <v-btn
@@ -166,7 +166,7 @@
             </template>
             <span> {{ $t('compare-label') }} </span>
           </v-tooltip>
-        </v-col>
+        </v-col> -->
       </v-row>
     </v-card-actions>
   </v-card>
