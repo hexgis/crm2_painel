@@ -42,7 +42,7 @@ export const getters = {
     const activeImages = [];
     for (const scene of state.scenes) {
       if (scene.tmsVisible) {
-        activeImages.push(scene.image);
+        activeImages.push(scene.properties.image);
       }
     }
     return activeImages;
@@ -121,7 +121,7 @@ export const mutations = {
     let index;
 
     for (let i = 0; i < state.timelineScenes.length; i++) {
-      if (state.timelineScenes[i].image === scene.image) {
+      if (state.timelineScenes[i].properties.image === scene.properties.image) {
         index = i;
         break;
       }
@@ -164,13 +164,13 @@ export const mutations = {
       && !state.scenesToCompare.leftInOtherPage
     ) {
       state.scenesToCompare.leftIndex = sceneIndex;
-      state.scenesToCompare.leftImage = state.scenes[sceneIndex].image;
+      state.scenesToCompare.leftImage = state.scenes[sceneIndex].properties.image;
     } else if (
       state.scenesToCompare.rightIndex == null
       && !state.scenesToCompare.rightInOtherPage
     ) {
       state.scenesToCompare.rightIndex = sceneIndex;
-      state.scenesToCompare.rightImage = state.scenes[sceneIndex].image;
+      state.scenesToCompare.rightImage = state.scenes[sceneIndex].properties.image;
     }
 
     if (
@@ -210,14 +210,14 @@ export const mutations = {
         if (
           index === state.scenesToCompare.leftIndex
           && !state.scenesToCompare.leftInOtherPage
-          && scene.image === state.scenesToCompare.leftImage
+          && scene.properties.image === state.scenesToCompare.leftImage
         ) {
           state.scenesToCompare.leftIndex = newIndex;
           state.scenesToCompare.leftInOtherPage = true;
         } else if (
           index === state.scenesToCompare.rightIndex
           && !state.scenesToCompare.rightInOtherPage
-          && scene.image === state.scenesToCompare.rightImage
+          && scene.properties.image === state.scenesToCompare.rightImage
         ) {
           state.scenesToCompare.rightIndex = newIndex;
           state.scenesToCompare.rightInOtherPage = true;
@@ -231,7 +231,7 @@ export const mutations = {
 
     state.otherPageScenes.forEach((oldScene, index) => {
       if (oldScene.page === newPage) {
-        const newSceneIndex = state.scenes.findIndex((scene) => scene.image === oldScene.image);
+        const newSceneIndex = state.scenes.findIndex((scene) => scene.properties.image === oldScene.properties.image);
 
         if (newSceneIndex !== -1) {
           state.scenes[newSceneIndex].tmsVisible = true;
@@ -239,7 +239,7 @@ export const mutations = {
           if (state.scenesToCompare.leftInOtherPage) {
             if (
               state.scenesToCompare.leftIndex === index
-              && state.scenes[newSceneIndex].image
+              && state.scenes[newSceneIndex].properties.image
               === state.scenesToCompare.leftImage
             ) {
               state.scenesToCompare.leftIndex = newSceneIndex;
@@ -250,7 +250,7 @@ export const mutations = {
           if (state.scenesToCompare.rightInOtherPage) {
             if (
               state.scenesToCompare.rightIndex === index
-              && state.scenes[newSceneIndex].image
+              && state.scenes[newSceneIndex].properties.image
               === state.scenesToCompare.rightImage
             ) {
               state.scenesToCompare.rightIndex = newSceneIndex;
@@ -268,13 +268,13 @@ export const mutations = {
     if (postRemove.length > 0) {
       if (state.scenesToCompare.leftInOtherPage) {
         state.scenesToCompare.leftIndex = state.otherPageScenes.findIndex((otherScene) => (
-          otherScene.image
+          otherScene.properties.image
               === state.scenesToCompare.leftImage
         ));
       }
       if (state.scenesToCompare.rightInOtherPage) {
         state.scenesToCompare.rightIndex = state.otherPageScenes.findIndex((otherScene) => (
-          otherScene.image
+          otherScene.properties.image
               === state.scenesToCompare.rightImage
         ));
       }
@@ -289,7 +289,7 @@ export const mutations = {
 export const actions = {
   async getSatellites({ commit }) {
     try {
-      const response = await this.$api.$get('catalog/satellite/');
+      const response = await this.$api.$get('catalog/satellite');
 
       commit('setSatellites', response);
     } catch (exception) {
@@ -333,9 +333,9 @@ export const actions = {
         params,
       });
       commit('setSceneCount', response.count);
-      commit('setScenes', { scenes: response, page: 1 });
+      commit('setScenes', { scenes: response.features, page: 1 });
       commit('setShowFeatures', true);
-      if (!response) {
+      if (!response.features.length) {
         commit(
           'alert/addAlert',
           { message: this.$i18n.t('no-result') },
@@ -361,7 +361,7 @@ export const actions = {
   async getTimelineScenes({ state, commit, rootGetters }, params) {
     commit('setLoadingScenes', true);
     try {
-      const response = await this.$api.$get('catalog/', {
+      const response = await this.$api.$get('catalog/images', {
         params,
       });
 
@@ -462,10 +462,10 @@ export const actions = {
 
       if (response) {
         commit('setSceneCount', response.count);
-        commit('setScenes', { scenes: response, page: 1 });
+        commit('setScenes', { scenes: response.features, page: 1 });
         commit('setShowFeatures', true);
 
-        if (!response.length) {
+        if (!response.features.length) {
           commit(
             'alert/addAlert',
             { message: this.$i18n.t('no-result') },

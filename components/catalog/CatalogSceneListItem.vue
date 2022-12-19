@@ -12,7 +12,7 @@
           <v-img
             :src="getSceneUrl(scene)"
             :lazy-src="'/img/placeholder.png'"
-            :alt="scene.image"
+            :alt="scene.properties.image"
           />
         </v-col>
 
@@ -21,39 +21,39 @@
             <div class="d-flex flex-row-reverse mb-1">
               <v-icon> mdi-calendar </v-icon>
               <span class="mr-3">
-                {{ $date(scene.date) }}
+                {{ $date(scene.properties.date) }}
               </span>
             </div>
             <div class="d-flex flex-row-reverse mb-1">
               <v-icon> mdi-clock-outline </v-icon>
               <span class="mr-3">
-                {{ $time(scene.date) }}
+                {{ $time(scene.properties.date) }}
               </span>
             </div>
             <div class="d-flex flex-row-reverse mb-1">
               <v-icon> mdi-web </v-icon>
               <span class="mr-3">
-                {{ scene.locator }}
+                {{ scene.properties.locator }}
               </span>
             </div>
             <div class="d-flex flex-row-reverse mb-1">
               <v-icon> mdi-satellite-variant </v-icon>
               <span class="mr-3">
-                {{ scene.satellite }}
+                {{ scene.properties.satellite }}
               </span>
             </div>
             <div class="d-flex flex-row-reverse mb-1">
               <v-icon> mdi-shape </v-icon>
               <span class="mr-3 text-uppercase">
-                {{ scene.type }}
+                {{ scene.properties.type }}
               </span>
             </div>
             <div class="d-flex flex-row-reverse">
               <v-icon> mdi-weather-partly-cloudy </v-icon>
               <span class="mr-3">
                 {{
-                  scene.cloud_cover
-                    ? scene.cloud_cover.toFixed(
+                  scene.properties.cloud_cover
+                    ? scene.properties.cloud_cover.toFixed(
                       1
                     ) + '%'
                     : 'Indisponível'
@@ -255,7 +255,7 @@ export default {
     },
 
     downloadScene(scene) {
-      window.open(scene.image_path);
+      window.open(scene.properties.image_path);
     },
 
     isActiveCompare(index) {
@@ -302,7 +302,7 @@ export default {
     },
 
     getSceneUrl(scene) {
-      return scene.preview || '/img/placeholder.png';
+      return scene.properties.preview || '/img/placeholder.png';
     },
 
     ...mapMutations('catalog', [
