@@ -64,7 +64,6 @@
               >
                 {{ item.prioridade }}
               </v-chip>
-              <MapPrinterPriority />
             </template>
           </v-data-table>
         </v-card>
@@ -74,12 +73,10 @@
 </template>
 
 <script>
-import MapPrinterPriority from '@/components/priority/MapPrinterPriority.vue';
 
 export default {
   name: 'TableDialog',
   components: {
-    MapPrinterPriority,
 
   },
   props: {
