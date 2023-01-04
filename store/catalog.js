@@ -13,14 +13,14 @@ export const state = () => ({
   hoveredGridScene: null,
   zoomedScene: null,
 
-  scenesToCompare: {
-    leftIndex: null,
-    leftImage: null,
-    leftInOtherPage: false,
-    rightIndex: null,
-    rightImage: null,
-    rightInOtherPage: false,
-  },
+  // scenesToCompare: {
+  //   leftIndex: null,
+  //   leftImage: null,
+  //   leftInOtherPage: false,
+  //   rightIndex: null,
+  //   rightImage: null,
+  //   rightInOtherPage: false,
+  // },
 
   isComparing: false,
 
@@ -99,23 +99,23 @@ export const mutations = {
     };
   },
 
-  setTimelineScenes(state, scenes) {
-    state.timelineScenes = [];
-    for (const scene of scenes.features) {
-      scene.visible = false;
-      state.timelineScenes.push(scene);
-    }
+  // setTimelineScenes(state, scenes) {
+  //   state.timelineScenes = [];
+  //   for (const scene of scenes.features) {
+  //     scene.visible = false;
+  //     state.timelineScenes.push(scene);
+  //   }
 
-    state.showTimeline = true;
-  },
+  //   state.showTimeline = true;
+  // },
 
-  setShowTimeline(state, timeline) {
-    state.showTimeline = timeline;
-    if (!timeline && state.timelineScenes[state.lastIndex]) {
-      state.timelineScenes[state.lastIndex].visible = false;
-      state.lastIndex = null;
-    }
-  },
+  // setShowTimeline(state, timeline) {
+  //   state.showTimeline = timeline;
+  //   if (!timeline && state.timelineScenes[state.lastIndex]) {
+  //     state.timelineScenes[state.lastIndex].visible = false;
+  //     state.lastIndex = null;
+  //   }
+  // },
 
   setVisibility(state, { scene, visible }) {
     let index;
@@ -148,48 +148,48 @@ export const mutations = {
     state.zoomedScene = scene;
   },
 
-  toggleSceneToCompare(state, sceneIndex) {
-    if (
-      state.scenesToCompare.leftIndex === sceneIndex
-      && !state.scenesToCompare.leftInOtherPage
-    ) {
-      state.scenesToCompare.leftIndex = null;
-    } else if (
-      state.scenesToCompare.rightIndex === sceneIndex
-      && !state.scenesToCompare.rightInOtherPage
-    ) {
-      state.scenesToCompare.rightIndex = null;
-    } else if (
-      state.scenesToCompare.leftIndex == null
-      && !state.scenesToCompare.leftInOtherPage
-    ) {
-      state.scenesToCompare.leftIndex = sceneIndex;
-      state.scenesToCompare.leftImage = state.scenes[sceneIndex].properties.image;
-    } else if (
-      state.scenesToCompare.rightIndex == null
-      && !state.scenesToCompare.rightInOtherPage
-    ) {
-      state.scenesToCompare.rightIndex = sceneIndex;
-      state.scenesToCompare.rightImage = state.scenes[sceneIndex].properties.image;
-    }
+  // toggleSceneToCompare(state, sceneIndex) {
+  //   if (
+  //     state.scenesToCompare.leftIndex === sceneIndex
+  //     && !state.scenesToCompare.leftInOtherPage
+  //   ) {
+  //     state.scenesToCompare.leftIndex = null;
+  //   } else if (
+  //     state.scenesToCompare.rightIndex === sceneIndex
+  //     && !state.scenesToCompare.rightInOtherPage
+  //   ) {
+  //     state.scenesToCompare.rightIndex = null;
+  //   } else if (
+  //     state.scenesToCompare.leftIndex == null
+  //     && !state.scenesToCompare.leftInOtherPage
+  //   ) {
+  //     state.scenesToCompare.leftIndex = sceneIndex;
+  //     state.scenesToCompare.leftImage = state.scenes[sceneIndex].properties.image;
+  //   } else if (
+  //     state.scenesToCompare.rightIndex == null
+  //     && !state.scenesToCompare.rightInOtherPage
+  //   ) {
+  //     state.scenesToCompare.rightIndex = sceneIndex;
+  //     state.scenesToCompare.rightImage = state.scenes[sceneIndex].properties.image;
+  //   }
 
-    if (
-      state.scenesToCompare.leftIndex != null
-      && state.scenesToCompare.rightIndex != null
-      && !state.isComparing
-    ) {
-      state.isComparing = true;
-    } else if (
-      state.scenesToCompare.leftIndex == null
-      && state.scenesToCompare.rightIndex == null
-    ) {
-      state.isComparing = false;
-    }
-  },
+  //   if (
+  //     state.scenesToCompare.leftIndex != null
+  //     && state.scenesToCompare.rightIndex != null
+  //     && !state.isComparing
+  //   ) {
+  //     state.isComparing = true;
+  //   } else if (
+  //     state.scenesToCompare.leftIndex == null
+  //     && state.scenesToCompare.rightIndex == null
+  //   ) {
+  //     state.isComparing = false;
+  //   }
+  // },
 
-  setIsComparing(state, payload) {
-    state.isComparing = payload;
-  },
+  // setIsComparing(state, payload) {
+  //   state.isComparing = payload;
+  // },
 
   clearScenesToCompare(state) {
     state.scenesToCompare = {
