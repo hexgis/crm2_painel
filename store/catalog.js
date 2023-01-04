@@ -358,29 +358,29 @@ export const actions = {
       commit('setShowFilters', false);
     }
   },
-  async getTimelineScenes({ state, commit, rootGetters }, params) {
-    commit('setLoadingScenes', true);
-    try {
-      const response = await this.$api.$get('catalog/images', {
-        params,
-      });
+  // async getTimelineScenes({ state, commit, rootGetters }, params) {
+  //   commit('setLoadingScenes', true);
+  //   try {
+  //     const response = await this.$api.$get('catalog/images', {
+  //       params,
+  //     });
 
-      commit('setTimelineScenes', response);
-    } catch (exception) {
-      commit(
-        'alert/addAlert',
-        {
-          message: this.$i18n.t('default-error', {
-            action: this.$i18n.t('retrieve'),
-            resource: this.$i18n.tc('catalog', 2),
-          }),
-        },
-        { root: true },
-      );
-    } finally {
-      commit('setLoadingScenes', false);
-    }
-  },
+  //     commit('setTimelineScenes', response);
+  //   } catch (exception) {
+  //     commit(
+  //       'alert/addAlert',
+  //       {
+  //         message: this.$i18n.t('default-error', {
+  //           action: this.$i18n.t('retrieve'),
+  //           resource: this.$i18n.tc('catalog', 2),
+  //         }),
+  //       },
+  //       { root: true },
+  //     );
+  //   } finally {
+  //     commit('setLoadingScenes', false);
+  //   }
+  // },
 
   async changeScenePage({ state, commit }) {
     commit('setLoadingScenes', true);
@@ -427,66 +427,66 @@ export const actions = {
     }
   },
 
-  async getImagesOnDates({ commit, rootGetters }, filters) {
-    const {
-      t0, t1, satIds, locator,
-    } = filters;
+  // async getImagesOnDates({ commit, rootGetters }, filters) {
+  //   const {
+  //     t0, t1, satIds, locator,
+  //   } = filters;
 
-    const catalogFilters = {
-      startDate: t0,
-      endDate: t1,
-      cloudCover: filters.cloudCover || 100,
-      satellites: satIds.join(','),
-      locator,
-      page: 1,
-      currentView: filters.currentView,
-    };
+  //   const catalogFilters = {
+  //     startDate: t0,
+  //     endDate: t1,
+  //     cloudCover: filters.cloudCover || 100,
+  //     satellites: satIds.join(','),
+  //     locator,
+  //     page: 1,
+  //     currentView: filters.currentView,
+  //   };
 
-    commit('setLoadingScenes', true);
-    commit('clearScenes');
-    commit('setPage', 1);
+  //   commit('setLoadingScenes', true);
+  //   commit('clearScenes');
+  //   commit('setPage', 1);
 
-    if (filters.currentView) {
-      catalogFilters.bbox = rootGetters['map/bbox'];
-    }
+  //   if (filters.currentView) {
+  //     catalogFilters.bbox = rootGetters['map/bbox'];
+  //   }
 
-    commit('setFilters', catalogFilters);
+  //   commit('setFilters', catalogFilters);
 
-    try {
-      const response = await this.$api.$get('catalog/images/changes', {
-        params: {
-          date__in: `${t0},${t1}`,
-          locator,
-        },
-      });
+  //   try {
+  //     const response = await this.$api.$get('catalog/images/changes', {
+  //       params: {
+  //         date__in: `${t0},${t1}`,
+  //         locator,
+  //       },
+  //     });
 
-      if (response) {
-        commit('setSceneCount', response.count);
-        commit('setScenes', { scenes: response.features, page: 1 });
-        commit('setShowFeatures', true);
+  //     if (response) {
+  //       commit('setSceneCount', response.count);
+  //       commit('setScenes', { scenes: response.features, page: 1 });
+  //       commit('setShowFeatures', true);
 
-        if (!response.features.length) {
-          commit(
-            'alert/addAlert',
-            { message: this.$i18n.t('no-result') },
-            { root: true },
-          );
-        }
-      }
-    } catch (exception) {
-      commit(
-        'alert/addAlert',
-        {
-          message: this.$i18n.t('default-error', {
-            action: this.$i18n.t('retrieve'),
-            resource: this.$i18n.tc('catalog', 2),
-          }),
-        },
-        { root: true },
-      );
-    } finally {
-      commit('setLoadingScenes', false);
-      commit('setShowFilters', false);
-    }
-  },
+  //       if (!response.features.length) {
+  //         commit(
+  //           'alert/addAlert',
+  //           { message: this.$i18n.t('no-result') },
+  //           { root: true },
+  //         );
+  //       }
+  //     }
+  //   } catch (exception) {
+  //     commit(
+  //       'alert/addAlert',
+  //       {
+  //         message: this.$i18n.t('default-error', {
+  //           action: this.$i18n.t('retrieve'),
+  //           resource: this.$i18n.tc('catalog', 2),
+  //         }),
+  //       },
+  //       { root: true },
+  //     );
+  //   } finally {
+  //     commit('setLoadingScenes', false);
+  //     commit('setShowFilters', false);
+  //   }
+  // },
 };
