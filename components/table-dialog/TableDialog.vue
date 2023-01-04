@@ -53,17 +53,48 @@
             multi-sort
             fixed-header
             height="65vh"
+            @click:row="handleClick"
           >
             <template
               v-if="[item.prioridade]"
               #[`item.prioridade`]="{ item }"
             >
-              <v-chip
-                :color="getColor(item.prioridade)"
-                :dark="getColor(item.prioridade) !== 'yellow'"
-              >
-                {{ item.prioridade }}
-              </v-chip>
+              <v-row>
+                <v-col
+                  cols="8"
+                >
+                  <v-chip
+                    class="mt-3"
+                    :color="getColor(item.prioridade)"
+                    :dark="getColor(item.prioridade) !== 'yellow'"
+                  >
+                    {{ item.prioridade }}
+                  </v-chip>
+                </v-col>
+                <v-col
+                  cols="2"
+                >
+                  <!-- <v-btn
+
+                    class="mx-2"
+                    fab
+                    dark
+                    small
+                    color="secondary"
+
+                    @click:row="handleClick()"
+                    @click="dialogPrint = true"
+                  >
+                    <v-icon dark>
+                      mdi-download
+                    </v-icon>
+                  </v-btn> -->
+
+                  <MapPrinter
+                    :value="dialogPrint"
+                  />
+                </v-col>
+              </v-row>
             </template>
           </v-data-table>
         </v-card>
@@ -73,8 +104,16 @@
 </template>
 
 <script>
+import { mapActions, mapMutations, mapState } from 'vuex';
+
+import PdfReport from '@/components/priority/PdfReport';
+import MapPrinter from '@/components/map/MapPrinter.vue';
+
 export default {
   name: 'TableDialog',
+
+  components: { PdfReport, MapPrinter },
+
   props: {
     table: {
       type: Boolean,
@@ -110,7 +149,45 @@ export default {
     },
   },
 
+  data() {
+    return {
+      row: null,
+      dialogPrint: false,
+      selected: [],
+      detail: [],
+    };
+  },
+
+  // computed: {
+  //   ...mapState('priority', [
+  //     'detail',
+  //   ]),
+  // },
+
   methods: {
+
+    onButtonClick(item) {
+      console.log(item.id);
+    },
+    // handleClick(row) {
+    //   console.log(row.id);
+    // },
+
+    async handleClick(row) {
+      try {
+        console.log(row);
+        this.detail = await this.$api.$get(
+          `priority/consolidated/detail/${row.id}/`,
+
+        );
+        this.setDetail(this.detail);
+      } catch (exception) {
+        this.$store.commit('alert/addAlert', {
+          message: this.$t('detail-api-error'),
+        });
+      }
+    },
+
     getColor(prioridade) {
       switch (prioridade) {
         case 'Muito Alta':
@@ -132,6 +209,13 @@ export default {
           break;
       }
     },
+    closeAnalyticalDialog(value) {
+      this.dialog = value;
+    },
+    ...mapMutations('priority', [
+      'setDetail',
+
+    ]),
   },
 };
 </script>

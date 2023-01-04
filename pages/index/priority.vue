@@ -203,11 +203,15 @@ export default {
 
   data() {
     return {
+      item: [],
+
       tab: null,
+      selected: [],
       items: ['MapStage', 'AnalytcalStage'],
       text: 'Texto de teste.',
       timer: '',
       headers: [
+        { text: 'Identificador', value: 'id' },
         { text: 'Código Funai', value: 'co_funai' },
         { text: 'Terra Indígena', value: 'no_ti' },
         { text: 'Coordenação Regional', value: 'ds_cr' },
@@ -315,5 +319,8 @@ export default {
 <style scoped>
 .container-height {
     max-height: 90vh;
+}
+.selected {
+    background-color: red
 }
 </style>

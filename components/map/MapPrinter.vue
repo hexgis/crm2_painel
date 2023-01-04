@@ -166,6 +166,14 @@ export default {
 
   components: { MapForPrint, MiniMapForPrint },
 
+  props: {
+    value: {
+      type: Boolean,
+      require: true,
+      default: false,
+    },
+  },
+
   data: () => ({
     dialogPrint: false,
     currentStep: 1,
@@ -181,6 +189,10 @@ export default {
       // { type: 'A3' },
     ],
   }),
+
+  mounted() {
+    this.dialogPrint = this.value;
+  },
 
   methods: {
     async saveImage() {

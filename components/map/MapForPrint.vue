@@ -594,8 +594,8 @@ export default {
   }),
 
   computed: {
-    ...mapState('map', ['bounds']),
-    ...mapState('priority', ['showFeatures']),
+    ...mapState('map', ['bounds', 'localBounds']),
+    ...mapState('priority', ['showFeatures', 'detail']),
     ...mapState('monitoring', ['showFeaturesMonitoring']),
     ...mapState('urgent-alerts', ['showFeaturesUrgentAlert']),
     ...mapState('supportLayers', [
@@ -633,6 +633,10 @@ export default {
         this.miniMap = this.$refs.miniPrintMap.mapObject;
 
         window.L = this.$L; // define leaflet global
+        if (this.detail !== null) {
+          this.flyTo();
+        }
+        console.log(this.detail);
 
         const currentBouldMap = this.map.getBounds();
         this.aimingRect = L.rectangle(currentBouldMap, {
@@ -679,6 +683,14 @@ export default {
     onMainMapMoving(e) {
       this.aimingRect.setBounds(this.map.getBounds());
     },
+
+    flyTo() {
+      this.map.flyTo([
+        this.detail.nu_latitude,
+        this.detail.nu_longitude,
+      ], 22);
+    },
+
   },
 };
 </script>
