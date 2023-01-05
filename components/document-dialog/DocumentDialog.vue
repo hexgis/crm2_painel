@@ -113,7 +113,7 @@
                     {{ $t('search-label') }}
                   </v-btn>
                 </v-col>
-                <DocumentUploadDialog />
+                <!-- <DocumentUploadDialog /> -->
               </v-row>
             </v-container>
           </v-card-text>
