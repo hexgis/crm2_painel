@@ -107,7 +107,7 @@ export const mutations = {
   },
 
   setDetail(state, detail) {
-    state.detail = detail;
+    state.detail = [detail];
   },
 
   setHeatMap(state, heatMap) {

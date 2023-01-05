@@ -531,6 +531,13 @@
         </div>
       </div>
     </v-col>
+    <div v-if="detail != []">
+      <v-data-table
+        :headers="headers"
+        :items="detail"
+        hide-default-footer
+      />
+    </div>
   </v-row>
 </template>
 
@@ -563,6 +570,17 @@ export default {
     },
   },
   data: () => ({
+
+    headers: [
+      { text: 'Terra Indígena', value: 'no_ti' },
+      { text: 'Código Funai', value: 'co_funai' },
+      { text: 'Coordenação Regional', value: 'ds_cr' },
+      { text: 'Classe', value: 'no_estagio' },
+      { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
+      { text: 'Latitude', value: 'nu_latitude' },
+      { text: 'Longitude', value: 'nu_longitude' },
+      { text: 'Prioridade', value: 'prioridade' },
+    ],
     map: null,
     miniMap: null,
     zoom: 1,
@@ -633,10 +651,6 @@ export default {
         this.miniMap = this.$refs.miniPrintMap.mapObject;
 
         window.L = this.$L; // define leaflet global
-        if (this.detail !== null) {
-          this.flyTo();
-        }
-        console.log(this.detail);
 
         const currentBouldMap = this.map.getBounds();
         this.aimingRect = L.rectangle(currentBouldMap, {
