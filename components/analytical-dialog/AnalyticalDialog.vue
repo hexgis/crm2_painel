@@ -32,40 +32,71 @@
             <v-tab-item>
               <v-container grid-list-xs>
                 <v-row>
+                  <!-- <v-col>
+                    <div>
+                      <v-select
+                        v-model="selectedHeaders"
+                        :items="groupingData"
+                        label="Agrupar por"
+                        outlined
+                        return-object
+                        :disabled="isLoadingFeatures"
+                        @input="groupByFunai()"
+                      >
+                        <template #selection="{ item, index }">
+                          <span>{{ item }}</span>
+                        </template>
+                      </v-select>
+                    </div>
+                  </v-col> -->
+
+                  <v-spacer />
+
+                  <div>
+                    <span class="text-uppercase">Agrupar por</span>
+                  </div>
+
                   <v-col cols="11">
                     <div class="mb-2">
                       <v-chip
+                        :disabled="isLoadingFeatures"
                         @click="groupByFunai()"
                       >
                         Terra Indigena
                       </v-chip>
                       <v-chip
+                        :disabled="isLoadingFeatures"
                         @click="groupByFunaiMonthYear()"
                       >
                         Terra Indigena, Mês e Ano
                       </v-chip>
                       <v-chip
+                        :disabled="isLoadingFeatures"
                         @click="groupByMonthYear()"
                       >
                         Mês e Ano
                       </v-chip>
                       <v-chip
+                        :disabled="isLoadingFeatures"
                         @click="groupByYear()"
                       >
                         Ano
                       </v-chip>
                       <v-chip
+                        :disabled="isLoadingFeatures"
                         @click="groupByDay()"
                       >
                         Dia
                       </v-chip>
                       <v-chip
+                        :disabled="isLoadingFeatures"
                         @click="groupByFunaiYear()"
                       >
                         Terra Indigena e Ano
                       </v-chip>
                     </div>
                   </v-col>
+
                   <v-spacer />
 
                   <v-col>
@@ -130,7 +161,6 @@ export default {
     LineChart,
     DoughnutChart,
   },
-
   props: {
     value: {
       type: Boolean,
@@ -164,6 +194,15 @@ export default {
         { text: 'DR Área Perc', value: 'dr_nu_area_perc' },
         { text: 'FF Área Perc', value: 'ff_nu_area_perc' },
       ],
+      groupingHeadeers: '',
+      groupingData: [
+        'Terra Indigena',
+        'Terra Indigena, Mês e Ano',
+        'Mês e Ano',
+        'Ano',
+        'Dia',
+        'Terra Indigena e Ano',
+      ],
       selectedHeaders: [],
       filters: {
         grouping: '',
@@ -181,6 +220,7 @@ export default {
     ...mapState('monitoring', [
       'analyticsMonitoring',
       'features',
+      'isLoadingFeatures',
     ]),
 
     ...mapMutations('monitoring', [
