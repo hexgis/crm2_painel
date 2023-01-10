@@ -52,45 +52,45 @@
 
                   <v-col cols="11">
                     <div>
-                      <span class="text-uppercase">Agrupar por</span>
+                      <span class="text-uppercase">Agrupar por:</span>
                     </div>
                     <div class="mb-2">
-                      <v-chip
+                      <v-btn
                         :disabled="isLoadingFeatures"
                         @click="groupByFunai()"
                       >
                         Terra Indigena
-                      </v-chip>
-                      <v-chip
+                      </v-btn>
+                      <v-btn
                         :disabled="isLoadingFeatures"
                         @click="groupByFunaiMonthYear()"
                       >
                         Terra Indigena, Mês e Ano
-                      </v-chip>
-                      <v-chip
+                      </v-btn>
+                      <v-btn
                         :disabled="isLoadingFeatures"
                         @click="groupByMonthYear()"
                       >
                         Mês e Ano
-                      </v-chip>
-                      <v-chip
+                      </v-btn>
+                      <v-btn
                         :disabled="isLoadingFeatures"
                         @click="groupByYear()"
                       >
                         Ano
-                      </v-chip>
-                      <v-chip
+                      </v-btn>
+                      <v-btn
                         :disabled="isLoadingFeatures"
                         @click="groupByDay()"
                       >
                         Dia
-                      </v-chip>
-                      <v-chip
+                      </v-btn>
+                      <v-btn
                         :disabled="isLoadingFeatures"
                         @click="groupByFunaiYear()"
                       >
                         Terra Indigena e Ano
-                      </v-chip>
+                      </v-btn>
                     </div>
                   </v-col>
 
