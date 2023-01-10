@@ -1,45 +1,5 @@
 <template>
   <v-container class="overflow-auto container-height">
-    <div class="tab-header flex justify-space-between">
-      <h4 class="subtitle-2 text-uppercase font-weight-regular">
-        {{ $t('title') }}
-      </h4>
-      <v-switch
-        v-if="features"
-        v-model="featuresMonitoring"
-        class="mt-n1 ml-5"
-        hide-details
-      />
-    </div>
-
-    <ShowDialog />
-
-    <v-container class="pa-0">
-      <v-list
-        v-if="!$fetchState.pending"
-        expand
-      >
-        <template v-for="group in orderedSupportLayersGroups">
-          <SupportLayersGroupAntropismo
-            :key="group.id"
-            :group="group"
-          />
-        </template>
-      </v-list>
-      <div v-if="$fetchState.pending">
-        <template v-for="i in 6">
-          <v-skeleton-loader
-            :key="i"
-            type="text"
-            class="mx-4 my-5"
-          />
-        </template>
-      </div>
-    </v-container>
-    <v-divider />
-    <div>
-      <MonitoringFilter @onSearch="search()" />
-    </div>
     <div
       v-if="showFeaturesMonitoring && !isLoadingFeatures"
       class="px-4"
@@ -88,6 +48,47 @@
         <v-spacer />
       </v-col>
     </div>
+    <div class="tab-header flex justify-space-between">
+      <h4 class="subtitle-2 text-uppercase font-weight-regular">
+        {{ $t('title') }}
+      </h4>
+      <v-switch
+        v-if="features"
+        v-model="featuresMonitoring"
+        class="mt-n1 ml-5"
+        hide-details
+      />
+    </div>
+
+    <ShowDialog />
+
+    <v-container class="pa-0">
+      <v-list
+        v-if="!$fetchState.pending"
+        expand
+      >
+        <template v-for="group in orderedSupportLayersGroups">
+          <SupportLayersGroupAntropismo
+            :key="group.id"
+            :group="group"
+          />
+        </template>
+      </v-list>
+      <div v-if="$fetchState.pending">
+        <template v-for="i in 6">
+          <v-skeleton-loader
+            :key="i"
+            type="text"
+            class="mx-4 my-5"
+          />
+        </template>
+      </div>
+    </v-container>
+    <v-divider />
+    <div>
+      <MonitoringFilter @onSearch="search()" />
+    </div>
+
     <v-footer
       absolute
       class="priority-footer"

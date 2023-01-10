@@ -50,13 +50,10 @@
                     </div>
                   </v-col> -->
 
-                  <v-spacer />
-
-                  <div>
-                    <span class="text-uppercase">Agrupar por</span>
-                  </div>
-
                   <v-col cols="11">
+                    <div>
+                      <span class="text-uppercase">Agrupar por</span>
+                    </div>
                     <div class="mb-2">
                       <v-chip
                         :disabled="isLoadingFeatures"
@@ -127,6 +124,7 @@
                   :headers="showHeaders"
                   :items="analyticsMonitoring"
                   :items-per-page="5"
+                  :loading="isLoadingFeatures"
                   class="elevation-1"
                   multi-sort
                 />
