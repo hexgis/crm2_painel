@@ -32,24 +32,6 @@
             <v-tab-item>
               <v-container grid-list-xs>
                 <v-row>
-                  <!-- <v-col>
-                    <div>
-                      <v-select
-                        v-model="selectedHeaders"
-                        :items="groupingData"
-                        label="Agrupar por"
-                        outlined
-                        return-object
-                        :disabled="isLoadingFeatures"
-                        @input="groupByFunai()"
-                      >
-                        <template #selection="{ item, index }">
-                          <span>{{ item }}</span>
-                        </template>
-                      </v-select>
-                    </div>
-                  </v-col> -->
-
                   <v-col cols="11">
                     <div>
                       <span class="text-uppercase">Agrupar por:</span>
