@@ -33,39 +33,49 @@
               <v-container grid-list-xs>
                 <v-row>
                   <v-col cols="11">
+                    <div>
+                      <span class="text-uppercase">Agrupar por:</span>
+                    </div>
                     <div class="mb-2">
-                      <v-chip
+                      <v-btn
+                        :disabled="isLoadingFeatures"
                         @click="groupByFunai()"
                       >
                         Terra Indigena
-                      </v-chip>
-                      <v-chip
+                      </v-btn>
+                      <v-btn
+                        :disabled="isLoadingFeatures"
                         @click="groupByFunaiMonthYear()"
                       >
                         Terra Indigena, Mês e Ano
-                      </v-chip>
-                      <v-chip
+                      </v-btn>
+                      <v-btn
+                        :disabled="isLoadingFeatures"
                         @click="groupByMonthYear()"
                       >
                         Mês e Ano
-                      </v-chip>
-                      <v-chip
+                      </v-btn>
+                      <v-btn
+                        :disabled="isLoadingFeatures"
                         @click="groupByYear()"
                       >
                         Ano
-                      </v-chip>
-                      <v-chip
+                      </v-btn>
+                      <v-btn
+                        :disabled="isLoadingFeatures"
                         @click="groupByDay()"
                       >
                         Dia
-                      </v-chip>
-                      <v-chip
+                      </v-btn>
+                      <v-btn
+                        :disabled="isLoadingFeatures"
                         @click="groupByFunaiYear()"
                       >
                         Terra Indigena e Ano
-                      </v-chip>
+                      </v-btn>
                     </div>
                   </v-col>
+
                   <v-spacer />
 
                   <v-col>
@@ -96,6 +106,7 @@
                   :headers="showHeaders"
                   :items="analyticsMonitoring"
                   :items-per-page="5"
+                  :loading="isLoadingFeatures"
                   class="elevation-1"
                   multi-sort
                 />
@@ -130,7 +141,6 @@ export default {
     LineChart,
     DoughnutChart,
   },
-
   props: {
     value: {
       type: Boolean,
@@ -181,6 +191,7 @@ export default {
     ...mapState('monitoring', [
       'analyticsMonitoring',
       'features',
+      'isLoadingFeatures',
     ]),
 
     ...mapMutations('monitoring', [
