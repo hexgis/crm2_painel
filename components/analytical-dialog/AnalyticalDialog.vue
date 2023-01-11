@@ -174,15 +174,6 @@ export default {
         { text: 'DR Área Perc', value: 'dr_nu_area_perc' },
         { text: 'FF Área Perc', value: 'ff_nu_area_perc' },
       ],
-      groupingHeadeers: '',
-      groupingData: [
-        'Terra Indigena',
-        'Terra Indigena, Mês e Ano',
-        'Mês e Ano',
-        'Ano',
-        'Dia',
-        'Terra Indigena e Ano',
-      ],
       selectedHeaders: [],
       filters: {
         grouping: '',
