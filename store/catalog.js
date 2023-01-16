@@ -13,17 +13,21 @@ export const state = () => ({
   hoveredGridScene: null,
   zoomedScene: null,
 
-  // TODO
-  // o CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
+  /*
+     TODO:
+      O CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
+   */
 
-  // scenesToCompare: {
-  //   leftIndex: null,
-  //   leftImage: null,
-  //   leftInOtherPage: false,
-  //   rightIndex: null,
-  //   rightImage: null,
-  //   rightInOtherPage: false,
-  // },
+  /*
+  scenesToCompare: {
+    leftIndex: null,
+    leftImage: null,
+    leftInOtherPage: false,
+    rightIndex: null,
+    rightImage: null,
+    rightInOtherPage: false,
+  },
+ */
 
   isComparing: false,
 
@@ -102,26 +106,30 @@ export const mutations = {
     };
   },
 
-  // TODO
-  // o CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
+  /*
+    TODO:
+     O CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
+  */
 
-  // setTimelineScenes(state, scenes) {
-  //   state.timelineScenes = [];
-  //   for (const scene of scenes.features) {
-  //     scene.visible = false;
-  //     state.timelineScenes.push(scene);
-  //   }
+/*
+  setTimelineScenes(state, scenes) {
+    state.timelineScenes = [];
+    for (const scene of scenes.features) {
+      scene.visible = false;
+      state.timelineScenes.push(scene);
+    }
 
-  //   state.showTimeline = true;
-  // },
+    state.showTimeline = true;
+  },
 
-  // setShowTimeline(state, timeline) {
-  //   state.showTimeline = timeline;
-  //   if (!timeline && state.timelineScenes[state.lastIndex]) {
-  //     state.timelineScenes[state.lastIndex].visible = false;
-  //     state.lastIndex = null;
-  //   }
-  // },
+  setShowTimeline(state, timeline) {
+    state.showTimeline = timeline;
+    if (!timeline && state.timelineScenes[state.lastIndex]) {
+      state.timelineScenes[state.lastIndex].visible = false;
+      state.lastIndex = null;
+    }
+  },
+*/
 
   setVisibility(state, { scene, visible }) {
     let index;
@@ -154,51 +162,55 @@ export const mutations = {
     state.zoomedScene = scene;
   },
 
-  // TODO
-  // o CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
+  /*
+    TODO:
+     O CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
+  */
 
-  // toggleSceneToCompare(state, sceneIndex) {
-  //   if (
-  //     state.scenesToCompare.leftIndex === sceneIndex
-  //     && !state.scenesToCompare.leftInOtherPage
-  //   ) {
-  //     state.scenesToCompare.leftIndex = null;
-  //   } else if (
-  //     state.scenesToCompare.rightIndex === sceneIndex
-  //     && !state.scenesToCompare.rightInOtherPage
-  //   ) {
-  //     state.scenesToCompare.rightIndex = null;
-  //   } else if (
-  //     state.scenesToCompare.leftIndex == null
-  //     && !state.scenesToCompare.leftInOtherPage
-  //   ) {
-  //     state.scenesToCompare.leftIndex = sceneIndex;
-  //     state.scenesToCompare.leftImage = state.scenes[sceneIndex].properties.image;
-  //   } else if (
-  //     state.scenesToCompare.rightIndex == null
-  //     && !state.scenesToCompare.rightInOtherPage
-  //   ) {
-  //     state.scenesToCompare.rightIndex = sceneIndex;
-  //     state.scenesToCompare.rightImage = state.scenes[sceneIndex].properties.image;
-  //   }
+ /*
+ toggleSceneToCompare(state, sceneIndex) {
+    if (
+      state.scenesToCompare.leftIndex === sceneIndex
+      && !state.scenesToCompare.leftInOtherPage
+    ) {
+      state.scenesToCompare.leftIndex = null;
+    } else if (
+      state.scenesToCompare.rightIndex === sceneIndex
+      && !state.scenesToCompare.rightInOtherPage
+    ) {
+      state.scenesToCompare.rightIndex = null;
+    } else if (
+      state.scenesToCompare.leftIndex == null
+      && !state.scenesToCompare.leftInOtherPage
+    ) {
+      state.scenesToCompare.leftIndex = sceneIndex;
+      state.scenesToCompare.leftImage = state.scenes[sceneIndex].properties.image;
+    } else if (
+      state.scenesToCompare.rightIndex == null
+      && !state.scenesToCompare.rightInOtherPage
+    ) {
+      state.scenesToCompare.rightIndex = sceneIndex;
+      state.scenesToCompare.rightImage = state.scenes[sceneIndex].properties.image;
+    }
 
-  //   if (
-  //     state.scenesToCompare.leftIndex != null
-  //     && state.scenesToCompare.rightIndex != null
-  //     && !state.isComparing
-  //   ) {
-  //     state.isComparing = true;
-  //   } else if (
-  //     state.scenesToCompare.leftIndex == null
-  //     && state.scenesToCompare.rightIndex == null
-  //   ) {
-  //     state.isComparing = false;
-  //   }
-  // },
+    if (
+      state.scenesToCompare.leftIndex != null
+      && state.scenesToCompare.rightIndex != null
+      && !state.isComparing
+    ) {
+      state.isComparing = true;
+    } else if (
+      state.scenesToCompare.leftIndex == null
+      && state.scenesToCompare.rightIndex == null
+    ) {
+      state.isComparing = false;
+    }
+  },
 
-  // setIsComparing(state, payload) {
-  //   state.isComparing = payload;
-  // },
+  setIsComparing(state, payload) {
+    state.isComparing = payload;
+  },
+  */
 
   clearScenesToCompare(state) {
     state.scenesToCompare = {
@@ -368,32 +380,36 @@ export const actions = {
     }
   },
 
-  // TODO
-  // o CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
+  /*
+   TODO:
+    O CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
+ */
 
-  // async getTimelineScenes({ state, commit, rootGetters }, params) {
-  //   commit('setLoadingScenes', true);
-  //   try {
-  //     const response = await this.$api.$get('catalog/images', {
-  //       params,
-  //     });
+  /*
+  async getTimelineScenes({ state, commit, rootGetters }, params) {
+    commit('setLoadingScenes', true);
+    try {
+      const response = await this.$api.$get('catalog/images', {
+        params,
+      });
 
-  //     commit('setTimelineScenes', response);
-  //   } catch (exception) {
-  //     commit(
-  //       'alert/addAlert',
-  //       {
-  //         message: this.$i18n.t('default-error', {
-  //           action: this.$i18n.t('retrieve'),
-  //           resource: this.$i18n.tc('catalog', 2),
-  //         }),
-  //       },
-  //       { root: true },
-  //     );
-  //   } finally {
-  //     commit('setLoadingScenes', false);
-  //   }
-  // },
+      commit('setTimelineScenes', response);
+    } catch (exception) {
+      commit(
+        'alert/addAlert',
+        {
+          message: this.$i18n.t('default-error', {
+            action: this.$i18n.t('retrieve'),
+            resource: this.$i18n.tc('catalog', 2),
+          }),
+        },
+        { root: true },
+      );
+    } finally {
+      commit('setLoadingScenes', false);
+    }
+  },
+  */
 
   async changeScenePage({ state, commit }) {
     commit('setLoadingScenes', true);
@@ -440,69 +456,73 @@ export const actions = {
     }
   },
 
-  // TODO
-  // o CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
+  /*
+    TODO:
+     O CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
+  */
 
-  // async getImagesOnDates({ commit, rootGetters }, filters) {
-  //   const {
-  //     t0, t1, satIds, locator,
-  //   } = filters;
+  /*
+  async getImagesOnDates({ commit, rootGetters }, filters) {
+    const {
+      t0, t1, satIds, locator,
+    } = filters;
 
-  //   const catalogFilters = {
-  //     startDate: t0,
-  //     endDate: t1,
-  //     cloudCover: filters.cloudCover || 100,
-  //     satellites: satIds.join(','),
-  //     locator,
-  //     page: 1,
-  //     currentView: filters.currentView,
-  //   };
+    const catalogFilters = {
+      startDate: t0,
+      endDate: t1,
+      cloudCover: filters.cloudCover || 100,
+      satellites: satIds.join(','),
+      locator,
+      page: 1,
+      currentView: filters.currentView,
+    };
 
-  //   commit('setLoadingScenes', true);
-  //   commit('clearScenes');
-  //   commit('setPage', 1);
+    commit('setLoadingScenes', true);
+    commit('clearScenes');
+    commit('setPage', 1);
 
-  //   if (filters.currentView) {
-  //     catalogFilters.bbox = rootGetters['map/bbox'];
-  //   }
+    if (filters.currentView) {
+      catalogFilters.bbox = rootGetters['map/bbox'];
+    }
 
-  //   commit('setFilters', catalogFilters);
+    commit('setFilters', catalogFilters);
 
-  //   try {
-  //     const response = await this.$api.$get('catalog/images/changes', {
-  //       params: {
-  //         date__in: `${t0},${t1}`,
-  //         locator,
-  //       },
-  //     });
+    try {
+      const response = await this.$api.$get('catalog/images/changes', {
+        params: {
+          date__in: `${t0},${t1}`,
+          locator,
+        },
+      });
 
-  //     if (response) {
-  //       commit('setSceneCount', response.count);
-  //       commit('setScenes', { scenes: response.features, page: 1 });
-  //       commit('setShowFeatures', true);
+      if (response) {
+        commit('setSceneCount', response.count);
+        commit('setScenes', { scenes: response.features, page: 1 });
+        commit('setShowFeatures', true);
 
-  //       if (!response.features.length) {
-  //         commit(
-  //           'alert/addAlert',
-  //           { message: this.$i18n.t('no-result') },
-  //           { root: true },
-  //         );
-  //       }
-  //     }
-  //   } catch (exception) {
-  //     commit(
-  //       'alert/addAlert',
-  //       {
-  //         message: this.$i18n.t('default-error', {
-  //           action: this.$i18n.t('retrieve'),
-  //           resource: this.$i18n.tc('catalog', 2),
-  //         }),
-  //       },
-  //       { root: true },
-  //     );
-  //   } finally {
-  //     commit('setLoadingScenes', false);
-  //     commit('setShowFilters', false);
-  //   }
-  // },
+        if (!response.features.length) {
+          commit(
+            'alert/addAlert',
+            { message: this.$i18n.t('no-result') },
+            { root: true },
+          );
+        }
+      }
+    } catch (exception) {
+      commit(
+        'alert/addAlert',
+        {
+          message: this.$i18n.t('default-error', {
+            action: this.$i18n.t('retrieve'),
+            resource: this.$i18n.tc('catalog', 2),
+          }),
+        },
+        { root: true },
+      );
+    } finally {
+      commit('setLoadingScenes', false);
+      commit('setShowFilters', false);
+    }
+  },
+  */
 };

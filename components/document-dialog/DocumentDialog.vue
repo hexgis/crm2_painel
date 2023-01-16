@@ -113,8 +113,11 @@
                     {{ $t('search-label') }}
                   </v-btn>
                 </v-col>
-                <!-- TODO
-   o CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE -->
+                <!--
+                  TODO:
+                  O CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
+                  PARA IMPLEMENTAR A FUNCIONALIDADE DE UPLOAD DE ARQUIVOS
+                -->
 
                 <!-- <DocumentUploadDialog /> -->
               </v-row>
