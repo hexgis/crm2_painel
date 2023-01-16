@@ -73,8 +73,12 @@
 </template>
 
 <script>
+
 export default {
   name: 'TableDialog',
+  components: {
+
+  },
   props: {
     table: {
       type: Boolean,

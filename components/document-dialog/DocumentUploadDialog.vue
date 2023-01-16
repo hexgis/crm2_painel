@@ -19,47 +19,70 @@
           </v-icon>
         </v-btn>
       </template>
-      <v-card style="width: 100vw">
+      <v-card v-if="dialog">
         <v-card-title class="text-h5 grey lighten-2">
           {{ $t('title-label') }}
         </v-card-title>
         <v-card-actions>
-          <v-col class="cols">
-            <v-select
-              :label="$t('action-label')"
-              :items="filterOptions.actions"
-              item-text="no_action"
-              item-value="id_action"
-              hide-details
-              required
-              clearable
-            />
-            <v-select
-              label="Terras Indigenas (Todas)"
-              :items="filterOptions.tiFiltersUpload"
-              item-text="no_ti"
-              item-value="co_funai"
-              multiple
-              clearable
-              hide-details
-              required
-            />
-          </v-col>
-          <v-col class="mt-2">
-            <BaseDateField
-              v-model="filters.date"
-              :label="$t('date-label')"
-              required
-              outlined
-            />
-            <v-btn color="secondary">
-              <input
-                ref="fileInput"
-                type="file"
+          <v-container grid-list-xs>
+            <v-row>
+              <v-col
+                sm="12"
+                md="6"
               >
-              <v-icon> mdi-paperclip </v-icon>
-            </v-btn>
-          </v-col>
+                <v-select
+                  v-model="filters.ac"
+                  :label="$t('action-label')"
+                  :items="filterOptions.actions"
+                  item-text="no_action"
+                  item-value="id_action"
+                  hide-details
+                  required
+                  clearable
+                  class="mb-4"
+                />
+                <BaseDateField
+                  v-model="filters.date"
+                  :label="$t('date-label')"
+                  required
+                />
+              </v-col>
+              <v-col
+                sm="12"
+                md="6"
+              >
+                <v-select
+                  v-model="filters.ti"
+                  label="Terras Indigenas (Todas)"
+                  :items="filterOptions.tiFiltersUpload"
+                  item-text="no_ti"
+                  item-value="co_funai"
+                  multiple
+                  clearable
+                  hide-details
+                  required
+                />
+                <v-file-input
+                  v-model="filters.file"
+                  placeholder="Upload your documents"
+                  label="File input"
+                  multiple
+                  prepend-icon="mdi-paperclip"
+                  class="mt-4"
+                >
+                  <template #selection="{ text }">
+                    <v-chip
+                      small
+                      label
+                      color="primary"
+                    >
+                      {{ text }}
+                    </v-chip>
+                  </template>
+                </v-file-input>
+              </v-col>
+            </v-row>
+          </v-container>
         </v-card-actions>
         <v-divider />
         <v-card-actions>
@@ -74,6 +97,7 @@
           <v-btn
             color="secondary"
             text
+            :loading="isLoadingUploadDocument"
             @click="save()"
           >
             {{ $t('save-label') }}
@@ -119,45 +143,41 @@ export default {
         cr: [],
         ti: null,
         ac: [],
+        file: null,
       },
     };
   },
 
   computed: {
-    ...mapState('document', ['filterOptions', 'showDialogDocument']),
+    ...mapState('document', ['filterOptions', 'showDialogDocument', 'isLoadingUploadDocument']),
+  },
+
+  mounted() {
+    this.getTiUploadOptions();
   },
 
   methods: {
     save() {
-      // this.uploadFile()
+      this.uploadFile();
     },
 
     uploadFile() {
-      const params = {
-        co_cr: this.cr.toString(),
-        co_funai: this.ti,
-        id_acao: this.ac,
-        dt_cadastro: this.date,
-      };
-      const fileToUpload = this.$refs.fileInput.files[0];
       const formData = new FormData();
-      formData.append('fileToUpload', fileToUpload);
-      this.$api.$post('url', formData, params).then(() => {
-        console.log('Enviado com sucesso');
-      });
+      formData.append('id_acao', this.filters.ac);
+      formData.append('file', this.filters.file);
+      formData.append('id_document', Math.random() * (10000 - 100) + 100);
+      formData.append('no_document', 'Hex');
+
+      this.uploadIndigenousDocuments({ formData, filters: this.filters });
     },
 
     ...mapMutations('document', ['setShowDialogDocument']),
     ...mapActions('document', [
       'getTiUploadOptions',
       'sendData',
-      'getActionsUploadOptions',
+      'uploadIndigenousDocuments',
     ]),
   },
 
-  mounted() {
-    this.getTiUploadOptions();
-    this.getActionsUploadOptions();
-  },
 };
 </script>

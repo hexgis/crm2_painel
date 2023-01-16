@@ -37,12 +37,6 @@
               </span>
             </div>
             <div class="d-flex flex-row-reverse mb-1">
-              <v-icon> mdi-satellite-variant </v-icon>
-              <span class="mr-3">
-                {{ scene.properties.satellite }}
-              </span>
-            </div>
-            <div class="d-flex flex-row-reverse mb-1">
               <v-icon> mdi-shape </v-icon>
               <span class="mr-3 text-uppercase">
                 {{ scene.properties.type }}
@@ -146,7 +140,7 @@
           </v-tooltip>
         </v-col>
 
-        <v-col>
+        <!-- <v-col>
           <v-tooltip bottom>
             <template #activator="{ on }">
               <v-btn
@@ -172,7 +166,7 @@
             </template>
             <span> {{ $t('compare-label') }} </span>
           </v-tooltip>
-        </v-col>
+        </v-col> -->
       </v-row>
     </v-card-actions>
   </v-card>
