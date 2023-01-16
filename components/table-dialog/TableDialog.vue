@@ -90,7 +90,7 @@
                     </v-icon>
                   </v-btn> -->
 
-                  <MapPrinter
+                  <MapPrinterPriority
                     :value="dialogPrint"
                   />
                 </v-col>
@@ -107,12 +107,12 @@
 import { mapActions, mapMutations, mapState } from 'vuex';
 
 import PdfReport from '@/components/priority/PdfReport';
-import MapPrinter from '@/components/map/MapPrinter.vue';
+import MapPrinterPriority from '@/components/priority/MapPrinterPriority.vue';
 
 export default {
   name: 'TableDialog',
 
-  components: { PdfReport, MapPrinter },
+  components: { PdfReport, MapPrinterPriority },
 
   props: {
     table: {
@@ -180,6 +180,7 @@ export default {
           `priority/consolidated/detail/${row.id}/`,
 
         );
+        console.log(this.detail);
         this.setDetail(this.detail);
       } catch (exception) {
         this.$store.commit('alert/addAlert', {

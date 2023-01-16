@@ -13,7 +13,7 @@
           ref="printMap"
           :zoom="zoom"
           :options="optionsMap"
-          :bounds="bounds"
+          :bounds="initialBounds"
         >
           <l-tile-layer
             url="//{s}.tile.osm.org/{z}/{x}/{y}.png"
@@ -531,12 +531,19 @@
         </div>
       </div>
     </v-col>
+    <div v-if="detail != []">
+      <v-data-table
+        :headers="headers"
+        :items="detail"
+        hide-default-footer
+      />
+    </div>
   </v-row>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import MiniMapForPrint from '@/components/map/MiniMapForPrint.vue';
+import MiniMapForPrintPriority from '@/components/priority/MiniMapForPrintPriority.vue';
 import PriorityLayers from '@/components/priority/PriorityLayers';
 import MonitoringLayers from '@/components/monitoring/MonitoringLayers';
 import SupportLayers from '@/components/support/SupportLayers';
@@ -546,7 +553,7 @@ const intervalZooms = require('@/utils/zoomIntervalsGraticule');
 
 export default {
   components: {
-    MiniMapForPrint,
+    MiniMapForPrintPriority,
     PriorityLayers,
     MonitoringLayers,
     SupportLayers,
@@ -580,7 +587,10 @@ export default {
     zoomMiniMap: 4,
     valueScale: null,
     valueNorthArrow: null,
-
+    initialBounds: [
+      [-33.8689056, -73.9830625],
+      [5.2842873, -28.6341164],
+    ],
     attribution:
             '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | <span style="color: red; font-weight: bold; width: 100%">Mapa não oficial</span>',
     optionsMap: {
@@ -605,7 +615,7 @@ export default {
   }),
 
   computed: {
-    ...mapState('map', ['bounds', 'localBounds']),
+    ...mapState('map', []),
     ...mapState('priority', ['showFeatures', 'detail']),
     ...mapState('monitoring', ['showFeaturesMonitoring']),
     ...mapState('urgent-alerts', ['showFeaturesUrgentAlert']),
@@ -678,6 +688,7 @@ export default {
 
         this.valueScale = true;
         this.valueNorthArrow = true;
+        this.flyTo();
       } catch (error) {
         alert(`Erro ao gerar o mapa.${error}`);
       }
@@ -695,7 +706,7 @@ export default {
       this.map.flyTo([
         this.detail.nu_latitude,
         this.detail.nu_longitude,
-      ], 22);
+      ], 12);
     },
 
   },

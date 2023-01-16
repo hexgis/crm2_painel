@@ -170,7 +170,7 @@ export default {
       this.$refs.priorityPolygons.mapObject.clearLayers();
       if (this.isVectorGrid && this.featuresLoaded()) {
         this.createMonitoramentoHeatLayer();
-        this.flyTo();
+        // this.flyTo();
 
         this.vectorGrid = this.$L.vectorGrid
           .slicer(this.features, {
