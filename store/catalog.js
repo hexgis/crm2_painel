@@ -13,6 +13,9 @@ export const state = () => ({
   hoveredGridScene: null,
   zoomedScene: null,
 
+  // TODO
+  // o CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
+
   // scenesToCompare: {
   //   leftIndex: null,
   //   leftImage: null,
@@ -99,6 +102,9 @@ export const mutations = {
     };
   },
 
+  // TODO
+  // o CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
+
   // setTimelineScenes(state, scenes) {
   //   state.timelineScenes = [];
   //   for (const scene of scenes.features) {
@@ -147,6 +153,9 @@ export const mutations = {
   setZoomedScene(state, scene) {
     state.zoomedScene = scene;
   },
+
+  // TODO
+  // o CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
 
   // toggleSceneToCompare(state, sceneIndex) {
   //   if (
@@ -358,6 +367,10 @@ export const actions = {
       commit('setShowFilters', false);
     }
   },
+
+  // TODO
+  // o CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
+
   // async getTimelineScenes({ state, commit, rootGetters }, params) {
   //   commit('setLoadingScenes', true);
   //   try {
@@ -426,6 +439,9 @@ export const actions = {
       commit('setLoadingScenes', false);
     }
   },
+
+  // TODO
+  // o CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
 
   // async getImagesOnDates({ commit, rootGetters }, filters) {
   //   const {

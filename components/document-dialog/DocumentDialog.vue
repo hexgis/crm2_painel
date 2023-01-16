@@ -113,6 +113,9 @@
                     {{ $t('search-label') }}
                   </v-btn>
                 </v-col>
+                <!-- TODO
+   o CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE -->
+
                 <!-- <DocumentUploadDialog /> -->
               </v-row>
             </v-container>
