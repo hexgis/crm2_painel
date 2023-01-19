@@ -276,7 +276,7 @@ export default {
 
     createMonitoramentoHeatLayer() {
       const areas = this.features.features.map(
-        (feature) => feature.properties.area_ha,
+        (feature) => feature.properties.nu_area_km2,
       );
       const maxArea = Math.max.apply(null, areas);
 
