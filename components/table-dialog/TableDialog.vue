@@ -60,39 +60,18 @@
               #[`item.prioridade`]="{ item }"
             >
               <v-row>
-                <v-col
-                  cols="8"
-                >
+                <v-col>
                   <v-chip
-                    class="mt-3"
+                    class="mt-2"
                     :color="getColor(item.prioridade)"
                     :dark="getColor(item.prioridade) !== 'yellow'"
                   >
                     {{ item.prioridade }}
+                    <MapPrinterPriority
+                      class="mx-2 mb-2"
+                      :value="dialogPrint"
+                    />
                   </v-chip>
-                </v-col>
-                <v-col
-                  cols="2"
-                >
-                  <!-- <v-btn
-
-                    class="mx-2"
-                    fab
-                    dark
-                    small
-                    color="secondary"
-
-                    @click:row="handleClick()"
-                    @click="dialogPrint = true"
-                  >
-                    <v-icon dark>
-                      mdi-download
-                    </v-icon>
-                  </v-btn> -->
-
-                  <MapPrinterPriority
-                    :value="dialogPrint"
-                  />
                 </v-col>
               </v-row>
             </template>
@@ -155,33 +134,25 @@ export default {
       dialogPrint: false,
       selected: [],
       detail: [],
+      featuresIndividual: null,
+      geometry: true,
     };
   },
 
-  // computed: {
-  //   ...mapState('priority', [
-  //     'detail',
-  //   ]),
-  // },
-
   methods: {
-
-    onButtonClick(item) {
-      console.log(item.id);
-    },
-    // handleClick(row) {
-    //   console.log(row.id);
-    // },
 
     async handleClick(row) {
       try {
-        console.log(row);
         this.detail = await this.$api.$get(
-          `priority/consolidated/detail/${row.id}/`,
+          `priority/consolidated/detail/${row.id}/?geometry=${false}`,
 
         );
-        console.log(this.detail);
+        this.featuresIndividual = await this.$api.$get(
+          `priority/consolidated/detail/${row.id}/?geometry=${true} `,
+
+        );
         this.setDetail(this.detail);
+        this.setfeaturesIndividual(this.featuresIndividual);
       } catch (exception) {
         this.$store.commit('alert/addAlert', {
           message: this.$t('detail-api-error'),
@@ -215,6 +186,7 @@ export default {
     },
     ...mapMutations('priority', [
       'setDetail',
+      'setfeaturesIndividual',
 
     ]),
   },

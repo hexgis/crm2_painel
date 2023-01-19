@@ -34,10 +34,8 @@
               class="north-arrow"
             >
           </l-control>
-          <PriorityLayers :map="map" />
-          <MonitoringLayers :map="map" />
+          <PriorityIndividualLayer :map="map" />
           <SupportLayers />
-          <AlertLayers :map="map" />
         </l-map>
       </client-only>
     </v-col>
@@ -544,7 +542,7 @@
 <script>
 import { mapState } from 'vuex';
 import MiniMapForPrintPriority from '@/components/priority/MiniMapForPrintPriority.vue';
-import PriorityLayers from '@/components/priority/PriorityLayers';
+import PriorityIndividualLayer from '@/components/priority/PriorityIndividualLayer';
 import MonitoringLayers from '@/components/monitoring/MonitoringLayers';
 import SupportLayers from '@/components/support/SupportLayers';
 import AlertLayers from '@/components/urgent-alerts/AlertLayers';
@@ -554,7 +552,7 @@ const intervalZooms = require('@/utils/zoomIntervalsGraticule');
 export default {
   components: {
     MiniMapForPrintPriority,
-    PriorityLayers,
+    PriorityIndividualLayer,
     MonitoringLayers,
     SupportLayers,
     AlertLayers,
@@ -688,7 +686,6 @@ export default {
 
         this.valueScale = true;
         this.valueNorthArrow = true;
-        this.flyTo();
       } catch (error) {
         alert(`Erro ao gerar o mapa.${error}`);
       }
@@ -700,13 +697,6 @@ export default {
 
     onMainMapMoving(e) {
       this.aimingRect.setBounds(this.map.getBounds());
-    },
-
-    flyTo() {
-      this.map.flyTo([
-        this.detail.nu_latitude,
-        this.detail.nu_longitude,
-      ], 12);
     },
 
   },

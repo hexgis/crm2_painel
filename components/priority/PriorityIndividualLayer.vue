@@ -3,36 +3,14 @@
     name="priorities"
     :visible="showFeatures"
   >
-    <l-layer-group
-      ref="priorityHeat"
-      :visible="heatMap"
-    />
+    <l-layer-group />
 
     <l-feature-group ref="priorityPolygons">
-      <l-popup
-        ref="popup"
-        :options="{
-          minWidth: 500,
-          className: 'card-popup',
-        }"
-      >
-        <BaseMetadataPopup
-          ref="popupComponent"
-          :feature="selectedMonitoringFeature"
-        />
-      </l-popup>
-
       <l-geo-json
         v-if="!isVectorGrid && featuresLoaded"
-        :geojson="features"
+        :geojson="featuresIndividual"
         :options="{ onEachFeature }"
       />
-
-      <!-- <BaseMetadataPopup
-                v-show="false"
-                ref="popupComponent"
-                :feature="selectedMonitoringFeature"
-            /> -->
     </l-feature-group>
   </l-layer-group>
 </template>
@@ -42,7 +20,7 @@ import { mapState, mapGetters } from 'vuex';
 import BaseMetadataPopup from '@/components/base/BaseMetadataPopup';
 
 export default {
-  name: 'PriorityLayers',
+  name: 'PriorityIndividualLayer',
 
   components: {
     BaseMetadataPopup,
@@ -96,7 +74,7 @@ export default {
   computed: {
     ...mapState('priority', [
       'showFeatures',
-      'features',
+      'featuresIndividual',
       'opacity',
       'heatMap',
     ]),
@@ -143,7 +121,7 @@ export default {
   },
 
   methods: {
-    vectorGridStyleFunction(priority) {
+    vectorGridStyleFunction(prioridade) {
       Object.keys(this.style).forEach((item) => {
         Object.keys(this.style[item]).forEach((i) => {
           if (i == 'fillOpacity') {
@@ -152,7 +130,7 @@ export default {
         });
       });
 
-      switch (priority) {
+      switch (prioridade) {
         case 'Muito Alta':
           return this.style.highest;
         case 'Alta':
@@ -169,11 +147,10 @@ export default {
     addFeatures() {
       this.$refs.priorityPolygons.mapObject.clearLayers();
       if (this.isVectorGrid && this.featuresLoaded()) {
-        this.createMonitoramentoHeatLayer();
         this.flyTo();
 
         this.vectorGrid = this.$L.vectorGrid
-          .slicer(this.features, {
+          .slicer(this.featuresIndividual, {
             maxZoom: 21,
             zIndex: 4,
             vectorTileLayerStyles: {
@@ -195,92 +172,19 @@ export default {
               }
             },
           })
-          .on('click', (e) => {
-            this.getFeatureDetails(e.layer.properties.id);
-          })
           .addTo(this.$refs.priorityPolygons.mapObject);
       }
     },
 
     onEachFeature(feature, layer) {
       layer.setStyle(this.setMonitoringStyle(feature));
-
-      layer.on('click', () => {
-        this.getFeatureDetails(feature.properties.id);
-      });
-    },
-
-    async getFeatureDetails(featureId) {
-      this.selectedMonitoringFeature = null;
-
-      try {
-        this.selectedMonitoringFeature = await this.$api.$get(
-          `priority/consolidated/detail/${featureId}/`,
-        );
-      } catch (exception) {
-        this.$store.commit('alert/addAlert', {
-          message: this.$t('detail-api-error'),
-        });
-      }
-    },
-
-    setMonitoringStyle(feature) {
-      console.log(this.style);
-      const { style } = this;
-      style.fillOpacity = this.opacity / 100;
-
-      switch (feature.properties.stage) {
-        case 'CR':
-          style.color = '#965213';
-          break;
-        case 'DR':
-          style.color = '#337f1e';
-          break;
-        case 'FF':
-          style.color = '#ba1a1a';
-          break;
-        case 'DG':
-          style.color = '#e0790b';
-          break;
-      }
-      return style;
     },
 
     flyTo() {
-      this.features.features.forEach((feature) => {
-        this.map.flyTo([
-          feature.properties.nu_latitude,
-          feature.properties.nu_longitude,
-        ], 10);
-      });
-    },
-
-    createMonitoramentoHeatLayer() {
-      const areas = this.features.features.map(
-        (feature) => feature.properties.nu_area_km2,
-      );
-      const maxArea = Math.max.apply(null, areas);
-
-      const heatData = [];
-      this.features.features.forEach((feature) => {
-        heatData.push([
-          feature.properties.nu_latitude,
-          feature.properties.nu_longitude,
-          feature.properties.nu_area_km2 / maxArea, // normalize by maximum area
-        ]);
-      });
-
-      if (this.heatmapLayer) { this.heatmapLayer.removeFrom(this.$refs.priorityHeat.mapObject); }
-
-      this.heatmapLayer = this.$L.heatLayer(heatData, {
-        minOpacity: 0.5,
-        maxZoom: 18,
-        radius: 20,
-        blur: 15,
-        zIndex: 4,
-      });
-
-      this.heatmapLayer.addTo(this.$refs.priorityHeat.mapObject);
+      this.map.flyTo([
+        this.featuresIndividual.properties.nu_latitude,
+        this.featuresIndividual.properties.nu_longitude,
+      ], 10);
     },
 
     ...mapGetters('priority', ['featuresLoaded']),

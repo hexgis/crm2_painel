@@ -5,8 +5,8 @@
         <v-btn
           fab
           ripple
-          height="36"
-          width="36"
+          height="32"
+          width="32"
           v-on="on"
         >
           <v-icon @click="dialogPrint = true">

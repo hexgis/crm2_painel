@@ -1,5 +1,6 @@
 export const state = () => ({
   features: null,
+  featuresIndividual: null,
   showFeatures: false,
   heatMap: false,
   detail: [],
@@ -52,6 +53,10 @@ export const mutations = {
 
   setParams(state, params) {
     state.params = params;
+  },
+
+  setfeaturesIndividual(state, featuresIndividual) {
+    state.featuresIndividual = featuresIndividual;
   },
 
   setFeatures(state, features) {
@@ -289,6 +294,7 @@ export const actions = {
       commit('setLoadingTable', false);
     }
   },
+
   async downloadTable({ commit, state, rootGetters }) {
     commit('setLoadingCSV', true);
 
@@ -349,6 +355,7 @@ export const actions = {
       commit('setLoadingCSV', false);
     }
   },
+
   async downloadGeoJson({ commit, state, rootGetters }) {
     commit('setLoadingGeoJson', true);
 
