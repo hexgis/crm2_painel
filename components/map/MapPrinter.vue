@@ -87,7 +87,7 @@
             step="2"
             class="ma-1 pa-1"
           >
-            <v-container v-if="currentStep == 2">
+            <v-container v-if="currentStep === 2">
               <div style="overflow-x: auto; overflow-y: auto">
                 <MapForPrint
                   id="printableMap"

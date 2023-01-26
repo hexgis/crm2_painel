@@ -539,11 +539,11 @@ export default {
       }
     },
 
-    onMainMapMoved(e) {
+    onMainMapMoved() {
       this.miniMap.setView(this.map.getCenter(), 4);
     },
 
-    onMainMapMoving(e) {
+    onMainMapMoving() {
       this.aimingRect.setBounds(this.map.getBounds());
     },
 
