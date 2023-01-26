@@ -15,17 +15,6 @@
     <ShowDialog />
 
     <v-container class="pa-0">
-      <v-list
-        v-if="!$fetchState.pending"
-        expand
-      >
-        <template v-for="group in orderedSupportLayersGroups">
-          <SupportLayersGroupAntropismo
-            :key="group.id"
-            :group="group"
-          />
-        </template>
-      </v-list>
       <div v-if="$fetchState.pending">
         <template v-for="i in 6">
           <v-skeleton-loader
@@ -36,7 +25,6 @@
         </template>
       </div>
     </v-container>
-    <v-divider />
     <div>
       <MonitoringFilter @onSearch="search()" />
     </div>

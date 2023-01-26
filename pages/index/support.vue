@@ -21,6 +21,12 @@
           :group="group"
         />
       </template>
+      <template v-for="group in orderedSupportLayersGroupsAntropismo">
+        <SupportLayersGroupAntropismo
+          :key="group.id"
+          :group="group"
+        />
+      </template>
     </v-list>
     <div v-if="$fetchState.pending">
       <template v-for="i in 6">
@@ -65,11 +71,12 @@ import { mapState } from 'vuex';
 import _ from 'lodash';
 
 import SupportLayersGroupBase from '@/components/support/SupportLayersGroupBase';
+import SupportLayersGroupAntropismo from '@/components/support/SupportLayersGroupAntropismo';
 
 export default {
   name: 'Support',
 
-  components: { SupportLayersGroupBase },
+  components: { SupportLayersGroupBase, SupportLayersGroupAntropismo },
 
   transition: 'scroll-y-transition',
 
@@ -77,12 +84,34 @@ export default {
     if (!Object.keys(this.supportCategoryGroupsBase).length) {
       await this.$store.dispatch('supportLayers/getCategoryGroupsBase');
     }
+    if (!Object.keys(this.supportCategoryGroupsAntropismo).length) {
+      await this.$store.dispatch(
+        'supportLayers/getCategoryGroupsAntropismo',
+      );
+    }
   },
 
   computed: {
     orderedSupportLayersGroups() {
       return _.sortBy(this.supportCategoryGroupsBase, 'order');
     },
+
+    orderedSupportLayersGroupsAntropismo() {
+      return _.sortBy(this.supportCategoryGroupsAntropismo, 'order');
+    },
+
+    showFeaturesAntropismo: {
+      get() {
+        return this.$store.state.supportLayers.showFeaturesSupportLayers;
+      },
+      set(value) {
+        this.$store.commit(
+          'supportLayers/setshowFeaturesSupportLayers',
+          value,
+        );
+      },
+    },
+
     showFeatures: {
       get() {
         return this.$store.state.supportLayers.showFeaturesSupportLayers;
@@ -95,7 +124,7 @@ export default {
       },
     },
 
-    ...mapState('supportLayers', ['supportCategoryGroupsBase', 'loading']),
+    ...mapState('supportLayers', ['supportCategoryGroupsBase', 'supportCategoryGroupsAntropismo', 'loading']),
   },
 };
 </script>
