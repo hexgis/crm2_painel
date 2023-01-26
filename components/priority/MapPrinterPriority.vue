@@ -5,8 +5,8 @@
         <v-btn
           fab
           ripple
-          height="36"
-          width="36"
+          height="32"
+          width="32"
           v-on="on"
         >
           <v-icon @click="dialogPrint = true">
@@ -87,9 +87,9 @@
             step="2"
             class="ma-1 pa-1"
           >
-            <v-container v-if="currentStep === 2">
+            <v-container v-if="currentStep == 2">
               <div style="overflow-x: auto; overflow-y: auto">
-                <MapForPrint
+                <MapForPrintPriority
                   id="printableMap"
                   class="pa-1"
                   :title-map="titleMap"
@@ -158,13 +158,13 @@
 
 <script>
 import domtoimage from 'dom-to-image';
-import MapForPrint from '@/components/map/MapForPrint.vue';
-import MiniMapForPrint from '@/components/map/MiniMapForPrint.vue';
+import MapForPrintPriority from '@/components/priority/MapForPrintPriority.vue';
+import MiniMapForPrintPriority from '@/components/priority/MiniMapForPrintPriority.vue';
 
 export default {
-  name: 'MapPrinter',
+  name: 'MapPrinterPriority',
 
-  components: { MapForPrint, MiniMapForPrint },
+  components: { MapForPrintPriority, MiniMapForPrintPriority },
 
   props: {
     value: {
