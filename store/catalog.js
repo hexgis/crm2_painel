@@ -13,6 +13,12 @@ export const state = () => ({
   hoveredGridScene: null,
   zoomedScene: null,
 
+  /*
+     TODO:
+      O CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
+   */
+
+  /*
   scenesToCompare: {
     leftIndex: null,
     leftImage: null,
@@ -21,6 +27,7 @@ export const state = () => ({
     rightImage: null,
     rightInOtherPage: false,
   },
+ */
 
   isComparing: false,
 
@@ -31,167 +38,179 @@ export const state = () => ({
   timelineScenes: [],
   showTimeline: false,
   lastIndex: null,
-})
+});
 
 export const getters = {
   showScenes(state) {
-    return state.scenes && state.scenes.length > 0
+    return state.scenes && state.scenes.length > 0;
   },
 
   activeImages(state) {
-    const activeImages = []
+    const activeImages = [];
     for (const scene of state.scenes) {
       if (scene.tmsVisible) {
-        activeImages.push(scene.properties.image)
+        activeImages.push(scene.properties.image);
       }
     }
-    return activeImages
+    return activeImages;
   },
-}
+};
 
 export const mutations = {
   setShowFeatures(state, showFeatures) {
-    state.showFeatures = showFeatures
+    state.showFeatures = showFeatures;
   },
 
   setSatellites(state, satellites) {
-    state.satellites = satellites
+    state.satellites = satellites;
   },
 
   setScenes(state, { scenes, page }) {
-    state.scenes = []
+    state.scenes = [];
     for (const scene of scenes) {
-      scene.tmsVisible = false
-      scene.page = page
-      state.scenes.push(scene)
+      scene.tmsVisible = false;
+      scene.page = page;
+      state.scenes.push(scene);
     }
   },
 
   setSceneCount(state, count) {
-    state.sceneCount = count
+    state.sceneCount = count;
   },
 
   setPage(state, page) {
-    state.page = page
+    state.page = page;
   },
 
   toggleTmsVisibility(state, { index, tmsVisible }) {
     state.scenes.splice(index, 1, {
       ...state.scenes[index],
       tmsVisible,
-    })
+    });
   },
 
   clearScenes(state) {
-    state.scenes = []
-    state.otherPageScenes = []
-    state.sceneCount = 0
+    state.scenes = [];
+    state.otherPageScenes = [];
+    state.sceneCount = 0;
   },
 
   setLoadingScenes(state, payload) {
-    state.isLoadingScenes = payload
+    state.isLoadingScenes = payload;
   },
 
   setFilters(state, filters) {
     state.filters = {
       ...state.filters,
       ...filters,
-    }
+    };
   },
 
+  /*
+    TODO:
+     O CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
+  */
+
+/*
   setTimelineScenes(state, scenes) {
-    state.timelineScenes = []
+    state.timelineScenes = [];
     for (const scene of scenes.features) {
-      scene.visible = false
-      state.timelineScenes.push(scene)
+      scene.visible = false;
+      state.timelineScenes.push(scene);
     }
 
-    state.showTimeline = true
+    state.showTimeline = true;
   },
 
   setShowTimeline(state, timeline) {
-    state.showTimeline = timeline
+    state.showTimeline = timeline;
     if (!timeline && state.timelineScenes[state.lastIndex]) {
-      state.timelineScenes[state.lastIndex].visible = false
-      state.lastIndex = null
+      state.timelineScenes[state.lastIndex].visible = false;
+      state.lastIndex = null;
     }
   },
+*/
 
-  setVisibility(state, {scene , visible }) {
-    let index
+  setVisibility(state, { scene, visible }) {
+    let index;
 
-    for(let i = 0; i < state.timelineScenes.length ; i++) {
-      if (state.timelineScenes[i].properties.image === scene.properties.image){
-        index = i
-        break
+    for (let i = 0; i < state.timelineScenes.length; i++) {
+      if (state.timelineScenes[i].properties.image === scene.properties.image) {
+        index = i;
+        break;
       }
     }
 
-    state.timelineScenes[index].visible = visible
+    state.timelineScenes[index].visible = visible;
     if (state.lastIndex == null || index == state.lastIndex) {
-      state.lastIndex = index
+      state.lastIndex = index;
     } else {
-      state.timelineScenes[state.lastIndex].visible = false
-      state.lastIndex = index
+      state.timelineScenes[state.lastIndex].visible = false;
+      state.lastIndex = index;
     }
   },
 
   setHoveredScene(state, scene) {
-    state.hoveredScene = scene
+    state.hoveredScene = scene;
   },
 
   setHoveredGridScene(state, sceneIndex) {
-    state.hoveredGridScene = sceneIndex
+    state.hoveredGridScene = sceneIndex;
   },
 
   setZoomedScene(state, scene) {
-    state.zoomedScene = scene
+    state.zoomedScene = scene;
   },
 
-  toggleSceneToCompare(state, sceneIndex) {
+  /*
+    TODO:
+     O CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
+  */
+
+ /*
+ toggleSceneToCompare(state, sceneIndex) {
     if (
-      state.scenesToCompare.leftIndex === sceneIndex &&
-      !state.scenesToCompare.leftInOtherPage
+      state.scenesToCompare.leftIndex === sceneIndex
+      && !state.scenesToCompare.leftInOtherPage
     ) {
-      state.scenesToCompare.leftIndex = null
+      state.scenesToCompare.leftIndex = null;
     } else if (
-      state.scenesToCompare.rightIndex === sceneIndex &&
-      !state.scenesToCompare.rightInOtherPage
+      state.scenesToCompare.rightIndex === sceneIndex
+      && !state.scenesToCompare.rightInOtherPage
     ) {
-      state.scenesToCompare.rightIndex = null
+      state.scenesToCompare.rightIndex = null;
     } else if (
-      state.scenesToCompare.leftIndex == null &&
-      !state.scenesToCompare.leftInOtherPage
+      state.scenesToCompare.leftIndex == null
+      && !state.scenesToCompare.leftInOtherPage
     ) {
-      state.scenesToCompare.leftIndex = sceneIndex
-      state.scenesToCompare.leftImage =
-        state.scenes[sceneIndex].properties.image
+      state.scenesToCompare.leftIndex = sceneIndex;
+      state.scenesToCompare.leftImage = state.scenes[sceneIndex].properties.image;
     } else if (
-      state.scenesToCompare.rightIndex == null &&
-      !state.scenesToCompare.rightInOtherPage
+      state.scenesToCompare.rightIndex == null
+      && !state.scenesToCompare.rightInOtherPage
     ) {
-      state.scenesToCompare.rightIndex = sceneIndex
-      state.scenesToCompare.rightImage =
-        state.scenes[sceneIndex].properties.image
+      state.scenesToCompare.rightIndex = sceneIndex;
+      state.scenesToCompare.rightImage = state.scenes[sceneIndex].properties.image;
     }
 
     if (
-      state.scenesToCompare.leftIndex != null &&
-      state.scenesToCompare.rightIndex != null &&
-      !state.isComparing
+      state.scenesToCompare.leftIndex != null
+      && state.scenesToCompare.rightIndex != null
+      && !state.isComparing
     ) {
-      state.isComparing = true
+      state.isComparing = true;
     } else if (
-      state.scenesToCompare.leftIndex == null &&
-      state.scenesToCompare.rightIndex == null
+      state.scenesToCompare.leftIndex == null
+      && state.scenesToCompare.rightIndex == null
     ) {
-      state.isComparing = false
+      state.isComparing = false;
     }
   },
 
   setIsComparing(state, payload) {
-    state.isComparing = payload
+    state.isComparing = payload;
   },
+  */
 
   clearScenesToCompare(state) {
     state.scenesToCompare = {
@@ -199,111 +218,101 @@ export const mutations = {
       leftInOtherPage: false,
       rightIndex: null,
       rightInOtherPage: false,
-    }
+    };
   },
 
   storeActivePageScenes(state) {
     state.scenes.forEach((scene, index) => {
       if (scene.tmsVisible) {
-        state.otherPageScenes.push(scene)
+        state.otherPageScenes.push(scene);
 
-        const newIndex = state.otherPageScenes.length - 1
+        const newIndex = state.otherPageScenes.length - 1;
 
         if (
-          index === state.scenesToCompare.leftIndex &&
-          !state.scenesToCompare.leftInOtherPage &&
-          scene.properties.image === state.scenesToCompare.leftImage
+          index === state.scenesToCompare.leftIndex
+          && !state.scenesToCompare.leftInOtherPage
+          && scene.properties.image === state.scenesToCompare.leftImage
         ) {
-          state.scenesToCompare.leftIndex = newIndex
-          state.scenesToCompare.leftInOtherPage = true
+          state.scenesToCompare.leftIndex = newIndex;
+          state.scenesToCompare.leftInOtherPage = true;
         } else if (
-          index === state.scenesToCompare.rightIndex &&
-          !state.scenesToCompare.rightInOtherPage &&
-          scene.properties.image === state.scenesToCompare.rightImage
+          index === state.scenesToCompare.rightIndex
+          && !state.scenesToCompare.rightInOtherPage
+          && scene.properties.image === state.scenesToCompare.rightImage
         ) {
-          state.scenesToCompare.rightIndex = newIndex
-          state.scenesToCompare.rightInOtherPage = true
+          state.scenesToCompare.rightIndex = newIndex;
+          state.scenesToCompare.rightInOtherPage = true;
         }
       }
-    })
+    });
   },
 
   checkPreviousActiveScenes(state, newPage) {
-    const postRemove = []
+    const postRemove = [];
 
     state.otherPageScenes.forEach((oldScene, index) => {
       if (oldScene.page === newPage) {
-        const newSceneIndex = state.scenes.findIndex((scene) => {
-          return scene.properties.image === oldScene.properties.image
-        })
+        const newSceneIndex = state.scenes.findIndex((scene) => scene.properties.image === oldScene.properties.image);
 
         if (newSceneIndex !== -1) {
-          state.scenes[newSceneIndex].tmsVisible = true
+          state.scenes[newSceneIndex].tmsVisible = true;
 
           if (state.scenesToCompare.leftInOtherPage) {
             if (
-              state.scenesToCompare.leftIndex === index &&
-              state.scenes[newSceneIndex].properties.image ===
-              state.scenesToCompare.leftImage
+              state.scenesToCompare.leftIndex === index
+              && state.scenes[newSceneIndex].properties.image
+              === state.scenesToCompare.leftImage
             ) {
-              state.scenesToCompare.leftIndex = newSceneIndex
-              state.scenesToCompare.leftInOtherPage = false
+              state.scenesToCompare.leftIndex = newSceneIndex;
+              state.scenesToCompare.leftInOtherPage = false;
             }
           }
 
           if (state.scenesToCompare.rightInOtherPage) {
             if (
-              state.scenesToCompare.rightIndex === index &&
-              state.scenes[newSceneIndex].properties.image ===
-              state.scenesToCompare.rightImage
+              state.scenesToCompare.rightIndex === index
+              && state.scenes[newSceneIndex].properties.image
+              === state.scenesToCompare.rightImage
             ) {
-              state.scenesToCompare.rightIndex = newSceneIndex
-              state.scenesToCompare.rightInOtherPage = false
+              state.scenesToCompare.rightIndex = newSceneIndex;
+              state.scenesToCompare.rightInOtherPage = false;
             }
           }
 
-          postRemove.push(index)
+          postRemove.push(index);
         }
       }
-    })
+    });
 
-    state.otherPageScenes = state.otherPageScenes.filter((_, index) => {
-      return !postRemove.includes(index)
-    })
+    state.otherPageScenes = state.otherPageScenes.filter((_, index) => !postRemove.includes(index));
 
     if (postRemove.length > 0) {
       if (state.scenesToCompare.leftInOtherPage) {
-        state.scenesToCompare.leftIndex =
-          state.otherPageScenes.findIndex((otherScene) => {
-            return (
-              otherScene.properties.image ===
-              state.scenesToCompare.leftImage
-            )
-          })
+        state.scenesToCompare.leftIndex = state.otherPageScenes.findIndex((otherScene) => (
+          otherScene.properties.image
+              === state.scenesToCompare.leftImage
+        ));
       }
       if (state.scenesToCompare.rightInOtherPage) {
-        state.scenesToCompare.rightIndex =
-          state.otherPageScenes.findIndex((otherScene) => {
-            return (
-              otherScene.properties.image ===
-              state.scenesToCompare.rightImage
-            )
-          })
+        state.scenesToCompare.rightIndex = state.otherPageScenes.findIndex((otherScene) => (
+          otherScene.properties.image
+              === state.scenesToCompare.rightImage
+        ));
       }
     }
   },
 
   setShowFilters(state, payload) {
-    state.showFilters = payload
+    state.showFilters = payload;
   },
-}
+};
 
 export const actions = {
   async getSatellites({ commit }) {
     try {
-      const response = await this.$api.$get('catalog/satellites')
+      const response = await this.$api.$get('catalog/satellite');
 
-      commit('setSatellites', response)
+      commit('setSatellites', response);
     } catch (exception) {
       commit(
         'alert/addAlert',
@@ -313,21 +322,21 @@ export const actions = {
             resource: this.$i18n.tc('satellite', 2),
           }),
         },
-        { root: true }
-      )
+        { root: true },
+      );
     }
   },
 
   async getScenes({ state, commit, rootGetters }, filters) {
-    commit('setLoadingScenes', true)
-    commit('clearScenes')
-    commit('setPage', 1)
+    commit('setLoadingScenes', true);
+    commit('clearScenes');
+    commit('setPage', 1);
 
     if (filters.currentView) {
-      filters.bbox = rootGetters['map/bbox']
+      filters.bbox = rootGetters['map/bbox'];
     }
 
-    commit('setFilters', filters)
+    commit('setFilters', filters);
 
     const params = {
       start_date: state.filters.startDate,
@@ -338,21 +347,21 @@ export const actions = {
         ? state.filters.satellites.join(',')
         : '',
       page: 1,
-    }
+    };
 
     try {
-      const response = await this.$api.$get('catalog/images', {
+      const response = await this.$api.$get('catalog/', {
         params,
-      })
-      commit('setSceneCount', response.count)
-      commit('setScenes', { scenes: response.features, page: 1 })
-      commit('setShowFeatures', true)
+      });
+      commit('setSceneCount', response.count);
+      commit('setScenes', { scenes: response.features, page: 1 });
+      commit('setShowFeatures', true);
       if (!response.features.length) {
         commit(
           'alert/addAlert',
           { message: this.$i18n.t('no-result') },
-          { root: true }
-        )
+          { root: true },
+        );
       }
     } catch (exception) {
       commit(
@@ -363,21 +372,28 @@ export const actions = {
             resource: this.$i18n.tc('catalog', 2),
           }),
         },
-        { root: true }
-      )
+        { root: true },
+      );
     } finally {
-      commit('setLoadingScenes', false)
-      commit('setShowFilters', false)
+      commit('setLoadingScenes', false);
+      commit('setShowFilters', false);
     }
   },
+
+  /*
+   TODO:
+    O CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
+ */
+
+  /*
   async getTimelineScenes({ state, commit, rootGetters }, params) {
-    commit('setLoadingScenes', true)
+    commit('setLoadingScenes', true);
     try {
       const response = await this.$api.$get('catalog/images', {
         params,
-      })
+      });
 
-      commit('setTimelineScenes', response)
+      commit('setTimelineScenes', response);
     } catch (exception) {
       commit(
         'alert/addAlert',
@@ -387,16 +403,17 @@ export const actions = {
             resource: this.$i18n.tc('catalog', 2),
           }),
         },
-        { root: true }
-      )
+        { root: true },
+      );
     } finally {
-      commit('setLoadingScenes', false)
+      commit('setLoadingScenes', false);
     }
   },
+  */
 
   async changeScenePage({ state, commit }) {
-    commit('setLoadingScenes', true)
-    commit('storeActivePageScenes')
+    commit('setLoadingScenes', true);
+    commit('storeActivePageScenes');
 
     const params = {
       start_date: state.filters.startDate,
@@ -407,21 +424,21 @@ export const actions = {
         ? state.filters.satellites.join(',')
         : '',
       page: state.page,
-    }
+    };
 
     try {
-      const response = await this.$api.$get('catalog/images', {
+      const response = await this.$api.$get('catalog/', {
         params,
-      })
-      commit('setScenes', { scenes: response.features, page: state.page })
+      });
+      commit('setScenes', { scenes: response.features, page: state.page });
       if (!response.features.length) {
         commit(
           'alert/addAlert',
           { message: this.$i18n.t('no-result') },
-          { root: true }
-        )
+          { root: true },
+        );
       } else {
-        commit('checkPreviousActiveScenes', state.page)
+        commit('checkPreviousActiveScenes', state.page);
       }
     } catch (exception) {
       commit(
@@ -432,15 +449,23 @@ export const actions = {
             resource: this.$i18n.tc('catalog', 2),
           }),
         },
-        { root: true }
-      )
+        { root: true },
+      );
     } finally {
-      commit('setLoadingScenes', false)
+      commit('setLoadingScenes', false);
     }
   },
 
+  /*
+    TODO:
+     O CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
+  */
+
+  /*
   async getImagesOnDates({ commit, rootGetters }, filters) {
-    const { t0, t1, satIds, locator } = filters
+    const {
+      t0, t1, satIds, locator,
+    } = filters;
 
     const catalogFilters = {
       startDate: t0,
@@ -450,37 +475,37 @@ export const actions = {
       locator,
       page: 1,
       currentView: filters.currentView,
-    }
+    };
 
-    commit('setLoadingScenes', true)
-    commit('clearScenes')
-    commit('setPage', 1)
+    commit('setLoadingScenes', true);
+    commit('clearScenes');
+    commit('setPage', 1);
 
     if (filters.currentView) {
-      catalogFilters.bbox = rootGetters['map/bbox']
+      catalogFilters.bbox = rootGetters['map/bbox'];
     }
 
-    commit('setFilters', catalogFilters)
+    commit('setFilters', catalogFilters);
 
     try {
-      const response = await this.$api.$get(`catalog/images/changes`, {
+      const response = await this.$api.$get('catalog/images/changes', {
         params: {
           date__in: `${t0},${t1}`,
           locator,
         },
-      })
+      });
 
       if (response) {
-        commit('setSceneCount', response.count)
-        commit('setScenes', { scenes: response.features, page: 1 })
-        commit('setShowFeatures', true)
+        commit('setSceneCount', response.count);
+        commit('setScenes', { scenes: response.features, page: 1 });
+        commit('setShowFeatures', true);
 
         if (!response.features.length) {
           commit(
             'alert/addAlert',
             { message: this.$i18n.t('no-result') },
-            { root: true }
-          )
+            { root: true },
+          );
         }
       }
     } catch (exception) {
@@ -492,11 +517,12 @@ export const actions = {
             resource: this.$i18n.tc('catalog', 2),
           }),
         },
-        { root: true }
-      )
+        { root: true },
+      );
     } finally {
-      commit('setLoadingScenes', false)
-      commit('setShowFilters', false)
+      commit('setLoadingScenes', false);
+      commit('setShowFilters', false);
     }
   },
-}
+  */
+};

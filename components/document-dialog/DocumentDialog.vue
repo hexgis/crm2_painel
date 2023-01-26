@@ -106,7 +106,13 @@
                     {{ $t('search-label') }}
                   </v-btn>
                 </v-col>
-                <DocumentUploadDialog />
+                <!--
+                  TODO:
+                  O CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
+                  PARA IMPLEMENTAR A FUNCIONALIDADE DE UPLOAD DE ARQUIVOS
+                -->
+
+                <!-- <DocumentUploadDialog /> -->
               </v-row>
             </v-container>
           </v-card-text>

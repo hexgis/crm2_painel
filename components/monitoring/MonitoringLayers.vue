@@ -266,17 +266,13 @@ export default {
     },
 
     flyTo() {
-      this.features.features.forEach((feature) => {
-        this.map.flyTo([
-          feature.properties.nu_latitude,
-          feature.properties.nu_longitude,
-        ], 10);
-      });
+      const bounds = this.$L.geoJSON(this.features).getBounds();
+      if (bounds.getNorthEast() && bounds.getSouthWest()) { this.map.flyToBounds(bounds); }
     },
 
     createMonitoramentoHeatLayer() {
       const areas = this.features.features.map(
-        (feature) => feature.properties.area_ha,
+        (feature) => feature.properties.nu_area_km2,
       );
       const maxArea = Math.max.apply(null, areas);
 

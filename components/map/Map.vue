@@ -111,7 +111,7 @@
 
         <!-- <ImageryLayers v-if="showImagery" :map="map" /> -->
 
-        <!-- <CatalogLayers :map="map" /> -->
+        <CatalogLayers :map="map" />
 
         <!-- <ChangeDetectionLayers :map="map" /> -->
 
@@ -187,7 +187,7 @@ import ZoomToCoords from '@/components/map/ZoomToCoords.vue';
 import FileLoaderControl from '@/components/map/file-loader/FileLoaderControl.vue';
 import FileLoaderLayers from '@/components/map/file-loader/FileLoaderLayers.vue';
 // import ImageryLayers from '@/components/imagery/ImageryLayers'
-// import CatalogLayers from '@/components/catalog/CatalogLayers'
+import CatalogLayers from '@/components/catalog/CatalogLayers';
 import MonitoringLayers from '@/components/monitoring/MonitoringLayers';
 // import MonitoringLayersGeoserver from '@/components/monitoring/MonitoringLayersGeoserver'
 import SupportLayers from '@/components/support/SupportLayers';
@@ -214,7 +214,7 @@ export default {
 
   components: {
     // ImageryLayers,
-    // CatalogLayers,
+    CatalogLayers,
     MonitoringLayers,
     // MonitoringLayersGeoserver,
     SupportLayers,
