@@ -53,17 +53,27 @@
             multi-sort
             fixed-header
             height="65vh"
+            @click:row="handleClick"
           >
             <template
               v-if="[item.prioridade]"
               #[`item.prioridade`]="{ item }"
             >
-              <v-chip
-                :color="getColor(item.prioridade)"
-                :dark="getColor(item.prioridade) !== 'yellow'"
-              >
-                {{ item.prioridade }}
-              </v-chip>
+              <v-row>
+                <v-col>
+                  <v-chip
+                    class="mt-2"
+                    :color="getColor(item.prioridade)"
+                    :dark="getColor(item.prioridade) !== 'yellow'"
+                  >
+                    {{ item.prioridade }}
+                    <MapPrinterPriority
+                      class="mx-2 mb-2"
+                      :value="dialogPrint"
+                    />
+                  </v-chip>
+                </v-col>
+              </v-row>
             </template>
           </v-data-table>
         </v-card>
@@ -73,12 +83,16 @@
 </template>
 
 <script>
+import { mapActions, mapMutations, mapState } from 'vuex';
+
+import PdfReport from '@/components/priority/PdfReport';
+import MapPrinterPriority from '@/components/priority/MapPrinterPriority.vue';
 
 export default {
   name: 'TableDialog',
-  components: {
 
-  },
+  components: { PdfReport, MapPrinterPriority },
+
   props: {
     table: {
       type: Boolean,
@@ -114,7 +128,38 @@ export default {
     },
   },
 
+  data() {
+    return {
+      row: null,
+      dialogPrint: false,
+      selected: [],
+      detail: [],
+      featuresIndividual: null,
+      geometry: true,
+    };
+  },
+
   methods: {
+
+    async handleClick(row) {
+      try {
+        this.detail = await this.$api.$get(
+          `priority/consolidated/detail/${row.id}/?geometry=${false}`,
+
+        );
+        this.featuresIndividual = await this.$api.$get(
+          `priority/consolidated/detail/${row.id}/?geometry=${true} `,
+
+        );
+        this.setDetail(this.detail);
+        this.setfeaturesIndividual(this.featuresIndividual);
+      } catch (exception) {
+        this.$store.commit('alert/addAlert', {
+          message: this.$t('detail-api-error'),
+        });
+      }
+    },
+
     getColor(prioridade) {
       switch (prioridade) {
         case 'Muito Alta':
@@ -136,6 +181,14 @@ export default {
           break;
       }
     },
+    closeAnalyticalDialog(value) {
+      this.dialog = value;
+    },
+    ...mapMutations('priority', [
+      'setDetail',
+      'setfeaturesIndividual',
+
+    ]),
   },
 };
 </script>
