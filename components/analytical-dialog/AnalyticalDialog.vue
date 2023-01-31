@@ -23,98 +23,96 @@
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-toolbar>
-      <v-card-text>
-        <v-container fluid>
-          <v-container grid-list-xs>
-            <v-row>
-              <v-col cols="11">
-                <div>
-                  <span class="text-uppercase">Agrupar por:</span>
-                </div>
-                <div class="mb-2">
-                  <v-btn
-                    :class="btn_ti"
-                    :disabled="isLoadingFeatures"
-                    @click="groupByFunai()"
-                  >
-                    Terra Indigena
-                  </v-btn>
-                  <v-btn
-                    :class="btn_ti_month_year"
-                    :disabled="isLoadingFeatures"
-                    @click="groupByFunaiMonthYear()"
-                  >
-                    Terra Indigena, Mês e Ano
-                  </v-btn>
-                  <v-btn
-                    :class="btn_month_year"
-                    :disabled="isLoadingFeatures"
-                    @click="groupByMonthYear()"
-                  >
-                    Mês e Ano
-                  </v-btn>
-                  <v-btn
-                    :class="btn_year"
-                    :disabled="isLoadingFeatures"
-                    @click="groupByYear()"
-                  >
-                    Ano
-                  </v-btn>
-                  <v-btn
-                    :class="btn_day"
-                    :disabled="isLoadingFeatures"
-                    @click="groupByDay()"
-                  >
-                    Dia
-                  </v-btn>
-                  <v-btn
-                    :class="btn_ti_year"
-                    :disabled="isLoadingFeatures"
-                    @click="groupByFunaiYear()"
-                  >
-                    Terra Indigena e Ano
-                  </v-btn>
-                </div>
-              </v-col>
+      <v-container fluid>
+        <v-container grid-list-xs>
+          <v-row>
+            <v-col cols="11">
+              <div>
+                <span class="text-uppercase">Agrupar por:</span>
+              </div>
+              <div class="mb-2">
+                <v-btn
+                  :class="btn_ti"
+                  :disabled="isLoadingFeatures"
+                  @click="groupByFunai()"
+                >
+                  Terra Indigena
+                </v-btn>
+                <v-btn
+                  :class="btn_ti_month_year"
+                  :disabled="isLoadingFeatures"
+                  @click="groupByFunaiMonthYear()"
+                >
+                  Terra Indigena, Mês e Ano
+                </v-btn>
+                <v-btn
+                  :class="btn_month_year"
+                  :disabled="isLoadingFeatures"
+                  @click="groupByMonthYear()"
+                >
+                  Mês e Ano
+                </v-btn>
+                <v-btn
+                  :class="btn_year"
+                  :disabled="isLoadingFeatures"
+                  @click="groupByYear()"
+                >
+                  Ano
+                </v-btn>
+                <v-btn
+                  :class="btn_day"
+                  :disabled="isLoadingFeatures"
+                  @click="groupByDay()"
+                >
+                  Dia
+                </v-btn>
+                <v-btn
+                  :class="btn_ti_year"
+                  :disabled="isLoadingFeatures"
+                  @click="groupByFunaiYear()"
+                >
+                  Terra Indigena e Ano
+                </v-btn>
+              </div>
+            </v-col>
 
-              <v-spacer />
+            <v-spacer />
 
-              <v-col>
-                <div>
-                  <v-select
-                    v-model="selectedHeaders"
-                    :items="headers"
-                    :disabled="isLoadingFeatures"
-                    label="Selecione as Colunas que Serão Apresentadas"
-                    multiple
-                    outlined
-                    return-object
-                  >
-                    <template #selection="{ item, index }">
-                      <v-chip v-if="index < 8">
-                        <span>{{ item.text }}</span>
-                      </v-chip>
-                      <span
-                        v-if="index === 8"
-                        class="grey--text caption"
-                      >(+{{ selectedHeaders.length - 8 }} colunas)</span>
-                    </template>
-                  </v-select>
-                </div>
-              </v-col>
-            </v-row>
-            <v-divider class="my-2" />
-            <v-data-table
-              :headers="showHeaders"
-              :items="analyticsMonitoring"
-              :items-per-page="5"
-              :loading="isLoadingFeatures"
-              class="elevation-1"
-              multi-sort
-            />
-          </v-container>
+            <v-col>
+              <div>
+                <v-select
+                  v-model="selectedHeaders"
+                  :items="headers"
+                  :disabled="isLoadingFeatures"
+                  label="Selecione as Colunas que Serão Apresentadas"
+                  multiple
+                  outlined
+                  return-object
+                >
+                  <template #selection="{ item, index }">
+                    <v-chip v-if="index < 8">
+                      <span>{{ item.text }}</span>
+                    </v-chip>
+                    <span
+                      v-if="index === 8"
+                      class="grey--text caption"
+                    >(+{{ selectedHeaders.length - 8 }} colunas)</span>
+                  </template>
+                </v-select>
+              </div>
+            </v-col>
+          </v-row>
+          <v-divider class="my-2" />
+          <v-data-table
+            :headers="showHeaders"
+            :items="analyticsMonitoring"
+            :items-per-page="5"
+            :loading="isLoadingFeatures"
+            class="elevation-1"
+            multi-sort
+          />
         </v-container>
-      </v-card-text>
+      </v-container>
     </v-card>
   </v-dialog>
 </template>
@@ -291,28 +289,7 @@ export default {
 </script>
 
 <style scoped>
-.button {
-  padding: 15px 25px;
-  font-size: 24px;
-  text-align: center;
-  cursor: pointer;
-  outline: none;
-  color: #fff;
-  background-color: #04AA6D;
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 9px #999;
-}
-
 .button-pressed {
-  background-color: #3e8e41;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
-}
-
-.button:hover {background-color: #3e8e41}
-
-.button:active {
   background-color: #3e8e41;
   box-shadow: 0 5px #666;
   transform: translateY(4px);
