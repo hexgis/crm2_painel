@@ -4,6 +4,7 @@
     class="overflow-auto container-height"
   >
     <v-toolbar
+      class="background__toolbar"
       absolute
       min-width="100vw"
       color="secondary"
@@ -97,5 +98,8 @@ export default {
 <style scoped>
 .container-height {
     max-height: 100vh;
+}
+.background__toolbar {
+    background: linear-gradient(to bottom, rgb(30, 33, 50), rgb(28, 65, 113));
 }
 </style>

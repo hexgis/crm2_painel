@@ -250,6 +250,6 @@ export default {
 }
 
 .background__toolbar {
-    background: linear-gradient(to bottom, rgb(30, 33, 50), rgb(44, 54, 73));
+    background: linear-gradient(to bottom, rgb(30, 33, 50), rgb(28, 65, 113));
 }
 </style>

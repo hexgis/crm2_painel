@@ -7,7 +7,7 @@
     @click:outside="closeDialog"
   >
     <v-card>
-      <v-card-title class="justify-space-between">
+      <v-card-title class="background__toolbar justify-space-between">
         <span class="headline">{{ title }}</span>
 
         <v-btn
@@ -129,3 +129,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.background__toolbar {
+    background: linear-gradient(to bottom, rgb(30, 33, 50), rgb(28, 65, 113)) !important;
+}
+</style>

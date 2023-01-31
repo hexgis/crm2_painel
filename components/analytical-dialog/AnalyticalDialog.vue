@@ -1,11 +1,12 @@
 <template>
   <v-dialog
     v-model="dialog"
-    color="secondary"
     width="75vw"
     persistent
     hide-overlay
     scrollable
+    color="primary"
+
     transition="dialog-transition"
   >
     <v-card>
@@ -299,7 +300,7 @@ export default {
     justify-content: flex-start;
 }
 .background__toolbar {
-    background: linear-gradient(to bottom, rgb(30, 33, 50), rgb(44, 54, 73));
+    background: linear-gradient(to bottom, rgb(30, 33, 50), rgb(28, 65, 113));
 }
 
 @media (max-width: 900px) {
