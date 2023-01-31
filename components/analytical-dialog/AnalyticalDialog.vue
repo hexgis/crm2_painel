@@ -25,94 +25,94 @@
       </v-toolbar>
       <v-card-text>
         <v-container fluid>
-          <v-tabs>
-            <v-tab v-ripple="{ center: true }">
-              <span> Tabela </span>
-            </v-tab>
-            <v-tab-item>
-              <v-container grid-list-xs>
-                <v-row>
-                  <v-col cols="11">
-                    <div>
-                      <span class="text-uppercase">Agrupar por:</span>
-                    </div>
-                    <div class="mb-2">
-                      <v-btn
-                        :disabled="isLoadingFeatures"
-                        @click="groupByFunai()"
-                      >
-                        Terra Indigena
-                      </v-btn>
-                      <v-btn
-                        :disabled="isLoadingFeatures"
-                        @click="groupByFunaiMonthYear()"
-                      >
-                        Terra Indigena, Mês e Ano
-                      </v-btn>
-                      <v-btn
-                        :disabled="isLoadingFeatures"
-                        @click="groupByMonthYear()"
-                      >
-                        Mês e Ano
-                      </v-btn>
-                      <v-btn
-                        :disabled="isLoadingFeatures"
-                        @click="groupByYear()"
-                      >
-                        Ano
-                      </v-btn>
-                      <v-btn
-                        :disabled="isLoadingFeatures"
-                        @click="groupByDay()"
-                      >
-                        Dia
-                      </v-btn>
-                      <v-btn
-                        :disabled="isLoadingFeatures"
-                        @click="groupByFunaiYear()"
-                      >
-                        Terra Indigena e Ano
-                      </v-btn>
-                    </div>
-                  </v-col>
+          <v-container grid-list-xs>
+            <v-row>
+              <v-col cols="11">
+                <div>
+                  <span class="text-uppercase">Agrupar por:</span>
+                </div>
+                <div class="mb-2">
+                  <v-btn
+                    :class="btn_ti"
+                    :disabled="isLoadingFeatures"
+                    @click="groupByFunai()"
+                  >
+                    Terra Indigena
+                  </v-btn>
+                  <v-btn
+                    :class="btn_ti_month_year"
+                    :disabled="isLoadingFeatures"
+                    @click="groupByFunaiMonthYear()"
+                  >
+                    Terra Indigena, Mês e Ano
+                  </v-btn>
+                  <v-btn
+                    :class="btn_month_year"
+                    :disabled="isLoadingFeatures"
+                    @click="groupByMonthYear()"
+                  >
+                    Mês e Ano
+                  </v-btn>
+                  <v-btn
+                    :class="btn_year"
+                    :disabled="isLoadingFeatures"
+                    @click="groupByYear()"
+                  >
+                    Ano
+                  </v-btn>
+                  <v-btn
+                    :class="btn_day"
+                    :disabled="isLoadingFeatures"
+                    @click="groupByDay()"
+                  >
+                    Dia
+                  </v-btn>
+                  <v-btn
+                    :class="btn_ti_year"
+                    :disabled="isLoadingFeatures"
+                    @click="groupByFunaiYear()"
+                  >
+                    Terra Indigena e Ano
+                  </v-btn>
+                </div>
+              </v-col>
 
-                  <v-spacer />
+              <v-spacer />
 
-                  <v-col>
-                    <div>
-                      <v-select
-                        v-model="selectedHeaders"
-                        :items="headers"
-                        label="Selecione as Colunas que Serão Apresentadas"
-                        multiple
-                        outlined
-                        return-object
-                      >
-                        <template #selection="{ item, index }">
-                          <v-chip v-if="index < 8">
-                            <span>{{ item.text }}</span>
-                          </v-chip>
-                          <span
-                            v-if="index === 8"
-                            class="grey--text caption"
-                          >(+{{ selectedHeaders.length - 8 }} colunas)</span>
-                        </template>
-                      </v-select>
-                    </div>
-                  </v-col>
-                </v-row>
-                <v-divider class="my-2" />
-                <v-data-table
-                  :headers="showHeaders"
-                  :items="analyticsMonitoring"
-                  :items-per-page="5"
-                  :loading="isLoadingFeatures"
-                  class="elevation-1"
-                  multi-sort
-                />
-              </v-container>
-            </v-tab-item>
-          </v-tabs>
+              <v-col>
+                <div>
+                  <v-select
+                    v-model="selectedHeaders"
+                    :items="headers"
+                    :disabled="isLoadingFeatures"
+                    label="Selecione as Colunas que Serão Apresentadas"
+                    multiple
+                    outlined
+                    return-object
+                  >
+                    <template #selection="{ item, index }">
+                      <v-chip v-if="index < 8">
+                        <span>{{ item.text }}</span>
+                      </v-chip>
+                      <span
+                        v-if="index === 8"
+                        class="grey--text caption"
+                      >(+{{ selectedHeaders.length - 8 }} colunas)</span>
+                    </template>
+                  </v-select>
+                </div>
+              </v-col>
+            </v-row>
+            <v-divider class="my-2" />
+            <v-data-table
+              :headers="showHeaders"
+              :items="analyticsMonitoring"
+              :items-per-page="5"
+              :loading="isLoadingFeatures"
+              class="elevation-1"
+              multi-sort
+            />
+          </v-container>
         </v-container>
       </v-card-text>
     </v-card>
@@ -142,6 +142,7 @@ export default {
     DoughnutChart,
   },
   props: {
+    // content: String,
     value: {
       type: Boolean,
       require: true,
@@ -179,7 +180,12 @@ export default {
         grouping: '',
       },
       checkNewFilters: false,
-
+      btn_ti: '',
+      btn_ti_month_year: '',
+      btn_month_year: '',
+      btn_year: '',
+      btn_ti_year: '',
+      btn_day: '',
     };
   },
 
@@ -214,22 +220,59 @@ export default {
 
   methods: {
     groupByFunaiYear() {
+      this.btn_ti = '';
+      this.btn_ti_month_year = '';
+      this.btn_month_year = '';
+      this.btn_year = '';
+      this.btn_ti_year = 'button-pressed';
+      this.btn_day = '';
       this.getDataAnalyticsMonitoringByFunaiYear();
+      console.log(this.content);
+    },
+    groupByFunaiMonthYear() {
+      this.btn_ti = '';
+      this.btn_ti_month_year = 'button-pressed';
+      this.btn_month_year = '';
+      this.btn_year = '';
+      this.btn_ti_year = '';
+      this.btn_day = '';
+      this.getDataAnalyticsMonitoringByFunaiMonthYear();
     },
     groupByDay() {
+      this.btn_ti = '';
+      this.btn_ti_month_year = '';
+      this.btn_month_year = '';
+      this.btn_year = '';
+      this.btn_ti_year = '';
+      this.btn_day = 'button-pressed';
       this.getDataAnalyticsMonitoringByDay();
     },
     groupByFunai() {
+      this.btn_ti = 'button-pressed';
+      this.btn_ti_month_year = '';
+      this.btn_month_year = '';
+      this.btn_year = '';
+      this.btn_ti_year = '';
+      this.btn_day = '';
       this.getDataAnalyticsMonitoringByFunai();
     },
     groupByYear() {
+      this.btn_ti = '';
+      this.btn_ti_month_year = '';
+      this.btn_month_year = '';
+      this.btn_year = 'button-pressed';
+      this.btn_ti_year = '';
+      this.btn_day = '';
       this.getDataAnalyticsMonitoringByYear();
     },
     groupByMonthYear() {
+      this.btn_ti = '';
+      this.btn_ti_month_year = '';
+      this.btn_month_year = 'button-pressed';
+      this.btn_year = '';
+      this.btn_ti_year = '';
+      this.btn_day = '';
       this.getDataAnalyticsMonitoringByMonthYear();
-    },
-    groupByFunaiMonthYear() {
-      this.getDataAnalyticsMonitoringByFunaiMonthYear();
     },
 
     ...mapActions('monitoring', [
@@ -248,6 +291,33 @@ export default {
 </script>
 
 <style scoped>
+.button {
+  padding: 15px 25px;
+  font-size: 24px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #04AA6D;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.button-pressed {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.button:hover {background-color: #3e8e41}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
 .v-dialog__content {
     justify-content: flex-start;
 }
