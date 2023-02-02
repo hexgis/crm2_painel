@@ -115,6 +115,8 @@
 
         <!-- <ChangeDetectionLayers :map="map" /> -->
 
+        <DeterLayers :map="map" />
+
         <FileLoaderLayers
           :map="map"
           :files="loadedFiles"
@@ -194,7 +196,7 @@ import SupportLayers from '@/components/support/SupportLayers';
 // import ChangeDetectionLayers from '@/components/change-detection/ChangeDetectionLayers'
 import BaseWmsMetadataPopup from '@/components/base/BaseWmsMetadataPopup';
 // import AlgorithmLayers from '@/components/algorithms/AlgorithmLayers'
-// import WebhooksLayers from '@/components/webhooks/WebhooksLayers'
+import DeterLayers from '@/components/deter/DeterLayers';
 import PriorityLayers from '@/components/priority/PriorityLayers';
 import AlertLayers from '@/components/urgent-alerts/AlertLayers';
 import LandUseLayers from '@/components/land-use/LandUseLayers';
@@ -226,7 +228,7 @@ export default {
     // ChangeDetectionLayers,
     BaseWmsMetadataPopup,
     // AlgorithmLayers,
-    // WebhooksLayers,
+    DeterLayers,
     MapPrinter,
     LandUseLayers,
     AlertLayers,
