@@ -33,42 +33,42 @@
               </div>
               <div class="mb-2">
                 <v-btn
-                  :class="btn_ti"
+                  :class="btn_ti ? 'button-pressed' : ''"
                   :disabled="isLoadingFeatures"
                   @click="groupByFunai()"
                 >
                   Terra Indigena
                 </v-btn>
                 <v-btn
-                  :class="btn_ti_month_year"
+                  :class="btn_ti_month_year ? 'button-pressed' : ''"
                   :disabled="isLoadingFeatures"
                   @click="groupByFunaiMonthYear()"
                 >
                   Terra Indigena, Mês e Ano
                 </v-btn>
                 <v-btn
-                  :class="btn_month_year"
+                  :class="btn_month_year ? 'button-pressed' : ''"
                   :disabled="isLoadingFeatures"
                   @click="groupByMonthYear()"
                 >
                   Mês e Ano
                 </v-btn>
                 <v-btn
-                  :class="btn_year"
+                  :class="btn_year ? 'button-pressed' : ''"
                   :disabled="isLoadingFeatures"
                   @click="groupByYear()"
                 >
                   Ano
                 </v-btn>
                 <v-btn
-                  :class="btn_day"
+                  :class="btn_day ? 'button-pressed' : ''"
                   :disabled="isLoadingFeatures"
                   @click="groupByDay()"
                 >
                   Dia
                 </v-btn>
                 <v-btn
-                  :class="btn_ti_year"
+                  :class="btn_ti_year ? 'button-pressed' : '' "
                   :disabled="isLoadingFeatures"
                   @click="groupByFunaiYear()"
                 >
@@ -179,12 +179,12 @@ export default {
         grouping: '',
       },
       checkNewFilters: false,
-      btn_ti: '',
-      btn_ti_month_year: '',
-      btn_month_year: '',
-      btn_year: '',
-      btn_ti_year: '',
-      btn_day: '',
+      btn_ti: false,
+      btn_ti_month_year: false,
+      btn_month_year: false,
+      btn_year: false,
+      btn_ti_year: true,
+      btn_day: false,
     };
   },
 
@@ -218,59 +218,59 @@ export default {
   },
 
   methods: {
+    pressedBUtton(btn) {
+      this.btn_ti_month_year = false;
+      this.btn_month_year = false;
+      this.btn_year = false;
+      this.btn_ti_year = false;
+      this.btn_day = false;
+      this.btn_ti = false;
+      switch (btn) {
+        case 'btn_ti_year':
+          this.btn_ti_year = true;
+          break;
+        case 'btn_ti_month_year':
+          this.btn_ti_month_year = true;
+          break;
+        case 'btn_day':
+          this.btn_day = true;
+          break;
+        case 'btn_ti':
+          this.btn_ti = true;
+          break;
+        case 'btn_year':
+          this.btn_year = true;
+          break;
+        case 'btn_month_year':
+          this.btn_month_year = true;
+          break;
+        default:
+          break;
+      }
+    },
     groupByFunaiYear() {
-      this.btn_ti = '';
-      this.btn_ti_month_year = '';
-      this.btn_month_year = '';
-      this.btn_year = '';
-      this.btn_ti_year = 'button-pressed';
-      this.btn_day = '';
+      this.pressedBUtton('btn_ti_year');
       this.getDataAnalyticsMonitoringByFunaiYear();
       console.log(this.content);
     },
     groupByFunaiMonthYear() {
-      this.btn_ti = '';
-      this.btn_ti_month_year = 'button-pressed';
-      this.btn_month_year = '';
-      this.btn_year = '';
-      this.btn_ti_year = '';
-      this.btn_day = '';
+      this.pressedBUtton('btn_ti_month_year');
       this.getDataAnalyticsMonitoringByFunaiMonthYear();
     },
     groupByDay() {
-      this.btn_ti = '';
-      this.btn_ti_month_year = '';
-      this.btn_month_year = '';
-      this.btn_year = '';
-      this.btn_ti_year = '';
-      this.btn_day = 'button-pressed';
+      this.pressedBUtton('btn_day');
       this.getDataAnalyticsMonitoringByDay();
     },
     groupByFunai() {
-      this.btn_ti = 'button-pressed';
-      this.btn_ti_month_year = '';
-      this.btn_month_year = '';
-      this.btn_year = '';
-      this.btn_ti_year = '';
-      this.btn_day = '';
+      this.pressedBUtton('btn_ti');
       this.getDataAnalyticsMonitoringByFunai();
     },
     groupByYear() {
-      this.btn_ti = '';
-      this.btn_ti_month_year = '';
-      this.btn_month_year = '';
-      this.btn_year = 'button-pressed';
-      this.btn_ti_year = '';
-      this.btn_day = '';
+      this.pressedBUtton('btn_year');
       this.getDataAnalyticsMonitoringByYear();
     },
     groupByMonthYear() {
-      this.btn_ti = '';
-      this.btn_ti_month_year = '';
-      this.btn_month_year = 'button-pressed';
-      this.btn_year = '';
-      this.btn_ti_year = '';
-      this.btn_day = '';
+      this.pressedBUtton('btn_month_year');
       this.getDataAnalyticsMonitoringByMonthYear();
     },
 
