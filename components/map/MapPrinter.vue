@@ -25,6 +25,7 @@
       <v-toolbar
         dark
         color="secondary"
+        class="background__toolbar"
       >
         <h3>{{ $t('print-dialog-label') }}</h3>
         <v-spacer />
@@ -237,8 +238,9 @@ export default {
 
 <style scoped>
 .background__toolbar {
-    background: linear-gradient(to bottom, rgb(30, 33, 50), rgb(44, 54, 73));
+    background: linear-gradient(to bottom, rgb(30, 33, 50), rgb(28, 65, 113));
 }
+
 </style>
 
 <style>

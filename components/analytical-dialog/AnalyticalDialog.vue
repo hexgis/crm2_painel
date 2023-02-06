@@ -1,11 +1,12 @@
 <template>
   <v-dialog
     v-model="dialog"
-    color="secondary"
     width="75vw"
     persistent
     hide-overlay
     scrollable
+    color="primary"
+
     transition="dialog-transition"
   >
     <v-card>
@@ -23,98 +24,96 @@
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-toolbar>
-      <v-card-text>
-        <v-container fluid>
-          <v-tabs>
-            <v-tab v-ripple="{ center: true }">
-              <span> Tabela </span>
-            </v-tab>
-            <v-tab-item>
-              <v-container grid-list-xs>
-                <v-row>
-                  <v-col cols="11">
-                    <div>
-                      <span class="text-uppercase">Agrupar por:</span>
-                    </div>
-                    <div class="mb-2">
-                      <v-btn
-                        :disabled="isLoadingFeatures"
-                        @click="groupByFunai()"
-                      >
-                        Terra Indigena
-                      </v-btn>
-                      <v-btn
-                        :disabled="isLoadingFeatures"
-                        @click="groupByFunaiMonthYear()"
-                      >
-                        Terra Indigena, Mês e Ano
-                      </v-btn>
-                      <v-btn
-                        :disabled="isLoadingFeatures"
-                        @click="groupByMonthYear()"
-                      >
-                        Mês e Ano
-                      </v-btn>
-                      <v-btn
-                        :disabled="isLoadingFeatures"
-                        @click="groupByYear()"
-                      >
-                        Ano
-                      </v-btn>
-                      <v-btn
-                        :disabled="isLoadingFeatures"
-                        @click="groupByDay()"
-                      >
-                        Dia
-                      </v-btn>
-                      <v-btn
-                        :disabled="isLoadingFeatures"
-                        @click="groupByFunaiYear()"
-                      >
-                        Terra Indigena e Ano
-                      </v-btn>
-                    </div>
-                  </v-col>
+      <v-container fluid>
+        <v-container grid-list-xs>
+          <v-row>
+            <v-col cols="11">
+              <div>
+                <span class="text-uppercase">Agrupar por:</span>
+              </div>
+              <div class="mb-2">
+                <v-btn
+                  :class="btn_ti ? 'button-pressed' : ''"
+                  :disabled="isLoadingFeatures"
+                  @click="groupByFunai()"
+                >
+                  Terra Indigena
+                </v-btn>
+                <v-btn
+                  :class="btn_ti_month_year ? 'button-pressed' : ''"
+                  :disabled="isLoadingFeatures"
+                  @click="groupByFunaiMonthYear()"
+                >
+                  Terra Indigena, Mês e Ano
+                </v-btn>
+                <v-btn
+                  :class="btn_month_year ? 'button-pressed' : ''"
+                  :disabled="isLoadingFeatures"
+                  @click="groupByMonthYear()"
+                >
+                  Mês e Ano
+                </v-btn>
+                <v-btn
+                  :class="btn_year ? 'button-pressed' : ''"
+                  :disabled="isLoadingFeatures"
+                  @click="groupByYear()"
+                >
+                  Ano
+                </v-btn>
+                <v-btn
+                  :class="btn_day ? 'button-pressed' : ''"
+                  :disabled="isLoadingFeatures"
+                  @click="groupByDay()"
+                >
+                  Dia
+                </v-btn>
+                <v-btn
+                  :class="btn_ti_year ? 'button-pressed' : '' "
+                  :disabled="isLoadingFeatures"
+                  @click="groupByFunaiYear()"
+                >
+                  Terra Indigena e Ano
+                </v-btn>
+              </div>
+            </v-col>
 
-                  <v-spacer />
+            <v-spacer />
 
-                  <v-col>
-                    <div>
-                      <v-select
-                        v-model="selectedHeaders"
-                        :items="headers"
-                        label="Selecione as Colunas que Serão Apresentadas"
-                        multiple
-                        outlined
-                        return-object
-                      >
-                        <template #selection="{ item, index }">
-                          <v-chip v-if="index < 8">
-                            <span>{{ item.text }}</span>
-                          </v-chip>
-                          <span
-                            v-if="index === 8"
-                            class="grey--text caption"
-                          >(+{{ selectedHeaders.length - 8 }} colunas)</span>
-                        </template>
-                      </v-select>
-                    </div>
-                  </v-col>
-                </v-row>
-                <v-divider class="my-2" />
-                <v-data-table
-                  :headers="showHeaders"
-                  :items="analyticsMonitoring"
-                  :items-per-page="5"
-                  :loading="isLoadingFeatures"
-                  class="elevation-1"
-                  multi-sort
-                />
-              </v-container>
-            </v-tab-item>
-          </v-tabs>
+            <v-col>
+              <div>
+                <v-select
+                  v-model="selectedHeaders"
+                  :items="headers"
+                  :disabled="isLoadingFeatures"
+                  label="Selecione as Colunas que Serão Apresentadas"
+                  multiple
+                  outlined
+                  return-object
+                >
+                  <template #selection="{ item, index }">
+                    <v-chip v-if="index < 8">
+                      <span>{{ item.text }}</span>
+                    </v-chip>
+                    <span
+                      v-if="index === 8"
+                      class="grey--text caption"
+                    >(+{{ selectedHeaders.length - 8 }} colunas)</span>
+                  </template>
+                </v-select>
+              </div>
+            </v-col>
+          </v-row>
+          <v-divider class="my-2" />
+          <v-data-table
+            :headers="showHeaders"
+            :items="analyticsMonitoring"
+            :items-per-page="5"
+            :loading="isLoadingFeatures"
+            class="elevation-1"
+            multi-sort
+          />
         </v-container>
-      </v-card-text>
+      </v-container>
     </v-card>
   </v-dialog>
 </template>
@@ -142,6 +141,7 @@ export default {
     DoughnutChart,
   },
   props: {
+    // content: String,
     value: {
       type: Boolean,
       require: true,
@@ -179,7 +179,12 @@ export default {
         grouping: '',
       },
       checkNewFilters: false,
-
+      btn_ti: false,
+      btn_ti_month_year: false,
+      btn_month_year: false,
+      btn_year: false,
+      btn_ti_year: true,
+      btn_day: false,
     };
   },
 
@@ -213,23 +218,60 @@ export default {
   },
 
   methods: {
+    pressedBUtton(btn) {
+      this.btn_ti_month_year = false;
+      this.btn_month_year = false;
+      this.btn_year = false;
+      this.btn_ti_year = false;
+      this.btn_day = false;
+      this.btn_ti = false;
+      switch (btn) {
+        case 'btn_ti_year':
+          this.btn_ti_year = true;
+          break;
+        case 'btn_ti_month_year':
+          this.btn_ti_month_year = true;
+          break;
+        case 'btn_day':
+          this.btn_day = true;
+          break;
+        case 'btn_ti':
+          this.btn_ti = true;
+          break;
+        case 'btn_year':
+          this.btn_year = true;
+          break;
+        case 'btn_month_year':
+          this.btn_month_year = true;
+          break;
+        default:
+          break;
+      }
+    },
     groupByFunaiYear() {
+      this.pressedBUtton('btn_ti_year');
       this.getDataAnalyticsMonitoringByFunaiYear();
+      console.log(this.content);
+    },
+    groupByFunaiMonthYear() {
+      this.pressedBUtton('btn_ti_month_year');
+      this.getDataAnalyticsMonitoringByFunaiMonthYear();
     },
     groupByDay() {
+      this.pressedBUtton('btn_day');
       this.getDataAnalyticsMonitoringByDay();
     },
     groupByFunai() {
+      this.pressedBUtton('btn_ti');
       this.getDataAnalyticsMonitoringByFunai();
     },
     groupByYear() {
+      this.pressedBUtton('btn_year');
       this.getDataAnalyticsMonitoringByYear();
     },
     groupByMonthYear() {
+      this.pressedBUtton('btn_month_year');
       this.getDataAnalyticsMonitoringByMonthYear();
-    },
-    groupByFunaiMonthYear() {
-      this.getDataAnalyticsMonitoringByFunaiMonthYear();
     },
 
     ...mapActions('monitoring', [
@@ -248,11 +290,17 @@ export default {
 </script>
 
 <style scoped>
+.button-pressed {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
 .v-dialog__content {
     justify-content: flex-start;
 }
 .background__toolbar {
-    background: linear-gradient(to bottom, rgb(30, 33, 50), rgb(44, 54, 73));
+    background: linear-gradient(to bottom, rgb(30, 33, 50), rgb(28, 65, 113));
 }
 
 @media (max-width: 900px) {
