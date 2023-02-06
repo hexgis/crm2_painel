@@ -1,666 +1,667 @@
-import Vue from 'vue'
+import Vue from 'vue';
 
 export const state = () => ({
-    showFeaturesSupportLayers: false,
-    supportLayersGroups: {},
-    supportLayers: {},
-    supportCategoryGroupsFire: {},
-    supportCategoryGroupsRaster: {},
-    supportCategoryGroupsBase: {},
-    supportCategoryGroupsProdes: {},
-    supportCategoryGroupsAntropismo: {},
-    loading: false,
-    supportLayersCategoryFire: {},
-    supportLayersCategoryBase: {},
-    supportLayersCategoryRaster: {},
-    supportLayersCategoryProdes: {},
-    supportLayersCategoryAntropismo: {},
-    filters: {
-        categoryBase: 1,
-        categoryRaster: 3,
-        categoryFire: 2,
-        categoryProdes: 4,
-        categoryAntropismo: 5,
-        co_cr: [],
-        co_funai: [],
-    },
-    filterOptions: {
-        regionalFilters: [],
-        tiFilters: [],
-    },
-})
+  showFeaturesSupportLayers: false,
+  supportLayersGroups: {},
+  supportLayers: {},
+  supportCategoryGroupsFire: {},
+  supportCategoryGroupsRaster: {},
+  supportCategoryGroupsBase: {},
+  supportCategoryGroupsProdes: {},
+  supportCategoryGroupsAntropismo: {},
+  loading: false,
+  supportLayersCategoryFire: {},
+  supportLayersCategoryBase: {},
+  supportLayersCategoryRaster: {},
+  supportLayersCategoryProdes: {},
+  supportLayersCategoryAntropismo: {},
+  filters: {
+    categoryBase: 1,
+    categoryRaster: 3,
+    categoryFire: 2,
+    categoryProdes: 4,
+    categoryAntropismo: 5,
+    co_cr: [],
+    co_funai: [],
+  },
+  filterOptions: {
+    regionalFilters: [],
+    tiFilters: [],
+  },
+});
 
 export const getters = {
-    activeLayerIds(state) {
-        const activeLayerIds = []
-        for (const layer of Object.values(state.supportLayers)) {
-            if (layer.visible) {
-                activeLayerIds.push(layer.id)
-            }
-        }
-        return activeLayerIds
-    },
+  activeLayerIds(state) {
+    const activeLayerIds = [];
+    for (const layer of Object.values(state.supportLayers)) {
+      if (layer.visible) {
+        activeLayerIds.push(layer.id);
+      }
+    }
+    return activeLayerIds;
+  },
 
-    activeLayerIds(state) {
-        const activeLayerIds = []
-        for (const layer of Object.values(state.supportLayersCategoryRaster)) {
-            if (layer.visible) {
-                activeLayerIds.push(layer.id)
-            }
-        }
-        return activeLayerIds
-    },
+  activeLayerIds(state) {
+    const activeLayerIds = [];
+    for (const layer of Object.values(state.supportLayersCategoryRaster)) {
+      if (layer.visible) {
+        activeLayerIds.push(layer.id);
+      }
+    }
+    return activeLayerIds;
+  },
 
-    activeLayerIds(state) {
-        const activeLayerIds = []
-        for (const layer of Object.values(state.supportLayersCategoryFire)) {
-            if (layer.visible) {
-                activeLayerIds.push(layer.id)
-            }
-        }
-        return activeLayerIds
-    },
+  activeLayerIds(state) {
+    const activeLayerIds = [];
+    for (const layer of Object.values(state.supportLayersCategoryFire)) {
+      if (layer.visible) {
+        activeLayerIds.push(layer.id);
+      }
+    }
+    return activeLayerIds;
+  },
 
-    activeLayerIds(state) {
-        const activeLayerIds = []
-        for (const layer of Object.values(state.supportLayersCategoryProdes)) {
-            if (layer.visible) {
-                activeLayerIds.push(layer.id)
-            }
-        }
-        return activeLayerIds
-    },
+  activeLayerIds(state) {
+    const activeLayerIds = [];
+    for (const layer of Object.values(state.supportLayersCategoryProdes)) {
+      if (layer.visible) {
+        activeLayerIds.push(layer.id);
+      }
+    }
+    return activeLayerIds;
+  },
 
-    activeLayerIds(state) {
-        const activeLayerIds = []
-        for (const layer of Object.values(
-            state.supportLayersCategoryAntropismo
-        )) {
-            if (layer.visible) {
-                activeLayerIds.push(layer.id)
-            }
-        }
-        return activeLayerIds
-    },
-}
+  activeLayerIds(state) {
+    const activeLayerIds = [];
+    for (const layer of Object.values(
+      state.supportLayersCategoryAntropismo,
+    )) {
+      if (layer.visible) {
+        activeLayerIds.push(layer.id);
+      }
+    }
+    return activeLayerIds;
+  },
+};
 
 export const mutations = {
-    setshowFeaturesSupportLayers(state, showFeaturesSupportLayers) {
-        state.showFeaturesSupportLayers = showFeaturesSupportLayers
-    },
+  setshowFeaturesSupportLayers(state, showFeaturesSupportLayers) {
+    state.showFeaturesSupportLayers = showFeaturesSupportLayers;
+  },
 
-    setSupportLayersGroups(state, layersGroups) {
-        state.supportLayersGroups = {}
-        state.supportLayers = {}
+  setSupportLayersGroups(state, layersGroups) {
+    state.supportLayersGroups = {};
+    state.supportLayers = {};
 
-        for (const group of layersGroups) {
-            const layers = group.layers
-            group.layers = []
+    for (const group of layersGroups) {
+      const { layers } = group;
+      group.layers = [];
 
-            for (const layer of layers) {
-                layer.visible = false
+      for (const layer of layers) {
+        layer.visible = false;
 
-                if (layer.layer_type === 'wms' && layer.wms.default_opacity) {
-                    layer.opacity = layer.wms.default_opacity
-                } else {
-                    layer.opacity = 100
-                }
-
-                layer.loading = false
-                layer.filters = []
-                layer.data = []
-
-                group.layers.push(layer.id)
-                Vue.set(state.supportLayers, layer.id, layer)
-            }
-
-            Vue.set(state.supportLayersGroups, group.id, group)
+        if (layer.layer_type === 'wms' && layer.wms.default_opacity) {
+          layer.opacity = layer.wms.default_opacity;
+        } else {
+          layer.opacity = 100;
         }
-    },
 
-    setSupportCategoryGroupsFire(state, categoryGroups) {
-        state.supportCategoryGroupsFire = {}
-        state.supportLayersCategoryFire = {}
+        layer.loading = false;
+        layer.filters = [];
+        layer.data = [];
 
-        for (const group of categoryGroups) {
-            const layers = group.layers
-            group.layers = []
+        group.layers.push(layer.id);
+        Vue.set(state.supportLayers, layer.id, layer);
+      }
 
-            for (const layer of layers) {
-                layer.visible = false
+      Vue.set(state.supportLayersGroups, group.id, group);
+    }
+  },
 
-                if (layer.layer_type === 'wms' && layer.wms.default_opacity) {
-                    layer.opacity = layer.wms.default_opacity
-                } else {
-                    layer.opacity = 100
-                }
+  setSupportCategoryGroupsFire(state, categoryGroups) {
+    state.supportCategoryGroupsFire = {};
+    state.supportLayersCategoryFire = {};
 
-                layer.loading = false
-                layer.filters = []
-                layer.data = []
+    for (const group of categoryGroups) {
+      const { layers } = group;
+      group.layers = [];
 
-                group.layers.push(layer.id)
-                Vue.set(state.supportLayersCategoryFire, layer.id, layer)
-            }
+      for (const layer of layers) {
+        layer.visible = false;
 
-            Vue.set(state.supportCategoryGroupsFire, group.id, group)
+        if (layer.layer_type === 'wms' && layer.wms.default_opacity) {
+          layer.opacity = layer.wms.default_opacity;
+        } else {
+          layer.opacity = 100;
         }
-    },
 
-    setSupportCategoryGroupsProdes(state, categoryGroups) {
-        state.supportCategoryGroupsProdes = {}
-        state.supportLayersCategoryProdes = {}
-        for (const group of categoryGroups) {
-            const layers = group.layers
-            group.layers = []
+        layer.loading = false;
+        layer.filters = [];
+        layer.data = [];
 
-            for (const layer of layers) {
-                layer.visible = false
+        group.layers.push(layer.id);
+        Vue.set(state.supportLayersCategoryFire, layer.id, layer);
+      }
 
-                if (layer.layer_type === 'wms' && layer.wms.default_opacity) {
-                    layer.opacity = layer.wms.default_opacity
-                } else {
-                    layer.opacity = 100
-                }
+      Vue.set(state.supportCategoryGroupsFire, group.id, group);
+    }
+  },
 
-                layer.loading = false
-                layer.filters = []
-                layer.data = []
+  setSupportCategoryGroupsProdes(state, categoryGroups) {
+    state.supportCategoryGroupsProdes = {};
+    state.supportLayersCategoryProdes = {};
+    for (const group of categoryGroups) {
+      const { layers } = group;
+      group.layers = [];
 
-                group.layers.push(layer.id)
-                Vue.set(state.supportLayersCategoryProdes, layer.id, layer)
-            }
+      for (const layer of layers) {
+        layer.visible = false;
 
-            Vue.set(state.supportCategoryGroupsProdes, group.id, group)
+        if (layer.layer_type === 'wms' && layer.wms.default_opacity) {
+          layer.opacity = layer.wms.default_opacity;
+        } else {
+          layer.opacity = 100;
         }
-    },
 
-    setSupportCategoryGroupsAntropismo(state, categoryGroups) {
-        state.supportCategoryGroupsAntropismo = {}
-        state.supportLayersCategoryAntropismo = {}
+        layer.loading = false;
+        layer.filters = [];
+        layer.data = [];
 
-        for (const group of categoryGroups) {
-            const layers = group.layers
-            group.layers = []
+        group.layers.push(layer.id);
+        Vue.set(state.supportLayersCategoryProdes, layer.id, layer);
+      }
 
-            for (const layer of layers) {
-                layer.visible = false
+      Vue.set(state.supportCategoryGroupsProdes, group.id, group);
+    }
+  },
 
-                if (layer.layer_type === 'wms' && layer.wms.default_opacity) {
-                    layer.opacity = layer.wms.default_opacity
-                } else {
-                    layer.opacity = 100
-                }
+  setSupportCategoryGroupsAntropismo(state, categoryGroups) {
+    state.supportCategoryGroupsAntropismo = {};
+    state.supportLayersCategoryAntropismo = {};
 
-                layer.loading = false
-                layer.filters = []
-                layer.data = []
+    for (const group of categoryGroups) {
+      const { layers } = group;
+      group.layers = [];
 
-                group.layers.push(layer.id)
+      for (const layer of layers) {
+        layer.visible = false;
 
-                Vue.set(state.supportLayersCategoryAntropismo, layer.id, layer)
-            }
-
-            Vue.set(state.supportCategoryGroupsAntropismo, group.id, group)
+        if (layer.layer_type === 'wms' && layer.wms.default_opacity) {
+          layer.opacity = layer.wms.default_opacity;
+        } else {
+          layer.opacity = 100;
         }
-    },
 
-    setSupportCategoryGroupsRaster(state, categoryGroups) {
-        state.supportCategoryGroupsRaster = {}
-        state.supportLayersCategoryRaster = {}
+        layer.loading = false;
+        layer.filters = [];
+        layer.data = [];
 
-        for (const group of categoryGroups) {
-            const layers = group.layers
-            group.layers = []
+        group.layers.push(layer.id);
 
-            for (const layer of layers) {
-                layer.visible = false
+        Vue.set(state.supportLayersCategoryAntropismo, layer.id, layer);
+      }
 
-                if (layer.layer_type === 'wms' && layer.wms.default_opacity) {
-                    layer.opacity = layer.wms.default_opacity
-                } else {
-                    layer.opacity = 100
-                }
+      Vue.set(state.supportCategoryGroupsAntropismo, group.id, group);
+    }
+  },
 
-                layer.loading = false
-                layer.filters = []
-                layer.data = []
+  setSupportCategoryGroupsRaster(state, categoryGroups) {
+    state.supportCategoryGroupsRaster = {};
+    state.supportLayersCategoryRaster = {};
 
-                group.layers.push(layer.id)
-                Vue.set(state.supportLayersCategoryRaster, layer.id, layer)
-            }
+    for (const group of categoryGroups) {
+      const { layers } = group;
+      group.layers = [];
 
-            Vue.set(state.supportCategoryGroupsRaster, group.id, group)
+      for (const layer of layers) {
+        layer.visible = false;
+
+        if (layer.layer_type === 'wms' && layer.wms.default_opacity) {
+          layer.opacity = layer.wms.default_opacity;
+        } else {
+          layer.opacity = 100;
         }
-    },
 
-    setSupportCategoryGroupsBase(state, categoryGroups) {
-        state.supportCategoryGroupsBase = {}
-        state.supportLayers = {}
+        layer.loading = false;
+        layer.filters = [];
+        layer.data = [];
 
-        for (const group of categoryGroups) {
-            const layers = group.layers
-            group.layers = []
+        group.layers.push(layer.id);
+        Vue.set(state.supportLayersCategoryRaster, layer.id, layer);
+      }
 
-            for (const layer of layers) {
-                layer.visible = false
+      Vue.set(state.supportCategoryGroupsRaster, group.id, group);
+    }
+  },
 
-                if (layer.layer_type === 'wms' && layer.wms.default_opacity) {
-                    layer.opacity = layer.wms.default_opacity
-                } else {
-                    layer.opacity = 100
-                }
+  setSupportCategoryGroupsBase(state, categoryGroups) {
+    state.supportCategoryGroupsBase = {};
+    state.supportLayers = {};
 
-                layer.loading = false
-                layer.filters = []
-                layer.data = []
+    for (const group of categoryGroups) {
+      const { layers } = group;
+      group.layers = [];
 
-                group.layers.push(layer.id)
-                Vue.set(state.supportLayers, layer.id, layer)
-            }
+      for (const layer of layers) {
+        layer.visible = false;
 
-            Vue.set(state.supportCategoryGroupsBase, group.id, group)
+        if (layer.layer_type === 'wms' && layer.wms.default_opacity) {
+          layer.opacity = layer.wms.default_opacity;
+        } else {
+          layer.opacity = 100;
         }
-    },
 
-    setLayerFilters(state, { id, filters }) {
-        state.supportLayers[id].filters = {
-            ...state.supportLayers[id].filters,
-            ...filters,
-        }
-    },
+        layer.loading = false;
+        layer.filters = [];
+        layer.data = [];
 
-    setLayerFiltersRaster(state, { id, filters }) {
-        state.supportLayersCategoryRaster[id].filters = {
-            ...state.supportLayersCategoryRaster[id].filters,
-            ...filters,
-        }
-    },
+        group.layers.push(layer.id);
+        Vue.set(state.supportLayers, layer.id, layer);
+      }
 
-    setFilterOptions(state, data) {
-        state.filterOptions = data
-    },
+      Vue.set(state.supportCategoryGroupsBase, group.id, group);
+    }
+  },
 
-    setLayerFiltersFire(state, { id, filters }) {
-        state.supportLayersCategoryFire[id].filters = {
-            ...state.supportLayersCategoryFire[id].filters,
-            ...filters,
-        }
-    },
-    setLayerFiltersAntropismo(state, { id, filters }) {
-        state.supportLayersCategoryAntropismo[id].filters = {
-            ...state.supportLayersCategoryAntropismo[id].filters,
-            ...filters,
-        }
-    },
+  setLayerFilters(state, { id, filters }) {
+    state.supportLayers[id].filters = {
+      ...state.supportLayers[id].filters,
+      ...filters,
+    };
+  },
 
-    setLayerFiltersProdes(state, { id, filters }) {
-        state.supportLayersCategoryProdes[id].filters = {
-            ...state.supportLayersCategoryProdes[id].filters,
-            ...filters,
-        }
-    },
+  setLayerFiltersRaster(state, { id, filters }) {
+    state.supportLayersCategoryRaster[id].filters = {
+      ...state.supportLayersCategoryRaster[id].filters,
+      ...filters,
+    };
+  },
 
-    toggleLayerVisibility(state, { id, visible }) {
-        state.supportLayers[id].visible = visible
-    },
+  setFilterOptions(state, data) {
+    state.filterOptions = data;
+  },
 
-    toggleLayerVisibilityFire(state, { id, visible }) {
-        state.supportLayersCategoryFire[id].visible = visible
-    },
+  setLayerFiltersFire(state, { id, filters }) {
+    state.supportLayersCategoryFire[id].filters = {
+      ...state.supportLayersCategoryFire[id].filters,
+      ...filters,
+    };
+  },
+  setLayerFiltersAntropismo(state, { id, filters }) {
+    state.supportLayersCategoryAntropismo[id].filters = {
+      ...state.supportLayersCategoryAntropismo[id].filters,
+      ...filters,
+    };
+  },
 
-    toggleLayerVisibilityProdes(state, { id, visible }) {
-        state.supportLayersCategoryProdes[id].visible = visible
-    },
+  setLayerFiltersProdes(state, { id, filters }) {
+    state.supportLayersCategoryProdes[id].filters = {
+      ...state.supportLayersCategoryProdes[id].filters,
+      ...filters,
+    };
+  },
 
-    toggleLayerVisibilityAntropismo(state, { id, visible }) {
-        state.supportLayersCategoryAntropismo[id].visible = visible
-    },
+  toggleLayerVisibility(state, { id, visible }) {
+    state.supportLayers[id].visible = visible;
+  },
 
-    toggleLayerVisibilityRaster(state, { id, visible }) {
-        state.supportLayersCategoryRaster[id].visible = visible
-    },
+  toggleLayerVisibilityFire(state, { id, visible }) {
+    state.supportLayersCategoryFire[id].visible = visible;
+  },
 
-    setLayerOpacity(state, { id, opacity }) {
-        state.supportLayers[id].opacity = opacity
-    },
+  toggleLayerVisibilityProdes(state, { id, visible }) {
+    state.supportLayersCategoryProdes[id].visible = visible;
+  },
 
-    setLayerOpacityRaster(state, { id, opacity }) {
-        state.supportLayersCategoryRaster[id].opacity = opacity
-    },
+  toggleLayerVisibilityAntropismo(state, { id, visible }) {
+    state.supportLayersCategoryAntropismo[id].visible = visible;
+  },
 
-    setLayerOpacityFire(state, { id, opacity }) {
-        state.supportLayersCategoryFire[id].opacity = opacity
-    },
-    setLayerOpacityAntropismo(state, { id, opacity }) {
-        state.supportLayersCategoryAntropismo[id].opacity = opacity
-    },
+  toggleLayerVisibilityRaster(state, { id, visible }) {
+    state.supportLayersCategoryRaster[id].visible = visible;
+  },
 
-    setLayerOpacityProdes(state, { id, opacity }) {
-        state.supportLayersCategoryProdes[id].opacity = opacity
-    },
+  setLayerOpacity(state, { id, opacity }) {
+    state.supportLayers[id].opacity = opacity;
+  },
 
-    setLayerLoading(state, { id, loading }) {
-        state.supportLayers[id].loading = loading
-    },
+  setLayerOpacityRaster(state, { id, opacity }) {
+    state.supportLayersCategoryRaster[id].opacity = opacity;
+  },
 
-    setLayerLoadingFire(state, { id, loading }) {
-        state.supportLayersCategoryFire[id].loading = loading
-    },
+  setLayerOpacityFire(state, { id, opacity }) {
+    state.supportLayersCategoryFire[id].opacity = opacity;
+  },
+  setLayerOpacityAntropismo(state, { id, opacity }) {
+    state.supportLayersCategoryAntropismo[id].opacity = opacity;
+  },
 
-    setLayerLoadingProdes(state, { id, loading }) {
-        state.supportLayersCategoryProdes[id].loading = loading
-    },
+  setLayerOpacityProdes(state, { id, opacity }) {
+    state.supportLayersCategoryProdes[id].opacity = opacity;
+  },
 
-    setLayerLoadingAntropismo(state, { id, loading }) {
-        state.supportLayersCategoryAntropismo[id].loading = loading
-    },
+  setLayerLoading(state, { id, loading }) {
+    state.supportLayers[id].loading = loading;
+  },
 
-    setLayerLoadingRaster(state, { id, loading }) {
-        state.supportLayersCategoryRaster[id].loading = loading
-    },
+  setLayerLoadingFire(state, { id, loading }) {
+    state.supportLayersCategoryFire[id].loading = loading;
+  },
 
-    setHeatLayerData(state, { id, data }) {
-        state.supportLayers[id].data = data
-        state.supportLayers[id].visible = true
-    },
+  setLayerLoadingProdes(state, { id, loading }) {
+    state.supportLayersCategoryProdes[id].loading = loading;
+  },
 
-    setHeatLayerDataRaster(state, { id, data }) {
-        state.supportLayersCategoryRaster[id].data = data
-        state.supportLayersCategoryRaster[id].visible = true
-    },
+  setLayerLoadingAntropismo(state, { id, loading }) {
+    state.supportLayersCategoryAntropismo[id].loading = loading;
+  },
 
-    setHeatLayerDataFire(state, { id, data }) {
-        state.supportLayersCategoryFire[id].data = data
-        state.supportLayersCategoryFire[id].visible = true
-    },
+  setLayerLoadingRaster(state, { id, loading }) {
+    state.supportLayersCategoryRaster[id].loading = loading;
+  },
 
-    setHeatLayerDataProdes(state, { id, data }) {
-        state.supportLayersCategoryProdes[id].data = data
-        state.supportLayersCategoryProdes[id].visible = true
-    },
+  setHeatLayerData(state, { id, data }) {
+    state.supportLayers[id].data = data;
+    state.supportLayers[id].visible = true;
+  },
 
-    setLoading(state, loading) {
-        state.loading = loading
-    },
-}
+  setHeatLayerDataRaster(state, { id, data }) {
+    state.supportLayersCategoryRaster[id].data = data;
+    state.supportLayersCategoryRaster[id].visible = true;
+  },
+
+  setHeatLayerDataFire(state, { id, data }) {
+    state.supportLayersCategoryFire[id].data = data;
+    state.supportLayersCategoryFire[id].visible = true;
+  },
+
+  setHeatLayerDataProdes(state, { id, data }) {
+    state.supportLayersCategoryProdes[id].data = data;
+    state.supportLayersCategoryProdes[id].visible = true;
+  },
+
+  setLoading(state, loading) {
+    state.loading = loading;
+  },
+};
 
 export const actions = {
-    async getLayersGroups({ commit }) {
-        commit('setLoading', true)
+  async getLayersGroups({ commit }) {
+    commit('setLoading', true);
 
-        try {
-            const response = await this.$api.$get('support/layers-groups/')
+    try {
+      const response = await this.$api.$get('support/layers-groups/');
 
-            commit('setSupportLayersGroups', response)
-            commit('setshowFeaturesSupportLayers', true)
-        } catch (exception) {
-            commit(
-                'alert/addAlert',
-                {
-                    message: this.$i18n.t('default-error', {
-                        action: this.$i18n.t('retrieve'),
-                        resource: this.$i18n.tc('layer', 2),
-                    }),
-                },
-                { root: true }
-            )
-        } finally {
-            commit('setLoading', false)
-        }
-    },
-    async getTiOptions({ commit, state }, cr) {
-        const params = {
-            co_cr: cr.toString(),
-        }
+      commit('setSupportLayersGroups', response);
+      commit('setshowFeaturesSupportLayers', true);
+    } catch (exception) {
+      commit(
+        'alert/addAlert',
+        {
+          message: this.$i18n.t('default-error', {
+            action: this.$i18n.t('retrieve'),
+            resource: this.$i18n.tc('layer', 2),
+          }),
+        },
+        { root: true },
+      );
+    } finally {
+      commit('setLoading', false);
+    }
+  },
+  async getTiOptions({ commit, state }, cr) {
+    const params = {
+      co_cr: cr.toString(),
+    };
 
-        const tis = await this.$api.$get('funai/ti/', { params })
+    const tis = await this.$api.$get('funai/ti/', { params });
 
-        if (tis)
-            commit('setFilterOptions', {
-                ...state.filterOptions,
-                tiFilters: tis.sort((a, b) => a.no_ti > b.no_ti),
-            })
-    },
-    async getCategoryGroupsRasters({ commit }) {
-        commit('setLoading', true)
-        const params = {
-            category: 3,
-        }
-        try {
-            const response = await this.$api.$get('support/layers-groups/', {
-                params,
-            })
+    if (tis) {
+      commit('setFilterOptions', {
+        ...state.filterOptions,
+        tiFilters: tis.sort((a, b) => a.no_ti > b.no_ti),
+      });
+    }
+  },
+  async getCategoryGroupsRasters({ commit }) {
+    commit('setLoading', true);
+    const params = {
+      category: 3,
+    };
+    try {
+      const response = await this.$api.$get('support/layers-groups/', {
+        params,
+      });
 
-            commit('setSupportCategoryGroupsRaster', response)
-            commit('setshowFeaturesSupportLayers', true)
-        } catch (exception) {
-            commit(
-                'alert/addAlert',
-                {
-                    message: this.$i18n.t('default-error', {
-                        action: this.$i18n.t('retrieve'),
-                        resource: this.$i18n.tc('layer', 2),
-                    }),
-                },
-                { root: true }
-            )
-        } finally {
-            commit('setLoading', false)
-        }
-    },
-    async getCategoryGroupsFire({ commit }) {
-        commit('setLoading', true)
-        const params = {
-            category: 2,
-        }
-        try {
-            const response = await this.$api.$get('support/layers-groups/', {
-                params,
-            })
+      commit('setSupportCategoryGroupsRaster', response);
+      commit('setshowFeaturesSupportLayers', true);
+    } catch (exception) {
+      commit(
+        'alert/addAlert',
+        {
+          message: this.$i18n.t('default-error', {
+            action: this.$i18n.t('retrieve'),
+            resource: this.$i18n.tc('layer', 2),
+          }),
+        },
+        { root: true },
+      );
+    } finally {
+      commit('setLoading', false);
+    }
+  },
+  async getCategoryGroupsFire({ commit }) {
+    commit('setLoading', true);
+    const params = {
+      category: 2,
+    };
+    try {
+      const response = await this.$api.$get('support/layers-groups/', {
+        params,
+      });
 
-            commit('setSupportCategoryGroupsFire', response)
-            commit('setshowFeaturesSupportLayers', true)
-        } catch (exception) {
-            commit(
-                'alert/addAlert',
-                {
-                    message: this.$i18n.t('default-error', {
-                        action: this.$i18n.t('retrieve'),
-                        resource: this.$i18n.tc('layer', 2),
-                    }),
-                },
-                { root: true }
-            )
-        } finally {
-            commit('setLoading', false)
-        }
-    },
+      commit('setSupportCategoryGroupsFire', response);
+      commit('setshowFeaturesSupportLayers', true);
+    } catch (exception) {
+      commit(
+        'alert/addAlert',
+        {
+          message: this.$i18n.t('default-error', {
+            action: this.$i18n.t('retrieve'),
+            resource: this.$i18n.tc('layer', 2),
+          }),
+        },
+        { root: true },
+      );
+    } finally {
+      commit('setLoading', false);
+    }
+  },
 
-    async getCategoryGroupsProdes({ commit }) {
-        commit('setLoading', true)
-        const params = {
-            category: 4,
-        }
-        try {
-            const response = await this.$api.$get('support/layers-groups/', {
-                params,
-            })
+  async getCategoryGroupsProdes({ commit }) {
+    commit('setLoading', true);
+    const params = {
+      category: 4,
+    };
+    try {
+      const response = await this.$api.$get('support/layers-groups/', {
+        params,
+      });
 
-            commit('setSupportCategoryGroupsProdes', response)
-            commit('setshowFeaturesSupportLayers', true)
-        } catch (exception) {
-            commit(
-                'alert/addAlert',
-                {
-                    message: this.$i18n.t('default-error', {
-                        action: this.$i18n.t('retrieve'),
-                        resource: this.$i18n.tc('layer', 2),
-                    }),
-                },
-                { root: true }
-            )
-        } finally {
-            commit('setLoading', false)
-        }
-    },
+      commit('setSupportCategoryGroupsProdes', response);
+      commit('setshowFeaturesSupportLayers', true);
+    } catch (exception) {
+      commit(
+        'alert/addAlert',
+        {
+          message: this.$i18n.t('default-error', {
+            action: this.$i18n.t('retrieve'),
+            resource: this.$i18n.tc('layer', 2),
+          }),
+        },
+        { root: true },
+      );
+    } finally {
+      commit('setLoading', false);
+    }
+  },
 
-    async getCategoryGroupsAntropismo({ commit }) {
-        commit('setLoading', true)
-        const params = {
-            category: 5,
-        }
-        try {
-            const response = await this.$api.$get('support/layers-groups/', {
-                params,
-            })
+  async getCategoryGroupsAntropismo({ commit }) {
+    commit('setLoading', true);
+    const params = {
+      category: 5,
+    };
+    try {
+      const response = await this.$api.$get('support/layers-groups/', {
+        params,
+      });
 
-            commit('setSupportCategoryGroupsAntropismo', response)
-            commit('setshowFeaturesSupportLayers', true)
-        } catch (exception) {
-            commit(
-                'alert/addAlert',
-                {
-                    message: this.$i18n.t('default-error', {
-                        action: this.$i18n.t('retrieve'),
-                        resource: this.$i18n.tc('layer', 2),
-                    }),
-                },
-                { root: true }
-            )
-        } finally {
-            commit('setLoading', false)
-        }
-    },
-    async getCategoryGroupsBase({ commit }) {
-        commit('setLoading', true)
-        const params = {
-            category: 1,
-        }
-        try {
-            const response = await this.$api.$get('support/layers-groups/', {
-                params,
-            })
+      commit('setSupportCategoryGroupsAntropismo', response);
+      commit('setshowFeaturesSupportLayers', true);
+    } catch (exception) {
+      commit(
+        'alert/addAlert',
+        {
+          message: this.$i18n.t('default-error', {
+            action: this.$i18n.t('retrieve'),
+            resource: this.$i18n.tc('layer', 2),
+          }),
+        },
+        { root: true },
+      );
+    } finally {
+      commit('setLoading', false);
+    }
+  },
+  async getCategoryGroupsBase({ commit }) {
+    commit('setLoading', true);
+    const params = {
+      category: 1,
+    };
+    try {
+      const response = await this.$api.$get('support/layers-groups/', {
+        params,
+      });
 
-            commit('setSupportCategoryGroupsBase', response)
-            commit('setshowFeaturesSupportLayers', true)
-        } catch (exception) {
-            commit(
-                'alert/addAlert',
-                {
-                    message: this.$i18n.t('default-error', {
-                        action: this.$i18n.t('retrieve'),
-                        resource: this.$i18n.tc('layer', 2),
-                    }),
-                },
-                { root: true }
-            )
-        } finally {
-            commit('setLoading', false)
-        }
-    },
+      commit('setSupportCategoryGroupsBase', response);
+      commit('setshowFeaturesSupportLayers', true);
+    } catch (exception) {
+      commit(
+        'alert/addAlert',
+        {
+          message: this.$i18n.t('default-error', {
+            action: this.$i18n.t('retrieve'),
+            resource: this.$i18n.tc('layer', 2),
+          }),
+        },
+        { root: true },
+      );
+    } finally {
+      commit('setLoading', false);
+    }
+  },
 
-    async getHeatMapLayer({ state, commit }, { id, filters }) {
-        const heatLayer = state.supportLayers[id]
-        const params = {
-            ...filters,
-            type: heatLayer.heatmap.heatmap_type.identifier,
-        }
+  async getHeatMapLayer({ state, commit }, { id, filters }) {
+    const heatLayer = state.supportLayers[id];
+    const params = {
+      ...filters,
+      type: heatLayer.heatmap.heatmap_type.identifier,
+    };
 
-        commit('setLayerLoading', { id, loading: true })
+    commit('setLayerLoading', { id, loading: true });
 
-        try {
-            const data = await this.$api.$get('monitoring/heatmap/', {
-                params,
-            })
+    try {
+      const data = await this.$api.$get('monitoring/heatmap/', {
+        params,
+      });
 
-            commit('setHeatLayerData', { id, data })
-            commit('setLayerLoading', { id, loading: false })
-            commit('setshowFeaturesSupportLayers', true)
-        } catch (exception) {
-            commit(
-                'alert/addAlert',
-                {
-                    message: this.$i18n.t('default-error', {
-                        action: this.$i18n.t('retrieve'),
-                        resource: this.$i18n.tc('layer', 1),
-                    }),
-                },
-                { root: true }
-            )
-        }
-    },
-    async getHeatMapLayerRaster({ state, commit }, { id, filters }) {
-        const heatLayer = state.supportLayersCategoryRaster[id]
-        const params = {
-            ...filters,
-            type: heatLayer.heatmap.heatmap_type.identifier,
-        }
+      commit('setHeatLayerData', { id, data });
+      commit('setLayerLoading', { id, loading: false });
+      commit('setshowFeaturesSupportLayers', true);
+    } catch (exception) {
+      commit(
+        'alert/addAlert',
+        {
+          message: this.$i18n.t('default-error', {
+            action: this.$i18n.t('retrieve'),
+            resource: this.$i18n.tc('layer', 1),
+          }),
+        },
+        { root: true },
+      );
+    }
+  },
+  async getHeatMapLayerRaster({ state, commit }, { id, filters }) {
+    const heatLayer = state.supportLayersCategoryRaster[id];
+    const params = {
+      ...filters,
+      type: heatLayer.heatmap.heatmap_type.identifier,
+    };
 
-        commit('setLayerLoadingRaster', { id, loading: true })
+    commit('setLayerLoadingRaster', { id, loading: true });
 
-        try {
-            const data = await this.$api.$get('monitoring/heatmap/', {
-                params,
-            })
+    try {
+      const data = await this.$api.$get('monitoring/heatmap/', {
+        params,
+      });
 
-            commit('setHeatLayerDataRaster', { id, data })
-            commit('setLayerLoadingRaster', { id, loading: false })
-            commit('setshowFeaturesSupportLayers', true)
-        } catch (exception) {
-            commit(
-                'alert/addAlert',
-                {
-                    message: this.$i18n.t('default-error', {
-                        action: this.$i18n.t('retrieve'),
-                        resource: this.$i18n.tc('layer', 1),
-                    }),
-                },
-                { root: true }
-            )
-        }
-    },
-    async getHeatMapLayerFire({ state, commit }, { id, filters }) {
-        const heatLayer = state.supportLayersCategoryFire[id]
-        const params = {
-            ...filters,
-            type: heatLayer.heatmap.heatmap_type.identifier,
-        }
+      commit('setHeatLayerDataRaster', { id, data });
+      commit('setLayerLoadingRaster', { id, loading: false });
+      commit('setshowFeaturesSupportLayers', true);
+    } catch (exception) {
+      commit(
+        'alert/addAlert',
+        {
+          message: this.$i18n.t('default-error', {
+            action: this.$i18n.t('retrieve'),
+            resource: this.$i18n.tc('layer', 1),
+          }),
+        },
+        { root: true },
+      );
+    }
+  },
+  async getHeatMapLayerFire({ state, commit }, { id, filters }) {
+    const heatLayer = state.supportLayersCategoryFire[id];
+    const params = {
+      ...filters,
+      type: heatLayer.heatmap.heatmap_type.identifier,
+    };
 
-        commit('setLayerLoadingFire', { id, loading: true })
+    commit('setLayerLoadingFire', { id, loading: true });
 
-        try {
-            const data = await this.$api.$get('monitoring/heatmap/', {
-                params,
-            })
+    try {
+      const data = await this.$api.$get('monitoring/heatmap/', {
+        params,
+      });
 
-            commit('setHeatLayerDataFire', { id, data })
-            commit('setLayerLoadingFire', { id, loading: false })
-            commit('setshowFeaturesSupportLayers', true)
-        } catch (exception) {
-            commit(
-                'alert/addAlert',
-                {
-                    message: this.$i18n.t('default-error', {
-                        action: this.$i18n.t('retrieve'),
-                        resource: this.$i18n.tc('layer', 1),
-                    }),
-                },
-                { root: true }
-            )
-        }
-    },
-    async getFilterOptions({ commit }) {
-        const regional_coordinators = await this.$api.$get('funai/cr/')
+      commit('setHeatLayerDataFire', { id, data });
+      commit('setLayerLoadingFire', { id, loading: false });
+      commit('setshowFeaturesSupportLayers', true);
+    } catch (exception) {
+      commit(
+        'alert/addAlert',
+        {
+          message: this.$i18n.t('default-error', {
+            action: this.$i18n.t('retrieve'),
+            resource: this.$i18n.tc('layer', 1),
+          }),
+        },
+        { root: true },
+      );
+    }
+  },
+  async getFilterOptions({ commit }) {
+    const regional_coordinators = await this.$api.$get('funai/cr/');
 
-        const data = {}
+    const data = {};
 
-        if (regional_coordinators) {
-            data.regionalFilters = regional_coordinators.sort(
-                (a, b) => a.ds_cr > b.ds_cr
-            )
-        }
+    if (regional_coordinators) {
+      data.regionalFilters = regional_coordinators.sort(
+        (a, b) => a.ds_cr > b.ds_cr,
+      );
+    }
 
-        commit('setFilterOptions', data)
-    },
-}
+    commit('setFilterOptions', data);
+  },
+};
