@@ -67,13 +67,19 @@
                     :dark="getColor(item.prioridade) !== 'yellow'"
                   >
                     {{ item.prioridade }}
-                    <MapPrinterPriority
-                      class="mx-2 mb-2"
-                      :value="dialogPrint"
-                    />
                   </v-chip>
                 </v-col>
               </v-row>
+            </template>
+
+            <template
+              v-if="[item.action]"
+              #[`item.actions`]="{ item }"
+            >
+              <MapPrinterPriority
+                class="mx-2 mb-2"
+                :value="dialogPrint"
+              />
             </template>
           </v-data-table>
         </v-card>
