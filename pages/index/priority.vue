@@ -221,6 +221,7 @@ export default {
         { text: 'Latitude', value: 'nu_latitude' },
         { text: 'Longitude', value: 'nu_longitude' },
         { text: 'Prioridade', value: 'prioridade' },
+        { text: 'Ações', value: 'actions' },
       ],
       checkNewFilters: false,
       dialog: false,

@@ -184,7 +184,7 @@ export default {
       this.map.flyTo([
         this.featuresIndividual.properties.nu_latitude,
         this.featuresIndividual.properties.nu_longitude,
-      ], 10);
+      ], 16);
     },
 
     ...mapGetters('priority', ['featuresLoaded']),
