@@ -1,6 +1,6 @@
 export const state = () => ({
   features: null,
-  showFeatures: false,
+  showFeaturesDeter: false,
   heatMap: false,
   tableDialogDeter: false,
   isLoadingTable: true,
@@ -80,8 +80,8 @@ export const mutations = {
     state.isLoadingGeoJson = payload;
   },
 
-  setShowFeatures(state, showFeatures) {
-    state.showFeatures = showFeatures;
+  setShowFeatures(state, showFeaturesDeter) {
+    state.showFeaturesDeter = showFeaturesDeter;
   },
 
   setOpacity(state, opacity) {
