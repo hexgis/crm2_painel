@@ -62,7 +62,7 @@
       no-gutters
       align="center"
     >
-      <v-col v-show="showFeatures">
+      <v-col v-show="showFeaturesDeter">
         <v-btn
           color="accent"
           :loading="isLoadingGeoJson"
@@ -131,7 +131,7 @@
       v-if="total && !isLoadingFeatures"
       class="px-3 py-1 mt-7"
     >
-      <v-row v-if="showFeatures && total">
+      <v-row v-if="showFeaturesDeter && total && !isLoadingFeatures">
         <v-col
           cols="7"
           class="grey--text text--darken-2"
@@ -140,15 +140,14 @@
         </v-col>
         <v-col
           cols="5"
-          class="text-right"
+          class="text-right grey--text text--darken-2"
         >
           {{ total.total }}
         </v-col>
       </v-row>
-
       <v-row
         v-if="
-          showFeatures && total && total.area_ha && !isLoadingFeatures
+          showFeaturesDeter && total && total.area_total_km && !isLoadingFeatures
         "
       >
         <v-col
@@ -162,17 +161,17 @@
           class="text-right"
         >
           {{
-            total.area_ha.toLocaleString($i18n.locale, {
+            total.area_total_km.toLocaleString($i18n.locale, {
               maximumFractionDigits: 2,
             })
           }}
-          ha
+          km
         </v-col>
       </v-row>
     </v-row>
 
     <v-row
-      v-if="showFeatures && !isLoadingFeatures"
+      v-if="showFeaturesDeter && !isLoadingFeatures"
       align="center"
     >
       <v-col
@@ -192,7 +191,7 @@
     </v-row>
 
     <v-row
-      v-if="showFeatures && !isLoadingFeatures"
+      v-if="showFeaturesDeter && !isLoadingFeatures"
       align="center"
       justify="space-between"
     >
@@ -298,7 +297,7 @@ export default {
       'isLoadingGeoJson',
       'isLoadingFeatures',
       'filterOptions',
-      'showFeatures',
+      'showFeaturesDeter',
       'total',
       'params',
     ]),

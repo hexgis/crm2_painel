@@ -15,7 +15,7 @@
     <DeterFilter @onSearch="search()" />
 
     <div
-      v-if="showFeatures && !isLoadingFeatures"
+      v-if="showFeaturesDeter && !isLoadingFeatures"
       class="px-4"
     >
       <v-divider />
@@ -223,15 +223,15 @@ export default {
     },
     showFeaturesDeter: {
       get() {
-        return this.$store.state.deter.showFeatures;
+        return this.$store.state.deter.showFeaturesDeter;
       },
 
       set(value) {
-        this.$store.commit('deter/setShowFeatures', value);
+        this.$store.commit('deter/setShowFeaturesDeter', value);
       },
     },
     ...mapState('deter', [
-      'showFeatures',
+      'showFeaturesDeter',
       'features',
       'table',
       'visualizationStage',
