@@ -112,13 +112,14 @@
                 color="primary"
                 class="mr-2"
                 :loading="loadingPrintImage"
-                @click="saveImage"
+                @click="generatePdf"
               >
                 <v-icon dark>
                   mdi-file-image-outline
                 </v-icon>
                 {{ $t('input-button-print-image') }}
               </v-btn>
+
               <!-- <v-btn color="primary" @click="generatePdf">
                             <v-icon dark> mdi-file-export-outline </v-icon>
                             Gerar PDF
@@ -158,6 +159,7 @@
 
 <script>
 import domtoimage from 'dom-to-image';
+import { jsPDF } from 'jspdf';
 import MapForPrintPriority from '@/components/priority/MapForPrintPriority.vue';
 import MiniMapForPrintPriority from '@/components/priority/MiniMapForPrintPriority.vue';
 
@@ -224,6 +226,31 @@ export default {
         alert('Ocorreu um erro ao gerar a imagem.');
         this.loadingPrintImage = false;
         infoControlRight.setAttribute('style', 'width: 100%');
+      }
+    },
+    async generatePdf() {
+      try {
+        const nameImageDownload = this.titleMap;
+        const options = {
+          quality: 1,
+          bgcolor: 'white',
+        };
+        const node = document.getElementById('printableMap');
+        await domtoimage.toJpeg(node, options).then((image) => {
+          const doc = new jsPDF({
+            orientation: 'portrait',
+            format: this.select.type,
+            compression: 'SLOW',
+          });
+          doc.addImage(image, 'JPEG', 0, 0, 210, 150);
+          doc.save(`${nameImageDownload}.pdf`);
+        });
+        this.loadingPrintImage = false;
+      } catch (error) {
+        this.$store.commit('alert/addAlert', {
+          message: this.$t('image-error'),
+        });
+        this.loadingPrintImage = false;
       }
     },
 

@@ -25,6 +25,7 @@
         "chart.js": "^2.9.4",
         "cookie-universal-nuxt": "^2.1.4",
         "dom-to-image": "^2.6.0",
+        "jspdf": "^2.5.1",
         "jszip": "^3.7.1",
         "jwt-decode": "^2.2.0",
         "leaflet-basemaps": "github:hexgis/Leaflet.Basemaps",
