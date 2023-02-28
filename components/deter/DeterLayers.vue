@@ -1,7 +1,7 @@
 <template>
   <l-layer-group
     name="deter"
-    :visible="showFeatures"
+    :visible="showFeaturesDeter"
   >
     <l-layer-group
       ref="deterHeat"
@@ -75,27 +75,45 @@ export default {
     vectorGrid: null,
 
     style: {
-      CR: {
+      CICATRIZ_DE_QUEIMADA: {
         weight: 2.5,
-        color: '#ff3333',
+        color: '#330000',
         fill: true,
         fillOpacity: 1,
       },
-      DG: {
+      DESMATAMENTO_VEG: {
+        weight: 2.5,
+        color: '#b2b266',
+        fill: true,
+        fillOpacity: 1,
+      },
+      CS_DESORDENADO: {
+        weight: 2.5,
+        color: '#ff4dff',
+        fill: true,
+        fillOpacity: 1,
+      },
+      DESMATAMENTO_CR: {
+        weight: 2.5,
+        color: '#cca300',
+        fill: true,
+        fillOpacity: 1,
+      },
+      CS_GEOMETRICO: {
+        weight: 2.5,
+        color: '#669999',
+        fill: true,
+        fillOpacity: 1,
+      },
+      DEGRADACAO: {
         weight: 2.5,
         color: '#ff8000',
         fill: true,
         fillOpacity: 1,
       },
-      FF: {
+      MINERACAO: {
         weight: 2.5,
-        color: '#b35900',
-        fill: true,
-        fillOpacity: 1,
-      },
-      DR: {
-        weight: 2.5,
-        color: '#990099',
+        color: '#cccc00',
         fill: true,
         fillOpacity: 1,
       },
@@ -107,7 +125,7 @@ export default {
       'features',
       'opacity',
       'heatMap',
-      'showFeatures',
+      'showFeaturesDeter',
     ]),
     ...mapGetters('deter', ['featuresLoaded']),
   },
@@ -123,20 +141,32 @@ export default {
 
     opacity() {
       if (this.isVectorGrid) {
-        this.vectorGrid.setFeatureStyle(1, {
-          ...this.style.DR,
+        this.vectorGrid.setFeatureStyle(7, {
+          ...this.style.CICATRIZ_DE_QUEIMADA,
           fillOpacity: this.opacity / 100,
         });
-        this.vectorGrid.setFeatureStyle(2, {
-          ...this.style.FF,
+        this.vectorGrid.setFeatureStyle(6, {
+          ...this.style.DESMATAMENTO_VEG,
           fillOpacity: this.opacity / 100,
         });
-        this.vectorGrid.setFeatureStyle(3, {
-          ...this.style.DG,
+        this.vectorGrid.setFeatureStyle(5, {
+          ...this.style.CS_DESORDENADO,
           fillOpacity: this.opacity / 100,
         });
         this.vectorGrid.setFeatureStyle(4, {
-          ...this.style.CR,
+          ...this.style.DESMATAMENTO_CR,
+          fillOpacity: this.opacity / 100,
+        });
+        this.vectorGrid.setFeatureStyle(3, {
+          ...this.style.CS_GEOMETRICO,
+          fillOpacity: this.opacity / 100,
+        });
+        this.vectorGrid.setFeatureStyle(2, {
+          ...this.style.DEGRADACAO,
+          fillOpacity: this.opacity / 100,
+        });
+        this.vectorGrid.setFeatureStyle(1, {
+          ...this.style.MINERACAO,
           fillOpacity: this.opacity / 100,
         });
       } else {
@@ -158,14 +188,20 @@ export default {
         });
       });
       switch (classname) {
-        case 'CR':
-          return this.style.CR;
-        case 'DG':
-          return this.style.DG;
-        case 'FF':
-          return this.style.FF;
-        case 'DR':
-          return this.style.DR;
+        case 'CICATRIZ_DE_QUEIMADA':
+          return this.style.CICATRIZ_DE_QUEIMADA;
+        case 'DESMATAMENTO_VEG':
+          return this.style.DESMATAMENTO_VEG;
+        case 'CS_DESORDENADO':
+          return this.style.CS_DESORDENADO;
+        case 'DESMATAMENTO_CR':
+          return this.style.DESMATAMENTO_CR;
+        case 'CS_GEOMETRICO':
+          return this.style.CS_GEOMETRICO;
+        case 'DEGRADACAO':
+          return this.style.DEGRADACAO;
+        case 'MINERACAO':
+          return this.style.MINERACAO;
       }
     },
 
@@ -189,13 +225,19 @@ export default {
             interactive: true,
             getFeatureId: (e) => {
               switch (e.properties.classname) {
-                case 'CR':
+                case 'CICATRIZ_DE_QUEIMADA':
+                  return 7;
+                case 'DESMATAMENTO_VEG':
+                  return 6;
+                case 'CS_DESORDENADO':
+                  return 5;
+                case 'DESMATAMENTO_CR':
                   return 4;
-                case 'DG':
+                case 'CS_GEOMETRICO':
                   return 3;
-                case 'FF':
+                case 'DEGRADACAO':
                   return 2;
-                case 'DR':
+                case 'MINERACAO':
                   return 1;
               }
             },
@@ -220,17 +262,26 @@ export default {
       style.fillOpacity = this.opacity / 100;
 
       switch (feature.properties.classname) {
-        case 'Corte Raso':
-          style.color = '#ff3333';
+        case 'CICATRIZ_DE_QUEIMADA':
+          style.color = '#330000';
           break;
-        case 'Degradação':
+        case 'DESMATAMENTO_VEG':
+          style.color = '#b2b266';
+          break;
+        case 'CS_DESORDENADO':
+          style.color = '#ff4dff';
+          break;
+        case 'DESMATAMENTO_CR':
+          style.color = '#cca300';
+          break;
+        case 'CS_GEOMETRICO':
+          style.color = '#669999';
+          break;
+        case 'DEGRADACAO':
           style.color = '#ff8000';
           break;
-        case 'Fogo em Floresta':
-          style.color = '#b35900';
-          break;
-        case 'Desmatamento em Regeneração':
-          style.color = '#990099';
+        case 'MINERACAO':
+          style.color = '#cccc00';
           break;
       }
       return style;

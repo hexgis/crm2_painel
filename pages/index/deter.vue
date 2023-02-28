@@ -6,7 +6,7 @@
       </h4>
       <v-switch
         v-if="features"
-        v-model="showFeaturesDeter"
+        v-model="showFeatures"
         class="mt-n1 ml-5"
         hide-details
       />
@@ -26,20 +26,47 @@
         <v-row class="mb-2">
           <v-icon
             class="mr-2"
-            color="#990099"
+            color="#330000"
           >
             mdi-square
           </v-icon>
-          Desmatamento em Regeneração
+          Cicatriz de Queimada
         </v-row>
         <v-row class="mb-2">
           <v-icon
             class="mr-2"
-            color="#b35900"
+            color="#b2b266"
           >
             mdi-square
           </v-icon>
-          Fogo em Floresta
+          Desmatamento Veg
+        </v-row>
+        <v-row class="mb-2">
+          <v-icon
+            class="mr-2"
+            color="#ff4dff"
+          >
+            mdi-square
+          </v-icon>
+          Cs Desordenado
+        </v-row>
+        <v-row class="mb-2">
+          <v-icon
+            class="mr-2"
+            color="#cca300"
+          >
+            mdi-square
+          </v-icon>
+          Desmatamento Cr
+        </v-row>
+        <v-row class="mb-2">
+          <v-icon
+            class="mr-2"
+            color="#669999"
+          >
+            mdi-square
+          </v-icon>
+          Cs Geométrico
         </v-row>
         <v-row class="mb-2">
           <v-icon
@@ -53,11 +80,11 @@
         <v-row class="mb-2">
           <v-icon
             class="mr-2"
-            color="#ff3333"
+            color="#cccc00"
           >
             mdi-square
           </v-icon>
-          Corte Raso
+          Mineração
         </v-row>
         <v-spacer />
       </v-col>
@@ -221,13 +248,13 @@ export default {
                 && this.features.features.length > 0
       );
     },
-    showFeaturesDeter: {
+    showFeatures: {
       get() {
         return this.$store.state.deter.showFeaturesDeter;
       },
 
       set(value) {
-        this.$store.commit('deter/setShowFeaturesDeter', value);
+        this.$store.commit('deter/setShowFeatures', value);
       },
     },
     ...mapState('deter', [
@@ -298,6 +325,7 @@ export default {
     ...mapMutations('deter', [
       'setVisualizationStage',
       'settableDialogDeter',
+      'setShowFeatures',
     ]),
   },
 };
