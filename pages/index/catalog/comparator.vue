@@ -70,6 +70,15 @@
                       {{ image.properties.cloud_cover }}%
                     </span>
                   </div>
+
+                  <div class="d-flex">
+                    <v-icon>
+                      mdi-weather-partly-cloudy
+                    </v-icon>
+                    <span class="ml-3">
+                      {{ image.properties.type }}%
+                    </span>
+                  </div>
                 </div>
               </template>
 
@@ -77,7 +86,7 @@
                 <v-row justify="center">
                   <div class="scene-container">
                     <v-img
-                      contain=""
+                      contain
                       class="scene-preview"
                       :src="emptyImage"
                       :lazy-src="emptyImage"
