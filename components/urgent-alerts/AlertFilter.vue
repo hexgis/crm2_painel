@@ -1,5 +1,12 @@
 <template>
   <v-col class="px-4">
+    <v-row class="px-3">
+      <v-checkbox
+        v-model="filters.currentView"
+        :label="$t('current-view-label')"
+        :error="error"
+      />
+    </v-row>
     <v-row class="px-3 pb-1 py-3">
       <v-combobox
         v-model="filters.cr"
@@ -78,6 +85,10 @@
         </v-btn>
       </v-col>
     </v-row>
+    <v-divider
+      v-if="showFeaturesUrgentAlert && !isLoadingFeatures"
+      class="mt-4"
+    />
     <div
       v-if="isLoadingFeatures"
       class="mt-5"
@@ -130,6 +141,9 @@
           cols="7"
           class="grey--text text--darken-2"
         >
+          <v-icon>
+            mdi-hexagon
+          </v-icon>
           {{ $t('polygon-label') }}:
         </v-col>
         <v-col
@@ -152,6 +166,9 @@
           cols="7"
           class="grey--text text--darken-2"
         >
+          <v-icon>
+            mdi-aspect-ratio
+          </v-icon>
           {{ $t('total-area-label') }}:
         </v-col>
         <v-col
@@ -176,6 +193,9 @@
         cols="4"
         class="grey--text text--darken-2 mt-1"
       >
+        <v-icon>
+          mdi-opacity
+        </v-icon>
         {{ $t('opacity-label') }}
       </v-col>
       <v-col cols="8">
@@ -194,6 +214,9 @@
       justify="space-between"
     >
       <v-col>
+        <v-icon>
+          mdi-scent
+        </v-icon>
         <span class="grey--text text--darken-2">
           {{ $t('heat-map-label') }}
         </span>
@@ -219,9 +242,9 @@
             "opacity-label": "Opacity",
             "current-view-label": "Search in current area?",
             "start-date-label": "Start Date",
-            "total-area-label": "Total area",
-            "heat-map-label": "Heat map",
-            "polygon-label": "Total polygon count",
+            "total-area-label": "Total Area",
+            "heat-map-label": "Heat Map",
+            "polygon-label": "Polygon count",
             "end-date-label": "End Date"
         },
         "pt-br": {
@@ -229,7 +252,7 @@
             "opacity-label": "Opacidade",
             "current-view-label": "Pesquisar nesta área?",
             "total-area-label": "Área total",
-            "heat-map-label": "Mapa de calor",
+            "heat-map-label": "Mapa de Calor",
             "polygon-label": "Total de polígonos",
             "start-date-label": "Data Início",
             "end-date-label": "Data Fim"

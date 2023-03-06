@@ -97,6 +97,10 @@
         </v-btn>
       </v-col>
     </v-row>
+    <v-divider
+      v-if="!isLoadingFeatures && showFeatures"
+      class="mt-4"
+    />
     <div
       v-if="isLoadingFeatures"
       class="mt-4"
@@ -139,7 +143,6 @@
         </v-row>
       </div>
     </div>
-
     <v-row
       v-if="total && !isLoadingFeatures"
       class="px-3 py-1 mt-7"
@@ -149,6 +152,9 @@
           cols="7"
           class="grey--text text--darken-2"
         >
+          <v-icon>
+            mdi-hexagon
+          </v-icon>
           {{ $t('polygon-label') }}:
         </v-col>
         <v-col
@@ -168,6 +174,9 @@
           cols="7"
           class="grey--text text--darken-2"
         >
+          <v-icon>
+            mdi-aspect-ratio
+          </v-icon>
           {{ $t('total-area-label') }}:
         </v-col>
         <v-col
@@ -192,6 +201,9 @@
         cols="4"
         class="grey--text text--darken-2 mt-1"
       >
+        <v-icon>
+          mdi-opacity
+        </v-icon>
         {{ $t('opacity-label') }}
       </v-col>
       <v-col cols="8">
@@ -210,6 +222,9 @@
       justify="space-between"
     >
       <v-col>
+        <v-icon>
+          mdi-scent
+        </v-icon>
         <span class="grey--text text--darken-2">
           {{ $t('heat-map-label') }}
         </span>
@@ -225,23 +240,8 @@
         />
       </v-col>
     </v-row>
+    </v-divider>
   </v-col>
-
-  <!-- <div class="py-11">
-                <template v-for="stage in stageList">
-                    <v-row
-                        :key="stage.identifier"
-                        v-if="showFeatures"
-                        class="layer-legend"
-                        :style="{
-                            '--color': stageColor[stage.identifier],
-                            '--back-color': `${stageColor[stage.identifier]}AA`,
-                        }"
-                    >
-                        {{ stage.name }}
-                    </v-row>
-                </template>
-            </div> -->
 </template>
 
 <i18n>
@@ -251,9 +251,9 @@
             "opacity-label": "Opacity",
             "current-view-label": "Search in current area?",
             "start-date-label": "Start Date",
-            "total-area-label": "Total area",
-            "heat-map-label": "Heat map",
-            "polygon-label": "Total polygon count",
+            "total-area-label": "Total Area",
+            "heat-map-label": "Heat Map",
+            "polygon-label": "Polygon Count",
             "end-date-label": "End Date"
         },
         "pt-br": {
@@ -261,7 +261,7 @@
             "opacity-label": "Opacidade",
             "current-view-label": "Pesquisar nesta área?",
             "total-area-label": "Área total",
-            "heat-map-label": "Mapa de calor",
+            "heat-map-label": "Mapa de Calor",
             "polygon-label": "Total de polígonos",
             "start-date-label": "Data Início",
             "end-date-label": "Data Fim"

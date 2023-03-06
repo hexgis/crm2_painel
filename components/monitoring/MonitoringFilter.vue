@@ -82,6 +82,11 @@
         </v-btn>
       </v-col>
     </v-row>
+    <v-divider
+      v-if="showFeaturesMonitoring && !isLoadingFeatures"
+      class="mt-4"
+    />
+
     <div
       v-if="isLoadingFeatures"
       class="mt-1"
@@ -127,11 +132,17 @@
       </div>
     </div>
 
-    <v-row v-if="showFeaturesMonitoring && total && !isLoadingFeatures">
+    <v-row
+      v-if="showFeaturesMonitoring && total && !isLoadingFeatures"
+      class="mt-3"
+    >
       <v-col
         cols="7"
         class="grey--text text--darken-2"
       >
+        <v-icon>
+          mdi-hexagon
+        </v-icon>
         {{ $t('polygon-label') }}:
       </v-col>
       <v-col
@@ -154,6 +165,9 @@
         cols="7"
         class="grey--text text--darken-2"
       >
+        <v-icon>
+          mdi-aspect-ratio
+        </v-icon>
         {{ $t('total-area-label') }}:
       </v-col>
       <v-col
@@ -176,6 +190,9 @@
         cols="4"
         class="grey--text text--darken-2"
       >
+        <v-icon>
+          mdi-opacity
+        </v-icon>
         {{ $t('opacity-label') }}
       </v-col>
       <v-col cols="8">
@@ -192,6 +209,9 @@
       justify="space-between"
     >
       <v-col>
+        <v-icon>
+          mdi-scent
+        </v-icon>
         <span class="grey--text text--darken-2">
           {{ $t('heat-map-label') }}
         </span>
@@ -209,7 +229,7 @@
     </v-row>
     <div
       v-if="showFeaturesMonitoring && !isLoadingFeatures"
-      class="px-4"
+      class="mt-3"
     >
       <v-divider />
       <p class="font-weight-regular pt-2 grey--text text--darken-2">
@@ -268,8 +288,8 @@
             "start-date-label": "Start Date",
             "end-date-label": "End Date",
             "total-area-label": "Total Area",
-            "heat-map-label": "Heat map",
-            "polygon-label": "Total polygon"
+            "heat-map-label": "Heat Map",
+            "polygon-label": "Polygon Count"
         },
         "pt-br": {
             "monitoring-label": "Monitoramento Diário",
@@ -279,7 +299,7 @@
             "start-date-label": "Data Início",
             "end-date-label": "Data Final",
             "total-area-label": "Área total",
-            "heat-map-label": "Mapa de calor",
+            "heat-map-label": "Mapa de Calor",
             "polygon-label": "Total de polígonos"
         }
     }
