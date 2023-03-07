@@ -84,6 +84,11 @@
         </v-btn>
       </v-col>
     </v-row>
+    <v-divider
+      v-if="!isLoadingFeatures && showFeaturesDeter"
+      class="mt-4"
+    />
+
     <div
       v-if="isLoadingFeatures"
       class="mt-4"
@@ -136,6 +141,10 @@
           cols="7"
           class="grey--text text--darken-2"
         >
+          <v-icon>
+            mdi-hexagon
+          </v-icon>
+
           {{ $t('polygon-label') }}:
         </v-col>
         <v-col
@@ -154,6 +163,10 @@
           cols="7"
           class="grey--text text--darken-2"
         >
+          <v-icon>
+            mdi-aspect-ratio
+          </v-icon>
+
           {{ $t('total-area-label') }}:
         </v-col>
         <v-col
@@ -178,6 +191,10 @@
         cols="4"
         class="grey--text text--darken-2 mt-1"
       >
+        <v-icon>
+          mdi-opacity
+        </v-icon>
+
         {{ $t('opacity-label') }}
       </v-col>
       <v-col cols="8">
@@ -197,6 +214,10 @@
     >
       <v-col>
         <span class="grey--text text--darken-2">
+          <v-icon>
+            mdi-scent
+          </v-icon>
+
           {{ $t('heat-map-label') }}
         </span>
       </v-col>
@@ -223,7 +244,7 @@
             "start-date-label": "Start Date",
             "total-area-label": "Total area",
             "heat-map-label": "Heat map",
-            "polygon-label": "Total polygon count",
+            "polygon-label": "Polygon count",
             "end-date-label": "End Date"
         },
         "pt-br": {

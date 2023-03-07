@@ -792,7 +792,7 @@ p {
     padding-left: 2px;
     text-shadow: -2px 0 #ffffff, 0 2px #ffffff, 2px 0 #ffffff, 0 -2px #ffffff;
 }
-.leaflet-container .leaflet-control-mapbounds {
+.leaflet-container {
     background-color: rgba(255, 255, 255, 0.7) !important;
     box-shadow: 0 0 5px #bbb !important;
     padding: 0 5px !important;
@@ -804,9 +804,5 @@ p {
 .north-arrow:after {
     height: 35px;
     width: 30px;
-}
-
-.leaflet-control-attribution {
-    white-space: nowrap !important;
 }
 </style>

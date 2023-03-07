@@ -26,7 +26,6 @@
         v-if="!isVectorGrid && featuresLoaded"
         :geojson="features"
         :options="{ onEachFeature }"
-        @ready="onDeterReady"
       />
     </l-feature-group>
   </l-layer-group>
@@ -72,7 +71,6 @@ export default {
     heatmapLayer: null,
 
     isVectorGrid: process.env.MONITORING_VECTOR2TILES === 'true',
-    vectorGrid: null,
 
     style: {
       CICATRIZ_DE_QUEIMADA: {
@@ -127,7 +125,6 @@ export default {
       'heatMap',
       'showFeaturesDeter',
     ]),
-    ...mapGetters('deter', ['featuresLoaded']),
   },
 
   watch: {
@@ -182,7 +179,7 @@ export default {
     vectorGridStyleFunction(classname) {
       Object.keys(this.style).forEach((item) => {
         Object.keys(this.style[item]).forEach((i) => {
-          if (i == 'fillOpacity') {
+          if (i === 'fillOpacity') {
             this.style[item][i] = this.opacity / 100;
           }
         });
@@ -208,10 +205,7 @@ export default {
     addFeatures() {
       this.$refs.deterPolygons.mapObject.clearLayers();
       if (
-        this.isVectorGrid
-                && this.features
-                && this.features.features
-                && this.features.features.length
+        this.isVectorGrid && this.featuresLoaded()
       ) {
         this.createDeterHeatLayer();
         this.flyTo();
@@ -239,6 +233,8 @@ export default {
                   return 2;
                 case 'MINERACAO':
                   return 1;
+                default:
+                  return 0;
               }
             },
           })
@@ -285,15 +281,6 @@ export default {
           break;
       }
       return style;
-    },
-
-    onDeterReady() {
-      if (this.features.features && this.features.features.length) {
-        this.map.fitBounds(
-          this.$refs.deterPolygons.mapObject.getBounds(),
-        );
-        this.createDeterHeatLayer();
-      }
     },
 
     async getFeatureDetails(featureId) {
@@ -345,6 +332,7 @@ export default {
       });
       this.heatmapLayer.addTo(this.$refs.deterHeat.mapObject);
     },
+    ...mapGetters('deter', ['featuresLoaded']),
   },
 };
 </script>
