@@ -96,7 +96,8 @@
         "webhooks-tab": "Webhooks",
         "priority-tab": "Priorities",
         "document-tab": "Document",
-        "mapoteca-tab": "Map Library"
+        "mapoteca-tab": "Map Library",
+        "deter-tab": "Deter"
     },
     "pt-br": {
         "catalog-tab": "Meu acervo de imagens",
@@ -113,7 +114,8 @@
         "webhooks-tab": "Webhooks",
         "priority-tab": "Polígonos Prioritários",
         "document-tab": "Documental",
-        "mapoteca-tab": "Mapoteca"
+        "mapoteca-tab": "Mapoteca",
+        "deter-tab": "Deter"
     }
 }
 </i18n>
@@ -207,6 +209,12 @@ export default {
           icon: 'mdi-dresser',
           route: '/mapoteca',
           show: process.env.ROUTE_MAPOTECA === 'true',
+        },
+        {
+          name: this.$t('deter-tab'),
+          icon: 'mdi-leaf',
+          route: '/deter',
+          show: process.env.ROUTE_DETER === 'true',
         },
       ];
     },

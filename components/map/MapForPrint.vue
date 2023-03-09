@@ -38,6 +38,7 @@
           <MonitoringLayers :map="map" />
           <SupportLayers />
           <AlertLayers :map="map" />
+          <DeterLayers :map="map" />
         </l-map>
       </client-only>
     </v-col>
@@ -255,6 +256,76 @@
                   cols="6"
                 >
                   <p>Alerta Urgente: DG</p>
+                </v-col>
+              </v-row>
+            </div>
+            <div v-if="showFeaturesDeter">
+              <v-row
+                no-gutters
+                align="center"
+              >
+                <v-icon
+                  x-small
+                  color="#965213"
+                >
+                  mdi-square
+                </v-icon>
+                <v-col
+                  no-gutters
+                  cols="6"
+                >
+                  <p>Deter: CR</p>
+                </v-col>
+              </v-row>
+              <v-row
+                no-gutters
+                align="center"
+              >
+                <v-icon
+                  x-small
+                  color="#337f1e"
+                >
+                  mdi-square
+                </v-icon>
+                <v-col
+                  no-gutters
+                  cols="6"
+                >
+                  <p>Deter: DR</p>
+                </v-col>
+              </v-row>
+              <v-row
+                no-gutters
+                align="center"
+              >
+                <v-icon
+                  x-small
+                  color="#ba1a1a"
+                >
+                  mdi-square
+                </v-icon>
+                <v-col
+                  no-gutters
+                  cols="6"
+                >
+                  <p>Deter: FF</p>
+                </v-col>
+              </v-row>
+              <v-row
+                no-gutters
+                align="center"
+              >
+                <v-icon
+                  x-small
+                  color="#e0790b"
+                >
+                  mdi-square
+                </v-icon>
+                <v-col
+                  no-gutters
+                  cols="6"
+                >
+                  <p>Deter: DG</p>
                 </v-col>
               </v-row>
             </div>
@@ -541,6 +612,7 @@ import PriorityLayers from '@/components/priority/PriorityLayers';
 import MonitoringLayers from '@/components/monitoring/MonitoringLayers';
 import SupportLayers from '@/components/support/SupportLayers';
 import AlertLayers from '@/components/urgent-alerts/AlertLayers';
+import DeterLayers from '@/components/deter/DeterLayers';
 
 const intervalZooms = require('@/utils/zoomIntervalsGraticule');
 
@@ -551,6 +623,7 @@ export default {
     MonitoringLayers,
     SupportLayers,
     AlertLayers,
+    DeterLayers,
   },
   props: {
     titleMap: {
@@ -609,6 +682,7 @@ export default {
     ...mapState('priority', ['showFeatures', 'detail']),
     ...mapState('monitoring', ['showFeaturesMonitoring']),
     ...mapState('urgent-alerts', ['showFeaturesUrgentAlert']),
+    ...mapState('deter', ['showFeaturesDeter']),
     ...mapState('supportLayers', [
       'showFeaturesSupportLayers',
       'supportLayers',
@@ -737,7 +811,7 @@ p {
     padding-left: 2px;
     text-shadow: -2px 0 #ffffff, 0 2px #ffffff, 2px 0 #ffffff, 0 -2px #ffffff;
 }
-.leaflet-container .leaflet-control-mapbounds {
+.leaflet-container {
     background-color: rgba(255, 255, 255, 0.7) !important;
     box-shadow: 0 0 5px #bbb !important;
     padding: 0 5px !important;
@@ -749,9 +823,5 @@ p {
 .north-arrow:after {
     height: 35px;
     width: 30px;
-}
-
-.leaflet-control-attribution {
-    white-space: nowrap !important;
 }
 </style>
