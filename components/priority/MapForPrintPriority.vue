@@ -13,7 +13,7 @@
           ref="printMap"
           :zoom="zoom"
           :options="optionsMap"
-          :bounds="bounds"
+          :bounds="initialBounds"
         >
           <l-tile-layer
             url="//{s}.tile.osm.org/{z}/{x}/{y}.png"
@@ -34,11 +34,8 @@
               class="north-arrow"
             >
           </l-control>
-          <PriorityLayers :map="map" />
-          <MonitoringLayers :map="map" />
+          <PriorityIndividualLayer :map="map" />
           <SupportLayers />
-          <AlertLayers :map="map" />
-          <DeterLayers :map="map" />
         </l-map>
       </client-only>
     </v-col>
@@ -189,216 +186,6 @@
                 </v-col>
               </v-row>
             </div>
-            <div v-if="showFeaturesUrgentAlert">
-              <v-row
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#965213"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Alerta Urgente: CR</p>
-                </v-col>
-              </v-row>
-              <v-row
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#337f1e"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Alerta Urgente: DR</p>
-                </v-col>
-              </v-row>
-              <v-row
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#ba1a1a"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Alerta Urgente: FF</p>
-                </v-col>
-              </v-row>
-              <v-row
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#e0790b"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Alerta Urgente: DG</p>
-                </v-col>
-              </v-row>
-            </div>
-            <div v-if="showFeaturesDeter">
-              <v-row
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#965213"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Deter: CR</p>
-                </v-col>
-              </v-row>
-              <v-row
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#337f1e"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Deter: DR</p>
-                </v-col>
-              </v-row>
-              <v-row
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#ba1a1a"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Deter: FF</p>
-                </v-col>
-              </v-row>
-              <v-row
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#e0790b"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Deter: DG</p>
-                </v-col>
-              </v-row>
-            </div>
-            <div v-if="showFeaturesMonitoring">
-              <v-row
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#dd2c00"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Monitoramento Diário: CR</p>
-                </v-col>
-              </v-row>
-              <v-row
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#800080"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Monitoramento Diário: DR</p>
-                </v-col>
-              </v-row>
-              <v-row
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#a93130"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Monitoramento Diário: FF</p>
-                </v-col>
-              </v-row>
-              <v-row
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#ff7f00"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Monitoramento Diário: DG</p>
-                </v-col>
-              </v-row>
-            </div>
             <div v-if="showFeaturesSupportLayers">
               <div
                 v-for="layer in supportLayersCategoryAntropismo"
@@ -515,18 +302,6 @@
                 Brasileiro. Fonte: Banco de Dados Funai - 2022
               </p>
             </div>
-            <div v-if="showFeaturesMonitoring">
-              <p>
-                - Monitoramento Diário. Fonte: Banco de Dados
-                Funai - 2022
-              </p>
-            </div>
-            <div v-if="showFeaturesUrgentAlert">
-              <p>
-                - Alerta Urgente. Fonte: Banco de Dados Funai -
-                2022
-              </p>
-            </div>
             <div v-if="showFeaturesSupportLayers">
               <div
                 v-for="layer in supportLayers"
@@ -602,28 +377,33 @@
         </div>
       </div>
     </v-col>
+    <div v-if="detail != []">
+      <v-data-table
+        :headers="headers"
+        :items="detail"
+        hide-default-footer
+      />
+    </div>
   </v-row>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import MiniMapForPrint from '@/components/map/MiniMapForPrint.vue';
-import PriorityLayers from '@/components/priority/PriorityLayers';
+import MiniMapForPrintPriority from '@/components/priority/MiniMapForPrintPriority.vue';
+import PriorityIndividualLayer from '@/components/priority/PriorityIndividualLayer';
 import MonitoringLayers from '@/components/monitoring/MonitoringLayers';
 import SupportLayers from '@/components/support/SupportLayers';
 import AlertLayers from '@/components/urgent-alerts/AlertLayers';
-import DeterLayers from '@/components/deter/DeterLayers';
 
 const intervalZooms = require('@/utils/zoomIntervalsGraticule');
 
 export default {
   components: {
-    MiniMapForPrint,
-    PriorityLayers,
+    MiniMapForPrintPriority,
+    PriorityIndividualLayer,
     MonitoringLayers,
     SupportLayers,
     AlertLayers,
-    DeterLayers,
   },
   props: {
     titleMap: {
@@ -653,7 +433,10 @@ export default {
     zoomMiniMap: 4,
     valueScale: null,
     valueNorthArrow: null,
-
+    initialBounds: [
+      [-33.8689056, -73.9830625],
+      [5.2842873, -28.6341164],
+    ],
     attribution:
             '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | <span style="color: red; font-weight: bold; width: 100%">Mapa não oficial</span>',
     optionsMap: {
@@ -678,11 +461,10 @@ export default {
   }),
 
   computed: {
-    ...mapState('map', ['bounds', 'localBounds']),
+    ...mapState('map', []),
     ...mapState('priority', ['showFeatures', 'detail']),
     ...mapState('monitoring', ['showFeaturesMonitoring']),
     ...mapState('urgent-alerts', ['showFeaturesUrgentAlert']),
-    ...mapState('deter', ['showFeaturesDeter']),
     ...mapState('supportLayers', [
       'showFeaturesSupportLayers',
       'supportLayers',
@@ -757,19 +539,12 @@ export default {
       }
     },
 
-    onMainMapMoved(e) {
+    onMainMapMoved() {
       this.miniMap.setView(this.map.getCenter(), 4);
     },
 
-    onMainMapMoving(e) {
+    onMainMapMoving() {
       this.aimingRect.setBounds(this.map.getBounds());
-    },
-
-    flyTo() {
-      this.map.flyTo([
-        this.detail.nu_latitude,
-        this.detail.nu_longitude,
-      ], 22);
     },
 
   },
@@ -811,7 +586,7 @@ p {
     padding-left: 2px;
     text-shadow: -2px 0 #ffffff, 0 2px #ffffff, 2px 0 #ffffff, 0 -2px #ffffff;
 }
-.leaflet-container {
+.leaflet-container .leaflet-control-mapbounds {
     background-color: rgba(255, 255, 255, 0.7) !important;
     box-shadow: 0 0 5px #bbb !important;
     padding: 0 5px !important;
@@ -823,5 +598,9 @@ p {
 .north-arrow:after {
     height: 35px;
     width: 30px;
+}
+
+.leaflet-control-attribution {
+    white-space: nowrap !important;
 }
 </style>

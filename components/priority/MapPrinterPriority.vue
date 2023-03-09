@@ -5,8 +5,8 @@
         <v-btn
           fab
           ripple
-          height="36"
-          width="36"
+          height="32"
+          width="32"
           v-on="on"
         >
           <v-icon @click="dialogPrint = true">
@@ -25,7 +25,6 @@
       <v-toolbar
         dark
         color="secondary"
-        class="background__toolbar"
       >
         <h3>{{ $t('print-dialog-label') }}</h3>
         <v-spacer />
@@ -88,9 +87,9 @@
             step="2"
             class="ma-1 pa-1"
           >
-            <v-container v-if="currentStep === 2">
+            <v-container v-if="currentStep == 2">
               <div style="overflow-x: auto; overflow-y: auto">
-                <MapForPrint
+                <MapForPrintPriority
                   id="printableMap"
                   class="pa-1"
                   :title-map="titleMap"
@@ -113,13 +112,14 @@
                 color="primary"
                 class="mr-2"
                 :loading="loadingPrintImage"
-                @click="saveImage"
+                @click="generatePdf"
               >
                 <v-icon dark>
                   mdi-file-image-outline
                 </v-icon>
                 {{ $t('input-button-print-image') }}
               </v-btn>
+
               <!-- <v-btn color="primary" @click="generatePdf">
                             <v-icon dark> mdi-file-export-outline </v-icon>
                             Gerar PDF
@@ -159,13 +159,14 @@
 
 <script>
 import domtoimage from 'dom-to-image';
-import MapForPrint from '@/components/map/MapForPrint.vue';
-import MiniMapForPrint from '@/components/map/MiniMapForPrint.vue';
+import { jsPDF } from 'jspdf';
+import MapForPrintPriority from '@/components/priority/MapForPrintPriority.vue';
+import MiniMapForPrintPriority from '@/components/priority/MiniMapForPrintPriority.vue';
 
 export default {
-  name: 'MapPrinter',
+  name: 'MapPrinterPriority',
 
-  components: { MapForPrint, MiniMapForPrint },
+  components: { MapForPrintPriority, MiniMapForPrintPriority },
 
   props: {
     value: {
@@ -227,6 +228,31 @@ export default {
         infoControlRight.setAttribute('style', 'width: 100%');
       }
     },
+    async generatePdf() {
+      try {
+        const nameImageDownload = this.titleMap;
+        const options = {
+          quality: 1,
+          bgcolor: 'white',
+        };
+        const node = document.getElementById('printableMap');
+        await domtoimage.toJpeg(node, options).then((image) => {
+          const doc = new jsPDF({
+            orientation: 'portrait',
+            format: this.select.type,
+            compression: 'SLOW',
+          });
+          doc.addImage(image, 'JPEG', 0, 0, 210, 150);
+          doc.save(`${nameImageDownload}.pdf`);
+        });
+        this.loadingPrintImage = false;
+      } catch (error) {
+        this.$store.commit('alert/addAlert', {
+          message: this.$t('image-error'),
+        });
+        this.loadingPrintImage = false;
+      }
+    },
 
     closeDialogPrinter(value) {
       this.dialogPrint = value;
@@ -240,7 +266,6 @@ export default {
 .background__toolbar {
     background: linear-gradient(to bottom, rgb(30, 33, 50), rgb(28, 65, 113));
 }
-
 </style>
 
 <style>

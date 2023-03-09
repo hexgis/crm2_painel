@@ -111,7 +111,7 @@ export const mutations = {
      O CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
   */
 
-/*
+  /*
   setTimelineScenes(state, scenes) {
     state.timelineScenes = [];
     for (const scene of scenes.features) {
@@ -167,7 +167,7 @@ export const mutations = {
      O CÓDIGO ABAIXO SERÁ UTILIZADO E MODIFICADO FUTURAMENTE
   */
 
- /*
+  /*
  toggleSceneToCompare(state, sceneIndex) {
     if (
       state.scenesToCompare.leftIndex === sceneIndex
@@ -310,7 +310,7 @@ export const mutations = {
 export const actions = {
   async getSatellites({ commit }) {
     try {
-      const response = await this.$api.$get('catalog/satellite');
+      const response = await this.$api.$get('catalog/satellite/');
 
       commit('setSatellites', response);
     } catch (exception) {
