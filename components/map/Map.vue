@@ -129,6 +129,7 @@
           v-else
           :map="map"
         />
+        <DeterLayers :map="map" />
 
         <!-- <AlgorithmLayers /> -->
 
@@ -196,6 +197,7 @@ import BaseWmsMetadataPopup from '@/components/base/BaseWmsMetadataPopup';
 // import AlgorithmLayers from '@/components/algorithms/AlgorithmLayers'
 // import WebhooksLayers from '@/components/webhooks/WebhooksLayers'
 import PriorityLayers from '@/components/priority/PriorityLayers';
+import DeterLayers from '@/components/deter/DeterLayers';
 import AlertLayers from '@/components/urgent-alerts/AlertLayers';
 import LandUseLayers from '@/components/land-use/LandUseLayers';
 
@@ -230,6 +232,7 @@ export default {
     MapPrinter,
     LandUseLayers,
     AlertLayers,
+    DeterLayers,
   },
 
   data: () => ({
