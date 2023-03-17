@@ -14,7 +14,6 @@
       <v-expansion-panel-header
         ripple
         class="fixed-expansion-header justify-space-between"
-        :color="hasResults ? 'grey lighten-3' : ''"
       >
         <h4 class="subtitle-2 text-uppercase font-weight-regular">
           <slot name="title" />

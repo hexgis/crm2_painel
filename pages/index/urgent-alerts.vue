@@ -13,9 +13,7 @@
     </div>
 
     <AlertFilter @onSearch="search()" />
-
     <ShowDialog />
-
     <div
       v-if="showFeaturesUrgentAlert && !isLoadingFeatures"
       class="px-4"
@@ -68,7 +66,6 @@
     <v-footer
       absolute
       class="priority-footer"
-      color="#FFFFFF"
       elevation="4"
     >
       <v-col>

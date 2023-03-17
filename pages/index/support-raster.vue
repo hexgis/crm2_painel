@@ -35,7 +35,7 @@
       <v-container>
         <v-footer
           absolute
-          color="#FFFFFF"
+
           elevation="6"
           class="d-flex justify-center"
         >
