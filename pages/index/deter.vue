@@ -12,8 +12,9 @@
       />
     </div>
 
-    <DeterFilter @onSearch="search()" />
-
+    <div>
+      <DeterFilter @onSearch="search()" />
+    </div>
     <div
       v-if="showFeaturesDeter && !isLoadingFeatures"
       class="px-4"
@@ -103,50 +104,6 @@
           align="center"
           justify="space-around"
         >
-          <v-btn
-            depressed
-            icon
-            color="accent"
-            @click="changeVisualizationStage('map')"
-          >
-            <v-tooltip left>
-              <template #activator="{ on }">
-                <v-icon
-                  large
-                  v-on="on"
-                >
-                  mdi-map
-                </v-icon>
-              </template>
-              <span>Mapa</span>
-            </v-tooltip>
-          </v-btn>
-          <v-btn
-            icon
-            color="accent"
-            @click="dialog = true"
-          >
-            <v-icon large>
-              mdi-chart-box
-            </v-icon>
-          </v-btn>
-          <v-btn
-            icon
-            color="accent"
-            @click="showTableDeter(true)"
-          >
-            <v-tooltip left>
-              <template #activator="{ on }">
-                <v-icon
-                  large
-                  v-on="on"
-                >
-                  mdi-table
-                </v-icon>
-              </template>
-              <span>Tabela</span>
-            </v-tooltip>
-          </v-btn>
           <div
             v-if="tableDialogDeter"
             class="d-none"
@@ -162,19 +119,6 @@
               :table-name="$t('table-name')"
             />
           </div>
-          <div
-            v-if="dialog"
-            class="d-none"
-          >
-            <AnalyticalDialog
-              :value="dialog"
-              :close-dialog="closeAnalyticalDialog"
-            />
-          </div>
-        </v-row>
-
-        <v-row class="py-2">
-          <v-divider />
         </v-row>
 
         <v-row class="d-flex justify-center">
@@ -257,8 +201,10 @@ export default {
         this.$store.commit('deter/setShowFeatures', value);
       },
     },
+
     ...mapState('deter', [
       'showFeaturesDeter',
+      'showFilterDeter',
       'features',
       'table',
       'visualizationStage',
@@ -326,6 +272,7 @@ export default {
       'setVisualizationStage',
       'settableDialogDeter',
       'setShowFeatures',
+      'setShowFilter',
     ]),
   },
 };

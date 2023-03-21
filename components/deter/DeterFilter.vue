@@ -66,11 +66,29 @@
         <v-btn
           color="accent"
           :loading="isLoadingGeoJson"
-          fab
-          small
+
           @click="downloadGeoJson()"
         >
           <v-icon>mdi-download</v-icon>
+        </v-btn>
+
+        <v-btn
+
+          :loading="isLoadingGeoJson"
+          color="accent"
+          @click="showTableDeter(true)"
+        >
+          <v-tooltip left>
+            <template #activator="{ on }">
+              <v-icon
+
+                v-on="on"
+              >
+                mdi-table
+              </v-icon>
+            </template>
+            <span>Tabela</span>
+          </v-tooltip>
         </v-btn>
       </v-col>
       <v-col>
@@ -141,10 +159,6 @@
           cols="7"
           class="grey--text text--darken-2"
         >
-          <v-icon>
-            mdi-hexagon
-          </v-icon>
-
           {{ $t('polygon-label') }}:
         </v-col>
         <v-col
@@ -156,17 +170,13 @@
       </v-row>
       <v-row
         v-if="
-          showFeaturesDeter && total && total.area_total_km && !isLoadingFeatures
+          showFeaturesDeter && total && total.area_km&& !isLoadingFeatures
         "
       >
         <v-col
           cols="7"
           class="grey--text text--darken-2"
         >
-          <v-icon>
-            mdi-aspect-ratio
-          </v-icon>
-
           {{ $t('total-area-label') }}:
         </v-col>
         <v-col
@@ -174,7 +184,7 @@
           class="text-right"
         >
           {{
-            total.area_total_km.toLocaleString($i18n.locale, {
+            total.area_km.toLocaleString($i18n.locale, {
               maximumFractionDigits: 2,
             })
           }}
@@ -191,10 +201,6 @@
         cols="4"
         class="grey--text text--darken-2 mt-1"
       >
-        <v-icon>
-          mdi-opacity
-        </v-icon>
-
         {{ $t('opacity-label') }}
       </v-col>
       <v-col cols="8">
@@ -214,9 +220,6 @@
     >
       <v-col>
         <span class="grey--text text--darken-2">
-          <v-icon>
-            mdi-scent
-          </v-icon>
 
           {{ $t('heat-map-label') }}
         </span>
@@ -232,6 +235,26 @@
         />
       </v-col>
     </v-row>
+    <v-row
+      align="center"
+      justify="space-around"
+    >
+      <div
+        v-if="tableDialogDeter"
+        class="d-none"
+      >
+        <TableDialog
+          :table="tableDialogDeter"
+          :value="table"
+          :headers="headers"
+          :loading-table="isLoadingTable"
+          :loading-c-s-v="isLoadingCSV"
+          :f-download-c-s-v="downloadTable"
+          :f-close-table="closeTable"
+          :table-name="$t('table-name')"
+        />
+      </div>
+    </v-row>
   </v-col>
 </template>
 
@@ -245,7 +268,8 @@
             "total-area-label": "Total area",
             "heat-map-label": "Heat map",
             "polygon-label": "Polygon count",
-            "end-date-label": "End Date"
+            "end-date-label": "End Date",
+            "table-name": "Deter Table"
         },
         "pt-br": {
             "search-label": "Buscar",
@@ -255,7 +279,8 @@
             "heat-map-label": "Mapa de calor",
             "polygon-label": "Total de polígonos",
             "start-date-label": "Data Início",
-            "end-date-label": "Data Fim"
+            "end-date-label": "Data Fim",
+            "table-name": "Tabela deter"
         }
     }
 </i18n>
@@ -282,6 +307,23 @@ export default {
         cr: null,
         ti: null,
       },
+      tab: null,
+      items: ['MapStage', 'AnalytcalStage'],
+      text: 'Texto de teste.',
+      timer: '',
+      headers: [
+        { text: 'Código Funai', value: 'co_funai' },
+        { text: 'Terra Indígena', value: 'no_ti' },
+        { text: 'Coordenação Regional', value: 'ds_cr' },
+        { text: 'Área Total Km', value: 'areatotalkm' },
+        { text: 'Área Mun Km', value: 'areamunkm' },
+        { text: 'Área Uc Km', value: 'areauckm' },
+        { text: 'Sensor Óptico', value: 'sensor' },
+        { text: 'Classe', value: 'classname' },
+        { text: 'Satélite', value: 'satellite' },
+      ],
+      checkNewFilters: false,
+      dialog: false,
       isLoadingTotal: false,
       legendData: legend,
     };
@@ -321,6 +363,10 @@ export default {
       'showFeaturesDeter',
       'total',
       'params',
+      'tableDialogDeter',
+      'isLoadingTable',
+      'isLoadingCSV',
+      'features',
     ]),
   },
 
@@ -334,11 +380,40 @@ export default {
       else this.filters.ti = null;
     },
 
+    searchDataTable() {
+      this.getDataTable();
+    },
+    showTableDeter(value) {
+      if (this.features) {
+        this.settableDialogDeter(value);
+        this.setshowTableDialog(value);
+        this.getDataTable();
+      }
+    },
+
+    closeTable(value) {
+      if (!this.checkNewFilters) {
+        this.settableDialogDeter(value);
+        this.setshowTableDialog(value);
+      } else {
+        this.settableDialogDeter(value);
+        this.setshowTableDialog(value);
+        this.getFeatures();
+        this.checkNewFilters = false;
+      }
+    },
+
     search() {
       this.setFilters(this.filters);
       this.$emit('onSearch');
     },
-    ...mapMutations('deter', ['setFilters']),
+    ...mapActions('deter', [
+      'getFeatures',
+      'getDataTable',
+      'downloadTable',
+    ]),
+    ...mapMutations('tableDialog', ['setshowTableDialog']),
+    ...mapMutations('deter', ['setFilters', 'settableDialogDeter', 'setVisualizationStage']),
     ...mapActions('deter', ['getFilterOptions', 'downloadGeoJson']),
   },
 };

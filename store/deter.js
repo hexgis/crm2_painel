@@ -1,6 +1,7 @@
 export const state = () => ({
   features: null,
   showFeaturesDeter: false,
+  showFilterDeter: false,
   heatMap: false,
   tableDialogDeter: false,
   isLoadingTable: true,
@@ -82,6 +83,10 @@ export const mutations = {
 
   setShowFeatures(state, showFeaturesDeter) {
     state.showFeaturesDeter = showFeaturesDeter;
+  },
+
+  setShowFilter(state, showFilterDeter) {
+    state.showFilterDeter = showFilterDeter;
   },
 
   setOpacity(state, opacity) {
