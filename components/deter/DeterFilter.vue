@@ -289,11 +289,12 @@
 import { mapMutations, mapState, mapActions } from 'vuex';
 import BaseDateField from '@/components/base/BaseDateField';
 import legend from '@/assets/legend.png';
+import TableDialog from '@/components/table-dialog/TableDialog.vue';
 
 export default {
   name: 'DeterFilter',
 
-  components: { BaseDateField },
+  components: { BaseDateField, TableDialog },
 
   data() {
     return {
@@ -367,6 +368,7 @@ export default {
       'isLoadingTable',
       'isLoadingCSV',
       'features',
+      'table',
     ]),
   },
 
