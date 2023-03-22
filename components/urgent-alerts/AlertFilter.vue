@@ -133,56 +133,48 @@
     </div>
 
     <v-row
-      v-if="total && !isLoadingFeatures"
-      class="px-3 py-1 mt-7"
+      v-if="showFeaturesUrgentAlert && total"
+      class="mt-3"
     >
-      <v-row v-if="showFeaturesUrgentAlert && total">
-        <v-col
-          cols="7"
-          class="grey--text text--darken-2"
-        >
-          <v-icon>
-            mdi-hexagon
-          </v-icon>
-          {{ $t('polygon-label') }}:
-        </v-col>
-        <v-col
-          cols="5"
-          class="text-right"
-        >
-          {{ total.total }}
-        </v-col>
-      </v-row>
-
-      <v-row
-        v-if="
-          showFeaturesUrgentAlert &&
-            total &&
-            total.area_ha &&
-            !isLoadingFeatures
-        "
+      <v-col
+        cols="7"
+        class="grey--text text--darken-2"
       >
-        <v-col
-          cols="7"
-          class="grey--text text--darken-2"
-        >
-          <v-icon>
-            mdi-aspect-ratio
-          </v-icon>
-          {{ $t('total-area-label') }}:
-        </v-col>
-        <v-col
-          cols="5"
-          class="text-right"
-        >
-          {{
-            total.area_ha.toLocaleString($i18n.locale, {
-              maximumFractionDigits: 2,
-            })
-          }}
-          ha
-        </v-col>
-      </v-row>
+        {{ $t('polygon-label') }}:
+      </v-col>
+      <v-col
+        cols="5"
+        class="text-right"
+      >
+        {{ total.total }}
+      </v-col>
+    </v-row>
+
+    <v-row
+      v-if="
+        showFeaturesUrgentAlert &&
+          total &&
+          total.area_ha &&
+          !isLoadingFeatures
+      "
+    >
+      <v-col
+        cols="7"
+        class="grey--text text--darken-2"
+      >
+        {{ $t('total-area-label') }}:
+      </v-col>
+      <v-col
+        cols="5"
+        class="text-right"
+      >
+        {{
+          total.area_ha.toLocaleString($i18n.locale, {
+            maximumFractionDigits: 2,
+          })
+        }}
+        ha
+      </v-col>
     </v-row>
 
     <v-row
@@ -193,9 +185,6 @@
         cols="4"
         class="grey--text text--darken-2 mt-1"
       >
-        <v-icon>
-          mdi-opacity
-        </v-icon>
         {{ $t('opacity-label') }}
       </v-col>
       <v-col cols="8">
@@ -214,9 +203,6 @@
       justify="space-between"
     >
       <v-col>
-        <v-icon>
-          mdi-scent
-        </v-icon>
         <span class="grey--text text--darken-2">
           {{ $t('heat-map-label') }}
         </span>

@@ -140,9 +140,6 @@
         cols="7"
         class="grey--text text--darken-2"
       >
-        <v-icon>
-          mdi-hexagon
-        </v-icon>
         {{ $t('polygon-label') }}:
       </v-col>
       <v-col
@@ -165,9 +162,6 @@
         cols="7"
         class="grey--text text--darken-2"
       >
-        <v-icon>
-          mdi-aspect-ratio
-        </v-icon>
         {{ $t('total-area-label') }}:
       </v-col>
       <v-col
@@ -190,9 +184,6 @@
         cols="4"
         class="grey--text text--darken-2"
       >
-        <v-icon>
-          mdi-opacity
-        </v-icon>
         {{ $t('opacity-label') }}
       </v-col>
       <v-col cols="8">
@@ -209,9 +200,6 @@
       justify="space-between"
     >
       <v-col>
-        <v-icon>
-          mdi-scent
-        </v-icon>
         <span class="grey--text text--darken-2">
           {{ $t('heat-map-label') }}
         </span>
