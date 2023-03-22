@@ -5,6 +5,7 @@
     :color="hover ? 'grey lighten-4' : 'transparent'"
     @mouseenter="setHoveredScene(index)"
     @mouseleave="setHoveredScene(null)"
+    @click="setZoomedScene(index)"
   >
     <v-card-text>
       <v-row>
