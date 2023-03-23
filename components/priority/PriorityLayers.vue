@@ -27,12 +27,6 @@
         :geojson="features"
         :options="{ onEachFeature }"
       />
-
-      <!-- <BaseMetadataPopup
-                v-show="false"
-                ref="popupComponent"
-                :feature="selectedMonitoringFeature"
-            /> -->
     </l-feature-group>
   </l-layer-group>
 </template>
