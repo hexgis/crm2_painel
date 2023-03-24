@@ -107,10 +107,6 @@ export default {
         if (filters.startData || filters.endData) {
           const [aliasStartDate, aliasEndDate] = this.layer.layer_filters; // Destructuring filter alias
 
-          // wmsUrl = `${
-          //     this.layer.wms.geoserver.wms_url
-          // }&env=percentage:${this.layer.opacity / 100}`
-
           if (filters.startData.length && filters.endData.length) {
             const valueStartData = filters.startData;
             const valueEndData = filters.endData;
