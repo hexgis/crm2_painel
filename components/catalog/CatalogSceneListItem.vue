@@ -2,7 +2,7 @@
   <v-card
     tile
     outlined
-    :color="hover ? 'grey lighten-4' : 'transparent'"
+
     @mouseenter="setHoveredScene(index)"
     @mouseleave="setHoveredScene(null)"
     @click="setZoomedScene(index)"

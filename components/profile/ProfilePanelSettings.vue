@@ -62,21 +62,25 @@
     "en": {
         "settings-label": "Settings",
         "map-label": "Map settings",
-        "password-label": "Change password"
+        "password-label": "Change password",
+        "theme-label": "View mode"
     },
     "pt-br": {
         "settings-label": "Configurações",
         "map-label": "Configurações de mapa",
-        "password-label": "Alterar senha"
+        "password-label": "Alterar senha",
+        "theme-label": "Modo de visualização"
     }
 }
 </i18n>
 
 <script>
 import { mapState } from 'vuex';
+import { useTheme } from 'vuetify';
 import ProfilePanelPassword from '@/components/profile/ProfilePanelPassword';
 import ProfilePanelSettingsMap from '@/components/profile/ProfilePanelSettingsMap';
 import ProfileLeafletMap from '@/components/profile/ProfileLeafletMap';
+import ProfilePanelTheme from '@/components/profile/ProfilePanelTheme';
 
 export default {
   name: 'ProfilePanel',
@@ -85,6 +89,7 @@ export default {
     ProfilePanelPassword,
     ProfilePanelSettingsMap,
     ProfileLeafletMap,
+    ProfilePanelTheme,
   },
 
   data: () => ({
@@ -109,6 +114,10 @@ export default {
           name: this.$t('password-label'),
           component: ProfilePanelPassword,
         },
+        {
+          name: this.$t('theme-label'),
+          component: ProfilePanelTheme,
+        },
       ];
     },
   },
@@ -126,6 +135,14 @@ export default {
       this.dialog = false;
       this.showMap = false;
       this.$emit('onDialogClose');
+    },
+
+    changeTheme() {
+      const theme = useTheme();
+      return {
+        theme,
+        toggleTheme: () => theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark',
+      };
     },
 
     toggleMap() {
