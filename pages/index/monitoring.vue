@@ -12,23 +12,58 @@
       />
     </div>
 
-    <ShowDialog />
-
-    <v-container class="pa-0">
-      <div v-if="$fetchState.pending">
-        <template v-for="i in 6">
-          <v-skeleton-loader
-            :key="i"
-            type="text"
-            class="mx-4 my-5"
-          />
-        </template>
-      </div>
-    </v-container>
     <div>
       <MonitoringFilter @onSearch="search()" />
     </div>
-
+    <div
+      v-if="showFeaturesMonitoring && !isLoadingFeatures"
+      class="mt-3"
+    >
+      <v-divider />
+      <p class="font-weight-regular pt-2 grey--text text--darken-2">
+        Legenda:
+      </p>
+      <v-col class="grey--text text--darken-2">
+        <v-row class="mb-2">
+          <v-icon
+            class="mr-2"
+            color="#990099"
+          >
+            mdi-square
+          </v-icon>
+          Desmatamento em Regeneração
+        </v-row>
+        <v-row class="mb-2">
+          <v-icon
+            class="mr-2"
+            color="#b35900"
+          >
+            mdi-square
+          </v-icon>
+          Fogo em Floresta
+        </v-row>
+        <v-row class="mb-2">
+          <v-icon
+            class="mr-2"
+            color="#ff8000"
+          >
+            mdi-square
+          </v-icon>
+          Degradação
+        </v-row>
+        <v-row class="mb-2">
+          <v-icon
+            class="mr-2"
+            color="#ff3333"
+          >
+            mdi-square
+          </v-icon>
+          Corte Raso
+        </v-row>
+        <v-spacer />
+      </v-col>
+    </div>
+    <ShowDialog />
     <v-footer
       absolute
       class="priority-footer"
@@ -36,83 +71,6 @@
       elevation="4"
     >
       <v-col>
-        <v-row
-          align="center"
-          justify="space-around"
-        >
-          <v-btn
-            depressed
-            icon
-            color="accent"
-            @click="changeVisualizationStage('map')"
-          >
-            <v-tooltip left>
-              <template #activator="{ on }">
-                <v-icon
-                  large
-                  v-on="on"
-                >
-                  mdi-map
-                </v-icon>
-              </template>
-              <span>Mapa</span>
-            </v-tooltip>
-          </v-btn>
-          <v-btn
-            icon
-            color="accent"
-            @click="dialog = true"
-          >
-            <v-icon large>
-              mdi-chart-box
-            </v-icon>
-          </v-btn>
-          <v-btn
-            icon
-            color="accent"
-            @click="showTableDialog(true)"
-          >
-            <v-tooltip left>
-              <template #activator="{ on }">
-                <v-icon
-                  large
-                  v-on="on"
-                >
-                  mdi-table
-                </v-icon>
-              </template>
-              <span>Tabela</span>
-            </v-tooltip>
-          </v-btn>
-          <div
-            v-if="tableDialogMonitoring"
-            class="d-none"
-          >
-            <TableDialog
-              :table="tableDialogMonitoring"
-              :headers="headers"
-              :value="tableMonitoring"
-              :loading-table="isLoadingTableMonitoring"
-              :loading-c-s-v="isLoadingCSVMonitoring"
-              :f-download-c-s-v="downloadTableMonitoring"
-              :table-name="$t('table-name')"
-              :f-close-table="closeTable"
-            />
-          </div>
-        </v-row>
-        <div
-          v-if="dialog"
-          class="d-none"
-        >
-          <AnalyticalDialog
-            :value="dialog"
-            :close-dialog="closeAnalyticalDialog"
-          />
-        </div>
-        <v-row class="py-2">
-          <v-divider />
-        </v-row>
-
         <v-row class="d-flex justify-center">
           <v-img
             max-width="200"
@@ -127,16 +85,12 @@
 <i18n>
     {
         "en": {
-            "title": "Monitoring",
-            "analytics-label": "Analytics",
-            "map-label": "Map",
-            "table-name": "Monitoring Table"
+            "title": "Monitoring"
+
         },
         "pt-br": {
-            "title": "Monitoramento Diário",
-            "analytics-label": "Analytics",
-            "map-label": "Mapa",
-            "table-name": "Tabela de Monitoramento"
+            "title": "Monitoramento Diário"
+
         }
     }
 </i18n>
@@ -146,17 +100,11 @@ import { mapActions, mapMutations, mapState } from 'vuex';
 import _ from 'lodash';
 import MonitoringFilter from '@/components/monitoring/MonitoringFilter';
 import ShowDialog from '@/components/show-dialog/ShowDialog';
-import SupportLayersGroupAntropismo from '@/components/support/SupportLayersGroupAntropismo';
-import TableDialog from '@/components/table-dialog/TableDialog.vue';
-import AnalyticalDialog from '../../components/analytical-dialog/AnalyticalDialog.vue';
 
 export default {
   components: {
     MonitoringFilter,
     ShowDialog,
-    SupportLayersGroupAntropismo,
-    TableDialog,
-    AnalyticalDialog,
   },
 
   data() {
@@ -165,28 +113,11 @@ export default {
       items: ['MapStage', 'AnalytcalStage'],
       text: 'Texto de teste.',
       timer: '',
-      headers: [
-        { text: 'Código Funai', value: 'co_funai' },
-        { text: 'Terra Indígena', value: 'no_ti' },
-        { text: 'Coordenação Regional', value: 'ds_cr' },
-        { text: 'Classe', value: 'no_estagio' },
-        { text: 'Data da Imagem', value: 'dt_imagem' },
-        { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
-        { text: 'Latitude', value: 'nu_latitude' },
-        { text: 'Longitude', value: 'nu_longitude' },
-      ],
       dialog: false,
       checkNewFilters: false,
     };
   },
 
-  async fetch() {
-    if (!Object.keys(this.supportCategoryGroupsAntropismo).length) {
-      await this.$store.dispatch(
-        'supportLayers/getCategoryGroupsAntropismo',
-      );
-    }
-  },
   computed: {
     hasFeatures() {
       return (
@@ -209,27 +140,6 @@ export default {
       },
     },
 
-    orderedSupportLayersGroups() {
-      return _.sortBy(this.supportCategoryGroupsAntropismo, 'order');
-    },
-
-    showFeaturesAntropismo: {
-      get() {
-        return this.$store.state.supportLayers.showFeaturesSupportLayers;
-      },
-      set(value) {
-        this.$store.commit(
-          'supportLayers/setshowFeaturesSupportLayers',
-          value,
-        );
-      },
-    },
-
-    ...mapState('supportLayers', [
-      'supportCategoryGroupsAntropismo',
-      'loading',
-    ]),
-
     ...mapState('monitoring', [
       'showFeaturesMonitoring',
       'analyticsMonitoring',
@@ -241,6 +151,8 @@ export default {
       'tableMonitoring',
       'isLoadingCSVMonitoring',
       'isLoadingFeatures',
+      'isLoadingStatistic',
+      'analyticsMonitoringDialog',
     ]),
   },
 
@@ -249,58 +161,13 @@ export default {
       if (this.tableDialogMonitoring) {
         this.checkNewFilters = true;
         this.getDataTableMonitoring();
-        this.getDataAnalyticsMonitoringByDay();
       }
-      if (this.analyticsMonitoring) {
+      if (this.analyticsMonitoringDialog) {
         this.checkNewFilters = true;
-        this.getDataAnalyticsMonitoringByDay();
+        this.isLoadingStatistic = true;
+        this.getDataAnalyticsMonitoringByFunaiYear();
       }
       if (!this.tableDialogMonitoring) this.getFeatures();
-    },
-
-    changeVisualizationStage(tab) {
-      this.setVisualizationStage(tab);
-    },
-
-    closeAnalyticalDialog(value) {
-      this.dialog = value;
-    },
-
-    showTableDialog(value) {
-      if (this.features) {
-        this.settableDialogMonitoring(value);
-        this.setshowTableDialog(value);
-        this.getDataTableMonitoring();
-      }
-    },
-    closeTableAnalytics(value) {
-      if (!this.checkNewFilters) {
-        this.setanalyticsMonitoringDialog(value);
-        this.setshowTableDialog(value);
-      } else {
-        this.setanalyticsMonitoringDialog(value);
-        this.setshowTableDialog(value);
-        this.checkNewFilters = false;
-      }
-    },
-
-    showTableDialogAnalytics(value) {
-      if (this.features) {
-        this.setshowTableDialog(value);
-        this.getDataAnalyticsMonitoringByDay();
-      }
-    },
-
-    closeTable(value) {
-      if (!this.checkNewFilters) {
-        this.settableDialogMonitoring(value);
-        this.setshowTableDialog(value);
-      } else {
-        this.settableDialogMonitoring(value);
-        this.setshowTableDialog(value);
-        this.getFeatures();
-        this.checkNewFilters = false;
-      }
     },
 
     ...mapActions('monitoring', [
@@ -308,6 +175,7 @@ export default {
       'getDataTableMonitoring',
       'downloadTableMonitoring',
       'getDataAnalyticsMonitoringByDay',
+      'getDataAnalyticsMonitoringByFunaiYear',
     ]),
 
     ...mapMutations('priority', ['setVisualizationStage']),
@@ -317,6 +185,7 @@ export default {
     ...mapMutations('monitoring', [
       'settableDialogMonitoring',
       'setLoadingTable',
+
     ]),
   },
 };

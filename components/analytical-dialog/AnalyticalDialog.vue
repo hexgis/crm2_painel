@@ -2,8 +2,9 @@
   <v-dialog
     v-model="dialog"
     width="75vw"
-    persistent
     hide-overlay
+    persistent
+    no-click-animation
     scrollable
     color="primary"
 
@@ -108,7 +109,7 @@
             :headers="showHeaders"
             :items="analyticsMonitoring"
             :items-per-page="5"
-            :loading="isLoadingFeatures"
+            :loading="isLoadingStatistic"
             class="elevation-1"
             multi-sort
           />
@@ -197,6 +198,7 @@ export default {
       'analyticsMonitoring',
       'features',
       'isLoadingFeatures',
+      'isLoadingStatistic',
     ]),
 
     ...mapMutations('monitoring', [

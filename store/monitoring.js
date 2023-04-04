@@ -5,9 +5,10 @@ export const state = () => ({
   tableDialogMonitoring: false,
   analyticsMonitoringDialog: false,
   isLoadingCSVMonitoring: false,
+  isLoadingStatistic: false,
   isLoadingGeoJson: false,
   isLoadingFeatures: false,
-  isLoadingTableMonitoring: true,
+  isLoadingTableMonitoring: false,
   filterOptions: {
     regionalFilters: [],
     tiFilters: [],
@@ -65,6 +66,10 @@ export const mutations = {
     state.total = total;
   },
 
+  setLoadingStatistic(state, payload) {
+    state.isLoadingStatistic = payload;
+  },
+
   setAnalytics(state, analyticsMonitoring) {
     state.analyticsMonitoring = analyticsMonitoring;
   },
@@ -120,7 +125,9 @@ export const mutations = {
 export const actions = {
   async getFeatures({ state, commit, rootGetters }) {
     commit('setLoadingGeoJson', true);
+    commit('setLoadingStatistic', true);
     commit('setLoadingFeatures', true);
+    commit('setLoadingTableMonitoring', true);
     commit('clearFeatures');
 
     const params = {
@@ -183,6 +190,8 @@ export const actions = {
     } finally {
       commit('setLoadingFeatures', false);
       commit('setLoadingGeoJson', false);
+      commit('setLoadingStatistic', false);
+      commit('setLoadingTableMonitoring', false);
     }
   },
 
@@ -216,8 +225,6 @@ export const actions = {
   },
 
   async getDataTableMonitoring({ commit, state, rootGetters }) {
-    commit('setLoadingGeoJson', true);
-    commit('setLoadingFeatures', true);
     commit('setLoadingTableMonitoring', true);
 
     const params = {
@@ -254,14 +261,6 @@ export const actions = {
       );
 
       if (tableMonitoring) commit('setTable', tableMonitoring);
-
-      const total = await this.$api.$get(
-        'monitoring/consolidated/stats/',
-        {
-          params,
-        },
-      );
-      if (total) commit('setTotal', total);
     } catch (error) {
       commit(
         'alert/addAlert',
@@ -274,17 +273,12 @@ export const actions = {
         { root: true },
       );
     } finally {
-      commit('setLoadingFeatures', false);
-      commit('setLoadingGeoJson', false);
       commit('setLoadingTableMonitoring', false);
     }
   },
 
   async getDataAnalyticsMonitoringByYear({ commit, state, rootGetters }) {
-    commit('setLoadingGeoJson', true);
-    commit('setLoadingFeatures', true);
-    commit('setLoadingTableMonitoring', true);
-
+    commit('setLoadingStatistic', true);
     const params = {
       start_date: state.filters.startDate,
       end_date: state.filters.endDate,
@@ -330,17 +324,12 @@ export const actions = {
         { root: true },
       );
     } finally {
-      commit('setLoadingFeatures', false);
-      commit('setLoadingGeoJson', false);
-      commit('setLoadingTableMonitoring', false);
+      commit('setLoadingStatistic', false);
     }
   },
 
   async getDataAnalyticsMonitoringByMonthYear({ commit, state, rootGetters }) {
-    commit('setLoadingGeoJson', true);
-    commit('setLoadingFeatures', true);
-    commit('setLoadingTableMonitoring', true);
-
+    commit('setLoadingStatistic', true);
     const params = {
       start_date: state.filters.startDate,
       end_date: state.filters.endDate,
@@ -386,17 +375,12 @@ export const actions = {
         { root: true },
       );
     } finally {
-      commit('setLoadingFeatures', false);
-      commit('setLoadingGeoJson', false);
-      commit('setLoadingTableMonitoring', false);
+      commit('setLoadingStatistic', false);
     }
   },
 
   async getDataAnalyticsMonitoringByFunai({ commit, state, rootGetters }) {
-    commit('setLoadingGeoJson', true);
-    commit('setLoadingFeatures', true);
-    commit('setLoadingTableMonitoring', true);
-
+    commit('setLoadingStatistic', true);
     const params = {
       start_date: state.filters.startDate,
       end_date: state.filters.endDate,
@@ -442,17 +426,12 @@ export const actions = {
         { root: true },
       );
     } finally {
-      commit('setLoadingFeatures', false);
-      commit('setLoadingGeoJson', false);
-      commit('setLoadingTableMonitoring', false);
+      commit('setLoadingStatistic', false);
     }
   },
 
   async getDataAnalyticsMonitoringByFunaiMonthYear({ commit, state, rootGetters }) {
-    commit('setLoadingGeoJson', true);
-    commit('setLoadingFeatures', true);
-    commit('setLoadingTableMonitoring', true);
-
+    commit('setLoadingStatistic', true);
     const params = {
       start_date: state.filters.startDate,
       end_date: state.filters.endDate,
@@ -498,16 +477,12 @@ export const actions = {
         { root: true },
       );
     } finally {
-      commit('setLoadingFeatures', false);
-      commit('setLoadingGeoJson', false);
-      commit('setLoadingTableMonitoring', false);
+      commit('setLoadingStatistic', false);
     }
   },
 
   async getDataAnalyticsMonitoringByFunaiYear({ commit, state, rootGetters }) {
-    commit('setLoadingGeoJson', true);
-    commit('setLoadingFeatures', true);
-    commit('setLoadingTableMonitoring', true);
+    commit('setLoadingStatistic', true);
 
     const params = {
       start_date: state.filters.startDate,
@@ -555,17 +530,12 @@ export const actions = {
         { root: true },
       );
     } finally {
-      commit('setLoadingFeatures', false);
-      commit('setLoadingGeoJson', false);
-      commit('setLoadingTableMonitoring', false);
+      commit('setLoadingStatistic', false);
     }
   },
 
   async getDataAnalyticsMonitoringByDay({ commit, state, rootGetters }) {
-    commit('setLoadingGeoJson', true);
-    commit('setLoadingFeatures', true);
-    commit('setLoadingTableMonitoring', true);
-
+    commit('setLoadingStatistic', true);
     const params = {
       start_date: state.filters.startDate,
       end_date: state.filters.endDate,
@@ -611,9 +581,7 @@ export const actions = {
         { root: true },
       );
     } finally {
-      commit('setLoadingFeatures', false);
-      commit('setLoadingGeoJson', false);
-      commit('setLoadingTableMonitoring', false);
+      commit('setLoadingStatistic', false);
     }
   },
 

@@ -64,17 +64,30 @@
     >
       <v-col v-show="showFeaturesDeter">
         <v-btn
+          icon
           color="accent"
           :loading="isLoadingGeoJson"
-
+          small
           @click="downloadGeoJson()"
         >
-          <v-icon>mdi-download</v-icon>
+          <v-tooltip left>
+            <template #activator="{ on }">
+              <v-icon
+
+                v-on="on"
+              >
+                mdi-download
+              </v-icon>
+            </template>
+            <span>Download</span>
+          </v-tooltip>
         </v-btn>
-
+      </v-col>
+      <v-col v-show="showFeaturesDeter">
         <v-btn
-
-          :loading="isLoadingGeoJson"
+          icon
+          small
+          :loading="isLoadingTable"
           color="accent"
           @click="showTableDeter(true)"
         >
@@ -93,6 +106,7 @@
       </v-col>
       <v-col>
         <v-btn
+          small
           block
           color="accent"
           :loading="isLoadingFeatures"
@@ -151,46 +165,44 @@
     </div>
 
     <v-row
-      v-if="total && !isLoadingFeatures"
-      class="px-3 py-1 mt-7"
+      v-if="showFeaturesDeter && total && !isLoadingFeatures"
+      class="mt-3"
     >
-      <v-row v-if="showFeaturesDeter && total && !isLoadingFeatures">
-        <v-col
-          cols="7"
-          class="grey--text text--darken-2"
-        >
-          {{ $t('polygon-label') }}:
-        </v-col>
-        <v-col
-          cols="5"
-          class="text-right grey--text text--darken-2"
-        >
-          {{ total.total }}
-        </v-col>
-      </v-row>
-      <v-row
-        v-if="
-          showFeaturesDeter && total && total.area_km&& !isLoadingFeatures
-        "
+      <v-col
+        cols="7"
+        class="grey--text text--darken-2"
       >
-        <v-col
-          cols="7"
-          class="grey--text text--darken-2"
-        >
-          {{ $t('total-area-label') }}:
-        </v-col>
-        <v-col
-          cols="5"
-          class="text-right"
-        >
-          {{
-            total.area_km.toLocaleString($i18n.locale, {
-              maximumFractionDigits: 2,
-            })
-          }}
-          km
-        </v-col>
-      </v-row>
+        {{ $t('polygon-label') }}:
+      </v-col>
+      <v-col
+        cols="5"
+        class="text-right grey--text text--darken-2"
+      >
+        {{ total.total }}
+      </v-col>
+    </v-row>
+    <v-row
+      v-if="
+        showFeaturesDeter && total && total.area_km&& !isLoadingFeatures
+      "
+    >
+      <v-col
+        cols="7"
+        class="grey--text text--darken-2"
+      >
+        {{ $t('total-area-label') }}:
+      </v-col>
+      <v-col
+        cols="5"
+        class="text-right"
+      >
+        {{
+          total.area_km.toLocaleString($i18n.locale, {
+            maximumFractionDigits: 2,
+          })
+        }}
+        km
+      </v-col>
     </v-row>
 
     <v-row

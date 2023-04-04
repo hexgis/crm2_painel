@@ -58,22 +58,82 @@
       </v-col>
     </v-row>
     <v-row
-      no-gutters
+      align="center"
     >
-      <v-col v-show="showFeaturesMonitoring">
+      <v-col
+        v-show="showFeaturesMonitoring"
+      >
         <v-btn
           color="accent"
           :loading="isLoadingGeoJson"
-          fab
+          icon
           small
           @click="downloadGeoJsonMonitoring()"
         >
-          <v-icon>mdi-download</v-icon>
+          <v-tooltip left>
+            <template #activator="{ on }">
+              <v-icon
+
+                v-on="on"
+              >
+                mdi-download
+              </v-icon>
+            </template>
+            <span>Download</span>
+          </v-tooltip>
         </v-btn>
       </v-col>
+      <v-col
+        v-show="showFeaturesMonitoring"
+      >
+        <v-btn
+          :loading="isLoadingStatistic "
+          small
+          color="accent"
+          icon
+          @click="showTableDialogAnalytics(true), dialog = true"
+        >
+          <v-tooltip left>
+            <template #activator="{ on }">
+              <v-icon
+
+                v-on="on"
+              >
+                mdi-chart-box
+              </v-icon>
+            </template>
+            <span>Estatística</span>
+          </v-tooltip>
+        </v-btn>
+      </v-col>
+      <v-col
+        v-show="showFeaturesMonitoring"
+      >
+        <v-btn
+          small
+          :loading="isLoadingTableMonitoring"
+          color="accent"
+          icon
+          @click="showTableDialog(true)"
+        >
+          <v-tooltip left>
+            <template #activator="{ on }">
+              <v-icon
+
+                v-on="on"
+              >
+                mdi-table
+              </v-icon>
+            </template>
+            <span>Tabela</span>
+          </v-tooltip>
+        </v-btn>
+      </v-col>
+
       <v-col>
         <v-btn
           block
+          small
           color="accent"
           :loading="isLoadingFeatures"
           @click="search"
@@ -215,93 +275,78 @@
         />
       </v-col>
     </v-row>
+
     <div
-      v-if="showFeaturesMonitoring && !isLoadingFeatures"
-      class="mt-3"
+      v-if="tableDialogMonitoring"
+      class="d-none"
     >
-      <v-divider />
-      <p class="font-weight-regular pt-2 grey--text text--darken-2">
-        Legenda:
-      </p>
-      <v-col class="grey--text text--darken-2">
-        <v-row class="mb-2">
-          <v-icon
-            class="mr-2"
-            color="#990099"
-          >
-            mdi-square
-          </v-icon>
-          Desmatamento em Regeneração
-        </v-row>
-        <v-row class="mb-2">
-          <v-icon
-            class="mr-2"
-            color="#b35900"
-          >
-            mdi-square
-          </v-icon>
-          Fogo em Floresta
-        </v-row>
-        <v-row class="mb-2">
-          <v-icon
-            class="mr-2"
-            color="#ff8000"
-          >
-            mdi-square
-          </v-icon>
-          Degradação
-        </v-row>
-        <v-row class="mb-2">
-          <v-icon
-            class="mr-2"
-            color="#ff3333"
-          >
-            mdi-square
-          </v-icon>
-          Corte Raso
-        </v-row>
-        <v-spacer />
-      </v-col>
+      <TableDialog
+        :table="tableDialogMonitoring"
+        :headers="headers"
+        :value="tableMonitoring"
+        :loading-table="isLoadingTableMonitoring"
+        :loading-c-s-v="isLoadingCSVMonitoring"
+        :f-download-c-s-v="downloadTableMonitoring"
+        :table-name="$t('table-name')"
+        :f-close-table="closeTable"
+      />
+    </div>
+    <div
+      v-if="dialog"
+      class="d-none"
+    >
+      <AnalyticalDialog
+        :value="analyticsMonitoringDialog"
+        :close-dialog="closeAnalyticalDialog"
+      />
     </div>
   </v-col>
 </template>
 
-<i18n>
+  <i18n>
     {
-        "en": {
-            "monitoring-label": "Daily Monitoring",
-            "search-label": "Search",
-            "opacity-label": "Opacity",
-            "current-view-label": "Search in current area?",
-            "start-date-label": "Start Date",
-            "end-date-label": "End Date",
-            "total-area-label": "Total Area",
-            "heat-map-label": "Heat Map",
-            "polygon-label": "Polygon Count"
-        },
-        "pt-br": {
-            "monitoring-label": "Monitoramento Diário",
-            "search-label": "Buscar",
-            "opacity-label": "Opacidade",
-            "current-view-label": "Pesquisar nesta área?",
-            "start-date-label": "Data Início",
-            "end-date-label": "Data Final",
-            "total-area-label": "Área total",
-            "heat-map-label": "Mapa de Calor",
-            "polygon-label": "Total de polígonos"
-        }
+    "en": {
+    "monitoring-label": "Daily Monitoring",
+    "search-label": "Search",
+    "opacity-label": "Opacity",
+    "current-view-label": "Search in current area?",
+    "start-date-label": "Start Date",
+    "end-date-label": "End Date",
+    "total-area-label": "Total Area",
+    "heat-map-label": "Heat Map",
+    "polygon-label": "Polygon Count",
+    "table-name": "Monitoring Table"
+    },
+    "pt-br": {
+    "monitoring-label": "Monitoramento Diário",
+    "search-label": "Buscar",
+    "opacity-label": "Opacidade",
+    "current-view-label": "Pesquisar nesta área?",
+    "start-date-label": "Data Início",
+    "end-date-label": "Data Final",
+    "total-area-label": "Área total",
+    "heat-map-label": "Mapa de Calor",
+    "polygon-label": "Total de polígonos",
+    "table-name": "Tabela de monitoramento"
     }
-</i18n>
+    }
+  </i18n>
 
 <script>
 import { mapMutations, mapState, mapActions } from 'vuex';
 import BaseDateField from '@/components/base/BaseDateField';
 import legend from '@/assets/legend.png';
+import TableDialog from '@/components/table-dialog/TableDialog.vue';
+import AnalyticalDialog from '../analytical-dialog/AnalyticalDialog.vue';
 
 export default {
   name: 'MonitoringFilter',
 
-  components: { BaseDateField },
+  components: {
+    BaseDateField,
+    TableDialog,
+    AnalyticalDialog,
+  },
 
   data() {
     return {
@@ -317,6 +362,18 @@ export default {
       isLoadingTotal: false,
       legendData: legend,
       error: false,
+      headers: [
+        { text: 'Código Funai', value: 'co_funai' },
+        { text: 'Terra Indígena', value: 'no_ti' },
+        { text: 'Coordenação Regional', value: 'ds_cr' },
+        { text: 'Classe', value: 'no_estagio' },
+        { text: 'Data da Imagem', value: 'dt_imagem' },
+        { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
+        { text: 'Latitude', value: 'nu_latitude' },
+        { text: 'Longitude', value: 'nu_longitude' },
+      ],
+      dialog: false,
+      checkNewFilters: false,
     };
   },
 
@@ -354,9 +411,18 @@ export default {
     ...mapState('monitoring', [
       'isLoadingFeatures',
       'filterOptions',
+      'features',
       'showFeaturesMonitoring',
       'total',
+      'analyticsMonitoring',
       'isLoadingGeoJson',
+      'tableDialogMonitoring',
+      'tableMonitoring',
+      'isLoadingTableMonitoring',
+      'isLoadingCSVMonitoring',
+      'isLoadingStatistic',
+      'analyticsMonitoringDialog',
+
     ]),
   },
 
@@ -370,14 +436,45 @@ export default {
       else this.filters.ti = null;
     },
 
+    closeAnalyticalDialog(value) {
+      this.dialog = value;
+    },
+
+    closeTable(value) {
+      if (!this.checkNewFilters) {
+        this.settableDialogMonitoring(value);
+        this.setshowTableDialog(value);
+      } else {
+        this.settableDialogMonitoring(value);
+        this.setshowTableDialog(value);
+        this.getFeatures();
+        this.checkNewFilters = false;
+      }
+    },
+
+    showTableDialog(value) {
+      if (this.features) {
+        this.settableDialogMonitoring(value);
+        this.setshowTableDialog(value);
+        this.getDataTableMonitoring();
+      }
+    },
+
+    showTableDialogAnalytics(value) {
+      if (this.features) {
+        this.setanalyticsMonitoringDialog(value);
+        this.getDataAnalyticsMonitoringByFunaiYear();
+      }
+    },
+
     search() {
       if (
         (this.filters.currentView
-                    && this.filters.startDate
-                    && this.filters.endDate)
-                || (this.filters.cr.length
-                    && this.filters.startDate
-                    && this.filters.endDate)
+    && this.filters.startDate
+    && this.filters.endDate)
+    || (this.filters.cr.length
+    && this.filters.startDate
+    && this.filters.endDate)
       ) {
         this.error = false;
         this.setFilters(this.filters);
@@ -386,14 +483,18 @@ export default {
       }
       this.error = true;
     },
-
-    ...mapMutations('monitoring', ['setFilters']),
+    ...mapMutations('tableDialog', ['setshowTableDialog']),
+    ...mapMutations('monitoring', ['setFilters', 'settableDialogMonitoring',
+      'setLoadingTable', 'setLoadingStatistic', 'setanalyticsMonitoringDialog']),
     ...mapActions('monitoring', [
       'getFilterOptions',
+      'getFeatures',
+      'getDataAnalyticsMonitoringByDay',
       'downloadGeoJsonMonitoring',
+      'downloadTableMonitoring',
+      'getDataTableMonitoring',
+      'getDataAnalyticsMonitoringByFunaiYear',
     ]),
   },
 };
 </script>
-
-<style scoped lang="sass"></style>
