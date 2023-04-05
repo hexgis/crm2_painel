@@ -10,7 +10,7 @@
     <v-row class="px-3 pb-3">
       <v-combobox
         v-model="filters.cr"
-        label="Coordenação Regional (Todas)"
+        label="Coordenação Regional"
         :items="filterOptions.regionalFilters"
         item-value="co_cr"
         item-text="ds_cr"
@@ -27,7 +27,7 @@
       >
         <v-combobox
           v-model="filters.ti"
-          label="Terras Indigenas (Todas)"
+          label="Terras Indigenas"
           :items="filterOptions.tiFilters"
           item-text="no_ti"
           item-value="co_funai"
@@ -62,7 +62,10 @@
       no-gutters
       align="center"
     >
-      <v-col v-show="showFeaturesDeter">
+      <v-col
+        v-show="showFeaturesDeter"
+        cols="4"
+      >
         <v-btn
           icon
           color="accent"
@@ -82,8 +85,7 @@
             <span>Download</span>
           </v-tooltip>
         </v-btn>
-      </v-col>
-      <v-col v-show="showFeaturesDeter">
+
         <v-btn
           icon
           small
@@ -104,7 +106,21 @@
           </v-tooltip>
         </v-btn>
       </v-col>
-      <v-col>
+      <v-col
+        v-if="showFeaturesDeter"
+        class="ml-15"
+      >
+        <v-btn
+          small
+          block
+          color="accent"
+          :loading="isLoadingFeatures"
+          @click="search"
+        >
+          {{ $t('search-label') }}
+        </v-btn>
+      </v-col>
+      <v-col v-if="!showFeaturesDeter">
         <v-btn
           small
           block
@@ -394,9 +410,6 @@ export default {
       else this.filters.ti = null;
     },
 
-    searchDataTable() {
-      this.getDataTable();
-    },
     showTableDeter(value) {
       if (this.features) {
         this.settableDialogDeter(value);

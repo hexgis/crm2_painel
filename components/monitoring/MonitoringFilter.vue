@@ -23,7 +23,7 @@
     <v-slide-y-transition>
       <v-row
         v-if="filters.cr && filterOptions.tiFilters"
-        class="px-3 pb-5"
+        class="px-3 pb-3"
       >
         <v-combobox
           v-model="filters.ti"
@@ -58,6 +58,7 @@
       </v-col>
     </v-row>
     <v-row
+      no-gutters
       align="center"
     >
       <v-col
@@ -82,10 +83,6 @@
             <span>Download</span>
           </v-tooltip>
         </v-btn>
-      </v-col>
-      <v-col
-        v-show="showFeaturesMonitoring"
-      >
         <v-btn
           :loading="isLoadingStatistic "
           small
@@ -105,10 +102,7 @@
             <span>Estatística</span>
           </v-tooltip>
         </v-btn>
-      </v-col>
-      <v-col
-        v-show="showFeaturesMonitoring"
-      >
+
         <v-btn
           small
           :loading="isLoadingTableMonitoring"
@@ -130,7 +124,21 @@
         </v-btn>
       </v-col>
 
-      <v-col>
+      <v-col
+        v-if="showFeaturesMonitoring"
+        class="ml-5"
+      >
+        <v-btn
+          block
+          small
+          color="accent"
+          :loading="isLoadingFeatures"
+          @click="search"
+        >
+          {{ $t('search-label') }}
+        </v-btn>
+      </v-col>
+      <v-col v-if="!showFeaturesMonitoring">
         <v-btn
           block
           small

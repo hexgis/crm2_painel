@@ -96,7 +96,6 @@
     <v-footer
       absolute
       class="priority-footer"
-      color="#FFFFFF"
       elevation="4"
     >
       <v-col>
@@ -168,7 +167,6 @@ export default {
       'showFeaturesDeter',
       'features',
       'tableDialogDeter',
-      'isLoadingTable',
       'isLoadingFeatures',
 
     ]),
@@ -186,15 +184,9 @@ export default {
     ...mapActions('deter', [
       'getFeatures',
       'getDataTable',
-      'downloadTable',
     ]),
-
-    ...mapMutations('tableDialog', ['setshowTableDialog']),
     ...mapMutations('deter', [
-      'setVisualizationStage',
-      'settableDialogDeter',
       'setShowFeatures',
-      'setShowFilter',
     ]),
   },
 };

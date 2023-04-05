@@ -17,7 +17,7 @@
     </div>
     <div
       v-if="showFeaturesMonitoring && !isLoadingFeatures"
-      class="mt-3"
+      class="mt-3 mx-4"
     >
       <v-divider />
       <p class="font-weight-regular pt-2 grey--text text--darken-2">
@@ -67,7 +67,6 @@
     <v-footer
       absolute
       class="priority-footer"
-      color="#FFFFFF"
       elevation="4"
     >
       <v-col>
@@ -144,12 +143,7 @@ export default {
       'showFeaturesMonitoring',
       'analyticsMonitoring',
       'features',
-      'total',
-      'visualizationStage',
-      'isLoadingTableMonitoring',
       'tableDialogMonitoring',
-      'tableMonitoring',
-      'isLoadingCSVMonitoring',
       'isLoadingFeatures',
       'isLoadingStatistic',
       'analyticsMonitoringDialog',
@@ -173,19 +167,7 @@ export default {
     ...mapActions('monitoring', [
       'getFeatures',
       'getDataTableMonitoring',
-      'downloadTableMonitoring',
-      'getDataAnalyticsMonitoringByDay',
       'getDataAnalyticsMonitoringByFunaiYear',
-    ]),
-
-    ...mapMutations('priority', ['setVisualizationStage']),
-
-    ...mapMutations('tableDialog', ['setshowTableDialog']),
-
-    ...mapMutations('monitoring', [
-      'settableDialogMonitoring',
-      'setLoadingTable',
-
     ]),
   },
 };

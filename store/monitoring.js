@@ -694,7 +694,6 @@ export const actions = {
     const params = {
       start_date: state.filters.startDate,
       end_date: state.filters.endDate,
-      format: state.filters.csv,
       format: state.filters.json,
     };
 

@@ -18,7 +18,7 @@
 
     <div
       v-if="showFeaturesUrgentAlert && !isLoadingFeatures"
-      class="px-4"
+      class="mx-4"
     >
       <v-divider class="mt-1" />
       <p class="font-weight-regular pt-2 grey--text text--darken-2">
@@ -68,78 +68,9 @@
     <v-footer
       absolute
       class="priority-footer"
-      color="#FFFFFF"
       elevation="4"
     >
       <v-col>
-        <v-row
-          align="center"
-          justify="space-around"
-        >
-          <v-btn
-            depressed
-            icon
-            color="accent"
-            @click="changeVisualizationStage('map')"
-          >
-            <v-tooltip left>
-              <template #activator="{ on }">
-                <v-icon
-                  large
-                  v-on="on"
-                >
-                  mdi-map
-                </v-icon>
-              </template>
-              <span>Mapa</span>
-            </v-tooltip>
-          </v-btn>
-          <v-btn
-            icon
-            disabled
-            color="accent"
-            @click="changeVisualizationStage('chart')"
-          >
-            <v-icon large>
-              mdi-chart-box
-            </v-icon>
-          </v-btn>
-          <v-btn
-            icon
-            color="accent"
-            @click="showTableAlert(true)"
-          >
-            <v-tooltip left>
-              <template #activator="{ on }">
-                <v-icon
-                  large
-                  v-on="on"
-                >
-                  mdi-table
-                </v-icon>
-              </template>
-              <span>Tabela</span>
-            </v-tooltip>
-          </v-btn>
-          <div
-            v-if="tableDialogAlert"
-            class="d-none"
-          >
-            <TableDialog
-              :table="tableDialogAlert"
-              :value="table"
-              :headers="headers"
-              :loading-table="isLoadingTable"
-              :loading-c-s-v="isLoadingCSV"
-              :f-download-c-s-v="downloadTable"
-              :f-close-table="closeTable"
-              :table-name="$t('table-name')"
-            />
-          </div>
-        </v-row>
-        <v-row class="py-2">
-          <v-divider />
-        </v-row>
         <v-row class="d-flex justify-center">
           <v-img
             max-width="200"
@@ -172,10 +103,9 @@
 import { mapActions, mapMutations, mapState } from 'vuex';
 import AlertFilter from '@/components/urgent-alerts/AlertFilter.vue';
 import ShowDialog from '@/components/show-dialog/ShowDialog';
-import TableDialog from '@/components/table-dialog/TableDialog.vue';
 
 export default {
-  components: { AlertFilter, ShowDialog, TableDialog },
+  components: { AlertFilter, ShowDialog },
 
   data() {
     return {
@@ -183,16 +113,6 @@ export default {
       items: ['MapStage', 'AnalytcalStage'],
       text: 'Texto de teste.',
       timer: '',
-      headers: [
-        { text: 'Código Funai', value: 'co_funai' },
-        { text: 'Terra Indígena', value: 'no_ti' },
-        { text: 'Coordenação Regional', value: 'ds_cr' },
-        { text: 'Classe', value: 'no_estagio' },
-        { text: 'Data da Imagem', value: 'dt_imagem' },
-        { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
-        { text: 'Latitude', value: 'nu_latitude' },
-        { text: 'Longitude', value: 'nu_longitude' },
-      ],
       checkNewFilters: false,
     };
   },
@@ -223,12 +143,8 @@ export default {
       'showFeaturesUrgentAlert',
       'features',
       'table',
-      'visualizationStage',
       'tableDialogAlert',
-      'isLoadingTable',
-      'isLoadingCSV',
       'isLoadingFeatures',
-      'total',
     ]),
   },
 
@@ -241,44 +157,9 @@ export default {
       if (!this.tableDialogAlert) this.getFeatures();
     },
 
-    searchDataTable() {
-      this.getDataTable();
-    },
-
-    changeVisualizationStage(tab) {
-      this.setVisualizationStage(tab);
-    },
-
-    showTableAlert(value) {
-      if (this.features) {
-        this.settableDialogAlert(value);
-        this.setshowTableDialog(value);
-        this.getDataTable();
-      }
-    },
-
-    closeTable(value) {
-      if (!this.checkNewFilters) {
-        this.settableDialogAlert(value);
-        this.setshowTableDialog(value);
-      } else {
-        this.settableDialogAlert(value);
-        this.setshowTableDialog(value);
-        this.getFeatures();
-        this.checkNewFilters = false;
-      }
-    },
-
     ...mapActions('urgent-alerts', [
       'getFeatures',
       'getDataTable',
-      'downloadTable',
-    ]),
-
-    ...mapMutations('tableDialog', ['setshowTableDialog']),
-    ...mapMutations('urgent-alerts', [
-      'setVisualizationStage',
-      'settableDialogAlert',
     ]),
   },
 };

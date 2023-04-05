@@ -4,7 +4,6 @@
       <v-checkbox
         v-model="filters.currentView"
         :label="$t('current-view-label')"
-        :error="error"
       />
     </v-row>
     <v-row class="px-3 pb-1 py-3">
@@ -67,15 +66,58 @@
         <v-btn
           color="accent"
           :loading="isLoadingGeoJson"
-          fab
+          icon
           small
           @click="downloadGeoJson()"
         >
-          <v-icon>mdi-download</v-icon>
+          <v-tooltip left>
+            <template #activator="{ on }">
+              <v-icon
+
+                v-on="on"
+              >
+                mdi-download
+              </v-icon>
+            </template>
+            <span>Download</span>
+          </v-tooltip>
+        </v-btn>
+        <v-btn
+          :loading="isLoadingTable"
+          small
+          icon
+          color="accent"
+          @click="showTableAlert(true)"
+        >
+          <v-tooltip left>
+            <template #activator="{ on }">
+              <v-icon
+                v-on="on"
+              >
+                mdi-table
+              </v-icon>
+            </template>
+            <span>Tabela</span>
+          </v-tooltip>
         </v-btn>
       </v-col>
-      <v-col>
+      <v-col v-if="!showFeaturesUrgentAlert">
         <v-btn
+          small
+          block
+          color="accent"
+          :loading="isLoadingFeatures"
+          @click="search"
+        >
+          {{ $t('search-label') }}
+        </v-btn>
+      </v-col>
+      <v-col
+        v-if="showFeaturesUrgentAlert"
+        class="ml-6"
+      >
+        <v-btn
+          small
           block
           color="accent"
           :loading="isLoadingFeatures"
@@ -218,6 +260,21 @@
         />
       </v-col>
     </v-row>
+    <div
+      v-if="tableDialogAlert"
+      class="d-none"
+    >
+      <TableDialog
+        :table="tableDialogAlert"
+        :value="table"
+        :headers="headers"
+        :loading-table="isLoadingTable"
+        :loading-c-s-v="isLoadingCSV"
+        :f-download-c-s-v="downloadTable"
+        :f-close-table="closeTable"
+        :table-name="$t('table-name')"
+      />
+    </div>
   </v-col>
 </template>
 
@@ -250,11 +307,12 @@
 import { mapMutations, mapState, mapActions } from 'vuex';
 import BaseDateField from '@/components/base/BaseDateField';
 import legend from '@/assets/legend.png';
+import TableDialog from '@/components/table-dialog/TableDialog.vue';
 
 export default {
   name: 'AlertFilter',
 
-  components: { BaseDateField },
+  components: { BaseDateField, TableDialog },
 
   data() {
     return {
@@ -267,6 +325,17 @@ export default {
         cr: [],
         ti: null,
       },
+      headers: [
+        { text: 'Código Funai', value: 'co_funai' },
+        { text: 'Terra Indígena', value: 'no_ti' },
+        { text: 'Coordenação Regional', value: 'ds_cr' },
+        { text: 'Classe', value: 'no_estagio' },
+        { text: 'Data da Imagem', value: 'dt_imagem' },
+        { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
+        { text: 'Latitude', value: 'nu_latitude' },
+        { text: 'Longitude', value: 'nu_longitude' },
+      ],
+      checkNewFilters: false,
       isLoadingTotal: false,
       legendData: legend,
     };
@@ -308,6 +377,11 @@ export default {
       'showFeaturesUrgentAlert',
       'total',
       'params',
+      'tableDialogAlert',
+      'table',
+      'isLoadingTable',
+      'isLoadingCSV',
+      'features',
     ]),
   },
 
@@ -321,13 +395,34 @@ export default {
       else this.filters.ti = null;
     },
 
+    closeTable(value) {
+      if (!this.checkNewFilters) {
+        this.settableDialogAlert(value);
+        this.setshowTableDialog(value);
+      } else {
+        this.settableDialogAlert(value);
+        this.setshowTableDialog(value);
+        this.getFeatures();
+        this.checkNewFilters = false;
+      }
+    },
+
+    showTableAlert(value) {
+      if (this.features) {
+        this.settableDialogAlert(value);
+        this.setshowTableDialog(value);
+        this.getDataTable();
+      }
+    },
+
     search() {
       this.setFilters(this.filters);
       this.$emit('onSearch');
     },
 
-    ...mapMutations('urgent-alerts', ['setFilters']),
-    ...mapActions('urgent-alerts', ['getFilterOptions', 'downloadGeoJson']),
+    ...mapMutations('urgent-alerts', ['setFilters', 'settableDialogAlert']),
+    ...mapMutations('tableDialog', ['setshowTableDialog']),
+    ...mapActions('urgent-alerts', ['getFilterOptions', 'downloadGeoJson', 'downloadTable', 'getDataTable', 'getFeatures']),
   },
 };
 </script>
