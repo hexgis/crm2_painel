@@ -3,7 +3,7 @@
     <v-tooltip right>
       <template #activator="{ on }">
         <v-btn
-          fab
+          icon
           ripple
           height="32"
           width="32"
