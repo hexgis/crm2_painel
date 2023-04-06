@@ -164,7 +164,7 @@
                         dense
                         class="mr-2"
                         v-on="on"
-                        @click="downloadDocument(item)"
+                        @click="showDocument(item)"
                       >
                         mdi-download
                       </v-icon>
@@ -303,15 +303,6 @@ export default {
 
     closeDialog(value) {
       this.setShowDialogDocument(value);
-    },
-
-    downloadDocument(item) {
-      const link = document.createElement('a');
-      link.href = item.url_doc;
-      link.download = item.no_document;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
     },
 
     showDocument(item) {
