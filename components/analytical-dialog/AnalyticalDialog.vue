@@ -302,7 +302,7 @@ export default {
     justify-content: flex-start;
 }
 .background__toolbar {
-    background: linear-gradient(to bottom, rgb(30, 33, 50), rgb(28, 65, 113));
+  background: linear-gradient(to bottom, rgb(28, 65, 113), rgb(28, 65, 113));
 }
 
 @media (max-width: 900px) {

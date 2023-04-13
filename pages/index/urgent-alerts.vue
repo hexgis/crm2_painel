@@ -13,9 +13,7 @@
     </div>
 
     <AlertFilter @onSearch="search()" />
-
     <ShowDialog />
-
     <div
       v-if="showFeaturesUrgentAlert && !isLoadingFeatures"
       class="mx-4"

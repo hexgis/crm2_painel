@@ -120,10 +120,18 @@
                 </v-icon>
                 {{ $t('input-button-print-image') }}
               </v-btn>
-              <!-- <v-btn color="primary" @click="generatePdf">
-                            <v-icon dark> mdi-file-export-outline </v-icon>
-                            Gerar PDF
-                        </v-btn> -->
+
+              <v-btn
+                color="primary"
+                class="mr-2"
+                :loading="loadingGeneratePdf"
+                @click="generatePdf"
+              >
+                <v-icon dark>
+                  mdi-file-pdf
+                </v-icon>
+                {{ $t('input-button-generate-pdf') }}
+              </v-btn>
             </div>
           </v-stepper-content>
         </v-stepper-items>
@@ -142,7 +150,8 @@
         "input-size-hint": "Print Size",
         "input-button-first-step": "Continue",
         "input-button-back-second-step": "Back",
-        "input-button-print-image": "Save Image"
+        "input-button-print-image": "Save Image",
+        "input-button-generate-pdf": "Generate PDF"
     },
     "pt-br": {
         "print-icon-label": "Imprimir",
@@ -152,13 +161,15 @@
         "input-size-hint": "Tamanho da Impressão",
         "input-button-first-step": "Continuar",
         "input-button-back-second-step": "Voltar",
-        "input-button-print-image": "Salvar Imagem"
+        "input-button-print-image": "Salvar Imagem",
+        "input-button-generate-pdf": "Gerar PDF"
     }
 }
 </i18n>
 
 <script>
 import domtoimage from 'dom-to-image';
+import { jsPDF } from 'jspdf';
 import MapForPrint from '@/components/map/MapForPrint.vue';
 import MiniMapForPrint from '@/components/map/MiniMapForPrint.vue';
 
@@ -179,6 +190,7 @@ export default {
     dialogPrint: false,
     currentStep: 1,
     loadingPrintImage: false,
+    loadingGeneratePdf: false,
     titleMap: '',
     dataUrlImagePrint: null,
     select: { type: 'A4' },
@@ -227,6 +239,32 @@ export default {
         infoControlRight.setAttribute('style', 'width: 100%');
       }
     },
+    async generatePdf() {
+      this.loadingGeneratePdf = true;
+      try {
+        const nameImageDownload = this.titleMap;
+        const options = {
+          quality: 1,
+          bgcolor: 'white',
+        };
+        const node = document.getElementById('printableMap');
+        await domtoimage.toJpeg(node, options).then((image) => {
+          const doc = new jsPDF({
+            orientation: 'portrait',
+            format: this.select.type,
+            compression: 'SLOW',
+          });
+          doc.addImage(image, 'JPEG', 0, 0, 210, 150);
+          doc.save(`${nameImageDownload}.pdf`);
+        });
+        this.loadingGeneratePdf = false;
+      } catch (error) {
+        this.$store.commit('alert/addAlert', {
+          message: this.$t('image-error'),
+        });
+        this.loadingGeneratePdf = false;
+      }
+    },
 
     closeDialogPrinter(value) {
       this.dialogPrint = value;
@@ -238,7 +276,7 @@ export default {
 
 <style scoped>
 .background__toolbar {
-    background: linear-gradient(to bottom, rgb(30, 33, 50), rgb(28, 65, 113));
+    background: linear-gradient(to bottom, rgb(28, 65, 113), rgb(28, 65, 113));
 }
 
 </style>

@@ -62,11 +62,11 @@
 {
     "en": {
         "title": "Search in my image database",
-        "alt-title": "Search again"
+        "alt-title": "Catalog"
     },
     "pt-br": {
         "title": "Pesquisar em meu acervo de imagens",
-        "alt-title": "Pesquisar novamente"
+        "alt-title": "Catálogo"
     }
 }
 </i18n>

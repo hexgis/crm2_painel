@@ -1,5 +1,8 @@
 <template>
-  <v-container class="overflow-auto container-height">
+  <v-container
+    class="overflow-auto container-height"
+    color="surface"
+  >
     <div class="tab-header flex justify-space-between">
       <h4 class="subtitle-2 text-uppercase font-weight-regular">
         {{ $t('title') }}
