@@ -35,8 +35,7 @@
         <v-card v-if="!loadingTable">
           <a class="d-flex justify-end">
             <v-btn
-              small
-              fab
+              icon
               class="mx-2 my-2"
               color="secondary"
               :loading="loadingCSV"

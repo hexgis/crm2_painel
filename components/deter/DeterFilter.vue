@@ -10,7 +10,7 @@
     <v-row class="px-3 pb-3">
       <v-combobox
         v-model="filters.cr"
-        label="Coordenação Regional (Todas)"
+        label="Coordenação Regional"
         :items="filterOptions.regionalFilters"
         item-value="co_cr"
         item-text="ds_cr"
@@ -27,7 +27,7 @@
       >
         <v-combobox
           v-model="filters.ti"
-          label="Terras Indigenas (Todas)"
+          label="Terras Indigenas"
           :items="filterOptions.tiFilters"
           item-text="no_ti"
           item-value="co_funai"
@@ -62,19 +62,67 @@
       no-gutters
       align="center"
     >
-      <v-col v-show="showFeaturesDeter">
+      <v-col
+        v-show="showFeaturesDeter"
+        cols="4"
+      >
         <v-btn
+          icon
           color="accent"
           :loading="isLoadingGeoJson"
-          fab
           small
           @click="downloadGeoJson()"
         >
-          <v-icon>mdi-download</v-icon>
+          <v-tooltip left>
+            <template #activator="{ on }">
+              <v-icon
+
+                v-on="on"
+              >
+                mdi-download
+              </v-icon>
+            </template>
+            <span>Download</span>
+          </v-tooltip>
+        </v-btn>
+
+        <v-btn
+          icon
+          small
+          :loading="isLoadingTable"
+          color="accent"
+          @click="showTableDeter(true)"
+        >
+          <v-tooltip left>
+            <template #activator="{ on }">
+              <v-icon
+
+                v-on="on"
+              >
+                mdi-table
+              </v-icon>
+            </template>
+            <span>Tabela</span>
+          </v-tooltip>
         </v-btn>
       </v-col>
-      <v-col>
+      <v-col
+        v-if="showFeaturesDeter"
+        class="ml-15"
+      >
         <v-btn
+          small
+          block
+          color="accent"
+          :loading="isLoadingFeatures"
+          @click="search"
+        >
+          {{ $t('search-label') }}
+        </v-btn>
+      </v-col>
+      <v-col v-if="!showFeaturesDeter">
+        <v-btn
+          small
           block
           color="accent"
           :loading="isLoadingFeatures"
@@ -133,54 +181,44 @@
     </div>
 
     <v-row
-      v-if="total && !isLoadingFeatures"
-      class="px-3 py-1 mt-7"
+      v-if="showFeaturesDeter && total && !isLoadingFeatures"
+      class="mt-3"
     >
-      <v-row v-if="showFeaturesDeter && total && !isLoadingFeatures">
-        <v-col
-          cols="7"
-          class="grey--text text--darken-2"
-        >
-          <v-icon>
-            mdi-hexagon
-          </v-icon>
-
-          {{ $t('polygon-label') }}:
-        </v-col>
-        <v-col
-          cols="5"
-          class="text-right grey--text text--darken-2"
-        >
-          {{ total.total }}
-        </v-col>
-      </v-row>
-      <v-row
-        v-if="
-          showFeaturesDeter && total && total.area_total_km && !isLoadingFeatures
-        "
+      <v-col
+        cols="7"
+        class="grey--text text--darken-2"
       >
-        <v-col
-          cols="7"
-          class="grey--text text--darken-2"
-        >
-          <v-icon>
-            mdi-aspect-ratio
-          </v-icon>
-
-          {{ $t('total-area-label') }}:
-        </v-col>
-        <v-col
-          cols="5"
-          class="text-right"
-        >
-          {{
-            total.area_total_km.toLocaleString($i18n.locale, {
-              maximumFractionDigits: 2,
-            })
-          }}
-          km
-        </v-col>
-      </v-row>
+        {{ $t('polygon-label') }}:
+      </v-col>
+      <v-col
+        cols="5"
+        class="text-right grey--text text--darken-2"
+      >
+        {{ total.total }}
+      </v-col>
+    </v-row>
+    <v-row
+      v-if="
+        showFeaturesDeter && total && total.area_km&& !isLoadingFeatures
+      "
+    >
+      <v-col
+        cols="7"
+        class="grey--text text--darken-2"
+      >
+        {{ $t('total-area-label') }}:
+      </v-col>
+      <v-col
+        cols="5"
+        class="text-right"
+      >
+        {{
+          total.area_km.toLocaleString($i18n.locale, {
+            maximumFractionDigits: 2,
+          })
+        }}
+        km
+      </v-col>
     </v-row>
 
     <v-row
@@ -191,10 +229,6 @@
         cols="4"
         class="grey--text text--darken-2 mt-1"
       >
-        <v-icon>
-          mdi-opacity
-        </v-icon>
-
         {{ $t('opacity-label') }}
       </v-col>
       <v-col cols="8">
@@ -214,9 +248,6 @@
     >
       <v-col>
         <span class="grey--text text--darken-2">
-          <v-icon>
-            mdi-scent
-          </v-icon>
 
           {{ $t('heat-map-label') }}
         </span>
@@ -232,6 +263,26 @@
         />
       </v-col>
     </v-row>
+    <v-row
+      align="center"
+      justify="space-around"
+    >
+      <div
+        v-if="tableDialogDeter"
+        class="d-none"
+      >
+        <TableDialog
+          :table="tableDialogDeter"
+          :value="table"
+          :headers="headers"
+          :loading-table="isLoadingTable"
+          :loading-c-s-v="isLoadingCSV"
+          :f-download-c-s-v="downloadTable"
+          :f-close-table="closeTable"
+          :table-name="$t('table-name')"
+        />
+      </div>
+    </v-row>
   </v-col>
 </template>
 
@@ -245,7 +296,8 @@
             "total-area-label": "Total area",
             "heat-map-label": "Heat map",
             "polygon-label": "Polygon count",
-            "end-date-label": "End Date"
+            "end-date-label": "End Date",
+            "table-name": "Deter Table"
         },
         "pt-br": {
             "search-label": "Buscar",
@@ -255,7 +307,8 @@
             "heat-map-label": "Mapa de calor",
             "polygon-label": "Total de polígonos",
             "start-date-label": "Data Início",
-            "end-date-label": "Data Fim"
+            "end-date-label": "Data Fim",
+            "table-name": "Tabela deter"
         }
     }
 </i18n>
@@ -264,11 +317,12 @@
 import { mapMutations, mapState, mapActions } from 'vuex';
 import BaseDateField from '@/components/base/BaseDateField';
 import legend from '@/assets/legend.png';
+import TableDialog from '@/components/table-dialog/TableDialog.vue';
 
 export default {
   name: 'DeterFilter',
 
-  components: { BaseDateField },
+  components: { BaseDateField, TableDialog },
 
   data() {
     return {
@@ -282,6 +336,23 @@ export default {
         cr: null,
         ti: null,
       },
+      tab: null,
+      items: ['MapStage', 'AnalytcalStage'],
+      text: 'Texto de teste.',
+      timer: '',
+      headers: [
+        { text: 'Código Funai', value: 'co_funai' },
+        { text: 'Terra Indígena', value: 'no_ti' },
+        { text: 'Coordenação Regional', value: 'ds_cr' },
+        { text: 'Área Total Km', value: 'areatotalkm' },
+        { text: 'Área Mun Km', value: 'areamunkm' },
+        { text: 'Área Uc Km', value: 'areauckm' },
+        { text: 'Sensor Óptico', value: 'sensor' },
+        { text: 'Classe', value: 'classname' },
+        { text: 'Satélite', value: 'satellite' },
+      ],
+      checkNewFilters: false,
+      dialog: false,
       isLoadingTotal: false,
       legendData: legend,
     };
@@ -321,6 +392,11 @@ export default {
       'showFeaturesDeter',
       'total',
       'params',
+      'tableDialogDeter',
+      'isLoadingTable',
+      'isLoadingCSV',
+      'features',
+      'table',
     ]),
   },
 
@@ -334,11 +410,37 @@ export default {
       else this.filters.ti = null;
     },
 
+    showTableDeter(value) {
+      if (this.features) {
+        this.settableDialogDeter(value);
+        this.setshowTableDialog(value);
+        this.getDataTable();
+      }
+    },
+
+    closeTable(value) {
+      if (!this.checkNewFilters) {
+        this.settableDialogDeter(value);
+        this.setshowTableDialog(value);
+      } else {
+        this.settableDialogDeter(value);
+        this.setshowTableDialog(value);
+        this.getFeatures();
+        this.checkNewFilters = false;
+      }
+    },
+
     search() {
       this.setFilters(this.filters);
       this.$emit('onSearch');
     },
-    ...mapMutations('deter', ['setFilters']),
+    ...mapActions('deter', [
+      'getFeatures',
+      'getDataTable',
+      'downloadTable',
+    ]),
+    ...mapMutations('tableDialog', ['setshowTableDialog']),
+    ...mapMutations('deter', ['setFilters', 'settableDialogDeter', 'setVisualizationStage']),
     ...mapActions('deter', ['getFilterOptions', 'downloadGeoJson']),
   },
 };

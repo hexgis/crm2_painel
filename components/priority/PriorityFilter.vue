@@ -10,7 +10,7 @@
     <v-row class="px-3 pb-1">
       <v-combobox
         v-model="filters.cr"
-        label="Coordenação Regional (Todas)"
+        label="Coordenação Regional"
         :items="filterOptions.regionalFilters"
         item-value="co_cr"
         item-text="ds_cr"
@@ -27,7 +27,7 @@
       >
         <v-combobox
           v-model="filters.ti"
-          label="Terras Indigenas (Todas)"
+          label="Terras Indigenas"
           :items="filterOptions.tiFilters"
           item-text="no_ti"
           item-value="co_funai"
@@ -41,7 +41,7 @@
     <v-row class="px-3 pb-1">
       <v-select
         v-model="filters.priority"
-        label="Prioridade (Todas)"
+        label="Prioridades"
         :items="filterOptions.priority"
         item-text="no_pr"
         item-value="co_pr"
@@ -79,16 +79,61 @@
         <v-btn
           color="accent"
           :loading="isLoadingGeoJson"
-          fab
+
           small
+          icon
           @click="downloadGeoJson()"
         >
-          <v-icon>mdi-download</v-icon>
+          <v-tooltip left>
+            <template #activator="{ on }">
+              <v-icon
+
+                v-on="on"
+              >
+                mdi-download
+              </v-icon>
+            </template>
+            <span>Download</span>
+          </v-tooltip>
+        </v-btn>
+        <v-btn
+          small
+          :loading="isLoadingTable"
+          icon
+          color="accent"
+          @click="showTablePriority(true)"
+        >
+          <v-tooltip left>
+            <template #activator="{ on }">
+              <v-icon
+
+                v-on="on"
+              >
+                mdi-table
+              </v-icon>
+            </template>
+            <span>Tabela</span>
+          </v-tooltip>
         </v-btn>
       </v-col>
-      <v-col>
+      <v-col v-if="!showFeatures">
         <v-btn
           block
+          small
+          color="accent"
+          :loading="isLoadingFeatures"
+          @click="search"
+        >
+          {{ $t('search-label') }}
+        </v-btn>
+      </v-col>
+      <v-col
+        v-if="showFeatures"
+        class="ml-6"
+      >
+        <v-btn
+          block
+          small
           color="accent"
           :loading="isLoadingFeatures"
           @click="search"
@@ -152,9 +197,6 @@
           cols="7"
           class="grey--text text--darken-2"
         >
-          <v-icon>
-            mdi-hexagon
-          </v-icon>
           {{ $t('polygon-label') }}:
         </v-col>
         <v-col
@@ -174,9 +216,6 @@
           cols="7"
           class="grey--text text--darken-2"
         >
-          <v-icon>
-            mdi-aspect-ratio
-          </v-icon>
           {{ $t('total-area-label') }}:
         </v-col>
         <v-col
@@ -201,9 +240,6 @@
         cols="4"
         class="grey--text text--darken-2 mt-1"
       >
-        <v-icon>
-          mdi-opacity
-        </v-icon>
         {{ $t('opacity-label') }}
       </v-col>
       <v-col cols="8">
@@ -222,9 +258,6 @@
       justify="space-between"
     >
       <v-col>
-        <v-icon>
-          mdi-scent
-        </v-icon>
         <span class="grey--text text--darken-2">
           {{ $t('heat-map-label') }}
         </span>
@@ -240,7 +273,27 @@
         />
       </v-col>
     </v-row>
-    </v-divider>
+
+    <v-row
+      align="center"
+      justify="space-around"
+    >
+      <div
+        v-if="tableDialogPriority"
+        class="d-none"
+      >
+        <TableDialog
+          :table="tableDialogPriority"
+          :value="table"
+          :headers="headers"
+          :loading-table="isLoadingTable"
+          :loading-c-s-v="isLoadingCSV"
+          :f-download-c-s-v="downloadTable"
+          :f-close-table="closeTable"
+          :table-name="$t('table-name')"
+        />
+      </div>
+    </v-row>
   </v-col>
 </template>
 
@@ -273,11 +326,12 @@
 import { mapMutations, mapState, mapActions } from 'vuex';
 import BaseDateField from '@/components/base/BaseDateField';
 import legend from '@/assets/legend.png';
+import TableDialog from '@/components/table-dialog/TableDialog.vue';
 
 export default {
   name: 'FunaiFilter',
 
-  components: { BaseDateField },
+  components: { BaseDateField, TableDialog },
 
   data() {
     return {
@@ -292,8 +346,23 @@ export default {
         cr: null,
         ti: null,
       },
+      headers: [
+        { text: 'Identificador', value: 'id' },
+        { text: 'Código Funai', value: 'co_funai' },
+        { text: 'Terra Indígena', value: 'no_ti' },
+        { text: 'Coordenação Regional', value: 'ds_cr' },
+        { text: 'Classe', value: 'no_estagio' },
+        { text: 'Data da Imagem', value: 'dt_imagem' },
+        { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
+        { text: 'Latitude', value: 'nu_latitude' },
+        { text: 'Longitude', value: 'nu_longitude' },
+        { text: 'Prioridade', value: 'prioridade' },
+        { text: 'Ações', value: 'actions' },
+      ],
       isLoadingTotal: false,
       legendData: legend,
+      checkNewFilters: false,
+      dialog: false,
     };
   },
   watch: {
@@ -326,11 +395,16 @@ export default {
 
     ...mapState('priority', [
       'isLoadingGeoJson',
+      'isLoadingTable',
       'isLoadingFeatures',
       'filterOptions',
       'showFeatures',
       'total',
       'params',
+      'tableDialogPriority',
+      'table',
+      'isLoadingCSV',
+      'features',
     ]),
   },
 
@@ -344,12 +418,33 @@ export default {
       else this.filters.ti = null;
     },
 
+    showTablePriority(value) {
+      if (this.features) {
+        this.settableDialogPriority(value);
+        this.setshowTableDialog(value);
+        this.getDataTable();
+      }
+    },
+
+    closeTable(value) {
+      if (!this.checkNewFilters) {
+        this.settableDialogPriority(value);
+        this.setshowTableDialog(value);
+      } else {
+        this.settableDialogPriority(value);
+        this.setshowTableDialog(value);
+        this.getFeatures();
+        this.checkNewFilters = false;
+      }
+    },
+
     search() {
       this.setFilters(this.filters);
       this.$emit('onSearch');
     },
-    ...mapMutations('priority', ['setFilters']),
-    ...mapActions('priority', ['getFilterOptions', 'downloadGeoJson']),
+    ...mapMutations('tableDialog', ['setshowTableDialog']),
+    ...mapMutations('priority', ['setFilters', 'settableDialogPriority']),
+    ...mapActions('priority', ['getFilterOptions', 'downloadGeoJson', 'downloadTable', 'getDataTable', 'getFeatures']),
   },
 };
 </script>

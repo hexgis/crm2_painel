@@ -1,386 +1,387 @@
 export const state = () => ({
-    features: null,
-    showFeaturesUrgentAlert: false,
-    heatMap: false,
-    tableDialogAlert: false,
-    isLoadingTable: true,
-    isLoadingFeatures: false,
-    isLoadingGeoJson: false,
-    isLoadingCSV: false,
-    unitMeasurement: [],
-    // displayAnalitcs: null, // responsável por exibir qual dos 4 Dashboards será exibido na tela: Filtro Aplicado; CR; TI; Municípios. Também encaminhar o filtro aplicado.
-    visualizationStage: 'map',
-    filterOptions: {
-        regionalFilters: [],
-        tiFilters: [],
-    },
+  features: null,
+  showFeaturesUrgentAlert: false,
+  heatMap: false,
+  tableDialogAlert: false,
+  isLoadingTable: false,
+  isLoadingFeatures: false,
+  isLoadingGeoJson: false,
+  isLoadingCSV: false,
+  unitMeasurement: [],
+  // displayAnalitcs: null, // responsável por exibir qual dos 4 Dashboards será exibido na tela: Filtro Aplicado; CR; TI; Municípios. Também encaminhar o filtro aplicado.
+  visualizationStage: 'map',
+  filterOptions: {
+    regionalFilters: [],
+    tiFilters: [],
+  },
 
-    filters: {
-        startDate: null,
-        endDate: null,
-        csv: 'csv',
-        json: 'json',
-    },
+  filters: {
+    startDate: null,
+    endDate: null,
+    csv: 'csv',
+    json: 'json',
+  },
 
-    opacity: 100,
-    total: null,
-    table: [],
-    tableCSV: [],
-})
+  opacity: 100,
+  total: null,
+  table: [],
+  tableCSV: [],
+});
 
 export const getters = {
-    featuresLoaded(state) {
-        return (
-            !!state.features &&
-            state.features.features &&
-            state.features.features.length > 0
-        )
-    },
-}
+  featuresLoaded(state) {
+    return (
+      !!state.features
+            && state.features.features
+            && state.features.features.length > 0
+    );
+  },
+};
 
 export const mutations = {
-    setFilters(state, filters) {
-        state.filters = {
-            ...state.filters,
-            ...filters,
-        }
-    },
+  setFilters(state, filters) {
+    state.filters = {
+      ...state.filters,
+      ...filters,
+    };
+  },
 
-    setParams(state, params) {
-        state.params = params
-    },
+  setParams(state, params) {
+    state.params = params;
+  },
 
-    setFeatures(state, features) {
-        state.features = features
-    },
+  setFeatures(state, features) {
+    state.features = features;
+  },
 
-    settableDialogAlert(state, tableDialogAlert) {
-        state.tableDialogAlert = tableDialogAlert
-    },
+  settableDialogAlert(state, tableDialogAlert) {
+    state.tableDialogAlert = tableDialogAlert;
+  },
 
-    setLoadingTable(state, loadingTable) {
-        state.isLoadingTable = loadingTable
-    },
+  setLoadingTable(state, loadingTable) {
+    state.isLoadingTable = loadingTable;
+  },
 
-    setLoadingFeatures(state, payload) {
-        state.isLoadingFeatures = payload
-    },
+  setLoadingFeatures(state, payload) {
+    state.isLoadingFeatures = payload;
+  },
 
-    clearFeatures(state) {
-        state.features = null
-    },
+  clearFeatures(state) {
+    state.features = null;
+  },
 
-    setLoadingCSV(state, payload) {
-        state.isLoadingCSV = payload
-    },
+  setLoadingCSV(state, payload) {
+    state.isLoadingCSV = payload;
+  },
 
-    setLoadingGeoJson(state, payload) {
-        state.isLoadingGeoJson = payload
-    },
+  setLoadingGeoJson(state, payload) {
+    state.isLoadingGeoJson = payload;
+  },
 
-    setshowFeaturesUrgentAlert(state, showFeaturesUrgentAlert) {
-        state.showFeaturesUrgentAlert = showFeaturesUrgentAlert
-    },
+  setshowFeaturesUrgentAlert(state, showFeaturesUrgentAlert) {
+    state.showFeaturesUrgentAlert = showFeaturesUrgentAlert;
+  },
 
-    setOpacity(state, opacity) {
-        state.opacity = opacity
-    },
+  setOpacity(state, opacity) {
+    state.opacity = opacity;
+  },
 
-    setTable(state, table) {
-        state.table = table
-    },
+  setTable(state, table) {
+    state.table = table;
+  },
 
-    setDownloadTable(state, tableCSV) {
-        state.tableCSV = tableCSV
-    },
+  setDownloadTable(state, tableCSV) {
+    state.tableCSV = tableCSV;
+  },
 
-    setFilterOptions(state, data) {
-        state.filterOptions = data
-    },
+  setFilterOptions(state, data) {
+    state.filterOptions = data;
+  },
 
-    setTotal(state, total) {
-        state.total = total
-    },
+  setTotal(state, total) {
+    state.total = total;
+  },
 
-    setHeatMap(state, heatMap) {
-        state.heatMap = heatMap
-    },
+  setHeatMap(state, heatMap) {
+    state.heatMap = heatMap;
+  },
 
-    setUnitMeasurement(state, unitMeasurement) {
-        state.unitMeasurement = unitMeasurement
-    },
+  setUnitMeasurement(state, unitMeasurement) {
+    state.unitMeasurement = unitMeasurement;
+  },
 
-    setVisualizationStage(state, visualizationStage) {
-        state.visualizationStage = visualizationStage
-    },
-}
+  setVisualizationStage(state, visualizationStage) {
+    state.visualizationStage = visualizationStage;
+  },
+};
 
 export const actions = {
-    async getFeatures({ state, commit, rootGetters }) {
-        commit('setLoadingGeoJson', true)
-        commit('setLoadingFeatures', true)
-        commit('clearFeatures')
+  async getFeatures({ state, commit, rootGetters }) {
+    commit('setLoadingGeoJson', true);
+    commit('setLoadingFeatures', true);
+    commit('setLoadingTable', true);
+    commit('clearFeatures');
 
-        const params = {
-            start_date: state.filters.startDate,
-            end_date: state.filters.endDate,
-        }
+    const params = {
+      start_date: state.filters.startDate,
+      end_date: state.filters.endDate,
+    };
 
-        if (state.filters.ti && state.filters.ti.length) {
-            let arrayTI = []
-            Object.values(state.filters.ti).forEach((item) => {
-                arrayTI.push(item.co_funai)
-            })
-            params.co_funai = arrayTI.toString()
-        }
+    if (state.filters.ti && state.filters.ti.length) {
+      const arrayTI = [];
+      Object.values(state.filters.ti).forEach((item) => {
+        arrayTI.push(item.co_funai);
+      });
+      params.co_funai = arrayTI.toString();
+    }
 
-        if (state.filters.cr && state.filters.cr.length) {
-            let arrayCR = []
-            Object.values(state.filters.cr).forEach((item) => {
-                arrayCR.push(item.co_cr)
-            })
-            params.co_cr = arrayCR.toString()
-        }
+    if (state.filters.cr && state.filters.cr.length) {
+      const arrayCR = [];
+      Object.values(state.filters.cr).forEach((item) => {
+        arrayCR.push(item.co_cr);
+      });
+      params.co_cr = arrayCR.toString();
+    }
 
-        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
-        
-        try {
-            const response = await this.$api.$get('alerts/', {
-                params,
-            })
+    if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox'];
 
-            if (!response.features || !response.features.length) {
-                commit('setshowFeaturesUrgentAlert', false)
-                commit(
-                    'alert/addAlert',
-                    { message: this.$i18n.t('no-result') },
-                    { root: true }
-                )
-            } else {
-                commit('setshowFeaturesUrgentAlert', true)
-                commit('setFeatures', response)
+    try {
+      const response = await this.$api.$get('alerts/', {
+        params,
+      });
 
-                const total = await this.$api.$get('alerts/stats/', {
-                    params,
-                })
-                if (total) commit('setTotal', total)
-            }
-        } catch (exception) {
-            commit(
-                'alert/addAlert',
-                {
-                    message: this.$i18n.t('default-error', {
-                        action: this.$i18n.t('retrieve'),
-                        resource: this.$i18n.t('monitoring'),
-                    }),
-                },
-                { root: true }
-            )
-        } finally {
-            commit('setLoadingFeatures', false)
-            commit('setParams', params)
-            commit('setLoadingGeoJson', false)
-        }
-    },
+      if (!response.features || !response.features.length) {
+        commit('setshowFeaturesUrgentAlert', false);
+        commit(
+          'alert/addAlert',
+          { message: this.$i18n.t('no-result') },
+          { root: true },
+        );
+      } else {
+        commit('setshowFeaturesUrgentAlert', true);
+        commit('setFeatures', response);
 
-    async getFilterOptions({ commit }) {
-        const regional_coordinators = await this.$api.$get('funai/cr/')
+        const total = await this.$api.$get('alerts/stats/', {
+          params,
+        });
+        if (total) commit('setTotal', total);
+      }
+    } catch (exception) {
+      commit(
+        'alert/addAlert',
+        {
+          message: this.$i18n.t('default-error', {
+            action: this.$i18n.t('retrieve'),
+            resource: this.$i18n.t('monitoring'),
+          }),
+        },
+        { root: true },
+      );
+    } finally {
+      commit('setLoadingFeatures', false);
+      commit('setParams', params);
+      commit('setLoadingGeoJson', false);
+      commit('setLoadingTable', false);
+    }
+  },
 
-        const data = {}
+  async getFilterOptions({ commit }) {
+    const regional_coordinators = await this.$api.$get('funai/cr/');
 
-        if (regional_coordinators) {
-            data.regionalFilters = regional_coordinators.sort(
-                (a, b) => a.ds_cr > b.ds_cr
-            )
-        }
+    const data = {};
 
-        commit('setFilterOptions', data)
-    },
+    if (regional_coordinators) {
+      data.regionalFilters = regional_coordinators.sort(
+        (a, b) => a.ds_cr > b.ds_cr,
+      );
+    }
 
-    async getTiOptions({ commit, state }, cr) {
-        const params = {
-            co_cr: cr.toString(),
-        }
+    commit('setFilterOptions', data);
+  },
 
-        const tis = await this.$api.$get('funai/ti/', { params })
+  async getTiOptions({ commit, state }, cr) {
+    const params = {
+      co_cr: cr.toString(),
+    };
 
-        if (tis)
-            commit('setFilterOptions', {
-                ...state.filterOptions,
-                tiFilters: tis.sort((a, b) => a.no_ti > b.no_ti),
-            })
-    },
+    const tis = await this.$api.$get('funai/ti/', { params });
 
-    async getDataTable({ commit, state, rootGetters }) {
-        commit('setLoadingFeatures', true)
-        commit('setLoadingGeoJson', true)
-        commit('setLoadingTable', true)
-        const params = {
-            start_date: state.filters.startDate,
-            end_date: state.filters.endDate,
-        }
+    if (tis) {
+      commit('setFilterOptions', {
+        ...state.filterOptions,
+        tiFilters: tis.sort((a, b) => a.no_ti > b.no_ti),
+      });
+    }
+  },
 
-        if (state.filters.ti && state.filters.ti.length) {
-            let arrayTI = []
-            Object.values(state.filters.ti).forEach((item) => {
-                arrayTI.push(item.co_funai)
-            })
-            params.co_funai = arrayTI.toString()
-        }
+  async getDataTable({ commit, state, rootGetters }) {
+    commit('setLoadingTable', true);
+    const params = {
+      start_date: state.filters.startDate,
+      end_date: state.filters.endDate,
+    };
 
-        if (state.filters.cr && state.filters.cr.length) {
-            let arrayCR = []
-            Object.values(state.filters.cr).forEach((item) => {
-                arrayCR.push(item.co_cr)
-            })
-            params.co_cr = arrayCR.toString()
-        }
+    if (state.filters.ti && state.filters.ti.length) {
+      const arrayTI = [];
+      Object.values(state.filters.ti).forEach((item) => {
+        arrayTI.push(item.co_funai);
+      });
+      params.co_funai = arrayTI.toString();
+    }
 
-        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
+    if (state.filters.cr && state.filters.cr.length) {
+      const arrayCR = [];
+      Object.values(state.filters.cr).forEach((item) => {
+        arrayCR.push(item.co_cr);
+      });
+      params.co_cr = arrayCR.toString();
+    }
 
-        try {
-            const table = await this.$api.$get('alerts/table/', {
-                params,
-            })
+    if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox'];
 
-            if (table) commit('setTable', table)
+    try {
+      const table = await this.$api.$get('alerts/table/', {
+        params,
+      });
 
-            const total = await this.$api.$get('alerts/stats/', {
-                params,
-            })
-            if (total) commit('setTotal', total)
-        } catch (error) {
-            commit(
-                'alert/addAlert',
-                {
-                    message: this.$i18n.t('default-error', {
-                        action: this.$i18n.t('retrieve'),
-                        resource: this.$i18n.t('monitoring'),
-                    }),
-                },
-                { root: true }
-            )
-        } finally {
-            commit('setLoadingFeatures', false)
-            commit('setLoadingGeoJson', false)
-            commit('setLoadingTable', false)
-        }
-    },
+      if (table) commit('setTable', table);
 
-    async downloadTable({ commit, state, rootGetters }) {
-        commit('setLoadingCSV', true)
+      const total = await this.$api.$get('alerts/stats/', {
+        params,
+      });
+      if (total) commit('setTotal', total);
+    } catch (error) {
+      commit(
+        'alert/addAlert',
+        {
+          message: this.$i18n.t('default-error', {
+            action: this.$i18n.t('retrieve'),
+            resource: this.$i18n.t('monitoring'),
+          }),
+        },
+        { root: true },
+      );
+    } finally {
+      commit('setLoadingTable', false);
+    }
+  },
 
-        const params = {
-            start_date: state.filters.startDate,
-            end_date: state.filters.endDate,
-            format: state.filters.csv,
-        }
+  async downloadTable({ commit, state, rootGetters }) {
+    commit('setLoadingCSV', true);
 
-        if (state.filters.ti && state.filters.ti.length) {
-            let arrayTI = []
-            Object.values(state.filters.ti).forEach((item) => {
-                arrayTI.push(item.co_funai)
-            })
-            params.co_funai = arrayTI.toString()
-        }
+    const params = {
+      start_date: state.filters.startDate,
+      end_date: state.filters.endDate,
+      format: state.filters.csv,
+    };
 
-        if (state.filters.cr && state.filters.cr.length) {
-            let arrayCR = []
-            Object.values(state.filters.cr).forEach((item) => {
-                arrayCR.push(item.co_cr)
-            })
-            params.co_cr = arrayCR.toString()
-        }
+    if (state.filters.ti && state.filters.ti.length) {
+      const arrayTI = [];
+      Object.values(state.filters.ti).forEach((item) => {
+        arrayTI.push(item.co_funai);
+      });
+      params.co_funai = arrayTI.toString();
+    }
 
-        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
+    if (state.filters.cr && state.filters.cr.length) {
+      const arrayCR = [];
+      Object.values(state.filters.cr).forEach((item) => {
+        arrayCR.push(item.co_cr);
+      });
+      params.co_cr = arrayCR.toString();
+    }
 
-        const tableCSV = await this.$api.get('alerts/table/', {
-            params,
-        })
+    if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox'];
 
-        function saveData(data, fileName, type) {
-            var elementBtn, blob, url
+    const tableCSV = await this.$api.get('alerts/table/', {
+      params,
+    });
 
-            elementBtn = document.createElement('a')
-            elementBtn.style = 'display: none'
-            document.body.appendChild(elementBtn)
+    function saveData(data, fileName, type) {
+      let elementBtn; let blob; let
+        url;
 
-            if (type !== 'text/csv') {
-                data = JSON.stringify(data)
-            }
+      elementBtn = document.createElement('a');
+      elementBtn.style = 'display: none';
+      document.body.appendChild(elementBtn);
 
-            blob = new Blob([data], { type: type })
-            url = window.URL.createObjectURL(blob)
+      if (type !== 'text/csv') {
+        data = JSON.stringify(data);
+      }
 
-            elementBtn.href = url
-            elementBtn.download = fileName
-            elementBtn.click()
-            window.URL.revokeObjectURL(url)
-        }
+      blob = new Blob([data], { type });
+      url = window.URL.createObjectURL(blob);
 
-        try {
-            saveData(tableCSV.data, 'alerta-urgente.csv', 'text/csv')
-        } finally {
-            commit('setLoadingCSV', false)
-        }
-    },
+      elementBtn.href = url;
+      elementBtn.download = fileName;
+      elementBtn.click();
+      window.URL.revokeObjectURL(url);
+    }
 
-    async downloadGeoJson({ commit, state, rootGetters }) {
-        commit('setLoadingGeoJson', true)
+    try {
+      saveData(tableCSV.data, 'alerta-urgente.csv', 'text/csv');
+    } finally {
+      commit('setLoadingCSV', false);
+    }
+  },
 
-        const params = {
-            start_date: state.filters.startDate,
-            end_date: state.filters.endDate,
-            format: state.filters.csv,
-            format: state.filters.json,
-        }
+  async downloadGeoJson({ commit, state, rootGetters }) {
+    commit('setLoadingGeoJson', true);
 
-        if (state.filters.ti && state.filters.ti.length) {
-            let arrayTI = []
-            Object.values(state.filters.ti).forEach((item) => {
-                arrayTI.push(item.co_funai)
-            })
-            params.co_funai = arrayTI.toString()
-        }
+    const params = {
+      start_date: state.filters.startDate,
+      end_date: state.filters.endDate,
+      format: state.filters.csv,
+      format: state.filters.json,
+    };
 
-        if (state.filters.cr && state.filters.cr.length) {
-            let arrayCR = []
-            Object.values(state.filters.cr).forEach((item) => {
-                arrayCR.push(item.co_cr)
-            })
-            params.co_cr = arrayCR.toString()
-        }
+    if (state.filters.ti && state.filters.ti.length) {
+      const arrayTI = [];
+      Object.values(state.filters.ti).forEach((item) => {
+        arrayTI.push(item.co_funai);
+      });
+      params.co_funai = arrayTI.toString();
+    }
 
-        if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox']
+    if (state.filters.cr && state.filters.cr.length) {
+      const arrayCR = [];
+      Object.values(state.filters.cr).forEach((item) => {
+        arrayCR.push(item.co_cr);
+      });
+      params.co_cr = arrayCR.toString();
+    }
 
-        const GeoJson = await this.$api.get('alerts/', {
-            params,
-        })
+    if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox'];
 
-        function saveData(data, fileName, type) {
-            var elementBtn, blob, url
+    const GeoJson = await this.$api.get('alerts/', {
+      params,
+    });
 
-            elementBtn = document.createElement('a')
-            elementBtn.style = 'display: none'
-            document.body.appendChild(elementBtn)
+    function saveData(data, fileName, type) {
+      let elementBtn; let blob; let
+        url;
 
-            if (type !== 'text/csv') {
-                data = JSON.stringify(data)
-            }
+      elementBtn = document.createElement('a');
+      elementBtn.style = 'display: none';
+      document.body.appendChild(elementBtn);
 
-            blob = new Blob([data], { type: type })
-            url = window.URL.createObjectURL(blob)
+      if (type !== 'text/csv') {
+        data = JSON.stringify(data);
+      }
 
-            elementBtn.href = url
-            elementBtn.download = fileName
-            elementBtn.click()
-            window.URL.revokeObjectURL(url)
-        }
+      blob = new Blob([data], { type });
+      url = window.URL.createObjectURL(blob);
 
-        try {
-            saveData(GeoJson.data, 'alerta-urgente.json', 'application/json')
-        } finally {
-            commit('setLoadingGeoJson', false)
-        }
-    },
-}
+      elementBtn.href = url;
+      elementBtn.download = fileName;
+      elementBtn.click();
+      window.URL.revokeObjectURL(url);
+    }
+
+    try {
+      saveData(GeoJson.data, 'alerta-urgente.json', 'application/json');
+    } finally {
+      commit('setLoadingGeoJson', false);
+    }
+  },
+};
