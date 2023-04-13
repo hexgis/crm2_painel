@@ -5,7 +5,7 @@ export const state = () => ({
   heatMap: false,
   detail: [],
   tableDialogPriority: false,
-  isLoadingTable: true,
+  isLoadingTable: false,
   isLoadingFeatures: false,
   isLoadingGeoJson: false,
   isLoadingCSV: false,
@@ -132,6 +132,7 @@ export const actions = {
   async getFeatures({ state, commit, rootGetters }) {
     commit('setLoadingGeoJson', true);
     commit('setLoadingFeatures', true);
+    commit('setLoadingTable', true);
     commit('clearFeatures');
 
     const params = {
@@ -198,6 +199,7 @@ export const actions = {
       commit('setLoadingFeatures', false);
       commit('setParams', params);
       commit('setLoadingGeoJson', false);
+      commit('setLoadingTable', false);
     }
   },
 
@@ -238,8 +240,6 @@ export const actions = {
   },
 
   async getDataTable({ commit, state, rootGetters }) {
-    commit('setLoadingFeatures', true);
-    commit('setLoadingGeoJson', true);
     commit('setLoadingTable', true);
     const params = {
       start_date: state.filters.startDate,
@@ -289,8 +289,6 @@ export const actions = {
         { root: true },
       );
     } finally {
-      commit('setLoadingFeatures', false);
-      commit('setLoadingGeoJson', false);
       commit('setLoadingTable', false);
     }
   },
