@@ -1,4 +1,4 @@
-# Skyviewer
+# CMR
 
 Visualizador do catálogo de imagens e informações de monitoramento do Skynet.
 

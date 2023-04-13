@@ -175,7 +175,7 @@ export default {
     },
   },
   head: () => ({
-    title: 'Skyviewer',
+    title: 'Painel',
   }),
 };
 </script>
