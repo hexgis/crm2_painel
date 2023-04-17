@@ -33,13 +33,7 @@
           </span>
         </v-list-item-title>
       </v-list-item-content>
-      <v-list-item-action @click.stop="">
-        <v-switch
-          :input-value="layer.visible"
-          :loading="layer.loading"
-          @change="toggleLayer"
-        />
-      </v-list-item-action>
+
     </template>
 
     <v-container class="py-0">
@@ -98,7 +92,7 @@ export default {
   },
 
   data: () => ({
-    isOpen: false,
+    isOpen: true,
   }),
 
   computed: {
