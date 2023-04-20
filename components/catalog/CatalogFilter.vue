@@ -48,7 +48,7 @@
         <v-row align="center">
           <v-col
             cols="8"
-            class="pt-0 v-label theme--light"
+            class="pt-0 v-label "
           >
             {{ $t('cloud-cover-label') }}
           </v-col>

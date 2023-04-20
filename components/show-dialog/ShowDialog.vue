@@ -13,7 +13,7 @@
           </div>
         </v-card-title>
         <v-card-text class="my-3 justify">
-          <p style="color: black">
+          <p>
             {{ $t('message-dialog') }}
           </p>
         </v-card-text>

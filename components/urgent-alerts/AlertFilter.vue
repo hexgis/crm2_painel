@@ -4,7 +4,6 @@
       <v-checkbox
         v-model="filters.currentView"
         :label="$t('current-view-label')"
-        :error="error"
       />
     </v-row>
     <v-row class="px-3 pb-1 py-3">
@@ -67,15 +66,58 @@
         <v-btn
           color="accent"
           :loading="isLoadingGeoJson"
-          fab
+          icon
           small
           @click="downloadGeoJson()"
         >
-          <v-icon>mdi-download</v-icon>
+          <v-tooltip left>
+            <template #activator="{ on }">
+              <v-icon
+
+                v-on="on"
+              >
+                mdi-download
+              </v-icon>
+            </template>
+            <span>Download</span>
+          </v-tooltip>
+        </v-btn>
+        <v-btn
+          :loading="isLoadingTable"
+          small
+          icon
+          color="accent"
+          @click="showTableAlert(true)"
+        >
+          <v-tooltip left>
+            <template #activator="{ on }">
+              <v-icon
+                v-on="on"
+              >
+                mdi-table
+              </v-icon>
+            </template>
+            <span>Tabela</span>
+          </v-tooltip>
         </v-btn>
       </v-col>
-      <v-col>
+      <v-col v-if="!showFeaturesUrgentAlert">
         <v-btn
+          small
+          block
+          color="accent"
+          :loading="isLoadingFeatures"
+          @click="search"
+        >
+          {{ $t('search-label') }}
+        </v-btn>
+      </v-col>
+      <v-col
+        v-if="showFeaturesUrgentAlert"
+        class="ml-6"
+      >
+        <v-btn
+          small
           block
           color="accent"
           :loading="isLoadingFeatures"
@@ -133,56 +175,48 @@
     </div>
 
     <v-row
-      v-if="total && !isLoadingFeatures"
-      class="px-3 py-1 mt-7"
+      v-if="showFeaturesUrgentAlert && total"
+      class="mt-3"
     >
-      <v-row v-if="showFeaturesUrgentAlert && total">
-        <v-col
-          cols="7"
-          class="grey--text text--darken-2"
-        >
-          <v-icon>
-            mdi-hexagon
-          </v-icon>
-          {{ $t('polygon-label') }}:
-        </v-col>
-        <v-col
-          cols="5"
-          class="text-right"
-        >
-          {{ total.total }}
-        </v-col>
-      </v-row>
-
-      <v-row
-        v-if="
-          showFeaturesUrgentAlert &&
-            total &&
-            total.area_ha &&
-            !isLoadingFeatures
-        "
+      <v-col
+        cols="7"
+        class="grey--text text--darken-2"
       >
-        <v-col
-          cols="7"
-          class="grey--text text--darken-2"
-        >
-          <v-icon>
-            mdi-aspect-ratio
-          </v-icon>
-          {{ $t('total-area-label') }}:
-        </v-col>
-        <v-col
-          cols="5"
-          class="text-right"
-        >
-          {{
-            total.area_ha.toLocaleString($i18n.locale, {
-              maximumFractionDigits: 2,
-            })
-          }}
-          ha
-        </v-col>
-      </v-row>
+        {{ $t('polygon-label') }}:
+      </v-col>
+      <v-col
+        cols="5"
+        class="text-right"
+      >
+        {{ total.total }}
+      </v-col>
+    </v-row>
+
+    <v-row
+      v-if="
+        showFeaturesUrgentAlert &&
+          total &&
+          total.area_ha &&
+          !isLoadingFeatures
+      "
+    >
+      <v-col
+        cols="7"
+        class="grey--text text--darken-2"
+      >
+        {{ $t('total-area-label') }}:
+      </v-col>
+      <v-col
+        cols="5"
+        class="text-right"
+      >
+        {{
+          total.area_ha.toLocaleString($i18n.locale, {
+            maximumFractionDigits: 2,
+          })
+        }}
+        ha
+      </v-col>
     </v-row>
 
     <v-row
@@ -193,9 +227,6 @@
         cols="4"
         class="grey--text text--darken-2 mt-1"
       >
-        <v-icon>
-          mdi-opacity
-        </v-icon>
         {{ $t('opacity-label') }}
       </v-col>
       <v-col cols="8">
@@ -214,9 +245,6 @@
       justify="space-between"
     >
       <v-col>
-        <v-icon>
-          mdi-scent
-        </v-icon>
         <span class="grey--text text--darken-2">
           {{ $t('heat-map-label') }}
         </span>
@@ -232,6 +260,21 @@
         />
       </v-col>
     </v-row>
+    <div
+      v-if="tableDialogAlert"
+      class="d-none"
+    >
+      <TableDialog
+        :table="tableDialogAlert"
+        :value="table"
+        :headers="headers"
+        :loading-table="isLoadingTable"
+        :loading-c-s-v="isLoadingCSV"
+        :f-download-c-s-v="downloadTable"
+        :f-close-table="closeTable"
+        :table-name="$t('table-name')"
+      />
+    </div>
   </v-col>
 </template>
 
@@ -264,11 +307,12 @@
 import { mapMutations, mapState, mapActions } from 'vuex';
 import BaseDateField from '@/components/base/BaseDateField';
 import legend from '@/assets/legend.png';
+import TableDialog from '@/components/table-dialog/TableDialog.vue';
 
 export default {
   name: 'AlertFilter',
 
-  components: { BaseDateField },
+  components: { BaseDateField, TableDialog },
 
   data() {
     return {
@@ -281,6 +325,17 @@ export default {
         cr: [],
         ti: null,
       },
+      headers: [
+        { text: 'Código Funai', value: 'co_funai' },
+        { text: 'Terra Indígena', value: 'no_ti' },
+        { text: 'Coordenação Regional', value: 'ds_cr' },
+        { text: 'Classe', value: 'no_estagio' },
+        { text: 'Data da Imagem', value: 'dt_imagem' },
+        { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
+        { text: 'Latitude', value: 'nu_latitude' },
+        { text: 'Longitude', value: 'nu_longitude' },
+      ],
+      checkNewFilters: false,
       isLoadingTotal: false,
       legendData: legend,
     };
@@ -322,6 +377,11 @@ export default {
       'showFeaturesUrgentAlert',
       'total',
       'params',
+      'tableDialogAlert',
+      'table',
+      'isLoadingTable',
+      'isLoadingCSV',
+      'features',
     ]),
   },
 
@@ -335,13 +395,34 @@ export default {
       else this.filters.ti = null;
     },
 
+    closeTable(value) {
+      if (!this.checkNewFilters) {
+        this.settableDialogAlert(value);
+        this.setshowTableDialog(value);
+      } else {
+        this.settableDialogAlert(value);
+        this.setshowTableDialog(value);
+        this.getFeatures();
+        this.checkNewFilters = false;
+      }
+    },
+
+    showTableAlert(value) {
+      if (this.features) {
+        this.settableDialogAlert(value);
+        this.setshowTableDialog(value);
+        this.getDataTable();
+      }
+    },
+
     search() {
       this.setFilters(this.filters);
       this.$emit('onSearch');
     },
 
-    ...mapMutations('urgent-alerts', ['setFilters']),
-    ...mapActions('urgent-alerts', ['getFilterOptions', 'downloadGeoJson']),
+    ...mapMutations('urgent-alerts', ['setFilters', 'settableDialogAlert']),
+    ...mapMutations('tableDialog', ['setshowTableDialog']),
+    ...mapActions('urgent-alerts', ['getFilterOptions', 'downloadGeoJson', 'downloadTable', 'getDataTable', 'getFeatures']),
   },
 };
 </script>
