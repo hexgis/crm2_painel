@@ -63,7 +63,10 @@
         class="black--text text--lighten-2"
         align="center"
       >
-        <v-col cols="4">
+        <v-col
+          cols="4"
+          class="grey--text text--darken-2"
+        >
           Opacidade
         </v-col>
         <v-col cols="8">

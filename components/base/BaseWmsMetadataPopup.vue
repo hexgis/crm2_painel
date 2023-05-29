@@ -5,17 +5,24 @@
         minWidth: 420,
         maxHeight: 360,
         className: 'card-popup',
+        color: 'secondary'
       }"
     >
-      <v-card class="fill-height">
+      <v-card
+        class="fill-height"
+      >
         <v-tabs
           v-if="data && Object.keys(data).length"
           background-color="primary"
           dark
           class="fill-height"
         >
-          <template v-for="(layerData, layerName) in data">
-            <v-tab :key="layerName">
+          <template
+            v-for="(layerData, layerName) in data"
+          >
+            <v-tab
+              :key="layerName"
+            >
               {{ layerName }}
             </v-tab>
 

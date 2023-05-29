@@ -307,7 +307,8 @@
             "total-area-label": "Total Area",
             "heat-map-label": "Heat Map",
             "polygon-label": "Polygon Count",
-            "end-date-label": "End Date"
+            "end-date-label": "End Date",
+            "table-name":  "Priority Polygons "
         },
         "pt-br": {
             "search-label": "Buscar",
@@ -317,7 +318,8 @@
             "heat-map-label": "Mapa de Calor",
             "polygon-label": "Total de polígonos",
             "start-date-label": "Data Início",
-            "end-date-label": "Data Fim"
+            "end-date-label": "Data Fim",
+            "table-name": "Polígonos prioritários"
         }
     }
 </i18n>
