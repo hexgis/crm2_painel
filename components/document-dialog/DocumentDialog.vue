@@ -9,7 +9,7 @@
       >
         <v-card style="width: 100vw">
           <v-toolbar
-            class="background__toolbar"
+
             dark
             color="primary"
           >

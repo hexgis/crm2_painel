@@ -12,9 +12,8 @@
   >
     <v-card>
       <v-toolbar
-        class="background__toolbar"
         dark
-        color="primary"
+        color="secondary"
       >
         <h3>Analytics</h3>
         <v-spacer />
