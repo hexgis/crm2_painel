@@ -27,9 +27,19 @@
       <v-container fluid>
         <v-container grid-list-xs>
           <v-row>
-            <v-col cols="11">
+            <v-col cols="12">
               <div>
                 <span class="text-uppercase">Agrupar por:</span>
+                <a class="d-flex justify-end">
+                  <v-btn
+                    small
+                    fab
+                    color="secondary"
+                    @click="downloadCSV()"
+                  >
+                    <v-icon> mdi-download</v-icon>
+                  </v-btn>
+                </a>
               </div>
               <div class="mb-2">
                 <v-btn
@@ -252,7 +262,6 @@ export default {
     groupByFunaiYear() {
       this.pressedBUtton('btn_ti_year');
       this.getDataAnalyticsMonitoringByFunaiYear();
-      console.log(this.content);
     },
     groupByFunaiMonthYear() {
       this.pressedBUtton('btn_ti_month_year');
@@ -275,6 +284,22 @@ export default {
       this.getDataAnalyticsMonitoringByMonthYear();
     },
 
+    downloadCSV() {
+      if (this.btn_ti_year === true) {
+        this.downloadTableMonitoringAnalyticsByFunaiYear();
+      } else if (this.btn_ti_month_year === true) {
+        this.downloadTableMonitoringAnalyticsByFunaiMonthYear();
+      } else if (this.btn_day === true) {
+        this.downloadTableMonitoringAnalyticsByDay();
+      } else if (this.btn_ti === true) {
+        this.downloadTableMonitoringAnalyticsByFunai();
+      } else if (this.btn_year === true) {
+        this.downloadTableMonitoringAnalyticsByYear();
+      } else {
+        this.downloadTableMonitoringAnalyticsByMonthYear();
+      }
+    },
+
     ...mapActions('monitoring', [
       'getDataAnalyticsMonitoringByFunaiYear',
       'getDataAnalyticsMonitoringByDay',
@@ -284,6 +309,12 @@ export default {
       'getDataAnalyticsMonitoringByPercentage',
       'getDataAnalyticsMonitoringByMonthYear',
       'getDataAnalyticsMonitoringByFunaiMonthYear',
+      'downloadTableMonitoringAnalyticsByDay',
+      'downloadTableMonitoringAnalyticsByMonthYear',
+      'downloadTableMonitoringAnalyticsByFunai',
+      'downloadTableMonitoringAnalyticsByFunaiMonthYear',
+      'downloadTableMonitoringAnalyticsByFunaiYear',
+      'downloadTableMonitoringAnalyticsByYear',
     ]),
   },
 
