@@ -33,6 +33,7 @@
                 <a class="d-flex justify-end">
                   <v-btn
                     small
+                    :loading="isLoadingCSVMonitoring"
                     fab
                     color="secondary"
                     @click="downloadCSV()"
@@ -208,6 +209,7 @@ export default {
       'features',
       'isLoadingFeatures',
       'isLoadingStatistic',
+      'isLoadingCSVMonitoring',
     ]),
 
     ...mapMutations('monitoring', [
