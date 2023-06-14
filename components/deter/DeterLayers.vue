@@ -304,7 +304,7 @@ export default {
 
     createDeterHeatLayer() {
       const areas = this.features.features.map(
-        (feature) => feature.properties.Areatotalkm,
+        (feature) => feature.properties.areatotalkm,
       );
       const maxArea = Math.max.apply(null, areas);
 
@@ -313,7 +313,7 @@ export default {
         heatData.push([
           feature.properties.nu_latitude,
           feature.properties.nu_longitude,
-          feature.properties.nu_area_km2 / maxArea, // normalize by maximum area
+          feature.properties.areatotalkm / maxArea, // normalize by maximum area
         ]);
       });
 

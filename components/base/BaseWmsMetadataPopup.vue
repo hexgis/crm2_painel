@@ -252,7 +252,7 @@ export default {
         this.$refs.popup.mapObject.openPopup(evt.latlng);
       }
     },
-
+    // 4326
     getFeatureInfoUrl(latlng, layer) {
       const point = this.map.latLngToContainerPoint(
         latlng,

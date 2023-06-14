@@ -51,10 +51,10 @@
 <i18n>
 {
     "en": {
-        "title": "Layers"
+        "title": "Layers Hazard (INPE)"
     },
     "pt-br": {
-        "title": "Camadas"
+        "title": "Camadas Fogo (INPE)"
     }
 }
 </i18n>

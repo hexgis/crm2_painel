@@ -70,16 +70,16 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      light: false,
-      dark: true,
+      light: true,
+      dark: false,
       themes: {
         light: {
-          primary: '#3573B7',
-          secondary: '#1C4171',
-          accent: '#165396',
+          primary: '#e12e45',
+          secondary: '#cc2900',
+          accent: '#da2a3f',
           error: '#D8573C',
           warning: '#F5C035',
-          info: '#395989',
+          info: '#d75248',
           success: '#26A69A',
         },
         dark: {

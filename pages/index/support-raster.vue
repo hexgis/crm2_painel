@@ -52,10 +52,10 @@
 <i18n>
 {
     "en": {
-        "title": "Layers"
+        "title": "Layers Mosaics"
     },
     "pt-br": {
-        "title": "Camadas"
+        "title": "Mosaicos"
     }
 }
 </i18n>

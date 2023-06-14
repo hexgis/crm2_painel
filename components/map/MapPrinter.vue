@@ -25,7 +25,6 @@
       <v-toolbar
         dark
         color="secondary"
-        class="background__toolbar"
       >
         <h3>{{ $t('print-dialog-label') }}</h3>
         <v-spacer />

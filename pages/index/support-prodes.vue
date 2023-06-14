@@ -52,10 +52,10 @@
 <i18n>
 {
     "en": {
-        "title": "Layers"
+        "title": "Layer Prodes (INPE)"
     },
     "pt-br": {
-        "title": "Camadas"
+        "title": "Camada Prodes (INPE)"
     }
 }
 </i18n>
