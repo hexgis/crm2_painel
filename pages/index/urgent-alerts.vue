@@ -72,7 +72,7 @@
         <v-row class="d-flex justify-center">
           <v-img
             max-width="200"
-            src="/img/logocmr_normal.png"
+            src="/img/logo-inteira-antiga.svg"
           />
         </v-row>
       </v-col>

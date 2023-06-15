@@ -32,7 +32,7 @@
                 <v-img
                   max-width="200"
                   contain
-                  src="/img/logocmr.png"
+                  src="/img/logo-inteira-antiga.svg"
                 />
               </v-container>
             </v-toolbar-title>

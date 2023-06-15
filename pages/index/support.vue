@@ -46,7 +46,7 @@
         >
           <v-img
             max-width="200"
-            src="/img/logocmr_normal.png"
+            src="/img/logo-inteira-antiga.svg"
           />
         </v-footer>
       </v-container>
