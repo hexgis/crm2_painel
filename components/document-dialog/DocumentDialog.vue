@@ -11,7 +11,7 @@
           <v-toolbar
 
             dark
-            color="primary"
+            color="secondary"
           >
             <h3>{{ $t('dialogName') }}</h3>
             <v-spacer />
