@@ -2,7 +2,7 @@
   <v-tabs
     v-model="activeTab"
     vertical
-    dark
+
     optional
     background-color="secondary"
     class="right-tabs fill-height"
@@ -60,7 +60,6 @@
       >
         <v-list
           class="pt-0"
-          dark
         >
           <v-list-item
             v-for="(tab, i) in tabs"
