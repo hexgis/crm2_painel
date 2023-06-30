@@ -1,13 +1,30 @@
 <template>
   <v-container class="overflow-auto container-height">
-    <div class="tab-header flex justify-space-between">
-      <h4 class="subtitle-2 text-uppercase font-weight-regular">
-        {{ $t('title') }}
-      </h4>
+    <div class="tab-header">
+      <v-row>
+        <h4 class="subtitle-2 text-uppercase font-weight-regular">
+          {{ $t('title') }}
+        </h4>
+        <v-tooltip>
+          <template #activator="{ on }">
+            <v-icon
+              class="ml-2"
+              v-on="on"
+            >
+              mdi-information
+            </v-icon>
+          </template>
+          <span>
+            O INPE enfatiza que o DETER é um sistema de alerta
+            <br>
+            desenvolvido para suporte à fiscalização de desmatamento.
+          </span>
+        </v-tooltip>
+      </v-row>
       <v-switch
         v-if="features"
         v-model="showFeatures"
-        class="mt-n1 ml-5"
+        class="mt-n1"
         hide-details
       />
     </div>

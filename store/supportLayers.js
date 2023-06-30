@@ -2,6 +2,10 @@ import Vue from 'vue';
 
 export const state = () => ({
   showFeaturesSupportLayers: false,
+  showFeaturesSupportLayersHazard: false,
+  showFeaturesSupportLayersProdes: false,
+  showFeaturesSupportLayersRaster: false,
+  showFeaturesSupportLayersAntropismo: false,
   supportLayersGroups: {},
   supportLayers: {},
   supportCategoryGroupsFire: {},
@@ -87,6 +91,22 @@ export const getters = {
 export const mutations = {
   setshowFeaturesSupportLayers(state, showFeaturesSupportLayers) {
     state.showFeaturesSupportLayers = showFeaturesSupportLayers;
+  },
+
+  setshowFeaturesSupportLayersHazard(state, showFeaturesSupportLayersHazard) {
+    state.showFeaturesSupportLayersHazard = showFeaturesSupportLayersHazard;
+  },
+
+  setshowFeaturesSupportLayersProdes(state, showFeaturesSupportLayersProdes) {
+    state.showFeaturesSupportLayersProdes = showFeaturesSupportLayersProdes;
+  },
+
+  setshowFeaturesSupportLayersRaster(state, showFeaturesSupportLayersRaster) {
+    state.showFeaturesSupportLayersRaster = showFeaturesSupportLayersRaster;
+  },
+
+  setshowFeaturesSupportLayersAntropismo(state, showFeaturesSupportLayersAntropismo) {
+    state.showFeaturesSupportLayersAntropismo = showFeaturesSupportLayersAntropismo;
   },
 
   setSupportLayersGroups(state, layersGroups) {
@@ -434,7 +454,7 @@ export const actions = {
       });
 
       commit('setSupportCategoryGroupsRaster', response);
-      commit('setshowFeaturesSupportLayers', true);
+      commit('setshowFeaturesSupportLayersRaster', true);
     } catch (exception) {
       commit(
         'alert/addAlert',
@@ -461,7 +481,7 @@ export const actions = {
       });
 
       commit('setSupportCategoryGroupsFire', response);
-      commit('setshowFeaturesSupportLayers', true);
+      commit('setshowFeaturesSupportLayersHazard', true);
     } catch (exception) {
       commit(
         'alert/addAlert',
@@ -489,7 +509,7 @@ export const actions = {
       });
 
       commit('setSupportCategoryGroupsProdes', response);
-      commit('setshowFeaturesSupportLayers', true);
+      commit('setshowFeaturesSupportLayersProdes', true);
     } catch (exception) {
       commit(
         'alert/addAlert',
@@ -517,7 +537,7 @@ export const actions = {
       });
 
       commit('setSupportCategoryGroupsAntropismo', response);
-      commit('setshowFeaturesSupportLayers', true);
+      commit('setshowFeaturesSupportLayersAntropismo', true);
     } catch (exception) {
       commit(
         'alert/addAlert',
@@ -607,7 +627,7 @@ export const actions = {
 
       commit('setHeatLayerDataRaster', { id, data });
       commit('setLayerLoadingRaster', { id, loading: false });
-      commit('setshowFeaturesSupportLayers', true);
+      commit('setshowFeaturesSupportLayersRaster', true);
     } catch (exception) {
       commit(
         'alert/addAlert',
@@ -637,7 +657,7 @@ export const actions = {
 
       commit('setHeatLayerDataFire', { id, data });
       commit('setLayerLoadingFire', { id, loading: false });
-      commit('setshowFeaturesSupportLayers', true);
+      commit('setshowFeaturesSupportLayersHazard', true);
     } catch (exception) {
       commit(
         'alert/addAlert',

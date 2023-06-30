@@ -1,13 +1,34 @@
 <template>
   <v-container class="overflow-auto container-height">
-    <div class="tab-header flex justify-space-between">
-      <h4 class="subtitle-2 text-uppercase font-weight-regular">
-        {{ $t('title') }}
-      </h4>
+    <div class="tab-header ">
+      <v-row>
+        <h4 class="subtitle-2 text-uppercase font-weight-regular">
+          {{ $t('title') }}
+        </h4>
+        <v-tooltip>
+          <template #activator="{ on }">
+            <v-icon
+              class="mr-2 ml-2"
+              v-on="on"
+            >
+              mdi-information
+            </v-icon>
+          </template>
+          <span>
+            O Monitoramento é baseado na interpretação
+            <br>
+            visual do Landsat-8 com intervalo de 32 dias.
+            <br>
+            As detecções do monitoramento são contempladas
+            <br>
+            a partir de 30 de agosto de 2015 (variável por órbita-ponto).
+          </span>
+        </v-tooltip>
+      </v-row>
       <v-switch
         v-if="features"
         v-model="featuresMonitoring"
-        class="mt-n1 ml-5"
+        class="mt-n1"
         hide-details
       />
     </div>
@@ -84,7 +105,7 @@
 <i18n>
     {
         "en": {
-            "title": "Monitoring"
+            "title": "Daily Monitoring"
 
         },
         "pt-br": {

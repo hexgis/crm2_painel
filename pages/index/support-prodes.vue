@@ -1,15 +1,32 @@
 <template>
   <v-container class="pa-0">
-    <div class="tab-header justify-space-between">
-      <h4 class="subtitle-2 text-uppercase font-weight-regular">
-        {{ $t('title') }}
-      </h4>
-      <v-switch
-        v-show="!loading"
-        v-model="showFeatures"
-        class="mt-n1 ml-5"
-        hide-details
-      />
+    <div class="tab-header ">
+      <v-row>
+        <h4 class="subtitle-2 text-uppercase font-weight-regular">
+          {{ $t('title') }}
+        </h4>
+        <v-tooltip>
+          <template #activator="{ on }">
+            <v-icon
+              class="ml-2"
+              v-on="on"
+            >
+              mdi-information
+            </v-icon>
+          </template>
+          <span>
+            PRODES é um projeto que utiliza os
+            <br>
+            satélites Landsat, CBERS e IRS-2,
+            <br>
+            e detecta áreas maiores que 6,25 ha.
+            <br>
+            As detecções contempladas pelo PRODES
+            <br>
+            são a partir do ano de 2005.
+          </span>
+        </v-tooltip>
+      </v-row>
     </div>
     <v-list
       v-if="!$fetchState.pending"
@@ -52,10 +69,10 @@
 <i18n>
 {
     "en": {
-        "title": "Layers"
+        "title": "Prodes(INPE)"
     },
     "pt-br": {
-        "title": "Camadas"
+        "title": "Prodes(INPE)"
     }
 }
 </i18n>
@@ -85,11 +102,11 @@ export default {
     },
     showFeatures: {
       get() {
-        return this.$store.state.supportLayers.showFeaturesSupportLayers;
+        return this.$store.state.supportLayers.showFeaturesSupportLayersProdes;
       },
       set(value) {
         this.$store.commit(
-          'supportLayers/setshowFeaturesSupportLayers',
+          'supportLayers/setshowFeaturesSupportLayersProdes',
           value,
         );
       },
@@ -98,6 +115,7 @@ export default {
     ...mapState('supportLayers', [
       'supportCategoryGroupsProdes',
       'loading',
+      'showFeaturesSupportLayersProdes',
     ]),
   },
 };

@@ -52,10 +52,10 @@
 <i18n>
 {
     "en": {
-        "title": "Layers"
+        "title": "High Resolution and Mosaics"
     },
     "pt-br": {
-        "title": "Camadas"
+        "title": "Alta Resolução e Mosaicos"
     }
 }
 </i18n>
@@ -85,11 +85,11 @@ export default {
     },
     showFeatures: {
       get() {
-        return this.$store.state.supportLayers.showFeaturesSupportLayers;
+        return this.$store.state.supportLayers.showFeaturesSupportLayersRaster;
       },
       set(value) {
         this.$store.commit(
-          'supportLayers/setshowFeaturesSupportLayers',
+          'supportLayers/setshowFeaturesSupportLayersRaster',
           value,
         );
       },
@@ -98,6 +98,7 @@ export default {
     ...mapState('supportLayers', [
       'supportCategoryGroupsRaster',
       'loading',
+      'showFeaturesSupportLayersRaster',
     ]),
   },
 };
