@@ -1,15 +1,9 @@
 <template>
   <l-layer-group
     name="supportLayers"
-    :visible="showFeaturesSupportLayers"
+    :visible="showFeaturesSupportLayersRaster"
   >
-    <template v-for="layer in supportLayers">
-      <SupportLayerItem
-        :key="layer.id"
-        :layer="layer"
-      />
-    </template>
-    <template v-for="layer in supportLayersCategoryAntropismo">
+    <template v-for="layer in supportLayersCategoryRaster">
       <SupportLayerItem
         :key="layer.id"
         :layer="layer"
@@ -32,8 +26,8 @@ export default {
 
   computed: mapState('supportLayers', [
     'supportLayers',
-    'showFeaturesSupportLayers',
-    'supportLayersCategoryAntropismo',
+    'showFeaturesSupportLayersRaster',
+    'supportLayersCategoryRaster',
   ]),
 };
 </script>

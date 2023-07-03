@@ -37,6 +37,9 @@
           <PriorityLayers :map="map" />
           <MonitoringLayers :map="map" />
           <SupportLayers />
+          <SupportLayersHazard />
+          <SupportLayersProdes />
+          <SupportLayersRaster />
           <AlertLayers :map="map" />
           <DeterLayers :map="map" />
         </l-map>
@@ -611,6 +614,9 @@ import MiniMapForPrint from '@/components/map/MiniMapForPrint.vue';
 import PriorityLayers from '@/components/priority/PriorityLayers';
 import MonitoringLayers from '@/components/monitoring/MonitoringLayers';
 import SupportLayers from '@/components/support/SupportLayers';
+import SupportLayersHazard from '@/components/support/SupportLayersHazard';
+import SupportLayersProdes from '@/components/support/SupportLayersProdes';
+import SupportLayersRaster from '@/components/support/SupportLayersRaster';
 import AlertLayers from '@/components/urgent-alerts/AlertLayers';
 import DeterLayers from '@/components/deter/DeterLayers';
 
@@ -624,6 +630,9 @@ export default {
     SupportLayers,
     AlertLayers,
     DeterLayers,
+    SupportLayersProdes,
+    SupportLayersRaster,
+    SupportLayersHazard,
   },
   props: {
     titleMap: {
