@@ -1,9 +1,24 @@
 <template>
   <v-container class="pa-0">
     <div class="tab-header justify-space-between">
-      <h4 class="subtitle-2 text-uppercase font-weight-regular">
-        {{ $t('title') }}
-      </h4>
+      <v-row>
+        <h4 class="subtitle-2 text-uppercase font-weight-regular">
+          {{ $t('title') }}
+        </h4>
+        <v-tooltip>
+          <template #activator="{ on }">
+            <v-icon
+              class="mr-2 ml-2"
+              v-on="on"
+            >
+              mdi-information
+            </v-icon>
+          </template>
+          <span>
+            Fonte de dados: Geoserver - FUNAI
+          </span>
+        </v-tooltip>
+      </v-row>
       <v-switch
         v-show="!loading"
         v-model="showFeatures"

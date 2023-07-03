@@ -130,11 +130,11 @@
 <i18n>
     {
         "en": {
-            "title": "Deter Polygons"
+            "title": "Deter Polygons(INPE)"
 
         },
         "pt-br": {
-            "title": "Polígonos Deter"
+            "title": "Polígonos Deter(INPE)"
 
         }
     }
