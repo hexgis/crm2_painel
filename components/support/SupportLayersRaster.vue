@@ -1,6 +1,6 @@
 <template>
   <l-layer-group
-    name="supportLayers"
+    name="supportLayersRaster"
     :visible="showFeaturesSupportLayersRaster"
   >
     <template v-for="layer in supportLayersCategoryRaster">
@@ -18,7 +18,7 @@ import { mapState } from 'vuex';
 import SupportLayerItem from './SupportLayerItem';
 
 export default {
-  name: 'SupportLayers',
+  name: 'SupportLayersRaster',
 
   components: {
     SupportLayerItem,
