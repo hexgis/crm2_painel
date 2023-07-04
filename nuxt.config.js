@@ -75,11 +75,11 @@ export default {
       themes: {
         light: {
           primary: '#da2a3f',
-          secondary: '#ff3333',
-          accent: '#e12e45',
-          error: '#D8573C',
-          warning: '#F5C035',
-          info: '#ff6666',
+          secondary: '#da2a3f',
+          accent: '#da2a3f',
+          error: '#da2a3f',
+          warning: '#da2a3f',
+          info: '#da2a3f',
           success: '#26A69A',
         },
         dark: {

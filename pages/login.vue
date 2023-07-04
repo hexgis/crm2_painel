@@ -18,7 +18,7 @@
           <v-toolbar
             flat
             dark
-            color="secondary"
+            color="#f7f4f2"
           >
             <v-progress-linear
               v-show="isLoading"
