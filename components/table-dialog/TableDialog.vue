@@ -10,9 +10,8 @@
     >
       <v-card>
         <v-toolbar
-          class="background__toolbar"
           dark
-          color="primary"
+          color="secondary"
         >
           <h3>{{ tableName }}</h3>
           <v-spacer />
@@ -24,65 +23,60 @@
           </v-btn>
         </v-toolbar>
       </v-card>
-      <v-container
-        fluid
-        white
-      >
-        <v-skeleton-loader
-          v-if="loadingTable"
-          type="table-row-divider@8"
-        />
-        <v-card v-if="!loadingTable">
-          <a class="d-flex justify-end">
-            <v-btn
-              icon
-              class="mx-2 my-2"
-              color="secondary"
-              :loading="loadingCSV"
-              @click="fDownloadCSV()"
-            >
-              <v-icon>mdi-download</v-icon>
-            </v-btn>
-          </a>
-          <v-data-table
-            :headers="headers"
-            :items-per-page="15"
-            :items="value"
-            class="font-weight-regular"
-            multi-sort
-            fixed-header
-            height="65vh"
-            @click:row="handleClick"
+      <v-skeleton-loader
+        v-if="loadingTable"
+        type="table-row-divider@8"
+      />
+      <v-card v-if="!loadingTable">
+        <a class="d-flex justify-end">
+          <v-btn
+            small
+            fab
+            class="mx-2 my-2"
+            color="secondary"
+            :loading="loadingCSV"
+            @click="fDownloadCSV()"
           >
-            <template
-              v-if="[item.prioridade]"
-              #[`item.prioridade`]="{ item }"
-            >
-              <v-row>
-                <v-col>
-                  <v-chip
-                    class="mt-2"
-                    :color="getColor(item.prioridade)"
-                    :dark="getColor(item.prioridade) !== 'yellow'"
-                  >
-                    {{ item.prioridade }}
-                  </v-chip>
-                </v-col>
-              </v-row>
-            </template>
-
-            <template
-              v-if="[item.action]"
-              #[`item.actions`]="{ item }"
-            >
-              <MapPrinterPriority
-                class="mx-2 mb-2"
-                :value="dialogPrint"
-              />
-            </template>
-          </v-data-table>
-        </v-card>
-      </v-container>
+            <v-icon>mdi-download</v-icon>
+          </v-btn>
+        </a>
+        <v-data-table
+          :headers="headers"
+          :items-per-page="15"
+          :items="value"
+          class="font-weight-regular"
+          multi-sort
+          fixed-header
+          height="65vh"
+          @click:row="handleClick"
+        >
+          <template
+            v-if="[item.prioridade]"
+            #[`item.prioridade`]="{ item }"
+          >
+            <v-row>
+              <v-col>
+                <v-chip
+                  class="mt-2"
+                  :color="getColor(item.prioridade)"
+                  :dark="getColor(item.prioridade) !== 'yellow'"
+                >
+                  {{ item.prioridade }}
+                </v-chip>
+              </v-col>
+            </v-row>
+          </template>
+          <template
+            v-if="[item.action]"
+            #[`item.actions`]="{ item }"
+          >
+            <MapPrinterPriority
+              class="mx-2 mb-2"
+              :value="dialogPrint"
+            />
+          </template>
+        </v-data-table>
+      </v-card>
     </v-dialog>
   </v-row>
 </template>
