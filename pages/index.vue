@@ -121,7 +121,7 @@
 </i18n>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import ProfilePanel from '@/components/profile/ProfilePanel';
 
 export default {
@@ -258,8 +258,9 @@ export default {
     },
 
     closeRightDrawer() {
-      this.$emit('closedrawer');
+      this.closeDrawer();
     },
+    ...mapMutations('userProfile', ['closeDrawer']),
   },
 };
 </script>

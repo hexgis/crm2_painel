@@ -43,7 +43,7 @@
       class="right-drawer-btn"
       :class="{ 'drawer-btn-opened': layerDrawer }"
       color="secondary"
-      @click.stop="layerDrawer = !layerDrawer"
+      @click.stop="layerDrawer ? closeDrawer() : openDrawer()"
     >
       <v-tooltip bottom>
         <template #activator="{ on }">
@@ -106,7 +106,7 @@
 }
 </i18n>
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import Map from '@/components/map/Map';
 import BaseAlert from '@/components/base/BaseAlert';
 import AnalyticsPCDashboard from '@/components/analytical-cmr/AnalyticsPriorConsolidDashboard';
@@ -120,7 +120,7 @@ export default {
   },
 
   data: () => ({
-    layerDrawer: false,
+    // layerDrawer: false,
     leafletRightControl: null,
     snackbar: true,
     timeout: 3000,
@@ -133,9 +133,19 @@ export default {
   },
 
   computed: {
+    layerDrawer: {
+      get() {
+        return this.showDrawer;
+      },
+      set(val) {
+        return val;
+      },
+    },
+
     hasFirstOrLastName() {
       return this.user && (this.user.first_name || this.user.last_name);
     },
+    ...mapState('userProfile', ['user', 'showDrawer']),
     ...mapState('userProfile', ['user']),
     ...mapState('priority', ['visualizationStage']),
     ...mapState('monitoring', ['visualizationStageMonitoring']),
@@ -144,7 +154,8 @@ export default {
   watch: {
     user() {
       if (this.user && this.user.settings.drawer_open_on_init) {
-        this.layerDrawer = true;
+        // this.layerDrawer = true;
+        this.openDrawer();
       }
     },
   },
@@ -153,17 +164,19 @@ export default {
       this.getLeafletControlRef();
 
       if (this.user && this.user.settings.drawer_open_on_init) {
-        this.layerDrawer = true;
+        // this.layerDrawer = true;
+        this.openDrawer();
       }
     });
   },
   methods: {
+    ...mapMutations('userProfile', ['openDrawer', 'closeDrawer']),
     getLeafletControlRef() {
       this.leafletRightControl = document.getElementsByClassName('leaflet-right');
     },
 
     changeControlsStyle() {
-      if (this.layerDrawer) {
+      if (this.showDrawer) {
         Array.from(this.leafletRightControl).forEach((element) => {
           element.classList.add('leaflet-right-drawer--offset');
         });
@@ -175,7 +188,7 @@ export default {
     },
   },
   head: () => ({
-    title: 'Skyviewer',
+    title: 'CMR',
   }),
 };
 </script>
