@@ -1,9 +1,26 @@
 <template>
   <v-container class="overflow-auto container-height">
-    <div class="tab-header flex justify-space-between">
-      <h4 class="subtitle-2 text-uppercase font-weight-regular">
-        {{ $t('title') }}
-      </h4>
+    <div class="tab-header">
+      <v-row>
+        <h4 class="subtitle-2 text-uppercase font-weight-regular">
+          {{ $t('title') }}
+        </h4>
+        <v-tooltip>
+          <template #activator="{ on }">
+            <v-icon
+              class="mr-2 ml-2"
+              v-on="on"
+            >
+              mdi-information
+            </v-icon>
+          </template>
+          <span>
+            Atualizado frequentemente pela equipe de cartografia do CMR.
+            <br>
+            Fonte de dados: Banco de dados - FUNAI
+          </span>
+        </v-tooltip>
+      </v-row>
       <v-switch
         v-if="features"
         v-model="showFeaturesAlert"

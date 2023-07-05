@@ -3,14 +3,29 @@
     class="overflow-auto container-height"
     color="surface"
   >
-    <div class="tab-header flex justify-space-between">
-      <h4 class="subtitle-2 text-uppercase font-weight-regular">
-        {{ $t('title') }}
-      </h4>
+    <div class="tab-header">
+      <v-row>
+        <h4 class="subtitle-2 text-uppercase font-weight-regular">
+          {{ $t('title') }}
+        </h4>
+        <v-tooltip>
+          <template #activator="{ on }">
+            <v-icon
+              class="mr-2 ml-2"
+              v-on="on"
+            >
+              mdi-information
+            </v-icon>
+          </template>
+          <span>
+            Fonte de dados: Banco de dados - FUNAI
+          </span>
+        </v-tooltip>
+      </v-row>
       <v-switch
         v-if="features"
         v-model="showFeaturesPriority"
-        class="mt-n1 ml-5"
+        class="mt-n1"
         hide-details
       />
     </div>
