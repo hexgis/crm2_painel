@@ -68,9 +68,10 @@
       width="420"
       disable-resize-watcher
       class="elevation-4 navigation-drawer"
+      stateless
       @input="changeControlsStyle()"
     >
-      <nuxt @closedrawer="layerDrawer = false" />
+      <nuxt />
     </v-navigation-drawer>
     <div v-if="$store.state.priority.visualizationStage == 'map'">
       <v-main class="pa-0">
@@ -160,7 +161,7 @@ export default {
     },
   },
   mounted() {
-    this.$nextTick(function () {
+    this.$nextTick(() => {
       this.getLeafletControlRef();
 
       if (this.user && this.user.settings.drawer_open_on_init) {
