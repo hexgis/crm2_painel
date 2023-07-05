@@ -8,8 +8,8 @@
         <v-btn
           fab
           ripple
-          height="30"
-          width="30"
+          height="36"
+          width="36"
           class="button-drawer"
           @click="selectDraw()"
           v-on="on"
@@ -179,8 +179,8 @@
           <v-btn
             fab
             ripple
-            height="30"
-            width="30"
+            height="36"
+            width="36"
           >
             <v-icon>mdi-pencil</v-icon>
           </v-btn>
