@@ -171,19 +171,6 @@
                     </template>
                     <span>{{ $t('download-label-tooltip') }}</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
-                    <template #activator="{ on, attrs }">
-                      <v-icon
-                        v-bind="attrs"
-                        dense
-                        v-on="on"
-                        @click="showDocument(item)"
-                      >
-                        mdi-eye
-                      </v-icon>
-                    </template>
-                    <span>{{ $t('view-label-tooltip') }}</span>
-                  </v-tooltip>
                 </template>
               </v-data-table>
             </v-container>
@@ -254,15 +241,7 @@ export default {
         { text: 'Inserido Por', value: 'usercmr_id.first_name' },
         { text: 'Data Cadastro', value: 'dt_registration' },
         { text: 'Extensão', value: 'no_extension' },
-        // { text: 'Código Funai', value: 'co_funai' },
-        // { text: 'Terra Indígena', value: 'no_ti' },
-        // { text: 'Coordenação Regional', value: 'ds_cr' },
-        // { text: 'Prioridade', value: 'prioridade' },
-        // { text: 'Classe', value: 'no_estagio' },
-        // { text: 'Data da Imagem', value: 'dt_imagem' },
-        // { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
-        // { text: 'Latitude', value: 'nu_latitude' },
-        // { text: 'Longitude', value: 'nu_longitude' },
+        { text: 'Ação', value: 'action_id.no_action' },
         { text: 'Ações', value: 'actions' },
       ],
       values: [],
