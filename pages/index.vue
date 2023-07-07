@@ -74,7 +74,6 @@
       </div>
       <v-footer
         absolute
-        class="priority-footer"
         elevation="4"
       >
         <v-col>
