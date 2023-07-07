@@ -79,7 +79,7 @@ export default {
           accent: '#da2a3f',
           error: '#da2a3f',
           warning: '#da2a3f',
-          info: '#da2a3f',
+          info: '#ffffff',
           success: '#26A69A',
         },
         dark: {

@@ -72,6 +72,20 @@
           </v-list-item>
         </v-list>
       </div>
+      <v-footer
+        absolute
+        class="priority-footer"
+        elevation="4"
+      >
+        <v-col>
+          <v-row class="d-flex justify-center">
+            <v-img
+              max-width="200"
+              src="/img/logo-inteira-antiga.svg"
+            />
+          </v-row>
+        </v-col>
+      </v-footer>
     </v-tab-item>
 
     <ProfilePanel v-model="settings" />
