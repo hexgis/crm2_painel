@@ -32,6 +32,7 @@ export const state = () => ({
   analyticsMonitoring: [],
   tableMonitoring: [],
   tableCSVMonitoring: [],
+  analyticsMonitoringcsv: [],
 });
 
 export const getters = {
@@ -585,8 +586,39 @@ export const actions = {
     }
   },
 
-  async downloadTableMonitoringAnalytics({ commit, state, rootGetters }) {
+  async downloadTableMonitoringAnalyticsByDay({ commit, state, rootGetters }) {
     commit('setLoadingCSV', true);
+    const params = {
+      start_date: state.filters.startDate,
+      end_date: state.filters.endDate,
+      grouping: state.filters.grouping_by_day,
+      format: state.filters.csv,
+    };
+
+    if (state.filters.ti && state.filters.ti.length) {
+      const arrayTI = [];
+      Object.values(state.filters.ti).forEach((item) => {
+        arrayTI.push(item.co_funai);
+      });
+      params.co_funai = arrayTI.toString();
+    }
+
+    if (state.filters.cr && state.filters.cr.length) {
+      const arrayCR = [];
+      Object.values(state.filters.cr).forEach((item) => {
+        arrayCR.push(item.co_cr);
+      });
+      params.co_cr = arrayCR.toString();
+    }
+
+    if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox'];
+
+    const analyticsMonitoringcsv = await this.$api.$get(
+      'monitoring/consolidated/table-stats/',
+      {
+        params,
+      },
+    );
 
     function saveData(data, fileName, type) {
       let elementBtn; let blob; let
@@ -611,10 +643,341 @@ export const actions = {
 
     try {
       saveData(
-        state.analyticsMonitoring.data,
-        'poligono_monitoramento_estatisticas.csv',
+        analyticsMonitoringcsv,
+        'poligono_monitoramento_estatisticas_by_day.csv',
         'text/csv',
       );
+    } finally {
+      commit('setLoadingCSV', false);
+    }
+  },
+
+  async downloadTableMonitoringAnalyticsByMonthYear({ commit, state, rootGetters }) {
+    commit('setLoadingCSV', true);
+    const params = {
+      start_date: state.filters.startDate,
+      end_date: state.filters.endDate,
+      grouping: state.filters.grouping_by_monthyear,
+      format: state.filters.csv,
+    };
+
+    if (state.filters.ti && state.filters.ti.length) {
+      const arrayTI = [];
+      Object.values(state.filters.ti).forEach((item) => {
+        arrayTI.push(item.co_funai);
+      });
+      params.co_funai = arrayTI.toString();
+    }
+
+    if (state.filters.cr && state.filters.cr.length) {
+      const arrayCR = [];
+      Object.values(state.filters.cr).forEach((item) => {
+        arrayCR.push(item.co_cr);
+      });
+      params.co_cr = arrayCR.toString();
+    }
+
+    if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox'];
+
+    const analyticsMonitoringcsv = await this.$api.$get(
+      'monitoring/consolidated/table-stats/',
+      {
+        params,
+      },
+    );
+
+    function saveData(data, fileName, type) {
+      let elementBtn; let blob; let
+        url;
+
+      elementBtn = document.createElement('a');
+      elementBtn.style = 'display: none';
+      document.body.appendChild(elementBtn);
+
+      if (type !== 'text/csv') {
+        data = JSON.stringify(data);
+      }
+
+      blob = new Blob([data], { type });
+      url = window.URL.createObjectURL(blob);
+
+      elementBtn.href = url;
+      elementBtn.download = fileName;
+      elementBtn.click();
+      window.URL.revokeObjectURL(url);
+    }
+
+    try {
+      saveData(
+        analyticsMonitoringcsv,
+        'poligono_monitoramento_estatisticas_by_monthyear.csv',
+        'text/csv',
+      );
+    } finally {
+      commit('setLoadingCSV', false);
+    }
+  },
+
+  async downloadTableMonitoringAnalyticsByFunai({ commit, state, rootGetters }) {
+    commit('setLoadingCSV', true);
+    const params = {
+      start_date: state.filters.startDate,
+      end_date: state.filters.endDate,
+      grouping: state.filters.grouping_by_funai,
+      format: state.filters.csv,
+    };
+
+    if (state.filters.ti && state.filters.ti.length) {
+      const arrayTI = [];
+      Object.values(state.filters.ti).forEach((item) => {
+        arrayTI.push(item.co_funai);
+      });
+      params.co_funai = arrayTI.toString();
+    }
+
+    if (state.filters.cr && state.filters.cr.length) {
+      const arrayCR = [];
+      Object.values(state.filters.cr).forEach((item) => {
+        arrayCR.push(item.co_cr);
+      });
+      params.co_cr = arrayCR.toString();
+    }
+
+    if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox'];
+
+    const analyticsMonitoringcsv = await this.$api.$get(
+      'monitoring/consolidated/table-stats/',
+      {
+        params,
+      },
+    );
+
+    function saveData(data, fileName, type) {
+      let elementBtn; let blob; let
+        url;
+
+      elementBtn = document.createElement('a');
+      elementBtn.style = 'display: none';
+      document.body.appendChild(elementBtn);
+
+      if (type !== 'text/csv') {
+        data = JSON.stringify(data);
+      }
+
+      blob = new Blob([data], { type });
+      url = window.URL.createObjectURL(blob);
+
+      elementBtn.href = url;
+      elementBtn.download = fileName;
+      elementBtn.click();
+      window.URL.revokeObjectURL(url);
+    }
+
+    try {
+      saveData(
+        analyticsMonitoringcsv,
+        'poligono_monitoramento_estatisticas_by_funai.csv',
+        'text/csv',
+      );
+    } finally {
+      commit('setLoadingCSV', false);
+    }
+  },
+
+  async downloadTableMonitoringAnalyticsByFunaiMonthYear({ commit, state, rootGetters }) {
+    commit('setLoadingCSV', true);
+    const params = {
+      start_date: state.filters.startDate,
+      end_date: state.filters.endDate,
+      grouping: state.filters.grouping_by_co_funai_and_monthyear,
+      format: state.filters.csv,
+    };
+
+    if (state.filters.ti && state.filters.ti.length) {
+      const arrayTI = [];
+      Object.values(state.filters.ti).forEach((item) => {
+        arrayTI.push(item.co_funai);
+      });
+      params.co_funai = arrayTI.toString();
+    }
+
+    if (state.filters.cr && state.filters.cr.length) {
+      const arrayCR = [];
+      Object.values(state.filters.cr).forEach((item) => {
+        arrayCR.push(item.co_cr);
+      });
+      params.co_cr = arrayCR.toString();
+    }
+
+    if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox'];
+
+    const analyticsMonitoringcsv = await this.$api.$get(
+      'monitoring/consolidated/table-stats/',
+      {
+        params,
+      },
+    );
+
+    function saveData(data, fileName, type) {
+      let elementBtn; let blob; let
+        url;
+
+      elementBtn = document.createElement('a');
+      elementBtn.style = 'display: none';
+      document.body.appendChild(elementBtn);
+
+      if (type !== 'text/csv') {
+        data = JSON.stringify(data);
+      }
+
+      blob = new Blob([data], { type });
+      url = window.URL.createObjectURL(blob);
+
+      elementBtn.href = url;
+      elementBtn.download = fileName;
+      elementBtn.click();
+      window.URL.revokeObjectURL(url);
+    }
+
+    try {
+      saveData(
+        analyticsMonitoringcsv,
+        'poligono_monitoramento_estatisticas_by_co_funai_and_monthyear.csv',
+        'text/csv',
+      );
+    } finally {
+      commit('setLoadingCSV', false);
+    }
+  },
+
+  async downloadTableMonitoringAnalyticsByFunaiYear({ commit, state, rootGetters }) {
+    commit('setLoadingCSV', true);
+    const params = {
+      start_date: state.filters.startDate,
+      end_date: state.filters.endDate,
+      grouping: state.filters.grouping_by_co_funai_year,
+      format: state.filters.csv,
+    };
+
+    if (state.filters.ti && state.filters.ti.length) {
+      const arrayTI = [];
+      Object.values(state.filters.ti).forEach((item) => {
+        arrayTI.push(item.co_funai);
+      });
+      params.co_funai = arrayTI.toString();
+    }
+
+    if (state.filters.cr && state.filters.cr.length) {
+      const arrayCR = [];
+      Object.values(state.filters.cr).forEach((item) => {
+        arrayCR.push(item.co_cr);
+      });
+      params.co_cr = arrayCR.toString();
+    }
+
+    if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox'];
+
+    const analyticsMonitoringcsv = await this.$api.$get(
+      'monitoring/consolidated/table-stats/',
+      {
+        params,
+      },
+    );
+
+    function saveData(data, fileName, type) {
+      let elementBtn; let blob; let
+        url;
+
+      elementBtn = document.createElement('a');
+      elementBtn.style = 'display: none';
+      document.body.appendChild(elementBtn);
+
+      if (type !== 'text/csv') {
+        data = JSON.stringify(data);
+      }
+
+      blob = new Blob([data], { type });
+      url = window.URL.createObjectURL(blob);
+
+      elementBtn.href = url;
+      elementBtn.download = fileName;
+      elementBtn.click();
+      window.URL.revokeObjectURL(url);
+    }
+
+    try {
+      saveData(
+        analyticsMonitoringcsv,
+        'poligono_monitoramento_estatisticas_by_co_funai_year.csv',
+        'text/csv',
+      );
+    } finally {
+      commit('setLoadingCSV', false);
+    }
+  },
+
+  async downloadTableMonitoringAnalyticsByYear({ commit, state, rootGetters }) {
+    commit('setLoadingCSV', true);
+    const params = {
+      start_date: state.filters.startDate,
+      end_date: state.filters.endDate,
+      grouping: state.filters.grouping_by_year,
+      format: state.filters.csv,
+    };
+
+    if (state.filters.ti && state.filters.ti.length) {
+      const arrayTI = [];
+      Object.values(state.filters.ti).forEach((item) => {
+        arrayTI.push(item.co_funai);
+      });
+      params.co_funai = arrayTI.toString();
+    }
+
+    if (state.filters.cr && state.filters.cr.length) {
+      const arrayCR = [];
+      Object.values(state.filters.cr).forEach((item) => {
+        arrayCR.push(item.co_cr);
+      });
+      params.co_cr = arrayCR.toString();
+    }
+
+    if (state.filters.currentView) params.in_bbox = rootGetters['map/bbox'];
+
+    const analyticsMonitoringcsv = await this.$api.$get(
+      'monitoring/consolidated/table-stats/',
+      {
+        params,
+      },
+    );
+
+    function saveData(data, fileName, type) {
+      let elementBtn; let blob; let
+        url;
+
+      elementBtn = document.createElement('a');
+      elementBtn.style = 'display: none';
+      document.body.appendChild(elementBtn);
+
+      if (type !== 'text/csv') {
+        data = JSON.stringify(data);
+      }
+
+      blob = new Blob([data], { type });
+      url = window.URL.createObjectURL(blob);
+
+      elementBtn.href = url;
+      elementBtn.download = fileName;
+      elementBtn.click();
+      window.URL.revokeObjectURL(url);
+    }
+
+    try {
+      saveData(
+        analyticsMonitoringcsv,
+        'poligono_monitoramento_estatisticas_by_year.csv',
+        'text/csv',
+      );
+      console.log(analyticsMonitoringcsv);
     } finally {
       commit('setLoadingCSV', false);
     }
@@ -679,7 +1042,7 @@ export const actions = {
 
     try {
       saveData(
-        tableCSVMonitoring.data,
+        tableCSVMonitoring,
         'poligono_monitoramento.csv',
         'text/csv',
       );
