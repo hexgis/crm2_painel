@@ -81,6 +81,10 @@
               @loading="isLoading()"
               @loads="loaded()"
             />
+
+            <DrawComponent
+              :map="map"
+            />
             <MapPrinter />
           </div>
         </l-control>
@@ -120,6 +124,12 @@
         />
 
         <SupportLayers />
+
+        <SupportLayersRaster />
+
+        <SupportLayersProdes />
+
+        <SupportLayersHazard />
 
         <!-- <ImageryLayers v-if="showImagery" :map="map" /> -->
 
@@ -191,7 +201,9 @@
 </i18n>
 
 <script>
+import 'leaflet-draw/dist/leaflet.draw.css';
 import { mapState, mapMutations } from 'vuex';
+import DrawComponent from './DrawComponent.vue';
 import interestArea from '@/assets/interest_area.json';
 import MapPrinter from '@/components/map/MapPrinter.vue';
 
@@ -204,6 +216,9 @@ import CatalogLayers from '@/components/catalog/CatalogLayers';
 import MonitoringLayers from '@/components/monitoring/MonitoringLayers';
 // import MonitoringLayersGeoserver from '@/components/monitoring/MonitoringLayersGeoserver'
 import SupportLayers from '@/components/support/SupportLayers';
+import SupportLayersHazard from '@/components/support/SupportLayersHazard';
+import SupportLayersProdes from '@/components/support/SupportLayersProdes';
+import SupportLayersRaster from '@/components/support/SupportLayersRaster';
 // import ChangeDetectionLayers from '@/components/change-detection/ChangeDetectionLayers'
 import BaseWmsMetadataPopup from '@/components/base/BaseWmsMetadataPopup';
 // import AlgorithmLayers from '@/components/algorithms/AlgorithmLayers'
@@ -221,6 +236,7 @@ if (typeof window !== 'undefined') {
   require('leaflet-bing-layer');
   require('leaflet-basemaps');
   require('leaflet-minimap');
+  require('leaflet-draw');
 }
 
 export default {
@@ -237,6 +253,7 @@ export default {
     FileLoaderControl,
     FileLoaderLayers,
     PriorityLayers,
+    DrawComponent,
     // ChangeDetectionLayers,
     BaseWmsMetadataPopup,
     // AlgorithmLayers,
@@ -245,6 +262,9 @@ export default {
     LandUseLayers,
     AlertLayers,
     DeterLayers,
+    SupportLayersRaster,
+    SupportLayersProdes,
+    SupportLayersHazard,
   },
 
   data: () => ({
@@ -465,6 +485,10 @@ export default {
   },
 
   methods: {
+    checkUserSettings(settingsProperty) {
+      return this.user ? this.user.settings[settingsProperty] : true;
+    },
+
     isLoading() {
       this.setMapLoading(true);
     },
@@ -608,6 +632,9 @@ export default {
 </script>
 
 <style lang="sass">
+.leaflet-draw-tooltip
+    z-index: 6
+
 .map-action-buttons
     z-index: 4
     opacity: 0.84

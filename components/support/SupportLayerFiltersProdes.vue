@@ -95,6 +95,7 @@
         class="my-2"
       >
         <v-btn
+        small
           block
           color="primary"
           :disabled="!valid"
@@ -145,7 +146,7 @@ export default {
   },
 
   data: () => ({
-    valid: false,
+    valid: true,
     filters: {
       co_cr: [],
       co_funai: [],

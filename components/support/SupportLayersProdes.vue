@@ -1,15 +1,9 @@
 <template>
   <l-layer-group
-    name="supportLayers"
-    :visible="showFeaturesSupportLayers"
+    name="supportLayersProdes"
+    :visible="showFeaturesSupportLayersProdes"
   >
-    <template v-for="layer in supportLayers">
-      <SupportLayerItem
-        :key="layer.id"
-        :layer="layer"
-      />
-    </template>
-    <template v-for="layer in supportLayersCategoryAntropismo">
+    <template v-for="layer in supportLayersCategoryProdes">
       <SupportLayerItem
         :key="layer.id"
         :layer="layer"
@@ -24,7 +18,7 @@ import { mapState } from 'vuex';
 import SupportLayerItem from './SupportLayerItem';
 
 export default {
-  name: 'SupportLayers',
+  name: 'SupportLayersProdes',
 
   components: {
     SupportLayerItem,
@@ -32,8 +26,9 @@ export default {
 
   computed: mapState('supportLayers', [
     'supportLayers',
-    'showFeaturesSupportLayers',
-    'supportLayersCategoryAntropismo',
+    'showFeaturesSupportLayersProdes',
+    'supportLayersCategoryProdes',
+
   ]),
 };
 </script>

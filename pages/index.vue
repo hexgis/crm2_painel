@@ -95,17 +95,13 @@
 {
     "en": {
         "catalog-tab": "My image database",
-        "imagery-tab": "Search and acquire images",
         "search-tab": "Monitoring",
         "layers-tab": "Layers",
         "high-resolution-mosaics-tab": "High Resolution and Mosaics",
         "support-fire-tab": "Fire Hazard and Hot Spots (INPE)",
         "landuse-tab": "Land Use And Occupation",
-        "compare-tab": "Compare images",
         "prodes-tab": "PRODES (INPE)",
-        "algorithms-tab": "Algorithms",
         "urgent-alerts-tab": "Urgent Alerts",
-        "webhooks-tab": "Webhooks",
         "priority-tab": "Priorities",
         "document-tab": "Document",
         "mapoteca-tab": "Map Library",
@@ -113,17 +109,13 @@
     },
     "pt-br": {
         "catalog-tab": "Meu acervo de imagens",
-        "imagery-tab": "Pesquisar e adquirir imagens",
         "search-tab": "Monitoramento Diário",
         "layers-tab": "Camadas de Sobreposição",
         "high-resolution-mosaics-tab": "Alta Resolução e Mosaicos",
         "support-fire-tab": "Risco de Fogo e Focos de Calor (INPE)",
         "landuse-tab": "Uso e Ocupação do Solo",
-        "compare-tab": "Comparar imagens",
         "prodes-tab": "PRODES (INPE)",
-        "algorithms-tab": "Algoritmos",
         "urgent-alerts-tab": "Alerta Urgente",
-        "webhooks-tab": "Webhooks",
         "priority-tab": "Polígonos Prioritários",
         "document-tab": "Documental",
         "mapoteca-tab": "Mapoteca",
@@ -133,7 +125,7 @@
 </i18n>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import ProfilePanel from '@/components/profile/ProfilePanel';
 
 export default {
@@ -270,8 +262,9 @@ export default {
     },
 
     closeRightDrawer() {
-      this.$emit('closedrawer');
+      this.closeDrawer();
     },
+    ...mapMutations('userProfile', ['closeDrawer']),
   },
 };
 </script>
