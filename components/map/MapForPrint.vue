@@ -58,10 +58,10 @@
               src="/img/funai.svg"
             />
           </div>
-          <div style="width: 25%">
+          <div style="width: 35%">
             <v-img
               contain
-              src="/img/logocmr_normal_min.png"
+              src="/img/logo-inteira-antiga.svg"
             />
           </div>
         </div>

@@ -74,12 +74,12 @@ export default {
       dark: false,
       themes: {
         light: {
-          primary: '#3573B7',
-          secondary: '#1C4171',
-          accent: '#165396',
-          error: '#D8573C',
-          warning: '#F5C035',
-          info: '#395989',
+          primary: '#da2a3f',
+          secondary: '#da2a3f',
+          accent: '#da2a3f',
+          error: '#da2a3f',
+          warning: '#da2a3f',
+          info: '#ffffff',
           success: '#26A69A',
         },
         dark: {

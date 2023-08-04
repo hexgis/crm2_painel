@@ -213,7 +213,7 @@ export default {
       this.map.eachLayer((layer) => {
         if (
           Object.prototype.hasOwnProperty.call(layer, 'wmsParams')
-                    && layer.wmsParams.queryable
+        // && layer.wmsParams.queryable
         ) {
           this.hasPopup = true;
 
@@ -252,7 +252,7 @@ export default {
         this.$refs.popup.mapObject.openPopup(evt.latlng);
       }
     },
-
+    // 4326
     getFeatureInfoUrl(latlng, layer) {
       const point = this.map.latLngToContainerPoint(
         latlng,

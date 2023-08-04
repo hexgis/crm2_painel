@@ -18,7 +18,7 @@
           <v-toolbar
             flat
             dark
-            color="secondary"
+            color="#f7f4f2"
           >
             <v-progress-linear
               v-show="isLoading"
@@ -32,7 +32,7 @@
                 <v-img
                   max-width="200"
                   contain
-                  src="/img/logocmr.png"
+                  src="/img/logo-inteira-antiga.svg"
                 />
               </v-container>
             </v-toolbar-title>
