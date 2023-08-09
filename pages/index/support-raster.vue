@@ -56,7 +56,7 @@
         >
           <v-img
             max-width="200"
-            src="/img/logocmr_normal.png"
+            src="/img/logo-inteira-antiga.svg"
           />
         </v-footer>
       </v-container>
@@ -67,10 +67,13 @@
 <i18n>
 {
     "en": {
+
         "title": "High Resolution and Mosaics"
     },
+
     "pt-br": {
         "title": "Alta Resolução e Mosaicos"
+
     }
 }
 </i18n>

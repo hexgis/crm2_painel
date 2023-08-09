@@ -68,7 +68,7 @@
         >
           <v-img
             max-width="200"
-            src="/img/logocmr_normal.png"
+            src="/img/logo-inteira-antiga.svg"
           />
         </v-footer>
       </v-container>
@@ -79,11 +79,14 @@
 <i18n>
 {
     "en": {
-        "title": "Fire Hazard and Hot Spots"
+
+        "title": "Layers Hazard (INPE)"
     },
     "pt-br": {
-        "title": "Risco de Fogo e Focos de Calor"
+        "title": "Camadas Fogo (INPE)"
+
     }
+
 }
 </i18n>
 

@@ -88,7 +88,19 @@
             <MapPrinter />
           </div>
         </l-control>
-
+        <l-control
+          position="bottomleft"
+        >
+          <div>
+            <v-col class="pa-0 logo-flags">
+              <v-img
+                contain
+                width="95"
+                src="/img/logo-inteira-antiga.svg"
+              />
+            </v-col>
+          </div>
+        </l-control>
         <l-control
           class="leaflet-coordinates-control"
           position="bottomleft"

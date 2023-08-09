@@ -2,7 +2,7 @@
   <v-tabs
     v-model="activeTab"
     vertical
-    dark
+
     optional
     background-color="secondary"
     class="right-tabs fill-height"
@@ -60,7 +60,6 @@
       >
         <v-list
           class="pt-0"
-          dark
         >
           <v-list-item
             v-for="(tab, i) in tabs"
@@ -73,6 +72,19 @@
           </v-list-item>
         </v-list>
       </div>
+      <v-footer
+        absolute
+        elevation="4"
+      >
+        <v-col>
+          <v-row class="d-flex justify-center">
+            <v-img
+              max-width="200"
+              src="/img/logo-inteira-antiga.svg"
+            />
+          </v-row>
+        </v-col>
+      </v-footer>
     </v-tab-item>
 
     <ProfilePanel v-model="settings" />
@@ -86,7 +98,7 @@
         "search-tab": "Monitoring",
         "layers-tab": "Layers",
         "high-resolution-mosaics-tab": "High Resolution and Mosaics",
-        "support-fire-tab": "Fire Hazard and Hot Spots",
+        "support-fire-tab": "Fire Hazard and Hot Spots (INPE)",
         "landuse-tab": "Land Use And Occupation",
         "prodes-tab": "PRODES (INPE)",
         "urgent-alerts-tab": "Urgent Alerts",
@@ -100,7 +112,7 @@
         "search-tab": "Monitoramento Diário",
         "layers-tab": "Camadas de Sobreposição",
         "high-resolution-mosaics-tab": "Alta Resolução e Mosaicos",
-        "support-fire-tab": "Risco de Fogo e Focos de Calor",
+        "support-fire-tab": "Risco de Fogo e Focos de Calor (INPE)",
         "landuse-tab": "Uso e Ocupação do Solo",
         "prodes-tab": "PRODES (INPE)",
         "urgent-alerts-tab": "Alerta Urgente",
