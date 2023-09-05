@@ -1,31 +1,88 @@
 <template>
   <v-app>
-    <v-main class="pa-0">
-      <v-container
+    <v-main >
+    <div style="overflow-y:auto">
+      <div
         fluid
-        fill-height
         class="background"
+        style="height:80vh"
       >
         <nuxt />
-      </v-container>
+      </div>
+      <v-row class="ma-3 py-4 helpBar">
+         <v-col flat cols="12" md="4" lg="3">
+          <v-card flat class="md-padding background-none" layout="row" layout-wrap layout-align="space-between">
+            <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h5">
+              Quem somos?
+            </v-card-title>
+            <v-card-subtitle>
+              <p class="footer-text-content link-footer text-h6">
+                <a :href="helpLinks.cmrProjectUrl">Conheça nosso projeto</a></a>
+              </p>
+            </v-card-subtitle>
+          </v-card>
+         </v-col>
+         <v-col cols="12" md="4" lg="3">
+          <v-card flat class="md-padding background-none" layout="row" layout-wrap layout-align="space-between">
+            <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h5">
+              Solicite acesso
+            </v-card-title>
+            <v-card-subtitle>
+              <p class="footer-text-content link-footer">
+                Envie para a equipe do CMR o formulário para análise e liberação. <a :href="helpLinks.solicitacaoAcessoCmr2" class="text-h6">Acesse aqui</a>
+              </p>
+            </v-card-subtitle>
+          </v-card>
+         </v-col>
+         <v-col cols="12" md="4" lg="3">
+          <v-card flat class="md-padding background-none" layout="row" layout-wrap layout-align="space-between">
+            <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h5">
+              Contate o Projeto
+            </v-card-title>
+            <v-card-subtitle>
+              <p class="footer-text-content link-footer text-h6">
+                <a :href="helpLinks.cmrTalkToUs">Fale conosco</a></a>
+              </p>
+            </v-card-subtitle>
+          </v-card>
+         </v-col>
+         <v-col v-if="userLogged" cols="12" md="4" lg="3">
+          <v-card flat class="md-padding background-none" layout="row" layout-wrap layout-align="space-between">
+            <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h">
+              Manual do Usuário
+            </v-card-title>
+            <v-card-subtitle>
+              <p class="footer-text-content link-footer footer text-h6">
+                  <a :href="helpLinks.cmrManualUrl">Visualizar Manual do Usuário</a>
+              </p>
+            </v-card-subtitle>
+          </v-card>
+         </v-col>
+      </v-row>
+    </div>
     </v-main>
     <v-footer
       app
       absolute
     >
+    <v-container
+        fluid>
       <v-row
         dense
         class="justifiy-space-between align-center"
       >
         <v-col />
         <v-col class="text-center white--text">
-          Copyright Funai-CMR © 2022
         </v-col>
         <v-spacer />
       </v-row>
+
+      </v-container>
     </v-footer>
   </v-app>
+
 </template>
+
 
 <script>
 export default {
@@ -34,6 +91,18 @@ export default {
   head: () => ({
     title: 'Skyviewer',
   }),
+
+  data() {
+    return{
+      userLogged: true, //"dataUser.token",
+      helpLinks: {
+        "cmrManualUrl": "https://cmr.funai.gov.br/api/media/Manual/Mapa Interativo/CMR_Manual_2021_V1.7.1.pdf",
+        "solicitacaoAcessoCmr2": "Pendente inserir o link_solicitacao-acesso e formulário",
+        "cmrProjectUrl": "https://cmr.funai.gov.br/o-projeto/",
+        "cmrTalkToUs": "https://cmr.funai.gov.br/contato/",
+      }
+    }
+  }
 };
 </script>
 
@@ -48,4 +117,31 @@ export default {
 
 .v-footer
     background-color: rgba(0,0,0,0.4) !important
+
+.helpBar
+  background-color: white
+
+.footer-text-content
+    display: inline-block
+    padding: 10px 10px
+    color: #707070
+    font-size: 12px
+    line-height: 16px
+    font-weight: 500
+    text-decoration: none
+    margin-bottom: 0
+
+.link-footer a
+    cursor: pointer
+    color: #007ecf
+    text-decoration: underline
+
+.cmr-v2-footer-h4
+    display: inline-block
+    margin: 10px
+    font-size: 14px
+    line-height: 16px
+    font-weight: 500
+    color: #424242
+
 </style>
