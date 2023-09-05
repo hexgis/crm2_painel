@@ -1,65 +1,70 @@
 <template>
   <v-app>
-    <v-main >
-    <div style="overflow-y:auto">
-      <div
-        fluid
-        class="background"
-        style="height:80vh"
-      >
-        <nuxt />
+    <v-main>
+      <div style="overflow-y:auto">
+        <div
+          fluid
+          class="background"
+          style="height:80vh"
+        >
+          <nuxt />
+        </div>
+        <v-row class="ma-3 py-4 helpBar">
+          <v-col flat cols="12" md="4" lg="3">
+            <v-card flat class="md-padding background-none" layout="row" layout-wrap layout-align="space-between">
+              <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h5">
+                {{ $t('we-are-help-title') }}
+              </v-card-title>
+              <v-card-subtitle>
+                <p class="footer-text-content link-footer text-h6">
+                  <a :href="helpLinks.cmrProjectUrl"></a>{{ $t('we-are-help-link') }}</a>
+                </p>
+              </v-card-subtitle>
+            </v-card>
+          </v-col>
+          <v-col cols="12" md="4" lg="3">
+            <v-card flat class="md-padding background-none" layout="row" layout-wrap layout-align="space-between">
+              <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h5">
+                {{ $t('access-help-title') }}
+              </v-card-title>
+              <v-card-subtitle>
+                <p class="footer-text-content link-footer">
+                  {{ $t('access-help-text') }}
+                  <a :href="helpLinks.solicitacaoAcessoCmr2" class="text-h6">
+                    {{ $t('access-help-link') }}
+                  </a>
+                </p>
+              </v-card-subtitle>
+            </v-card>
+          </v-col>
+          <v-col cols="12" md="4" lg="3">
+            <v-card flat class="md-padding background-none" layout="row" layout-wrap layout-align="space-between">
+              <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h5">
+                {{ $t('project-help-title') }}
+              </v-card-title>
+              <v-card-subtitle>
+                <p class="footer-text-content link-footer text-h6">
+                  <a :href="helpLinks.cmrTalkToUs">{{ $t('project-help-link') }}</a></a>
+                </p>
+              </v-card-subtitle>
+            </v-card>
+          </v-col>
+          <v-col v-if="userLogged" cols="12" md="4" lg="3">
+            <v-card flat class="md-padding background-none" layout="row" layout-wrap layout-align="space-between">
+              <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h">
+                {{ $t('manual-help-title') }}
+              </v-card-title>
+              <v-card-subtitle>
+                <p class="footer-text-content link-footer footer text-h6">
+                  <a :href="helpLinks.cmrManualUrl">
+                    {{ $t('manual-help-link') }}
+                  </a>
+                </p>
+              </v-card-subtitle>
+            </v-card>
+          </v-col>
+        </v-row>
       </div>
-      <v-row class="ma-3 py-4 helpBar">
-         <v-col flat cols="12" md="4" lg="3">
-          <v-card flat class="md-padding background-none" layout="row" layout-wrap layout-align="space-between">
-            <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h5">
-              Quem somos?
-            </v-card-title>
-            <v-card-subtitle>
-              <p class="footer-text-content link-footer text-h6">
-                <a :href="helpLinks.cmrProjectUrl">Conheça nosso projeto</a></a>
-              </p>
-            </v-card-subtitle>
-          </v-card>
-         </v-col>
-         <v-col cols="12" md="4" lg="3">
-          <v-card flat class="md-padding background-none" layout="row" layout-wrap layout-align="space-between">
-            <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h5">
-              Solicite acesso
-            </v-card-title>
-            <v-card-subtitle>
-              <p class="footer-text-content link-footer">
-                Envie para a equipe do CMR o formulário para análise e liberação. <a :href="helpLinks.solicitacaoAcessoCmr2" class="text-h6">Acesse aqui</a>
-              </p>
-            </v-card-subtitle>
-          </v-card>
-         </v-col>
-         <v-col cols="12" md="4" lg="3">
-          <v-card flat class="md-padding background-none" layout="row" layout-wrap layout-align="space-between">
-            <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h5">
-              Contate o Projeto
-            </v-card-title>
-            <v-card-subtitle>
-              <p class="footer-text-content link-footer text-h6">
-                <a :href="helpLinks.cmrTalkToUs">Fale conosco</a></a>
-              </p>
-            </v-card-subtitle>
-          </v-card>
-         </v-col>
-         <v-col v-if="userLogged" cols="12" md="4" lg="3">
-          <v-card flat class="md-padding background-none" layout="row" layout-wrap layout-align="space-between">
-            <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h">
-              Manual do Usuário
-            </v-card-title>
-            <v-card-subtitle>
-              <p class="footer-text-content link-footer footer text-h6">
-                  <a :href="helpLinks.cmrManualUrl">Visualizar Manual do Usuário</a>
-              </p>
-            </v-card-subtitle>
-          </v-card>
-         </v-col>
-      </v-row>
-    </div>
     </v-main>
     <v-footer
       app
@@ -80,9 +85,34 @@
       </v-container>
     </v-footer>
   </v-app>
-
 </template>
 
+<i18n>
+{
+  "en": {
+    "manual-help-title": "Traduzir... Visualizar Manual do Usuário",
+    "manual-help-link": "Traduzir... Manual do Usuário",
+    "project-help-title": "Traduzir... Contate o Projeto",
+    "project-help-link": "Traduzir... Fale conosco",
+    "access-help-title": "Traduzir... Solicite acesso",
+    "access-help-link": "Traduzir... Acesse aqui",
+    "access-help-text": "Traduz Envie para a equipe do CMR o formulário para análise e liberação. ",
+    "we-are-help-title": "Traduzir... Quem somos?",
+    "we-are-help-link": "Traduzir... Conheça nosso projeto"
+  },
+  "pt-br": {
+    "manual-help-title": "Visualizar Manual do Usuário",
+    "manual-help-link": "Manual do Usuário",
+    "project-help-title": "Contate o Projeto",
+    "project-help-link": "Fale conosco",
+    "access-help-title": "Solicite acesso",
+    "access-help-link": "Acesse aqui",
+    "access-help-text": "Envie para a equipe do CMR o formulário para análise e liberação. ",
+    "we-are-help-title": "Quem somos?",
+    "we-are-help-link": "Conheça nosso projeto"
+  }
+}
+</i18n>
 
 <script>
 export default {
@@ -90,7 +120,7 @@ export default {
 
   head: () => ({
     title: 'Skyviewer',
-  }),
+    }),
 
   data() {
     return{
@@ -143,5 +173,4 @@ export default {
     line-height: 16px
     font-weight: 500
     color: #424242
-
 </style>
