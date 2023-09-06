@@ -202,6 +202,7 @@
 
 <script>
 import 'leaflet-draw/dist/leaflet.draw.css';
+import Vue from 'vue';
 import { mapState, mapMutations } from 'vuex';
 import DrawComponent from './DrawComponent.vue';
 import interestArea from '@/assets/interest_area.json';
@@ -497,6 +498,7 @@ export default {
     },
     createMap() {
       this.map = this.$refs.map.mapObject;
+      Vue.prototype.$mainMap = this.map;
       this.map.on('zoomend', this.onZoomEnd);
       this.map.addEventListener('mousemove', this.refreshCoordinates);
 
