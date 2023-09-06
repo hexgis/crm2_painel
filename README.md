@@ -1,17 +1,17 @@
 # CMR
 
-Visualizador do catálogo de imagens e informações de monitoramento do Skynet.
+Visualizador de dados baseado no CMR1.
 
 Desenvolvido com [Nuxt.js](https://nuxtjs.org).
 
 ## Desenvolvimento
 
-_Configure a URL e token de autenticação dos back-ends locais (skyviewer-api, skynetViz, skynet) ou da web no .env:_
+_Configure a URL do back-end local (CMR-api) ou da web no .env:_
 
 ```bash
-API_URL='http://localhost:8000'
-SKYNET_API_URL='http://localhost:8002/'
-SKYNET_API_TOKEN='Token secret'
+API_URL='https://cmr.funai.gov.br/priority_api/'
+# API_URL='http://0.0.0.0:8080/'
+MONITORING_VECTOR2TILES='true'
 ```
 
 _Rodar projeto e testes:_
