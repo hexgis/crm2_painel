@@ -9,6 +9,8 @@
         >
           <nuxt />
         </div>
+        <!-- color="accent" -->
+        <v-row class="rounded-b-xl red darken-2"> <v-col></v-col></v-row>
         <v-row class="ma-3 py-4 helpBar">
           <v-col flat cols="12" md="4" lg="3">
             <v-card flat class="md-padding background-none" layout="row" layout-wrap layout-align="space-between">
@@ -17,7 +19,7 @@
               </v-card-title>
               <v-card-subtitle>
                 <p class="footer-text-content link-footer text-h6">
-                  <a :href="helpLinks.cmrProjectUrl"></a>{{ $t('we-are-help-link') }}</a>
+                  <a :href="helpLinks.cmrProjectUrl">{{ $t('we-are-help-link') }}</a>
                 </p>
               </v-card-subtitle>
             </v-card>
@@ -28,8 +30,10 @@
                 {{ $t('access-help-title') }}
               </v-card-title>
               <v-card-subtitle>
-                <p class="footer-text-content link-footer">
+                <p class="d-none d-md-flex footer-text-content link-footer">
                   {{ $t('access-help-text') }}
+                </p>
+                <p class="footer-text-content link-footer">
                   <a :href="helpLinks.solicitacaoAcessoCmr2" class="text-h6">
                     {{ $t('access-help-link') }}
                   </a>
@@ -90,15 +94,15 @@
 <i18n>
 {
   "en": {
-    "manual-help-title": "Traduzir... Visualizar Manual do Usuário",
-    "manual-help-link": "Traduzir... Manual do Usuário",
-    "project-help-title": "Traduzir... Contate o Projeto",
-    "project-help-link": "Traduzir... Fale conosco",
-    "access-help-title": "Traduzir... Solicite acesso",
-    "access-help-link": "Traduzir... Acesse aqui",
-    "access-help-text": "Traduz Envie para a equipe do CMR o formulário para análise e liberação. ",
-    "we-are-help-title": "Traduzir... Quem somos?",
-    "we-are-help-link": "Traduzir... Conheça nosso projeto"
+    "manual-help-title": "View User Manual",
+    "manual-help-link": "User Manual",
+    "project-help-title": "Contact the Project",
+    "project-help-link": "Contact us",
+    "access-help-title": "Request access",
+    "access-help-link": "Access here",
+    "access-help-text": "Submit the form to the CMR team for analysis",
+    "we-are-help-title": "Who we are?",
+    "we-are-help-link": "Discover our project"
   },
   "pt-br": {
     "manual-help-title": "Visualizar Manual do Usuário",
