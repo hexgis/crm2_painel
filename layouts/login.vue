@@ -9,7 +9,6 @@
         >
           <nuxt />
         </div>
-        <!-- color="accent" -->
         <v-row class="rounded-b-xl red darken-2"> <v-col></v-col></v-row>
         <v-row class="ma-3 py-4 helpBar">
           <v-col flat cols="12" md="4" lg="3">
