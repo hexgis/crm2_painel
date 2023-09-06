@@ -131,7 +131,7 @@ export default {
       userLogged: true, //"dataUser.token",
       helpLinks: {
         "cmrManualUrl": "https://cmr.funai.gov.br/api/media/Manual/Mapa Interativo/CMR_Manual_2021_V1.7.1.pdf",
-        "solicitacaoAcessoCmr2": "Pendente inserir o link_solicitacao-acesso e formulário",
+        "solicitacaoAcessoCmr2": "https://cmr.funai.gov.br/app/#/solicitacao-acesso",
         "cmrProjectUrl": "https://cmr.funai.gov.br/o-projeto/",
         "cmrTalkToUs": "https://cmr.funai.gov.br/contato/",
       }
