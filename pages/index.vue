@@ -34,7 +34,10 @@
     >
       <v-tooltip left>
         <template #activator="{ on }">
-          <v-icon v-on="on">
+          <v-icon
+            color="white"
+            v-on="on"
+          >
             {{ tab.icon }}
           </v-icon>
         </template>
@@ -94,7 +97,7 @@
 <i18n>
 {
     "en": {
-        "catalog-tab": "My image database",
+        "catalog-tab": "My Image Database",
         "search-tab": "Monitoring",
         "layers-tab": "Layers",
         "high-resolution-mosaics-tab": "High Resolution and Mosaics",
