@@ -297,7 +297,6 @@
         "circle-label": "Draw a circle",
         "marker-label": "Draw a marker",
         "circlemarker-label": "Draw a circle marker",
-        "textbox-label": "Text box",
         "edit-label": "Edit layers",
         "remove-label": "Delete layers",
         "cancel-label": "Cancel",
@@ -331,7 +330,6 @@
         "circle-label": "Desenhar um círculo",
         "marker-label": "Desenhar um ponto",
         "circlemarker-label": "Desenhar um ponto circular",
-        "textbox-label": "Caixa de texto",
         "edit-label": "Editar desenho",
         "remove-label": "Apagar desenho",
         "cancel-label": "Cancelar",
@@ -432,11 +430,6 @@ export default {
         icon: 'mdi-panorama-fisheye',
         tooltip: 'circlemarker-label',
         type: 'CircleMarker',
-      },
-      TextBox: {
-        icon: 'mdi-format-text',
-        tooltip: 'textbox-label',
-        type: 'TextBox',
       },
       Edit: {
         icon: 'mdi-pencil-box',
