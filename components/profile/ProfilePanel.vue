@@ -145,6 +145,6 @@ export default {
     pointer-events: none
     padding: 12px
     font-size: 1.1em
-    background: linear-gradient(to bottom,rgb(30, 33, 50),rgb(44, 54, 73))
+    background: #DA2A3F
     color: whitesmoke
 </style>

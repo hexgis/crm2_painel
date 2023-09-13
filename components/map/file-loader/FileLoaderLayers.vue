@@ -170,6 +170,6 @@ export default {
     padding: 15px 10px
 
 .popup-card-title
-    background: linear-gradient(to bottom,rgb(30, 33, 50),rgb(44, 54, 73))
+    background: #DA2A3F
     color: whitesmoke
 </style>

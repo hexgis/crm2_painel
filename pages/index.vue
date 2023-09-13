@@ -34,7 +34,10 @@
     >
       <v-tooltip left>
         <template #activator="{ on }">
-          <v-icon v-on="on">
+          <v-icon
+            color="white"
+            v-on="on"
+          >
             {{ tab.icon }}
           </v-icon>
         </template>
@@ -94,7 +97,7 @@
 <i18n>
 {
     "en": {
-        "catalog-tab": "My image database",
+        "catalog-tab": "My Image Database",
         "search-tab": "Monitoring",
         "layers-tab": "Layers",
         "high-resolution-mosaics-tab": "High Resolution and Mosaics",
@@ -304,7 +307,7 @@ export default {
     background-color: #171924
 
 .v-dialog > .v-card > .v-card__title
-    background: linear-gradient(to bottom,rgb(30, 33, 50),rgb(44, 54, 73))
+    background: #DA2A3F
     color: whitesmoke
 
     > .v-btn--icon
