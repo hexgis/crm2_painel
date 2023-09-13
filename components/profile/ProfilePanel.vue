@@ -13,7 +13,10 @@
         >
           <v-tooltip left>
             <template #activator="{ on: onTooltip }">
-              <v-icon v-on="onTooltip">
+              <v-icon
+                color="white"
+                v-on="onTooltip"
+              >
                 mdi-account-circle
               </v-icon>
             </template>
