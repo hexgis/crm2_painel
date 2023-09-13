@@ -150,7 +150,7 @@
 <i18n>
 {
     "en": {
-        "zoom-to": "Zoossm to a point",
+        "zoom-to": "Zoom to a point",
         "dms-label": "D.M.S.",
         "decimal-label": "Decimal",
         "degree-label": "Deg",
