@@ -14,6 +14,7 @@
         <v-card
           tile
           class="elevation-6"
+          style="margin-top: 50%"
         >
           <v-toolbar
             flat
