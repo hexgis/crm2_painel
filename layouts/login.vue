@@ -5,19 +5,22 @@
         <div
           fluid
           class="background"
-          style="height:80vh"
+          style="height:90vh"
         >
           <nuxt />
         </div>
         <v-row class="rounded-b-xl red darken-2">
           <v-col />
         </v-row>
-        <v-row class="ma-3 py-4 helpBar">
+        <v-row class="ma-3 helpBar">
+          <v-col class="mt-2">
+            <v-img
+              style="width: 15% "
+              src="/img/funai.svg"
+            />
+          </v-col>
           <v-col
             flat
-            cols="12"
-            md="4"
-            lg="3"
           >
             <v-card
               flat
@@ -26,7 +29,7 @@
               layout-wrap
               layout-align="space-between"
             >
-              <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h5">
+              <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h6">
                 {{ $t('we-are-help-title') }}
               </v-card-title>
               <v-card-subtitle>
@@ -36,11 +39,7 @@
               </v-card-subtitle>
             </v-card>
           </v-col>
-          <v-col
-            cols="12"
-            md="4"
-            lg="3"
-          >
+          <v-col>
             <v-card
               flat
               class="md-padding background-none"
@@ -48,14 +47,11 @@
               layout-wrap
               layout-align="space-between"
             >
-              <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h5">
+              <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h6">
                 {{ $t('access-help-title') }}
               </v-card-title>
               <v-card-subtitle>
-                <p class="d-none d-md-flex footer-text-content link-footer">
-                  {{ $t('access-help-text') }}
-                </p>
-                <p class="footer-text-content link-footer">
+                <p class=" link-footer px-2">
                   <a
                     :href="helpLinks.solicitacaoAcessoCmr2"
                     class="text-h6"
@@ -66,11 +62,7 @@
               </v-card-subtitle>
             </v-card>
           </v-col>
-          <v-col
-            cols="12"
-            md="4"
-            lg="3"
-          >
+          <v-col>
             <v-card
               flat
               class="md-padding background-none"
@@ -78,7 +70,7 @@
               layout-wrap
               layout-align="space-between"
             >
-              <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h5">
+              <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h6">
                 {{ $t('project-help-title') }}
               </v-card-title>
               <v-card-subtitle>
@@ -90,9 +82,6 @@
           </v-col>
           <v-col
             v-if="userLogged"
-            cols="12"
-            md="4"
-            lg="3"
           >
             <v-card
               flat
@@ -101,7 +90,7 @@
               layout-wrap
               layout-align="space-between"
             >
-              <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h5">
+              <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h6">
                 {{ $t('manual-help-title') }}
               </v-card-title>
               <v-card-subtitle>
@@ -204,9 +193,9 @@ export default {
     display: inline-block
     padding: 10px 10px
     color: #707070
-    font-size: 12px
-    line-height: 16px
-    font-weight: 500
+    font-size: 8px
+    line-height: 8px
+    font-weight: 400
     text-decoration: none
     margin-bottom: 0
 
@@ -218,8 +207,8 @@ export default {
 .cmr-v2-footer-h4
     display: inline-block
     margin: 10px
-    font-size: 14px
-    line-height: 16px
-    font-weight: 500
+    font-size: 8px
+    line-height: 8px
+    font-weight: 400
     color: #424242
 </style>
