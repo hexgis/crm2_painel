@@ -69,14 +69,36 @@
           :loading="isLoadingGeoJson"
           fab
           small
+          icon
           @click="downloadGeoJsonLandUse()"
         >
           <v-icon>mdi-download</v-icon>
         </v-btn>
+        <v-btn
+          :loading="isLoadingTable"
+          icon
+          fab
+          small
+          color="accent"
+          @click="showTableDialog(true)"
+        >
+          <v-tooltip left>
+            <template #activator="{ on }">
+              <v-icon
+                v-on="on"
+              >
+                mdi-table
+              </v-icon>
+            </template>
+            <span>Tabela</span>
+          </v-tooltip>
+        </v-btn>
       </v-col>
+
       <v-col>
         <v-btn
           block
+          small
           color="accent"
           :loading="isLoadingFeatures"
           @click="search()"
@@ -85,6 +107,10 @@
         </v-btn>
       </v-col>
     </v-row>
+    <v-divider
+      v-if="showFeatures && !isLoadingFeatures"
+      class="mt-4"
+    />
     <div
       v-if="isLoadingFeatures"
       class="mt-4"
@@ -205,6 +231,21 @@
         />
       </v-col>
     </v-row>
+    <div
+      v-if="tableDialogLand"
+      class="d-none"
+    >
+      <TableDialog
+        :table="tableDialogLand"
+        :headers="headers"
+        :value="tableLandUse"
+        :loading-table="isLoadingTable"
+        :loading-c-s-v="isLoadingCSV"
+        :table-name="$t('table-name')"
+        :f-download-c-s-v="downloadTableLandUse"
+        :f-close-table="closeTable"
+      />
+    </div>
   </v-col>
 </template>
 
@@ -218,7 +259,8 @@
             "total-area-label": "Total area",
             "heat-map-label": "Heat map",
             "polygon-label": "Total polygons count",
-            "end-date-label": "End Date"
+            "end-date-label": "End Date",
+            "table-name": "Table Land Use"
         },
         "pt-br": {
             "search-label": "Buscar",
@@ -228,7 +270,8 @@
             "heat-map-label": "Mapa de calor",
             "polygon-label": "Total de polígonos",
             "start-date-label": "Data Início",
-            "end-date-label": "Data Fim"
+            "end-date-label": "Data Fim",
+            "table-name": "Tabela de Uso e Ocupação do Solo"
         }
     }
 </i18n>
@@ -237,11 +280,12 @@
 import { mapMutations, mapState, mapActions } from 'vuex';
 import BaseDateField from '@/components/base/BaseDateField';
 import legend from '@/assets/legend.png';
+import TableDialog from '@/components/table-dialog/TableDialog.vue';
 
 export default {
   name: 'LandUseFilter',
 
-  components: { BaseDateField },
+  components: { BaseDateField, TableDialog },
 
   data() {
     return {
@@ -252,6 +296,14 @@ export default {
         cr: [],
         ti: null,
       },
+      headers: [
+        { text: 'Código Funai', value: 'co_funai' },
+        { text: 'Terra Indígena', value: 'no_ti' },
+        { text: 'Coordenação Regional', value: 'ds_cr' },
+        { text: 'Data Cadastro', value: 'dt_cadastro' },
+        { text: 'Nu Área Km2', value: 'nu_area_km2' },
+        { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
+      ],
       isLoadingTotal: false,
       isLoadingYears: false,
       legendData: legend,
@@ -295,12 +347,18 @@ export default {
     },
 
     ...mapState('land-use', [
+      'features',
       'isLoadingGeoJson',
       'isLoadingFeatures',
       'filterOptions',
       'showFeatures',
       'total',
       'params',
+      'tableDialogLand',
+      'tableLandUse',
+      'isLoadingCSV',
+      'isLoadingTable',
+      'isLoadingFeatures',
     ]),
   },
 
@@ -341,10 +399,35 @@ export default {
       this.$emit('onSearch');
     },
 
-    ...mapMutations('land-use', ['setFilters']),
+    closeTable(value) {
+      if (!this.checkNewFilters) {
+        this.settableDialogLand(value);
+        this.setshowTableDialog(value);
+      } else {
+        this.settableDialogLand(value);
+        this.setshowTableDialog(value);
+        this.getFeatures();
+        this.checkNewFilters = false;
+      }
+    },
+
+    showTableDialog(value) {
+      if (this.features) {
+        this.settableDialogLand(value);
+        this.setshowTableDialog(value);
+        this.getDataTableLandUse();
+      }
+    },
+
+    ...mapMutations('tableDialog', ['setshowTableDialog']),
+
+    ...mapMutations('land-use', ['setFilters', 'settableDialogLand', 'setshowTableDialog']),
     ...mapActions('land-use', [
       'getFilterOptions',
       'downloadGeoJsonLandUse',
+      'getDataTableLandUse',
+      'getFeatures',
+      'downloadTableLandUse',
     ]),
   },
 };

@@ -183,7 +183,7 @@ export default {
                 && this.features.features.length
       ) {
         this.createLandUseHeatLayer();
-
+        this.flyTo();
         this.vectorGrid = this.$L.vectorGrid
           .slicer(this.features, {
             maxZoom: 21,
@@ -264,6 +264,11 @@ export default {
           message: this.$t('detail-api-error'),
         });
       }
+    },
+
+    flyTo() {
+      const bounds = this.$L.geoJSON(this.features).getBounds();
+      if (bounds.getNorthEast() && bounds.getSouthWest()) { this.map.flyToBounds(bounds); }
     },
 
     createLandUseHeatLayer() {
