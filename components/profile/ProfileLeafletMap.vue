@@ -160,7 +160,7 @@ export default {
     width: var(--width)
     height: var(--height)
     padding: 0 3px 3px 3px
-    background: linear-gradient(to bottom,rgb(30, 33, 50),rgb(44, 54, 73) 5%)
+    background: #DA2A3F
     overflow: hidden !important
 
 .profile-map

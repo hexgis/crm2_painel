@@ -620,6 +620,7 @@ import SupportLayersRaster from '@/components/support/SupportLayersRaster';
 import AlertLayers from '@/components/urgent-alerts/AlertLayers';
 import DeterLayers from '@/components/deter/DeterLayers';
 
+const cloneLayer = require('leaflet-clonelayer');
 const intervalZooms = require('@/utils/zoomIntervalsGraticule');
 
 export default {
@@ -756,6 +757,13 @@ export default {
         };
 
         L.simpleGraticule(options).addTo(this.map);
+        console.log(this.$mainMap);
+
+        this.$mainMap.eachLayer((layer) => {
+          console.log(layer);
+          const cloned = cloneLayer(layer);
+          this.map.addLayer(cloned);
+        });
 
         this.miniMap.setZoom(4);
 

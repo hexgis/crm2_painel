@@ -25,7 +25,6 @@
         v-model="activeTab"
         :vertical="!$vuetify.breakpoint.mobile"
         dark
-        background-color="info"
         class="settings-tabs fill-height"
       >
         <template v-for="(tab, index) in tabs">
