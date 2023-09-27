@@ -169,6 +169,12 @@ export default {
           field = field.replace('cd_', 'Codigo ');
         } else if (field.startsWith('sg_')) {
           field = field.replace('sg_', 'Sigla ');
+        } else if (field.startsWith('ds_')) {
+          field = field.replace('ds_', 'Descrição ');
+        } else if (field.startsWith('no_')) {
+          field = field.replace('no_', 'Nome ');
+        } else if (field.startsWith('possui_')) {
+          field = field.replace('possui_', 'Possui ');
         } else {
           field = field.substring(3);
         }
