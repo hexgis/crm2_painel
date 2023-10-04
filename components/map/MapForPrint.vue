@@ -818,8 +818,8 @@ p {
 }
 
 .hight_data_table {
-    height: 50px;
-    max-height: 50px;
+    height: 100px;
+    max-height: 100px;
     width: 100%;
 }
 </style>
