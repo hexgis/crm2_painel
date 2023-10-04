@@ -34,6 +34,14 @@
               class="north-arrow"
             >
           </l-control>
+          <l-control position="bottomright">
+            <v-data-table
+              class="hight_data_table"
+              :headers="headers"
+              :items="detail"
+              hide-default-footer
+            />
+          </l-control>
           <PriorityLayers :map="map" />
           <MonitoringLayers :map="map" />
           <SupportLayers />
@@ -648,14 +656,8 @@ export default {
   data: () => ({
 
     headers: [
-      { text: 'Terra Indígena', value: 'no_ti' },
-      { text: 'Código Funai', value: 'co_funai' },
-      { text: 'Coordenação Regional', value: 'ds_cr' },
       { text: 'Classe', value: 'no_estagio' },
       { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
-      { text: 'Latitude', value: 'nu_latitude' },
-      { text: 'Longitude', value: 'nu_longitude' },
-      { text: 'Prioridade', value: 'prioridade' },
     ],
     map: null,
     miniMap: null,
@@ -812,6 +814,12 @@ p {
 .hight_container_mini_map {
     height: 150px;
     max-height: 150px;
+    width: 100%;
+}
+
+.hight_data_table {
+    height: 50px;
+    max-height: 50px;
     width: 100%;
 }
 </style>
