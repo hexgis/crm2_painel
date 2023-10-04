@@ -45,7 +45,7 @@
                   </v-row>
                   <template v-for="(value, field) in feature">
                     <v-row
-                      v-if="value"
+
                       :key="field + i"
                       :align="field.align"
                       class="mx-0 list-separator"
@@ -179,6 +179,12 @@ export default {
           field = field.substring(3);
         }
       }
+      if (field.match('possui_ig')) {
+        field = field.replace('possui_ig', 'Possui Inst. de Gestão');
+      } else if (field.match('ranking')) {
+        field = field.replace('ranking', 'Ranking Desmate 2022');
+      }
+
       field = field
         .replaceAll('_', ' ')
         .split(' ')
