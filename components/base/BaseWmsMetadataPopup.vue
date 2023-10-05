@@ -45,7 +45,7 @@
                   </v-row>
                   <template v-for="(value, field) in feature">
                     <v-row
-                      v-if="value"
+
                       :key="field + i"
                       :align="field.align"
                       class="mx-0 list-separator"
@@ -159,26 +159,27 @@ export default {
 
   methods: {
     formatField(field) {
+      const replacements = {
+        dt_: 'Data ',
+        co_: 'Codigo ',
+        cd_: 'Codigo ',
+        sg_: 'Sigla ',
+        ds_: 'Descrição ',
+        no_: 'Nome ',
+        possui_: 'Possui Inst. de Gestão',
+        ranking: 'Ranking Desmate 2022',
+      };
+
+      const prefix = field.match(/^\w+_/) ? field.match(/^\w+_/) : field.match(/^\w+/);
+      const key = prefix[0];
       const regex = /^[A-Za-z]{2}_\w+$/;
-      if (field.match(regex)) {
-        if (field.startsWith('dt_')) {
-          field = field.replace('dt_', 'Data ');
-        } else if (field.startsWith('co_')) {
-          field = field.replace('co_', 'Codigo ');
-        } else if (field.startsWith('cd_')) {
-          field = field.replace('cd_', 'Codigo ');
-        } else if (field.startsWith('sg_')) {
-          field = field.replace('sg_', 'Sigla ');
-        } else if (field.startsWith('ds_')) {
-          field = field.replace('ds_', 'Descrição ');
-        } else if (field.startsWith('no_')) {
-          field = field.replace('no_', 'Nome ');
-        } else if (field.startsWith('possui_')) {
-          field = field.replace('possui_', 'Possui ');
-        } else {
-          field = field.substring(3);
-        }
+
+      if (key in replacements) {
+        field = field.replace(key, replacements[key]);
+      } else if (field.match(regex)) {
+        field = field.substring(3);
       }
+
       field = field
         .replaceAll('_', ' ')
         .split(' ')
