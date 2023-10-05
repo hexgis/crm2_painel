@@ -159,30 +159,25 @@ export default {
 
   methods: {
     formatField(field) {
+      const replacements = {
+        dt_: 'Data ',
+        co_: 'Codigo ',
+        cd_: 'Codigo ',
+        sg_: 'Sigla ',
+        ds_: 'Descrição ',
+        no_: 'Nome ',
+        possui_: 'Possui Inst. de Gestão',
+        ranking: 'Ranking Desmate 2022',
+      };
+
+      const prefix = field.match(/^\w+_/) ? field.match(/^\w+_/) : field.match(/^\w+/);
+      const key = prefix[0];
       const regex = /^[A-Za-z]{2}_\w+$/;
-      if (field.match(regex)) {
-        if (field.startsWith('dt_')) {
-          field = field.replace('dt_', 'Data ');
-        } else if (field.startsWith('co_')) {
-          field = field.replace('co_', 'Codigo ');
-        } else if (field.startsWith('cd_')) {
-          field = field.replace('cd_', 'Codigo ');
-        } else if (field.startsWith('sg_')) {
-          field = field.replace('sg_', 'Sigla ');
-        } else if (field.startsWith('ds_')) {
-          field = field.replace('ds_', 'Descrição ');
-        } else if (field.startsWith('no_')) {
-          field = field.replace('no_', 'Nome ');
-        } else if (field.startsWith('possui_')) {
-          field = field.replace('possui_', 'Possui ');
-        } else {
-          field = field.substring(3);
-        }
-      }
-      if (field.match('possui_ig')) {
-        field = field.replace('possui_ig', 'Possui Inst. de Gestão');
-      } else if (field.match('ranking')) {
-        field = field.replace('ranking', 'Ranking Desmate 2022');
+
+      if (key in replacements) {
+        field = field.replace(key, replacements[key]);
+      } else if (field.match(regex)) {
+        field = field.substring(3);
       }
 
       field = field
