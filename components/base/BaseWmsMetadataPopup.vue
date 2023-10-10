@@ -160,14 +160,14 @@ export default {
   methods: {
     formatField(field) {
       const replacements = {
-        dt_: 'Data ',
-        co_: 'Codigo ',
-        cd_: 'Codigo ',
-        sg_: 'Sigla ',
-        ds_: 'Descrição ',
-        no_: 'Nome ',
-        possui_: 'Possui Inst. de Gestão',
-        ranking: 'Ranking Desmate 2022',
+        dt_: ['Data ', 'dt_'],
+        co_: ['Codigo ', 'co_'],
+        cd_: ['Codigo ', 'cd_'],
+        sg_: ['Sigla ', 'sg_'],
+        ds_: ['Descrição ', 'ds_'],
+        no_: ['Nome ', 'no_'],
+        possui_: ['Possui Inst. de Gestão', 'possui_ig'],
+        ranking: ['Ranking Desmate 2022', 'ranking'],
       };
 
       const prefix = field.match(/^\w+_/) ? field.match(/^\w+_/) : field.match(/^\w+/);
@@ -175,7 +175,7 @@ export default {
       const regex = /^[A-Za-z]{2}_\w+$/;
 
       if (key in replacements) {
-        field = field.replace(key, replacements[key]);
+        field = field.replace(replacements[key][1], replacements[key][0]);
       } else if (field.match(regex)) {
         field = field.substring(3);
       }

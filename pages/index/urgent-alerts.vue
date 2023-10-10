@@ -47,7 +47,7 @@
           >
             mdi-square
           </v-icon>
-          CR
+          Corte Raso
         </v-row>
         <v-row class="mb-2">
           <v-icon
@@ -56,7 +56,7 @@
           >
             mdi-square
           </v-icon>
-          DR
+          Desmatamento em Regeneração
         </v-row>
         <v-row class="mb-2">
           <v-icon
@@ -65,7 +65,7 @@
           >
             mdi-square
           </v-icon>
-          FF
+          Fogo em Floresta
         </v-row>
         <v-row class="mb-2">
           <v-icon
@@ -74,7 +74,7 @@
           >
             mdi-square
           </v-icon>
-          DG
+          Degradação
         </v-row>
         <v-spacer />
       </v-col>
