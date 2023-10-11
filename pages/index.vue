@@ -28,7 +28,6 @@
       v-for="(tab, i) in tabs"
       :key="i"
       :to="localePath(tab.route)"
-      exact
       nuxt
       :disabled="showTableDialog"
     >
