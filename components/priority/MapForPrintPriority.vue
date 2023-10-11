@@ -546,7 +546,7 @@ export default {
         this.valueScale = true;
         this.valueNorthArrow = true;
       } catch (error) {
-        alert(`Erro ao gerar o mapa.${error}`);
+        error === '';
       }
     },
 
