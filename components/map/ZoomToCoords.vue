@@ -92,6 +92,25 @@
               hide-details
               flat
             />
+            <v-btn
+              v-if="!north"
+              density="comfortable"
+              @click="toggleActivate()"
+            >
+              <b>S</b>
+            </v-btn>
+
+            <v-btn
+              v-if="north"
+              density="comfortable"
+              @click="toggleActivate()"
+            >
+              <b>N</b>
+            </v-btn>
+            <v-card-text
+              v-if="north"
+              secondary
+            />
             <span class="separator" />
             <v-text-field
               v-model="degW"
@@ -123,7 +142,23 @@
               hide-details
               flat
             />
+            <v-btn
+              v-if="!north"
+              density="comfortable"
+              @click="toggleActivate()"
+            >
+              <b>W</b>
+            </v-btn>
+
+            <v-btn
+              v-if="north"
+              density="comfortable"
+              @click="toggleActivate()"
+            >
+              <b>E</b>
+            </v-btn>
             <span class="separator" />
+            </v-btn>
           </template>
           <v-select
             v-model="coordType"
@@ -187,6 +222,7 @@ export default {
 
   data() {
     return {
+      north: false,
       zooming: false,
       coordType: this.$i18n.t('decimal-label'),
       center: null,
@@ -234,6 +270,11 @@ export default {
       this.zooming = !this.zooming;
     },
 
+    toggleActivate() {
+      this.north = !this.north;
+      this.mockedAction();
+    },
+
     addErrorOnField(fieldValue, maxValue, minValue) {
       const formattedValue = parseFloat(fieldValue);
 
@@ -245,9 +286,9 @@ export default {
     },
 
     calculteDecimal(deg, min, sec) {
-      return (
-        parseFloat(deg) + parseFloat(min / 60) + parseFloat(sec / 3600)
-      );
+      return this.north
+        ? (parseFloat(deg) + parseFloat(min / 60) + parseFloat(sec / 3600))
+        : (parseFloat(deg) + parseFloat(min / 60) + parseFloat(sec / 3600)) * (-1);
     },
 
     zooms() {
