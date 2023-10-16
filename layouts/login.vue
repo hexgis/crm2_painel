@@ -5,7 +5,7 @@
         <div
           fluid
           class="background"
-          style="height:85vh"
+          style="height:87vh"
         >
           <nuxt />
         </div>
