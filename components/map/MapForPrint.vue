@@ -194,6 +194,7 @@
             </div>
             <div>
               <v-row
+                v-if="showFeaturesMonitoring"
                 no-gutters
                 align="center"
               >
@@ -211,6 +212,7 @@
                 </v-col>
               </v-row>
               <v-row
+                v-if="showFeaturesMonitoring"
                 no-gutters
                 align="center"
               >
@@ -228,6 +230,7 @@
                 </v-col>
               </v-row>
               <v-row
+                v-if="showFeaturesMonitoring"
                 no-gutters
                 align="center"
               >
@@ -245,6 +248,7 @@
                 </v-col>
               </v-row>
               <v-row
+                v-if="showFeaturesMonitoring"
                 no-gutters
                 align="center"
               >
