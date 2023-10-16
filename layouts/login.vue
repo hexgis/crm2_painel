@@ -1,11 +1,11 @@
 <template>
   <v-app>
     <v-main>
-      <div style="overflow-y:auto">
+      <div>
         <div
           fluid
           class="background"
-          style="height:90vh"
+          style="height:85vh"
         >
           <nuxt />
         </div>
@@ -13,19 +13,29 @@
           <v-col />
         </v-row>
         <v-row class="helpBar">
-          <v-col>
-            <v-img
-              max-width="70"
-              class="ml-16"
-              src="/img/funai.svg"
-            />
-          </v-col>
+          <v-card
+            class="ml-15"
+            flat
+            width="300"
+            layout="row"
+            layout-wrap
+            layout-align="space-between"
+          >
+            <v-col>
+              <v-img
+                width="70"
 
+                src="/img/funai.svg"
+              />
+            </v-col>
+          </v-card>
           <v-col>
             <v-card
+              width="300"
               flat
               layout="row"
               layout-wrap
+              layout-align="space-between"
             >
               <v-card-title class="text-subtitle-1">
                 {{ $t('we-are-help-title') }}
@@ -39,9 +49,11 @@
           </v-col>
           <v-col>
             <v-card
+              width="300"
               flat
               layout="row"
               layout-wrap
+              layout-align="space-between"
             >
               <v-card-title class="text-subtitle-1">
                 {{ $t('access-help-title') }}
@@ -59,9 +71,11 @@
           </v-col>
           <v-col>
             <v-card
+              width="300"
               flat
               layout="row"
               layout-wrap
+              layout-align="space-between"
             >
               <v-card-title class="text-subtitle-1">
                 {{ $t('project-help-title') }}
@@ -78,8 +92,10 @@
           >
             <v-card
               flat
+              width="300"
               layout="row"
               layout-wrap
+              layout-align="space-between"
             >
               <v-card-title class="text-subtitle-1">
                 {{ $t('manual-help-title') }}
