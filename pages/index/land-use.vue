@@ -143,15 +143,15 @@ export default {
 
     showFeaturesLandUse: {
       get() {
-        return this.$store.state['land-use'].showFeatures;
+        return this.$store.state['land-use'].showFeaturesLandUse;
       },
 
       set(value) {
-        this.$store.commit('land-use/setShowFeatures', value);
+        this.$store.commit('land-use/setShowFeaturesLandUse', value);
       },
     },
     ...mapState('land-use', [
-      'showFeatures',
+      'showFeaturesLandUse',
       'features',
       'total',
       'tableLandUse',
