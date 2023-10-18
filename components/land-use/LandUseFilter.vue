@@ -29,7 +29,15 @@
           hide-details
           clearable
           required
+          :loading="isLoadingTi"
           multiple
+        />
+        <v-progress-linear
+          :active="isLoadingTi"
+          :indeterminate="isLoadingTi"
+          absolute
+          bottom
+          color="deep-purple accent-4"
         />
       </v-row>
     </v-slide-y-transition>
@@ -48,6 +56,7 @@
         :loading="isLoadingYears"
         multiple
         :error="errorAno"
+        required
       />
     </v-row>
     <v-progress-linear
@@ -306,18 +315,22 @@ export default {
       ],
       isLoadingTotal: false,
       isLoadingYears: false,
+      isLoadingTi: false,
       legendData: legend,
       errorRegional: false,
       errorAno: false,
+      errorTi: false,
     };
   },
 
   watch: {
     'filters.cr': function (value) {
+      this.isLoadingTi = true;
       this.populateTiOptions(value);
     },
 
     'filters.ti': function (value) {
+      this.isLoadingTi = false;
       this.isLoadingYears = true;
       this.populateYearsOptions(value);
     },
@@ -381,16 +394,19 @@ export default {
       if (!this.filters.cr.length && !this.filters.year.length) {
         this.errorRegional = true;
         this.errorAno = true;
+
         return;
       }
       if (!this.filters.cr.length && this.filters.year.length) {
         this.errorRegional = true;
         this.errorAno = false;
+
         return;
       }
       if (this.filters.cr.length && !this.filters.year.length) {
         this.errorRegional = false;
         this.errorAno = true;
+
         return;
       }
       this.errorRegional = false;

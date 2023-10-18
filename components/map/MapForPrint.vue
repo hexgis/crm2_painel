@@ -42,6 +42,7 @@
           <SupportLayersRaster />
           <AlertLayers :map="map" />
           <DeterLayers :map="map" />
+          <LandUseLayers :map="map" />
         </l-map>
       </client-only>
     </v-col>
@@ -789,6 +790,7 @@ import SupportLayersProdes from '@/components/support/SupportLayersProdes';
 import SupportLayersRaster from '@/components/support/SupportLayersRaster';
 import AlertLayers from '@/components/urgent-alerts/AlertLayers';
 import DeterLayers from '@/components/deter/DeterLayers';
+import LandUseLayers from '@/components/land-use/LandUseLayers';
 
 const cloneLayer = require('leaflet-clonelayer');
 const intervalZooms = require('@/utils/zoomIntervalsGraticule');
@@ -804,6 +806,7 @@ export default {
     SupportLayersProdes,
     SupportLayersRaster,
     SupportLayersHazard,
+    LandUseLayers,
   },
   props: {
     titleMap: {
