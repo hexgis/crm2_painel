@@ -195,7 +195,7 @@
             </div>
             <div>
               <v-row
-                v-if="showFeaturesMonitoring"
+                v-if="showFeaturesMonitoring || showFeaturesUrgentAlert"
                 no-gutters
                 align="center"
               >
@@ -213,7 +213,7 @@
                 </v-col>
               </v-row>
               <v-row
-                v-if="showFeaturesMonitoring"
+                v-if="showFeaturesMonitoring || showFeaturesUrgentAlert"
                 no-gutters
                 align="center"
               >
@@ -231,7 +231,7 @@
                 </v-col>
               </v-row>
               <v-row
-                v-if="showFeaturesMonitoring"
+                v-if="showFeaturesMonitoring || showFeaturesUrgentAlert"
                 no-gutters
                 align="center"
               >
@@ -249,87 +249,13 @@
                 </v-col>
               </v-row>
               <v-row
-                v-if="showFeaturesMonitoring"
+                v-if="showFeaturesMonitoring || showFeaturesUrgentAlert"
                 no-gutters
                 align="center"
               >
                 <v-icon
                   x-small
                   color="#ff7f00"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Degradação</p>
-                </v-col>
-              </v-row>
-            </div>
-            <div>
-              <v-row
-                v-if="showFeaturesUrgentAlert"
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#965213"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Corte Raso</p>
-                </v-col>
-              </v-row>
-              <v-row
-                v-if="showFeaturesUrgentAlert"
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#337f1e"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Desmatamento em Regeneração</p>
-                </v-col>
-              </v-row>
-              <v-row
-                v-if="showFeaturesUrgentAlert"
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#ba1a1a"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Fogo em Floresta</p>
-                </v-col>
-              </v-row>
-              <v-row
-                v-if="showFeaturesUrgentAlert"
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#e0790b"
                 >
                   mdi-square
                 </v-icon>

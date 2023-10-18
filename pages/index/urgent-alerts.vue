@@ -43,16 +43,7 @@
         <v-row class="mb-2">
           <v-icon
             class="mr-2"
-            color="#965213"
-          >
-            mdi-square
-          </v-icon>
-          Corte Raso
-        </v-row>
-        <v-row class="mb-2">
-          <v-icon
-            class="mr-2"
-            color="#337f1e"
+            color="#990099"
           >
             mdi-square
           </v-icon>
@@ -61,7 +52,7 @@
         <v-row class="mb-2">
           <v-icon
             class="mr-2"
-            color="#ba1a1a"
+            color="#b35900"
           >
             mdi-square
           </v-icon>
@@ -70,11 +61,20 @@
         <v-row class="mb-2">
           <v-icon
             class="mr-2"
-            color="#e0790b"
+            color="#ff8000"
           >
             mdi-square
           </v-icon>
           Degradação
+        </v-row>
+        <v-row class="mb-2">
+          <v-icon
+            class="mr-2"
+            color="#ff3333"
+          >
+            mdi-square
+          </v-icon>
+          Corte Raso
         </v-row>
         <v-spacer />
       </v-col>
