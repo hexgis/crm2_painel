@@ -17,7 +17,6 @@
 
     <v-slide-y-transition>
       <v-row
-        v-if="filters.cr && filterOptions.tiFilters"
         class="px-3 pb-3"
       >
         <v-select
@@ -29,21 +28,13 @@
           hide-details
           clearable
           required
-          :loading="isLoadingTi"
           multiple
-        />
-        <v-progress-linear
-          :active="isLoadingTi"
-          :indeterminate="isLoadingTi"
-          absolute
-          bottom
-          color="deep-purple accent-4"
+          :error="errorTi"
         />
       </v-row>
     </v-slide-y-transition>
 
     <v-row
-      v-if="filters.ti"
       class="pt-1 px-3"
     >
       <v-select
@@ -53,20 +44,11 @@
         item-text="nu_ano"
         item-value="map_year"
         clearable
-        :loading="isLoadingYears"
         multiple
         :error="errorAno"
         required
       />
     </v-row>
-    <v-progress-linear
-      :active="isLoadingYears"
-      :indeterminate="isLoadingYears"
-      absolute
-      bottom
-      color="deep-purple accent-4"
-    />
-
     <v-row
       no-gutters
       align="center"
@@ -303,7 +285,7 @@ export default {
         currentView: false,
         year: [],
         cr: [],
-        ti: null,
+        ti: [],
       },
       headers: [
         { text: 'Código Funai', value: 'co_funai' },
@@ -314,8 +296,6 @@ export default {
         { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
       ],
       isLoadingTotal: false,
-      isLoadingYears: false,
-      isLoadingTi: false,
       legendData: legend,
       errorRegional: false,
       errorAno: false,
@@ -325,19 +305,13 @@ export default {
 
   watch: {
     'filters.cr': function (value) {
-      this.isLoadingTi = true;
       this.populateTiOptions(value);
     },
 
     'filters.ti': function (value) {
-      this.isLoadingTi = false;
-      this.isLoadingYears = true;
       this.populateYearsOptions(value);
     },
 
-    'filters.year': function () {
-      this.isLoadingYears = false;
-    },
   },
 
   computed: {
@@ -391,24 +365,42 @@ export default {
     },
 
     search() {
-      if (!this.filters.cr.length && !this.filters.year.length) {
+      if (!this.filters.cr.length && !this.filters.year.length && !this.filters.ti.length) {
         this.errorRegional = true;
         this.errorAno = true;
+        this.errorTi = true;
 
         return;
       }
-      if (!this.filters.cr.length && this.filters.year.length) {
+      if (!this.filters.cr.length && this.filters.year.length && this.filters.ti.length) {
         this.errorRegional = true;
         this.errorAno = false;
+        this.errorTi = false;
 
         return;
       }
-      if (this.filters.cr.length && !this.filters.year.length) {
+      if (this.filters.cr.length && !this.filters.year.length && this.filters.ti.length) {
         this.errorRegional = false;
         this.errorAno = true;
+        this.errorTi = false;
 
         return;
       }
+      if (this.filters.cr.length && this.filters.year.length && !this.filters.ti.length) {
+        this.errorRegional = false;
+        this.errorAno = false;
+        this.errorTi = true;
+
+        return;
+      }
+      if (this.filters.cr.length && !this.filters.year.length && !this.filters.ti.length) {
+        this.errorRegional = false;
+        this.errorAno = true;
+        this.errorTi = true;
+
+        return;
+      }
+      this.errorTi = false;
       this.errorRegional = false;
       this.errorAno = false;
       this.setFilters(this.filters);
