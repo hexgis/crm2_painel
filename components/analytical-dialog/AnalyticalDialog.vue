@@ -173,6 +173,7 @@ export default {
         { text: 'Código Funai', value: 'co_funai' },
         { text: 'Nome TI', value: 'no_ti' },
         { text: 'Ano', value: 'ano' },
+        { text: 'Mês', value: 'mes' },
         { text: 'CR Área Ha', value: 'cr_nu_area_ha' },
         { text: 'DG Área Ha', value: 'dg_nu_area_ha' },
         { text: 'DR Área Ha', value: 'dr_nu_area_ha' },
