@@ -465,7 +465,10 @@
         </div>
       </div>
     </v-col>
-    <div style="width: 100%">
+    <div
+      v-if="showFeaturesMonitoring"
+      style="width: 100%"
+    >
       <v-data-table
         :headers="headers"
         :items="analyticsMonitoring"
@@ -569,7 +572,9 @@ export default {
   },
 
   mounted() {
-    this.getDataAnalyticsMonitoringByFunai();
+    if (this.showFeaturesMonitoring) {
+      this.getDataAnalyticsMonitoringByFunai();
+    }
     this.$nextTick(() => {
       this.createMap();
     });
