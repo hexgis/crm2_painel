@@ -144,11 +144,6 @@
         />
 
         <MonitoringLayers
-          v-if="!monitoringGeoserver"
-          :map="map"
-        />
-        <MonitoringLayersGeoserver
-          v-else
           :map="map"
         />
         <DeterLayers :map="map" />

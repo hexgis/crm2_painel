@@ -92,6 +92,25 @@
               hide-details
               flat
             />
+            <v-btn
+              v-if="!north"
+              density="comfortable"
+              @click="toggleActivate()"
+            >
+              <b>S</b>
+            </v-btn>
+
+            <v-btn
+              v-if="north"
+              density="comfortable"
+              @click="toggleActivate()"
+            >
+              <b>N</b>
+            </v-btn>
+            <v-card-text
+              v-if="north"
+              secondary
+            />
             <span class="separator" />
             <v-text-field
               v-model="degW"
@@ -123,7 +142,23 @@
               hide-details
               flat
             />
+            <v-btn
+              v-if="!east"
+              density="comfortable"
+              @click="toggleActivateEast()"
+            >
+              <b>W</b>
+            </v-btn>
+
+            <v-btn
+              v-if="east"
+              density="comfortable"
+              @click="toggleActivateEast()"
+            >
+              <b>E</b>
+            </v-btn>
             <span class="separator" />
+            </v-btn>
           </template>
           <v-select
             v-model="coordType"
@@ -187,6 +222,8 @@ export default {
 
   data() {
     return {
+      north: false,
+      east: false,
       zooming: false,
       coordType: this.$i18n.t('decimal-label'),
       center: null,
@@ -234,6 +271,16 @@ export default {
       this.zooming = !this.zooming;
     },
 
+    toggleActivate() {
+      this.north = !this.north;
+      this.mockedAction();
+    },
+
+    toggleActivateEast() {
+      this.east = !this.east;
+      this.mockedAction();
+    },
+
     addErrorOnField(fieldValue, maxValue, minValue) {
       const formattedValue = parseFloat(fieldValue);
 
@@ -245,9 +292,11 @@ export default {
     },
 
     calculteDecimal(deg, min, sec) {
-      return (
-        parseFloat(deg) + parseFloat(min / 60) + parseFloat(sec / 3600)
-      );
+      return parseFloat(deg) + parseFloat(min / 60) + parseFloat(sec / 3600);
+    },
+
+    calculteNegativeDecimal(deg, min, sec) {
+      return (parseFloat(deg) + parseFloat(min / 60) + parseFloat(sec / 3600)) * (-1);
     },
 
     zooms() {
@@ -264,12 +313,33 @@ export default {
                     || this.secWError
         ) { return; }
 
-        latitude = this.calculteDecimal(this.degN, this.minN, this.secN);
-        longitude = this.calculteDecimal(
-          this.degW,
-          this.minW,
-          this.secW,
-        );
+        if (this.north) {
+          latitude = this.calculteDecimal(
+            this.degN,
+            this.minN,
+            this.secN,
+          );
+        } else {
+          latitude = this.calculteNegativeDecimal(
+            this.degN,
+            this.minN,
+            this.secN,
+          );
+        }
+
+        if (this.east) {
+          longitude = this.calculteDecimal(
+            this.degW,
+            this.minW,
+            this.secW,
+          );
+        } else {
+          longitude = this.calculteNegativeDecimal(
+            this.degW,
+            this.minW,
+            this.secW,
+          );
+        }
       } else if (this.coordType === this.$i18n.t('decimal-label')) {
         if (this.latError || this.lngError) return;
 

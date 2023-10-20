@@ -200,147 +200,7 @@
                 </v-col>
               </v-row>
             </div>
-            <div v-if="showFeaturesUrgentAlert">
-              <v-row
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#965213"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Alerta Urgente: CR</p>
-                </v-col>
-              </v-row>
-              <v-row
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#337f1e"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Alerta Urgente: DR</p>
-                </v-col>
-              </v-row>
-              <v-row
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#ba1a1a"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Alerta Urgente: FF</p>
-                </v-col>
-              </v-row>
-              <v-row
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#e0790b"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Alerta Urgente: DG</p>
-                </v-col>
-              </v-row>
-            </div>
-            <div v-if="showFeaturesDeter">
-              <v-row
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#965213"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Deter: CR</p>
-                </v-col>
-              </v-row>
-              <v-row
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#337f1e"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Deter: DR</p>
-                </v-col>
-              </v-row>
-              <v-row
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#ba1a1a"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Deter: FF</p>
-                </v-col>
-              </v-row>
-              <v-row
-                no-gutters
-                align="center"
-              >
-                <v-icon
-                  x-small
-                  color="#e0790b"
-                >
-                  mdi-square
-                </v-icon>
-                <v-col
-                  no-gutters
-                  cols="6"
-                >
-                  <p>Deter: DG</p>
-                </v-col>
-              </v-row>
-            </div>
-            <div v-if="showFeaturesMonitoring">
+            <div>
               <v-row
                 no-gutters
                 align="center"
@@ -355,7 +215,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Monitoramento Diário: CR</p>
+                  <p>Corte Raso</p>
                 </v-col>
               </v-row>
               <v-row
@@ -372,7 +232,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Monitoramento Diário: DR</p>
+                  <p>Desmatamento em Regeneração</p>
                 </v-col>
               </v-row>
               <v-row
@@ -389,7 +249,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Monitoramento Diário: FF</p>
+                  <p>Fogo em Floresta</p>
                 </v-col>
               </v-row>
               <v-row
@@ -406,7 +266,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Monitoramento Diário: DG</p>
+                  <p>Degradação</p>
                 </v-col>
               </v-row>
             </div>
@@ -759,10 +619,8 @@ export default {
         };
 
         L.simpleGraticule(options).addTo(this.map);
-        console.log(this.$mainMap);
 
         this.$mainMap.eachLayer((layer) => {
-          console.log(layer);
           const cloned = cloneLayer(layer);
           this.map.addLayer(cloned);
         });
@@ -772,7 +630,7 @@ export default {
         this.valueScale = true;
         this.valueNorthArrow = true;
       } catch (error) {
-        alert(`Erro ao gerar o mapa.${error}`);
+        error === '';
       }
     },
 
@@ -782,13 +640,6 @@ export default {
 
     onMainMapMoving(e) {
       this.aimingRect.setBounds(this.map.getBounds());
-    },
-
-    flyTo() {
-      this.map.flyTo([
-        this.detail.nu_latitude,
-        this.detail.nu_longitude,
-      ], 22);
     },
 
   },

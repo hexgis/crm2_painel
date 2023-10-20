@@ -2,7 +2,6 @@
   <div class="d-flex mt-2">
     <v-tooltip
       right
-      :disabled="!startDrawPopup"
     >
       <template #activator="{ on }">
         <v-btn
