@@ -34,14 +34,6 @@
               class="north-arrow"
             >
           </l-control>
-          <l-control position="bottomright">
-            <v-data-table
-              class="hight_data_table"
-              :headers="headers"
-              :items="detail"
-              hide-default-footer
-            />
-          </l-control>
           <PriorityLayers :map="map" />
           <MonitoringLayers :map="map" />
           <SupportLayers />
@@ -473,11 +465,19 @@
         </div>
       </div>
     </v-col>
+    <div style="width: 100%">
+      <v-data-table
+        :headers="headers"
+        :items="analyticsMonitoring"
+        hide-default-footer
+        class="elevation-1"
+      />
+    </div>
   </v-row>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import MiniMapForPrint from '@/components/map/MiniMapForPrint.vue';
 import PriorityLayers from '@/components/priority/PriorityLayers';
 import MonitoringLayers from '@/components/monitoring/MonitoringLayers';
@@ -516,8 +516,11 @@ export default {
   data: () => ({
 
     headers: [
-      { text: 'Classe', value: 'no_estagio' },
-      { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
+      { text: 'TI', value: 'no_ti' },
+      { text: 'Área CR (ha)', value: 'cr_nu_area_ha' },
+      { text: 'Área DG (ha)', value: 'dg_nu_area_ha' },
+      { text: 'Área DR (ha)', value: 'dr_nu_area_ha' },
+      { text: 'Área FF (ha)', value: 'ff_nu_area_ha' },
     ],
     map: null,
     miniMap: null,
@@ -525,6 +528,7 @@ export default {
     zoomMiniMap: 4,
     valueScale: null,
     valueNorthArrow: null,
+    somatorioTotal: 0,
 
     attribution:
             '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | <span style="color: red; font-weight: bold; width: 100%">Mapa não oficial</span>',
@@ -552,7 +556,7 @@ export default {
   computed: {
     ...mapState('map', ['bounds', 'localBounds']),
     ...mapState('priority', ['showFeatures', 'detail']),
-    ...mapState('monitoring', ['showFeaturesMonitoring']),
+    ...mapState('monitoring', ['showFeaturesMonitoring', 'analyticsMonitoring']),
     ...mapState('urgent-alerts', ['showFeaturesUrgentAlert']),
     ...mapState('deter', ['showFeaturesDeter']),
     ...mapState('supportLayers', [
@@ -565,6 +569,7 @@ export default {
   },
 
   mounted() {
+    this.getDataAnalyticsMonitoringByFunai();
     this.$nextTick(() => {
       this.createMap();
     });
@@ -641,7 +646,7 @@ export default {
     onMainMapMoving(e) {
       this.aimingRect.setBounds(this.map.getBounds());
     },
-
+    ...mapActions('monitoring', ['getDataAnalyticsMonitoringByFunai']),
   },
 };
 </script>
