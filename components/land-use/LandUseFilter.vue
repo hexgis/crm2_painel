@@ -17,6 +17,7 @@
 
     <v-slide-y-transition>
       <v-row
+        v-if="filters.cr && filterOptions.tiFilters"
         class="px-3 pb-3"
       >
         <v-select
@@ -35,6 +36,7 @@
     </v-slide-y-transition>
 
     <v-row
+      v-if="filterOptions.tiFilters"
       class="pt-1 px-3"
     >
       <v-select
