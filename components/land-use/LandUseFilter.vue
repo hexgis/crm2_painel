@@ -367,46 +367,18 @@ export default {
     },
 
     search() {
-      if (!this.filters.cr.length && !this.filters.year.length && !this.filters.ti.length) {
-        this.errorRegional = true;
-        this.errorAno = true;
-        this.errorTi = true;
+      this.errorRegional = !this.filters.cr.length;
+      this.errorAno = !this.filters.year.length;
+      this.errorTi = !this.filters.ti.length;
 
-        return;
+      if (
+        !this.errorRegional
+        && !this.errorAno
+        && !this.errorTi
+      ) {
+        this.setFilters(this.filters);
+        this.$emit('onSearch');
       }
-      if (!this.filters.cr.length && this.filters.year.length && this.filters.ti.length) {
-        this.errorRegional = true;
-        this.errorAno = false;
-        this.errorTi = false;
-
-        return;
-      }
-      if (this.filters.cr.length && !this.filters.year.length && this.filters.ti.length) {
-        this.errorRegional = false;
-        this.errorAno = true;
-        this.errorTi = false;
-
-        return;
-      }
-      if (this.filters.cr.length && this.filters.year.length && !this.filters.ti.length) {
-        this.errorRegional = false;
-        this.errorAno = false;
-        this.errorTi = true;
-
-        return;
-      }
-      if (this.filters.cr.length && !this.filters.year.length && !this.filters.ti.length) {
-        this.errorRegional = false;
-        this.errorAno = true;
-        this.errorTi = true;
-
-        return;
-      }
-      this.errorTi = false;
-      this.errorRegional = false;
-      this.errorAno = false;
-      this.setFilters(this.filters);
-      this.$emit('onSearch');
     },
 
     closeTable(value) {
