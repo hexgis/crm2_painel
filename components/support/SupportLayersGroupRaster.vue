@@ -24,6 +24,8 @@
               <br>
               resolução.
               <br>
+              Basemap oneatlas_2019
+              <br>
               Informações adicionais são apresentadas
               <br>
               na imagem quando está renderizada.
