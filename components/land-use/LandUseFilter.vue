@@ -36,7 +36,7 @@
     </v-slide-y-transition>
 
     <v-row
-      v-if="filterOptions.tiFilters"
+      v-if="filterOptions.tiFilters && filterOptions.year"
       class="pt-1 px-3"
     >
       <v-select
@@ -286,8 +286,8 @@ export default {
       filters: {
         currentView: false,
         year: [],
-        cr: [],
-        ti: [],
+        cr: null,
+        ti: null,
       },
       headers: [
         { text: 'Código Funai', value: 'co_funai' },
