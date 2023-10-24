@@ -462,6 +462,16 @@
             </p>
             <p>Modelo de mapa adaptado para formato A4.</p>
           </div>
+          <v-divider v-if="showFeaturesMonitoring" />
+          <div
+            v-if="showFeaturesMonitoring"
+            class="ma-1"
+          >
+            <p>
+              A área mencionada na tabela representa a área total de cada classe por Terra Indígena
+              e não necessariamente reflete os dados visualizados na tela do mapa
+            </p>
+          </div>
         </div>
       </div>
     </v-col>
