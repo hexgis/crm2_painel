@@ -22,13 +22,13 @@
             <span>
               Contém imagens SPOT de alta
               <br>
-              resolução.
+              resolução de 1.5 metros entre 2018 e 2019.
               <br>
               Basemap oneatlas_2019
               <br>
               Informações adicionais são apresentadas
               <br>
-              na imagem quando está renderizada.
+              na imagem quando a grade de imagens está ativada.
             </span>
           </v-tooltip>
         </div>
