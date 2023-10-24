@@ -17,7 +17,6 @@
 
     <v-slide-y-transition>
       <v-row
-        v-if="filters.cr && filterOptions.tiFilters"
         class="px-3 pb-3"
       >
         <v-select
@@ -318,13 +317,9 @@ export default {
     },
 
     'filters.ti': function (value) {
-      this.isLoadingYears = true;
       this.populateYearsOptions(value);
     },
 
-    'filters.year': function () {
-      this.isLoadingYears = false;
-    },
   },
 
   computed: {
@@ -364,6 +359,7 @@ export default {
 
   mounted() {
     this.getFilterOptions();
+    this.getTiTotal();
   },
 
   methods: {
@@ -428,6 +424,7 @@ export default {
       'getDataTableLandUse',
       'getFeatures',
       'downloadTableLandUse',
+      'getTiTotal',
     ]),
   },
 };
