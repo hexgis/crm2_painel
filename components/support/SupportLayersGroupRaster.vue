@@ -8,6 +8,29 @@
           </span>
         </v-list-item-title>
       </v-list-item-content>
+      <v-col v-if="group.name == 'Alta Resolução'">
+        <div>
+          <v-tooltip>
+            <template #activator="{ on }">
+              <v-icon
+
+                v-on="on"
+              >
+                mdi-information
+              </v-icon>
+            </template>
+            <span>
+              Contém imagens SPOT de alta
+              <br>
+              resolução.
+              <br>
+              Informações adicionais são apresentadas
+              <br>
+              na imagem quando está renderizada.
+            </span>
+          </v-tooltip>
+        </div>
+      </v-col>
     </template>
 
     <v-container class="py-0">
