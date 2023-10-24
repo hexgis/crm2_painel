@@ -42,6 +42,7 @@
           <SupportLayersRaster />
           <AlertLayers :map="map" />
           <DeterLayers :map="map" />
+          <LandUseLayers :map="map" />
         </l-map>
       </client-only>
     </v-col>
@@ -194,6 +195,7 @@
             </div>
             <div>
               <v-row
+                v-if="showFeaturesMonitoring || showFeaturesUrgentAlert"
                 no-gutters
                 align="center"
               >
@@ -211,6 +213,7 @@
                 </v-col>
               </v-row>
               <v-row
+                v-if="showFeaturesMonitoring || showFeaturesUrgentAlert"
                 no-gutters
                 align="center"
               >
@@ -228,6 +231,7 @@
                 </v-col>
               </v-row>
               <v-row
+                v-if="showFeaturesMonitoring || showFeaturesUrgentAlert"
                 no-gutters
                 align="center"
               >
@@ -245,6 +249,7 @@
                 </v-col>
               </v-row>
               <v-row
+                v-if="showFeaturesMonitoring || showFeaturesUrgentAlert"
                 no-gutters
                 align="center"
               >
@@ -259,6 +264,226 @@
                   cols="6"
                 >
                   <p>Degradação</p>
+                </v-col>
+              </v-row>
+            </div>
+            <div>
+              <v-row
+                v-if="showFeaturesDeter"
+                no-gutters
+                align="center"
+              >
+                <v-icon
+                  x-small
+                  color="#cca300"
+                >
+                  mdi-square
+                </v-icon>
+                <v-col
+                  no-gutters
+                  cols="6"
+                >
+                  <p>Desmatamento Cr</p>
+                </v-col>
+              </v-row>
+              <v-row
+                v-if="showFeaturesDeter"
+                no-gutters
+                align="center"
+              >
+                <v-icon
+                  x-small
+                  color="#669999"
+                >
+                  mdi-square
+                </v-icon>
+                <v-col
+                  no-gutters
+                  cols="6"
+                >
+                  <p>Cs Geométrico</p>
+                </v-col>
+              </v-row>
+              <v-row
+                v-if="showFeaturesDeter"
+                no-gutters
+                align="center"
+              >
+                <v-icon
+                  x-small
+                  color="#ff8000"
+                >
+                  mdi-square
+                </v-icon>
+                <v-col
+                  no-gutters
+                  cols="6"
+                >
+                  <p>Degradação</p>
+                </v-col>
+              </v-row>
+              <v-row
+                v-if="showFeaturesDeter"
+                no-gutters
+                align="center"
+              >
+                <v-icon
+                  x-small
+                  color="#cccc00"
+                >
+                  mdi-square
+                </v-icon>
+                <v-col
+                  no-gutters
+                  cols="6"
+                >
+                  <p>Mineração</p>
+                </v-col>
+              </v-row>
+              <v-row
+                v-if="showFeaturesDeter"
+                no-gutters
+                align="center"
+              >
+                <v-icon
+                  x-small
+                  color="#ff4dff"
+                >
+                  mdi-square
+                </v-icon>
+                <v-col
+                  no-gutters
+                  cols="6"
+                >
+                  <p>Cs Desordenado</p>
+                </v-col>
+              </v-row>
+              <v-row
+                v-if="showFeaturesDeter"
+                no-gutters
+                align="center"
+              >
+                <v-icon
+                  x-small
+                  color="#b2b266"
+                >
+                  mdi-square
+                </v-icon>
+                <v-col
+                  no-gutters
+                  cols="6"
+                >
+                  <p>Desmatamento Veg</p>
+                </v-col>
+              </v-row>
+              <v-row
+                v-if="showFeaturesDeter"
+                no-gutters
+                align="center"
+              >
+                <v-icon
+                  x-small
+                  color="#330000"
+                >
+                  mdi-square
+                </v-icon>
+                <v-col
+                  no-gutters
+                  cols="6"
+                >
+                  <p>Cicatriz de Queimada</p>
+                </v-col>
+              </v-row>
+            </div>
+            <div>
+              <v-row
+                v-if="showFeaturesLandUse"
+                no-gutters
+                align="center"
+              >
+                <v-icon
+                  x-small
+                  color="#ffff00"
+                >
+                  mdi-square
+                </v-icon>
+                <v-col
+                  no-gutters
+                  cols="6"
+                >
+                  <p>Agropecuária</p>
+                </v-col>
+              </v-row>
+              <v-row
+                v-if="showFeaturesLandUse"
+                no-gutters
+                align="center"
+              >
+                <v-icon
+                  x-small
+                  color="#66ffff"
+                >
+                  mdi-square
+                </v-icon>
+                <v-col
+                  no-gutters
+                  cols="6"
+                >
+                  <p>Massa de Água</p>
+                </v-col>
+              </v-row>
+              <v-row
+                v-if="showFeaturesLandUse"
+                no-gutters
+                align="center"
+              >
+                <v-icon
+                  x-small
+                  color="#cc9966"
+                >
+                  mdi-square
+                </v-icon>
+                <v-col
+                  no-gutters
+                  cols="6"
+                >
+                  <p>Vilarejo</p>
+                </v-col>
+              </v-row>
+              <v-row
+                v-if="showFeaturesLandUse"
+                no-gutters
+                align="center"
+              >
+                <v-icon
+                  x-small
+                  color="#00cc00"
+                >
+                  mdi-square
+                </v-icon>
+                <v-col
+                  no-gutters
+                  cols="6"
+                >
+                  <p>Vegetação Natural</p>
+                </v-col>
+              </v-row>
+              <v-row
+                v-if="showFeaturesLandUse"
+                no-gutters
+                align="center"
+              >
+                <v-icon
+                  x-small
+                  color="#ff3333"
+                >
+                  mdi-square
+                </v-icon>
+                <v-col
+                  no-gutters
+                  cols="6"
+                >
+                  <p>Corte Raso</p>
                 </v-col>
               </v-row>
             </div>
@@ -390,6 +615,18 @@
                 2022
               </p>
             </div>
+            <div v-if="showFeaturesDeter">
+              <p>
+                - Deter. Fonte: Banco de Dados Funai -
+                2022
+              </p>
+            </div>
+            <div v-if="showFeaturesLandUse">
+              <p>
+                - Uso e Ocupação do Solo. Fonte: Banco de Dados Funai -
+                2022
+              </p>
+            </div>
             <div v-if="showFeaturesSupportLayers">
               <div
                 v-for="layer in supportLayers"
@@ -479,6 +716,7 @@ import SupportLayersProdes from '@/components/support/SupportLayersProdes';
 import SupportLayersRaster from '@/components/support/SupportLayersRaster';
 import AlertLayers from '@/components/urgent-alerts/AlertLayers';
 import DeterLayers from '@/components/deter/DeterLayers';
+import LandUseLayers from '@/components/land-use/LandUseLayers';
 
 const cloneLayer = require('leaflet-clonelayer');
 const intervalZooms = require('@/utils/zoomIntervalsGraticule');
@@ -494,6 +732,7 @@ export default {
     SupportLayersProdes,
     SupportLayersRaster,
     SupportLayersHazard,
+    LandUseLayers,
   },
   props: {
     titleMap: {
@@ -553,6 +792,7 @@ export default {
     ...mapState('monitoring', ['showFeaturesMonitoring']),
     ...mapState('urgent-alerts', ['showFeaturesUrgentAlert']),
     ...mapState('deter', ['showFeaturesDeter']),
+    ...mapState('land-use', ['showFeaturesLandUse']),
     ...mapState('supportLayers', [
       'showFeaturesSupportLayers',
       'supportLayers',
