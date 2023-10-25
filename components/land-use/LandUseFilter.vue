@@ -43,19 +43,11 @@
         item-text="nu_ano"
         item-value="map_year"
         clearable
-        :loading="isLoadingYears"
         multiple
         required
         :error="errorAno"
       />
     </v-row>
-    <v-progress-linear
-      :active="isLoadingYears"
-      :indeterminate="isLoadingYears"
-      absolute
-      bottom
-      color="deep-purple accent-4"
-    />
 
     <v-row
       no-gutters
@@ -304,7 +296,6 @@ export default {
         { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
       ],
       isLoadingTotal: false,
-      isLoadingYears: false,
       legendData: legend,
       errorAno: false,
       errorTi: false,
