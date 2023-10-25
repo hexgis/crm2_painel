@@ -699,14 +699,35 @@
             </p>
             <p>Modelo de mapa adaptado para formato A4.</p>
           </div>
+          <v-divider v-if="showFeaturesMonitoring" />
+          <div
+            v-if="showFeaturesMonitoring"
+            class="ma-1"
+          >
+            <p>
+              A área mencionada na tabela representa a área total de cada classe por Terra Indígena
+              e não necessariamente reflete os dados visualizados na tela do mapa
+            </p>
+          </div>
         </div>
       </div>
     </v-col>
+    <div
+      v-if="showFeaturesMonitoring"
+      style="width: 100%"
+    >
+      <v-data-table
+        :headers="headers"
+        :items="analyticsMonitoring"
+        hide-default-footer
+        class="elevation-1"
+      />
+    </div>
   </v-row>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import MiniMapForPrint from '@/components/map/MiniMapForPrint.vue';
 import PriorityLayers from '@/components/priority/PriorityLayers';
 import MonitoringLayers from '@/components/monitoring/MonitoringLayers';
@@ -747,14 +768,11 @@ export default {
   data: () => ({
 
     headers: [
-      { text: 'Terra Indígena', value: 'no_ti' },
-      { text: 'Código Funai', value: 'co_funai' },
-      { text: 'Coordenação Regional', value: 'ds_cr' },
-      { text: 'Classe', value: 'no_estagio' },
-      { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
-      { text: 'Latitude', value: 'nu_latitude' },
-      { text: 'Longitude', value: 'nu_longitude' },
-      { text: 'Prioridade', value: 'prioridade' },
+      { text: 'TI', value: 'no_ti' },
+      { text: 'Área CR (ha)', value: 'cr_nu_area_ha' },
+      { text: 'Área DG (ha)', value: 'dg_nu_area_ha' },
+      { text: 'Área DR (ha)', value: 'dr_nu_area_ha' },
+      { text: 'Área FF (ha)', value: 'ff_nu_area_ha' },
     ],
     map: null,
     miniMap: null,
@@ -762,6 +780,7 @@ export default {
     zoomMiniMap: 4,
     valueScale: null,
     valueNorthArrow: null,
+    somatorioTotal: 0,
 
     attribution:
             '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | <span style="color: red; font-weight: bold; width: 100%">Mapa não oficial</span>',
@@ -789,7 +808,7 @@ export default {
   computed: {
     ...mapState('map', ['bounds', 'localBounds']),
     ...mapState('priority', ['showFeatures', 'detail']),
-    ...mapState('monitoring', ['showFeaturesMonitoring']),
+    ...mapState('monitoring', ['showFeaturesMonitoring', 'analyticsMonitoring']),
     ...mapState('urgent-alerts', ['showFeaturesUrgentAlert']),
     ...mapState('deter', ['showFeaturesDeter']),
     ...mapState('land-use', ['showFeaturesLandUse']),
@@ -803,6 +822,9 @@ export default {
   },
 
   mounted() {
+    if (this.showFeaturesMonitoring) {
+      this.getDataAnalyticsMonitoringByFunai();
+    }
     this.$nextTick(() => {
       this.createMap();
     });
@@ -879,7 +901,7 @@ export default {
     onMainMapMoving(e) {
       this.aimingRect.setBounds(this.map.getBounds());
     },
-
+    ...mapActions('monitoring', ['getDataAnalyticsMonitoringByFunai']),
   },
 };
 </script>
@@ -903,6 +925,12 @@ p {
 .hight_container_mini_map {
     height: 150px;
     max-height: 150px;
+    width: 100%;
+}
+
+.hight_data_table {
+    height: 100px;
+    max-height: 100px;
     width: 100%;
 }
 </style>
