@@ -10,8 +10,6 @@
         multiple
         hide-details
         clearable
-        required
-        :error="errorRegional"
       />
     </v-row>
 
@@ -29,6 +27,7 @@
           clearable
           required
           multiple
+          :error="errorTi"
         />
       </v-row>
     </v-slide-y-transition>
@@ -46,6 +45,7 @@
         clearable
         :loading="isLoadingYears"
         multiple
+        required
         :error="errorAno"
       />
     </v-row>
@@ -306,8 +306,8 @@ export default {
       isLoadingTotal: false,
       isLoadingYears: false,
       legendData: legend,
-      errorRegional: false,
       errorAno: false,
+      errorTi: false,
     };
   },
 
@@ -374,25 +374,16 @@ export default {
     },
 
     search() {
-      if (!this.filters.cr.length && !this.filters.year.length) {
-        this.errorRegional = true;
-        this.errorAno = true;
-        return;
+      this.errorAno = !this.filters.year.length;
+      this.errorTi = !this.filters.ti.length;
+
+      if (
+        !this.errorAno
+        && !this.errorTi
+      ) {
+        this.setFilters(this.filters);
+        this.$emit('onSearch');
       }
-      if (!this.filters.cr.length && this.filters.year.length) {
-        this.errorRegional = true;
-        this.errorAno = false;
-        return;
-      }
-      if (this.filters.cr.length && !this.filters.year.length) {
-        this.errorRegional = false;
-        this.errorAno = true;
-        return;
-      }
-      this.errorRegional = false;
-      this.errorAno = false;
-      this.setFilters(this.filters);
-      this.$emit('onSearch');
     },
 
     closeTable(value) {
