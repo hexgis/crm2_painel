@@ -20,15 +20,14 @@
               </v-icon>
             </template>
             <span>
-              Contém imagens SPOT de alta
+              O mosaico de imagens de alta resolução
               <br>
-              resolução de 1.5 metros entre 2018 e 2019.
+              é formado por imagens dos satélites Spot 6 e 7,
               <br>
-              Basemap oneatlas_2019
+              com uma resolução espacial de 1,5 metros,
               <br>
-              Informações adicionais são apresentadas
+              abrangendo datas entre os anos de 2018 e 2019.
               <br>
-              na imagem quando a grade de imagens está ativada.
             </span>
           </v-tooltip>
         </div>
