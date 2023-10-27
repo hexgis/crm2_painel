@@ -1,39 +1,47 @@
 <template>
   <v-app>
     <v-main>
-      <div style="overflow-y:auto">
+      <div>
         <div
           fluid
           class="background"
-          style="height:90vh"
+          style="height:87vh"
         >
           <nuxt />
         </div>
         <v-row class="rounded-b-xl red darken-2">
           <v-col />
         </v-row>
-        <v-row class="ma-3 helpBar">
-          <v-col class="mt-2">
-            <v-img
-              style="width: 15% "
-              src="/img/funai.svg"
-            />
-          </v-col>
-          <v-col
+        <v-row class="helpBar">
+          <v-card
+            class="ml-15"
             flat
+            width="300"
+            layout="row"
+            layout-wrap
+            layout-align="space-between"
           >
+            <v-col>
+              <v-img
+                width="70"
+
+                src="/img/funai.svg"
+              />
+            </v-col>
+          </v-card>
+          <v-col>
             <v-card
+              width="300"
               flat
-              class="md-padding background-none"
               layout="row"
               layout-wrap
               layout-align="space-between"
             >
-              <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h6">
+              <v-card-title class="text-subtitle-1">
                 {{ $t('we-are-help-title') }}
               </v-card-title>
               <v-card-subtitle>
-                <p class="footer-text-content link-footer text-h6">
+                <p class="link-footer text-h7">
                   <a :href="helpLinks.cmrProjectUrl">{{ $t('we-are-help-link') }}</a>
                 </p>
               </v-card-subtitle>
@@ -41,20 +49,19 @@
           </v-col>
           <v-col>
             <v-card
+              width="300"
               flat
-              class="md-padding background-none"
               layout="row"
               layout-wrap
               layout-align="space-between"
             >
-              <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h6">
+              <v-card-title class="text-subtitle-1">
                 {{ $t('access-help-title') }}
               </v-card-title>
               <v-card-subtitle>
-                <p class=" link-footer px-2">
+                <p class="link-footer text-h7">
                   <a
                     :href="helpLinks.solicitacaoAcessoCmr2"
-                    class="text-h6"
                   >
                     {{ $t('access-help-link') }}
                   </a>
@@ -64,18 +71,18 @@
           </v-col>
           <v-col>
             <v-card
+              width="300"
               flat
-              class="md-padding background-none"
               layout="row"
               layout-wrap
               layout-align="space-between"
             >
-              <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h6">
+              <v-card-title class="text-subtitle-1">
                 {{ $t('project-help-title') }}
               </v-card-title>
               <v-card-subtitle>
-                <p class="footer-text-content link-footer text-h6">
-                  <a :href="helpLinks.cmrTalkToUs">{{ $t('project-help-link') }}</a></a>
+                <p class="link-footer text-h7">
+                  <a :href="helpLinks.cmrTalkToUs">{{ $t('project-help-link') }}</a>
                 </p>
               </v-card-subtitle>
             </v-card>
@@ -85,16 +92,16 @@
           >
             <v-card
               flat
-              class="md-padding background-none"
+              width="300"
               layout="row"
               layout-wrap
               layout-align="space-between"
             >
-              <v-card-title class="cmr-v2-footer-h4 text-h6 text-md-h6">
+              <v-card-title class="text-subtitle-1">
                 {{ $t('manual-help-title') }}
               </v-card-title>
               <v-card-subtitle>
-                <p class="footer-text-content link-footer text-h6">
+                <p class="link-footer text-h7">
                   <a :href="helpLinks.cmrManualUrl">
                     {{ $t('manual-help-link') }}
                   </a>
@@ -105,23 +112,6 @@
         </v-row>
       </div>
     </v-main>
-    <v-footer
-      app
-      absolute
-    >
-      <v-container
-        fluid
-      >
-        <v-row
-          dense
-          class="justifiy-space-between align-center"
-        >
-          <v-col />
-          <v-col class="text-center white--text" />
-          <v-spacer />
-        </v-row>
-      </v-container>
-    </v-footer>
   </v-app>
 </template>
 
@@ -189,26 +179,9 @@ export default {
 .helpBar
   background-color: white
 
-.footer-text-content
-    display: inline-block
-    padding: 10px 10px
-    color: #707070
-    font-size: 8px
-    line-height: 8px
-    font-weight: 400
-    text-decoration: none
-    margin-bottom: 0
-
 .link-footer a
     cursor: pointer
     color: #007ecf
     text-decoration: underline
 
-.cmr-v2-footer-h4
-    display: inline-block
-    margin: 10px
-    font-size: 8px
-    line-height: 8px
-    font-weight: 400
-    color: #424242
 </style>

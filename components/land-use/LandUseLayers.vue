@@ -1,7 +1,7 @@
 <template>
   <l-layer-group
     name="monitoring"
-    :visible="showFeatures"
+    :visible="showFeaturesLandUse"
   >
     <l-layer-group
       ref="LandUseHeat"
@@ -113,7 +113,7 @@ export default {
       'features',
       'opacity',
       'heatMap',
-      'showFeatures',
+      'showFeaturesLandUse',
     ]),
     ...mapGetters('land-use', ['featuresLoaded']),
   },

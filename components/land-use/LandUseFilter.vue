@@ -30,12 +30,13 @@
           clearable
           required
           multiple
+          :error="errorTi"
         />
       </v-row>
     </v-slide-y-transition>
 
     <v-row
-      v-if="filters.ti"
+      v-if="filterOptions.tiFilters && filterOptions.year"
       class="pt-1 px-3"
     >
       <v-select
@@ -45,25 +46,17 @@
         item-text="nu_ano"
         item-value="map_year"
         clearable
-        :loading="isLoadingYears"
         multiple
         :error="errorAno"
+        required
       />
     </v-row>
-    <v-progress-linear
-      :active="isLoadingYears"
-      :indeterminate="isLoadingYears"
-      absolute
-      bottom
-      color="deep-purple accent-4"
-    />
-
     <v-row
       no-gutters
       align="center"
       class="pt-3"
     >
-      <v-col v-show="showFeatures">
+      <v-col v-show="showFeaturesLandUse">
         <v-btn
           color="accent"
           :loading="isLoadingGeoJson"
@@ -108,7 +101,7 @@
       </v-col>
     </v-row>
     <v-divider
-      v-if="showFeatures && !isLoadingFeatures"
+      v-if="showFeaturesLandUse && !isLoadingFeatures"
       class="mt-4"
     />
     <div
@@ -158,7 +151,7 @@
       v-if="total && !isLoadingFeatures"
       class="px-3 py-1 mt-7"
     >
-      <v-row v-if="showFeatures && total && total.area_ha">
+      <v-row v-if="showFeaturesLandUse && total && total.area_ha">
         <v-col
           cols="7"
           class="grey--text text--darken-2"
@@ -192,7 +185,7 @@
     </v-row>
 
     <v-row
-      v-if="showFeatures && !isLoadingFeatures"
+      v-if="showFeaturesLandUse && !isLoadingFeatures"
       align="center"
     >
       <v-col
@@ -211,7 +204,7 @@
       </v-col>
     </v-row>
     <v-row
-      v-if="showFeatures && !isLoadingFeatures"
+      v-if="showFeaturesLandUse && !isLoadingFeatures"
       align="center"
       justify="space-between"
     >
@@ -293,7 +286,7 @@ export default {
       filters: {
         currentView: false,
         year: [],
-        cr: [],
+        cr: null,
         ti: null,
       },
       headers: [
@@ -305,10 +298,10 @@ export default {
         { text: 'Área do Polígono (ha)', value: 'nu_area_ha' },
       ],
       isLoadingTotal: false,
-      isLoadingYears: false,
       legendData: legend,
       errorRegional: false,
       errorAno: false,
+      errorTi: false,
     };
   },
 
@@ -318,13 +311,9 @@ export default {
     },
 
     'filters.ti': function (value) {
-      this.isLoadingYears = true;
       this.populateYearsOptions(value);
     },
 
-    'filters.year': function () {
-      this.isLoadingYears = false;
-    },
   },
 
   computed: {
@@ -351,7 +340,7 @@ export default {
       'isLoadingGeoJson',
       'isLoadingFeatures',
       'filterOptions',
-      'showFeatures',
+      'showFeaturesLandUse',
       'total',
       'params',
       'tableDialogLand',
@@ -378,25 +367,18 @@ export default {
     },
 
     search() {
-      if (!this.filters.cr.length && !this.filters.year.length) {
-        this.errorRegional = true;
-        this.errorAno = true;
-        return;
+      this.errorRegional = !this.filters.cr.length;
+      this.errorAno = !this.filters.year.length;
+      this.errorTi = !this.filters.ti.length;
+
+      if (
+        !this.errorRegional
+        && !this.errorAno
+        && !this.errorTi
+      ) {
+        this.setFilters(this.filters);
+        this.$emit('onSearch');
       }
-      if (!this.filters.cr.length && this.filters.year.length) {
-        this.errorRegional = true;
-        this.errorAno = false;
-        return;
-      }
-      if (this.filters.cr.length && !this.filters.year.length) {
-        this.errorRegional = false;
-        this.errorAno = true;
-        return;
-      }
-      this.errorRegional = false;
-      this.errorAno = false;
-      this.setFilters(this.filters);
-      this.$emit('onSearch');
     },
 
     closeTable(value) {
