@@ -600,31 +600,31 @@
             <div v-if="showFeatures">
               <p>
                 - Polígonos Prioritários presentes no território
-                Brasileiro. Fonte: Banco de Dados Funai - 2022
+                Brasileiro. Fonte: Banco de Dados Funai - 2023
               </p>
             </div>
             <div v-if="showFeaturesMonitoring">
               <p>
                 - Monitoramento Diário. Fonte: Banco de Dados
-                Funai - 2022
+                Funai - 2023
               </p>
             </div>
             <div v-if="showFeaturesUrgentAlert">
               <p>
                 - Alerta Urgente. Fonte: Banco de Dados Funai -
-                2022
+                2023
               </p>
             </div>
             <div v-if="showFeaturesDeter">
               <p>
                 - Deter. Fonte: Banco de Dados Funai -
-                2022
+                2023
               </p>
             </div>
             <div v-if="showFeaturesLandUse">
               <p>
                 - Uso e Ocupação do Solo. Fonte: Banco de Dados Funai -
-                2022
+                2023
               </p>
             </div>
             <div v-if="showFeaturesSupportLayers">
@@ -707,6 +707,11 @@
             <p>
               A área mencionada na tabela representa a área total de cada classe por Terra Indígena
               e não necessariamente reflete os dados visualizados na tela do mapa
+            </p>
+            <p>
+              Data Inicial: {{ filters.startDate }}
+              <br>
+              Data Final: {{ filters.endDate }}
             </p>
           </div>
         </div>
@@ -808,7 +813,7 @@ export default {
   computed: {
     ...mapState('map', ['bounds', 'localBounds']),
     ...mapState('priority', ['showFeatures', 'detail']),
-    ...mapState('monitoring', ['showFeaturesMonitoring', 'analyticsMonitoring']),
+    ...mapState('monitoring', ['showFeaturesMonitoring', 'analyticsMonitoring', 'filters']),
     ...mapState('urgent-alerts', ['showFeaturesUrgentAlert']),
     ...mapState('deter', ['showFeaturesDeter']),
     ...mapState('land-use', ['showFeaturesLandUse']),
