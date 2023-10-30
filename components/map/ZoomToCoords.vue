@@ -39,26 +39,44 @@
           class="drawer"
         >
           <template v-if="coordType == $t('decimal-label')">
-            <v-text-field
-              v-model="lat"
-              placeholder="Latitude"
-              class="decimal-field"
-              :class="latError"
-              suffix="°"
-              solo
-              flat
-            />
+            <v-tooltip
+              top
+            >
+              <template #activator="{ on, attrs }">
+                <v-text-field
+                  v-model="lat"
+                  placeholder="-8,62065"
+                  class="decimal-field"
+                  :class="latError"
+                  suffix="°"
+                  solo
+                  flat
+                  v-bind="attrs"
+                  v-on="on"
+                />
+              </template>
+              <span>Latitude</span>
+            </v-tooltip>
             <span class="separator" />
-            <v-text-field
-              v-if="coordType == $t('decimal-label')"
-              v-model="lng"
-              class="decimal-field"
-              :class="lngError"
-              placeholder="Longitude"
-              suffix="°"
-              solo
-              flat
-            />
+            <v-tooltip
+              top
+            >
+              <template #activator="{ on, attrs }">
+                <v-text-field
+                  v-if="coordType == $t('decimal-label')"
+                  v-model="lng"
+                  class="decimal-field"
+                  :class="lngError"
+                  placeholder="-53,32244"
+                  suffix="°"
+                  solo
+                  flat
+                  v-bind="attrs"
+                  v-on="on"
+                />
+              </template>
+              <span>Longitude</span>
+            </v-tooltip>
             <span class="separator" />
           </template>
           <template v-if="coordType == $t('dms-label')">
@@ -176,6 +194,12 @@
               mdi-navigation-outline
             </v-icon>
           </v-btn>
+          </v-tooltip>
+        </div>
+      </transition>
+    </div>
+  </div>
+</template>
         </div>
       </transition>
     </div>
