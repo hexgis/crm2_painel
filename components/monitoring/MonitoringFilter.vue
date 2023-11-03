@@ -22,7 +22,6 @@
     </v-row>
     <v-slide-y-transition>
       <v-row
-        v-if="filters.cr && filterOptions.tiFilters"
         class="px-3 pb-3"
       >
         <v-combobox
@@ -35,6 +34,7 @@
           required
           multiple
           clearable
+          :error="error"
         />
       </v-row>
     </v-slide-y-transition>
@@ -363,9 +363,8 @@ export default {
         startDate: this.$moment().format('YYYY-MM-DD'),
         endDate: this.$moment().format('YYYY-MM-DD'),
         currentView: false,
-        priority: null,
         cr: [],
-        ti: null,
+        ti: [],
       },
       isLoadingTotal: false,
       legendData: legend,
@@ -384,7 +383,6 @@ export default {
       checkNewFilters: false,
     };
   },
-
   watch: {
     'filters.cr': function (value) {
       const arrayCrPoulate = [];
@@ -436,6 +434,7 @@ export default {
 
   mounted() {
     this.getFilterOptions();
+    this.getTiTotal();
   },
 
   methods: {
@@ -483,6 +482,9 @@ export default {
     || (this.filters.cr.length
     && this.filters.startDate
     && this.filters.endDate)
+    || (this.filters.ti.length
+    && this.filters.startDate
+    && this.filters.endDate)
       ) {
         this.error = false;
         this.setFilters(this.filters);
@@ -496,6 +498,7 @@ export default {
       'setLoadingTable', 'setLoadingStatistic', 'setanalyticsMonitoringDialog']),
     ...mapActions('monitoring', [
       'getFilterOptions',
+      'getTiTotal',
       'getFeatures',
       'getDataAnalyticsMonitoringByDay',
       'downloadGeoJsonMonitoring',
