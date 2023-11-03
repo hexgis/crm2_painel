@@ -22,6 +22,7 @@
 
     <v-slide-y-transition>
       <v-row
+        v-if="filters.cr && filterOptions.tiFilters"
         class="px-3 pb-1"
       >
         <v-combobox
@@ -343,9 +344,9 @@ export default {
           .format('YYYY-MM-DD'),
         endDate: this.$moment().format('YYYY-MM-DD'),
         currentView: false,
-        priority: [],
-        cr: [],
-        ti: [],
+        priority: null,
+        cr: null,
+        ti: null,
       },
       headers: [
         { text: 'Identificador', value: 'id' },
@@ -411,7 +412,6 @@ export default {
 
   mounted() {
     this.getFilterOptions();
-    this.getTiTotal();
   },
 
   methods: {
@@ -446,7 +446,7 @@ export default {
     },
     ...mapMutations('tableDialog', ['setshowTableDialog']),
     ...mapMutations('priority', ['setFilters', 'settableDialogPriority']),
-    ...mapActions('priority', ['getFilterOptions', 'downloadGeoJson', 'downloadTable', 'getDataTable', 'getFeatures', 'getTiTotal']),
+    ...mapActions('priority', ['getFilterOptions', 'downloadGeoJson', 'downloadTable', 'getDataTable', 'getFeatures']),
   },
 };
 </script>
