@@ -8,6 +8,30 @@
           </span>
         </v-list-item-title>
       </v-list-item-content>
+      <v-col v-if="group.name == 'Alta Resolução'">
+        <div>
+          <v-tooltip>
+            <template #activator="{ on }">
+              <v-icon
+
+                v-on="on"
+              >
+                mdi-information
+              </v-icon>
+            </template>
+            <span>
+              O mosaico de imagens de alta resolução
+              <br>
+              é formado por imagens dos satélites Spot 6 e 7,
+              <br>
+              com uma resolução espacial de 1,5 metros,
+              <br>
+              abrangendo datas entre os anos de 2018 e 2019.
+              <br>
+            </span>
+          </v-tooltip>
+        </div>
+      </v-col>
     </template>
 
     <v-container class="py-0">

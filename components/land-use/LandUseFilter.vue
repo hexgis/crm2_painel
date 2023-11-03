@@ -33,7 +33,7 @@
     </v-slide-y-transition>
 
     <v-row
-      v-if="filters.ti"
+      v-if="filterOptions.tiFilters && filterOptions.year"
       class="pt-1 px-3"
     >
       <v-select
@@ -46,15 +46,15 @@
         multiple
         required
         :error="errorAno"
+        required
       />
     </v-row>
-
     <v-row
       no-gutters
       align="center"
       class="pt-3"
     >
-      <v-col v-show="showFeatures">
+      <v-col v-show="showFeaturesLandUse">
         <v-btn
           color="accent"
           :loading="isLoadingGeoJson"
@@ -99,7 +99,7 @@
       </v-col>
     </v-row>
     <v-divider
-      v-if="showFeatures && !isLoadingFeatures"
+      v-if="showFeaturesLandUse && !isLoadingFeatures"
       class="mt-4"
     />
     <div
@@ -149,7 +149,7 @@
       v-if="total && !isLoadingFeatures"
       class="px-3 py-1 mt-7"
     >
-      <v-row v-if="showFeatures && total && total.area_ha">
+      <v-row v-if="showFeaturesLandUse && total && total.area_ha">
         <v-col
           cols="7"
           class="grey--text text--darken-2"
@@ -183,7 +183,7 @@
     </v-row>
 
     <v-row
-      v-if="showFeatures && !isLoadingFeatures"
+      v-if="showFeaturesLandUse && !isLoadingFeatures"
       align="center"
     >
       <v-col
@@ -202,7 +202,7 @@
       </v-col>
     </v-row>
     <v-row
-      v-if="showFeatures && !isLoadingFeatures"
+      v-if="showFeaturesLandUse && !isLoadingFeatures"
       align="center"
       justify="space-between"
     >
@@ -284,7 +284,7 @@ export default {
       filters: {
         currentView: false,
         year: [],
-        cr: [],
+        cr: null,
         ti: null,
       },
       headers: [
@@ -337,7 +337,7 @@ export default {
       'isLoadingGeoJson',
       'isLoadingFeatures',
       'filterOptions',
-      'showFeatures',
+      'showFeaturesLandUse',
       'total',
       'params',
       'tableDialogLand',
@@ -365,11 +365,13 @@ export default {
     },
 
     search() {
+      this.errorRegional = !this.filters.cr.length;
       this.errorAno = !this.filters.year.length;
       this.errorTi = !this.filters.ti.length;
 
       if (
-        !this.errorAno
+        !this.errorRegional
+        && !this.errorAno
         && !this.errorTi
       ) {
         this.setFilters(this.filters);
