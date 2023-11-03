@@ -188,7 +188,6 @@ export default {
 
   mounted() {
     this.getFilterOptions();
-    this.getTiTotal();
   },
 
   computed: {
@@ -235,7 +234,7 @@ export default {
       'toggleLayerVisibility',
     ]),
 
-    ...mapActions('supportLayers', ['getHeatMapLayer', 'getFilterOptions', 'getTiTotal']),
+    ...mapActions('supportLayers', ['getHeatMapLayer', 'getFilterOptions']),
   },
 };
 </script>
