@@ -45,7 +45,7 @@
               <template #activator="{ on, attrs }">
                 <v-text-field
                   v-model="lat"
-                  placeholder="-8,62065"
+                  placeholder="-8.62065"
                   class="decimal-field"
                   :class="latError"
                   suffix="°"
@@ -67,7 +67,7 @@
                   v-model="lng"
                   class="decimal-field"
                   :class="lngError"
-                  placeholder="-53,32244"
+                  placeholder="-53.32244"
                   suffix="°"
                   solo
                   flat
