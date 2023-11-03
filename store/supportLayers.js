@@ -429,6 +429,18 @@ export const actions = {
       commit('setLoading', false);
     }
   },
+
+  async getTiTotal({ commit, state }) {
+    const tis = await this.$api.$get('funai/ti/');
+
+    if (tis) {
+      commit('setFilterOptions', {
+        ...state.filterOptions,
+        tiFilters: tis.sort((a, b) => a.no_ti > b.no_ti),
+      });
+    }
+  },
+
   async getTiOptions({ commit, state }, cr) {
     const params = {
       co_cr: cr.toString(),
@@ -443,6 +455,7 @@ export const actions = {
       });
     }
   },
+
   async getCategoryGroupsRasters({ commit }) {
     commit('setLoading', true);
     const params = {
@@ -470,6 +483,7 @@ export const actions = {
       commit('setLoading', false);
     }
   },
+
   async getCategoryGroupsFire({ commit }) {
     commit('setLoading', true);
     const params = {

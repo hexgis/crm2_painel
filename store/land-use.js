@@ -188,6 +188,17 @@ export const actions = {
     }
   },
 
+  async getTiTotal({ commit, state }) {
+    const tis = await this.$api.$get('funai/ti/');
+
+    if (tis) {
+      commit('setFilterOptions', {
+        ...state.filterOptions,
+        tiFilters: tis.sort((a, b) => a.no_ti > b.no_ti),
+      });
+    }
+  },
+
   async getYearsOptions({ commit, state }, ti) {
     const params = {
       co_funai: ti.toString(),

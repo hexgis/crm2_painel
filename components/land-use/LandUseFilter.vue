@@ -10,14 +10,11 @@
         multiple
         hide-details
         clearable
-        required
-        :error="errorRegional"
       />
     </v-row>
 
     <v-slide-y-transition>
       <v-row
-        v-if="filters.cr && filterOptions.tiFilters"
         class="px-3 pb-3"
       >
         <v-select
@@ -47,6 +44,7 @@
         item-value="map_year"
         clearable
         multiple
+        required
         :error="errorAno"
         required
       />
@@ -299,7 +297,6 @@ export default {
       ],
       isLoadingTotal: false,
       legendData: legend,
-      errorRegional: false,
       errorAno: false,
       errorTi: false,
     };
@@ -353,6 +350,7 @@ export default {
 
   mounted() {
     this.getFilterOptions();
+    this.getTiTotal();
   },
 
   methods: {
@@ -410,6 +408,7 @@ export default {
       'getDataTableLandUse',
       'getFeatures',
       'downloadTableLandUse',
+      'getTiTotal',
     ]),
   },
 };
