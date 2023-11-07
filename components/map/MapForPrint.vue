@@ -209,7 +209,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Corte Raso</p>
+                  <p>Corte Raso (CR)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -227,7 +227,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Desmatamento em Regeneração</p>
+                  <p>Desmatamento em Regeneração (DR)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -245,7 +245,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Fogo em Floresta</p>
+                  <p>Fogo em Floresta (FF)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -263,7 +263,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Degradação</p>
+                  <p>Degradação (DG)</p>
                 </v-col>
               </v-row>
             </div>
@@ -283,7 +283,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Desmatamento Cr</p>
+                  <p>Desmatamento Cr (DC)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -301,7 +301,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Cs Geométrico</p>
+                  <p>Cs Geométrico (CG)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -319,7 +319,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Degradação</p>
+                  <p>Degradação (DG)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -337,7 +337,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Mineração</p>
+                  <p>Mineração (MI)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -355,7 +355,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Cs Desordenado</p>
+                  <p>Cs Desordenado (CD)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -373,7 +373,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Desmatamento Veg</p>
+                  <p>Desmatamento Veg (DV)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -391,7 +391,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Cicatriz de Queimada</p>
+                  <p>Cicatriz de Queimada (CQ)</p>
                 </v-col>
               </v-row>
             </div>
@@ -411,7 +411,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Agropecuária</p>
+                  <p>Agropecuária (AG)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -429,7 +429,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Massa de Água</p>
+                  <p>Massa de Água (MA)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -447,7 +447,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Vilarejo</p>
+                  <p>Vilarejo (VI)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -465,7 +465,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Vegetação Natural</p>
+                  <p>Vegetação Natural (VN)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -483,7 +483,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Corte Raso</p>
+                  <p>Corte Raso (CR)</p>
                 </v-col>
               </v-row>
             </div>
