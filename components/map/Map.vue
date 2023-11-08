@@ -85,7 +85,10 @@
             <DrawComponent
               :map="map"
             />
-            <MapPrinter />
+            <MapPrinter
+              :map="map"
+              :selected-base-map="selectedBaseMap"
+            />
           </div>
         </l-control>
         <l-control
@@ -292,6 +295,7 @@ export default {
       color: '#fcd40d',
       dashArray: '5',
     },
+    selectedBaseMap: null,
 
     showImagery: process.env.IMAGERY === 'true',
     monitoringGeoserver: process.env.MONITORING_GEOSERVER === 'true',
@@ -309,19 +313,19 @@ export default {
           zIndex: 1,
         },
       },
-      {
-        url: '//{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
-        options: {
-          label: 'Google Satellite',
-          tag: 'Google Satellite',
-          attribution:
-                        'Map data &copy; <a href="//maps.google.com/">Google</a> sattelite imagery',
-          maxZoom: 21,
-          maxNativeZoom: 19,
-          subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-          zIndex: 1,
-        },
-      },
+      // {
+      //   url: 'https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+      //   options: {
+      //     label: 'Google Satellite',
+      //     tag: 'Google Satellite',
+      //     attribution:
+      //                   'Map data &copy; <a href="//maps.google.com/">Google</a> sattelite imagery',
+      //     maxZoom: 21,
+      //     maxNativeZoom: 19,
+      //     subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+      //     zIndex: 1,
+      //   },
+      // },
       {
         url: '//mt0.google.com/vt/lyrs=r&hl=en&x={x}&y={y}&z={z}',
         options: {
@@ -399,7 +403,7 @@ export default {
       //     },
       // },
       {
-        url: '//server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
         options: {
           label: 'ArcMap',
           tag: 'ArcMap',
@@ -410,18 +414,18 @@ export default {
           zIndex: 1,
         },
       },
-      {
-        url: 'https://tiles.planet.com/basemaps/v1/planet-tiles/planet_medres_visual_2020-10_mosaic/gmap/{z}/{x}/{y}.png?api_key=57cd3a8c44024cfdb7446ac37d8d1fe9',
-        options: {
-          label: 'Planet - Out/2020',
-          tag: 'Planet - Out/2020',
-          attribution:
-                        'Map data &copy; <a href="//www.planet.com/">Planet</a>',
-          maxZoom: 21,
-          maxNativeZoom: 15,
-          zIndex: 1,
-        },
-      },
+      // {
+      //   url: 'https://tiles.planet.com/basemaps/v1/planet-tiles/planet_medres_visual_2020-10_mosaic/gmap/{z}/{x}/{y}.png?api_key=57cd3a8c44024cfdb7446ac37d8d1fe9',
+      //   options: {
+      //     label: 'Planet - Out/2020',
+      //     tag: 'Planet - Out/2020',
+      //     attribution:
+      //                   'Map data &copy; <a href="//www.planet.com/">Planet</a>',
+      //     maxZoom: 21,
+      //     maxNativeZoom: 15,
+      //     zIndex: 1,
+      //   },
+      // },
     ],
     bingKey:
             'AuhiCJHlGzhg93IqUH_oCpl_-ZUrIE6SPftlyGYUvr9Amx5nzA-WqGcPquyFZl4L',
@@ -496,6 +500,7 @@ export default {
       Vue.prototype.$mainMap = this.map;
       this.map.on('zoomend', this.onZoomEnd);
       this.map.addEventListener('mousemove', this.refreshCoordinates);
+      this.map.on('baselayerchange', this.changeBaseMap);
 
       this.createMapLayers();
       this.createCssRefs();
@@ -613,6 +618,10 @@ export default {
 
     updateBounds(latLngBounds) {
       this.setBounds(latLngBounds);
+    },
+
+    changeBaseMap(event) {
+      this.selectedBaseMap = event;
     },
 
     refreshCoordinates(event) {
