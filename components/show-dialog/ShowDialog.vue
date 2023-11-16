@@ -7,7 +7,7 @@
       max-width="350"
     >
       <v-card>
-        <v-card-title class="showDialog justify-center">
+        <v-card-title class="showDialog justify-center secondary">
           <div>
             <h3>{{ $t('title-dialog') }}</h3>
           </div>

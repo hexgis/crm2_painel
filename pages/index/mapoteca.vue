@@ -42,7 +42,6 @@
     </div>
     <v-footer
       absolute
-      class="priority-footer"
       color="#FFFFFF"
       elevation="4"
     >

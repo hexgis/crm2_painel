@@ -8,9 +8,11 @@
     <v-card
       v-if="!showMap"
       min-height="600"
-      dark
+      color="secondary"
     >
-      <v-card-title class="ml-n2">
+      <v-card-title
+        class="ml-n2 secondary"
+      >
         {{ $t('settings-label') }}
         <v-spacer />
         <v-btn
