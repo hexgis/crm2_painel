@@ -11,7 +11,7 @@
       <v-combobox
         v-model="filters.cr"
         label="Coordenação Regional (Todas)"
-        :items="filterOptions.regionalFilters"
+        :items="flattened"
         item-value="co_cr"
         item-text="ds_cr"
         hide-details
@@ -367,6 +367,7 @@ export default {
         cr: [],
         ti: null,
       },
+      flattened: [],
       isLoadingTotal: false,
       legendData: legend,
       error: false,
@@ -436,6 +437,30 @@ export default {
 
   mounted() {
     this.getFilterOptions();
+    const groups = {};
+
+    // Create array for each group to main subgroup list.
+    this.filterOptions.regionalFilters.forEach((x) => {
+      // create empty object if it doesn't exists.
+      groups[x.no_regiao] = groups[x.no_regiao] || { ds_cr: x.ds_cr, list: [] };
+
+      groups[x.no_regiao].list.push(x);
+    });
+
+    // The flattened list of items that holds items as well as unique headers
+
+    // Iterate over all the unique categories and
+    // then flatten into a list that v-select needs.
+    Object.keys(groups).forEach((categoryId) => {
+      const category = groups[categoryId];
+      const categoryname = category.ds_cr;
+
+      // Create a group
+      this.flattened.push({ header: categoryname });
+
+      // Add all the items followed by category header
+      this.flattened.push(...category.list);
+    });
   },
 
   methods: {
