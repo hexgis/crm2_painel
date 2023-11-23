@@ -367,7 +367,6 @@ export default {
         cr: [],
         ti: null,
       },
-      flattened: [],
       isLoadingTotal: false,
       legendData: legend,
       error: false,
@@ -381,6 +380,7 @@ export default {
         { text: 'Latitude', value: 'nu_latitude' },
         { text: 'Longitude', value: 'nu_longitude' },
       ],
+      flattened: [],
       dialog: false,
       checkNewFilters: false,
     };
@@ -393,6 +393,10 @@ export default {
         arrayCrPoulate.push(item.co_cr);
       });
       this.populateTiOptions(arrayCrPoulate);
+    },
+
+    'filterOptions.regionalFilters': function () {
+      this.populateCrOptions();
     },
   },
 
@@ -437,23 +441,28 @@ export default {
 
   mounted() {
     this.getFilterOptions();
-    const groups = {};
-
-    this.filterOptions.regionalFilters.forEach((x) => {
-      groups[x.no_regiao] = groups[x.no_regiao] || { ds_cr: x.ds_cr, list: [] };
-
-      groups[x.no_regiao].list.push(x);
-    });
-
-    Object.keys(groups).forEach((categoryId) => {
-      const category = groups[categoryId];
-      const categoryRegiao = categoryId;
-      this.flattened.push({ header: categoryRegiao });
-      this.flattened.push(...category.list);
-    });
   },
 
   methods: {
+    populateCrOptions() {
+      const groups = {};
+
+      this.filterOptions.regionalFilters.forEach((x) => {
+        groups[x.no_regiao] = groups[x.no_regiao] || { ds_cr: x.ds_cr, list: [] };
+
+        groups[x.no_regiao].list.push(x);
+      });
+
+      Object.keys(groups).forEach((categoryId) => {
+        const category = groups[categoryId];
+        const categoryRegiao = categoryId;
+        this.flattened.push({ header: categoryRegiao });
+        this.flattened.push(...category.list);
+      });
+
+      return this.flattened;
+    },
+
     populateTiOptions(cr) {
       if (cr) this.$store.dispatch('monitoring/getTiOptions', cr);
       else this.filters.ti = null;
