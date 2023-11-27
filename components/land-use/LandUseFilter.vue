@@ -284,7 +284,7 @@ export default {
       filters: {
         currentView: false,
         year: [],
-        cr: null,
+        cr: [],
         ti: null,
       },
       headers: [
@@ -365,13 +365,11 @@ export default {
     },
 
     search() {
-      this.errorRegional = !this.filters.cr.length;
       this.errorAno = !this.filters.year.length;
       this.errorTi = !this.filters.ti.length;
 
       if (
-        !this.errorRegional
-        && !this.errorAno
+        !this.errorAno
         && !this.errorTi
       ) {
         this.setFilters(this.filters);

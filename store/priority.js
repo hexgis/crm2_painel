@@ -205,6 +205,7 @@ export const actions = {
 
   async getFilterOptions({ commit }) {
     const regional_coordinators = await this.$api.$get('funai/cr/');
+    const tis = await this.$api.$get('funai/ti/');
     const priorities = await this.$api.$get(
       'priority/consolidated/priorities/',
     );
@@ -219,6 +220,10 @@ export const actions = {
 
     if (priorities) {
       data.priority = priorities;
+    }
+
+    if (tis) {
+      data.tiFilters = tis.sort((a, b) => a.no_ti > b.no_ti);
     }
 
     commit('setFilterOptions', data);
