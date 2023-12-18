@@ -22,6 +22,7 @@
 
     <v-slide-y-transition>
       <v-row
+        v-if="filters.cr && filterOptions.tiFilters"
         class="px-3 pb-3"
       >
         <v-combobox
@@ -401,7 +402,6 @@ export default {
 
   mounted() {
     this.getFilterOptions();
-    this.getTiTotal();
   },
 
   methods: {
@@ -441,7 +441,7 @@ export default {
     ]),
     ...mapMutations('tableDialog', ['setshowTableDialog']),
     ...mapMutations('deter', ['setFilters', 'settableDialogDeter', 'setVisualizationStage']),
-    ...mapActions('deter', ['getFilterOptions', 'downloadGeoJson', 'getTiTotal']),
+    ...mapActions('deter', ['getFilterOptions', 'downloadGeoJson']),
   },
 };
 </script>
