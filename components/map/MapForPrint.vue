@@ -510,7 +510,7 @@
                       layer.wms.geoserver.preview_url +
                         layer.wms.geoserver_layer_name
                     "
-                    width="13vw"
+                    width="30vw"
                     alt="CorLayer"
                   >
                   <v-col>
@@ -536,7 +536,7 @@
                       layer.wms.geoserver.preview_url +
                         layer.wms.geoserver_layer_name
                     "
-                    width="13vw"
+                    width="30vw"
                     alt="CorLayer"
                   >
                   <v-col>
@@ -562,7 +562,33 @@
                       layer.wms.geoserver.preview_url +
                         layer.wms.geoserver_layer_name
                     "
-                    width="13vw"
+                    width="30vw"
+                    alt="CorLayer"
+                  >
+                  <v-col>
+                    <p class="ml-1">
+                      {{ layer.name }}
+                    </p>
+                  </v-col>
+                </v-row>
+              </div>
+            </div>
+            <div v-if="showFeaturesSupportLayersProdes">
+              <div
+                v-for="layer in supportLayersCategoryProdes"
+                :key="layer.id"
+              >
+                <v-row
+                  v-if="layer.visible"
+                  no-gutters
+                  align="center"
+                >
+                  <img
+                    :src="
+                      layer.wms.geoserver.preview_url +
+                        layer.wms.geoserver_layer_name
+                    "
+                    width="60vw"
                     alt="CorLayer"
                   >
                   <v-col>
@@ -588,7 +614,7 @@
                       layer.wms.geoserver.preview_url +
                         layer.wms.geoserver_layer_name
                     "
-                    width="13vw"
+                    width="30vw"
                     alt="CorLayer"
                   >
                   <v-col>
@@ -674,6 +700,24 @@
             <div v-if="supportLayersCategoryFire">
               <div
                 v-for="layer in supportLayersCategoryFire"
+                :key="layer.id"
+              >
+                <v-row
+                  v-if="layer.visible"
+                  no-gutters
+                >
+                  <v-col>
+                    <p>
+                      - {{ layer.name }} presente no
+                      território brasileiro.
+                    </p>
+                  </v-col>
+                </v-row>
+              </div>
+            </div>
+            <div v-if="supportLayersCategoryProdes">
+              <div
+                v-for="layer in supportLayersCategoryProdes"
                 :key="layer.id"
               >
                 <v-row
@@ -841,6 +885,8 @@ export default {
       'supportLayersCategoryAntropismo',
       'supportLayersCategoryFire',
       'supportLayersCategoryRaster',
+      'showFeaturesSupportLayersProdes',
+      'supportLayersCategoryProdes',
     ]),
   },
 
