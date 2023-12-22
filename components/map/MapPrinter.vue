@@ -94,6 +94,8 @@
                   class="pa-1"
                   :title-map="titleMap"
                   :leaf-size="select"
+                  :map="map"
+                  :selected-base-map="selectedBaseMap"
                 />
               </div>
             </v-container>
@@ -183,6 +185,17 @@ export default {
       require: true,
       default: false,
     },
+    map: {
+      type: Object,
+      default: null,
+
+    },
+
+    selectedBaseMap: {
+      type: Object,
+      default: null,
+    },
+
   },
 
   data: () => ({

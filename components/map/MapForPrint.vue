@@ -16,8 +16,16 @@
           :bounds="bounds"
         >
           <l-tile-layer
+            v-if="!selectedBaseMap"
             url="//{s}.tile.osm.org/{z}/{x}/{y}.png"
             :attribution="attribution"
+          />
+
+          <l-tile-layer
+            v-if="selectedBaseMap && selectedBaseMap.options.label!='Bing'"
+            :url="selectedBaseMap._url"
+            :attribution="selectedBaseMap.options.attribution"
+            :options="optionsMap"
           />
 
           <l-control-scale
@@ -209,7 +217,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Corte Raso</p>
+                  <p>Corte Raso (CR)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -227,7 +235,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Desmatamento em Regeneração</p>
+                  <p>Desmatamento em Regeneração (DR)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -245,7 +253,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Fogo em Floresta</p>
+                  <p>Fogo em Floresta (FF)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -263,7 +271,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Degradação</p>
+                  <p>Degradação (DG)</p>
                 </v-col>
               </v-row>
             </div>
@@ -283,7 +291,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Desmatamento Cr</p>
+                  <p>Desmatamento Cr (DC)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -301,7 +309,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Cs Geométrico</p>
+                  <p>Cs Geométrico (CG)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -319,7 +327,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Degradação</p>
+                  <p>Degradação (DG)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -337,7 +345,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Mineração</p>
+                  <p>Mineração (MI)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -355,7 +363,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Cs Desordenado</p>
+                  <p>Cs Desordenado (CD)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -373,7 +381,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Desmatamento Veg</p>
+                  <p>Desmatamento Veg (DV)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -391,7 +399,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Cicatriz de Queimada</p>
+                  <p>Cicatriz de Queimada (CQ)</p>
                 </v-col>
               </v-row>
             </div>
@@ -411,7 +419,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Agropecuária</p>
+                  <p>Agropecuária (AG)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -429,7 +437,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Massa de Água</p>
+                  <p>Massa de Água (MA)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -447,7 +455,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Vilarejo</p>
+                  <p>Vilarejo (VI)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -465,7 +473,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Vegetação Natural</p>
+                  <p>Vegetação Natural (VN)</p>
                 </v-col>
               </v-row>
               <v-row
@@ -483,7 +491,7 @@
                   no-gutters
                   cols="6"
                 >
-                  <p>Corte Raso</p>
+                  <p>Corte Raso (CR)</p>
                 </v-col>
               </v-row>
             </div>
@@ -502,7 +510,7 @@
                       layer.wms.geoserver.preview_url +
                         layer.wms.geoserver_layer_name
                     "
-                    width="13vw"
+                    width="30vw"
                     alt="CorLayer"
                   >
                   <v-col>
@@ -528,7 +536,7 @@
                       layer.wms.geoserver.preview_url +
                         layer.wms.geoserver_layer_name
                     "
-                    width="13vw"
+                    width="30vw"
                     alt="CorLayer"
                   >
                   <v-col>
@@ -554,7 +562,33 @@
                       layer.wms.geoserver.preview_url +
                         layer.wms.geoserver_layer_name
                     "
-                    width="13vw"
+                    width="30vw"
+                    alt="CorLayer"
+                  >
+                  <v-col>
+                    <p class="ml-1">
+                      {{ layer.name }}
+                    </p>
+                  </v-col>
+                </v-row>
+              </div>
+            </div>
+            <div v-if="showFeaturesSupportLayersProdes">
+              <div
+                v-for="layer in supportLayersCategoryProdes"
+                :key="layer.id"
+              >
+                <v-row
+                  v-if="layer.visible"
+                  no-gutters
+                  align="center"
+                >
+                  <img
+                    :src="
+                      layer.wms.geoserver.preview_url +
+                        layer.wms.geoserver_layer_name
+                    "
+                    width="60vw"
                     alt="CorLayer"
                   >
                   <v-col>
@@ -580,7 +614,7 @@
                       layer.wms.geoserver.preview_url +
                         layer.wms.geoserver_layer_name
                     "
-                    width="13vw"
+                    width="30vw"
                     alt="CorLayer"
                   >
                   <v-col>
@@ -681,6 +715,24 @@
                 </v-row>
               </div>
             </div>
+            <div v-if="supportLayersCategoryProdes">
+              <div
+                v-for="layer in supportLayersCategoryProdes"
+                :key="layer.id"
+              >
+                <v-row
+                  v-if="layer.visible"
+                  no-gutters
+                >
+                  <v-col>
+                    <p>
+                      - {{ layer.name }} presente no
+                      território brasileiro.
+                    </p>
+                  </v-col>
+                </v-row>
+              </div>
+            </div>
           </div>
           <v-divider />
 
@@ -744,6 +796,10 @@ import AlertLayers from '@/components/urgent-alerts/AlertLayers';
 import DeterLayers from '@/components/deter/DeterLayers';
 import LandUseLayers from '@/components/land-use/LandUseLayers';
 
+if (typeof window !== 'undefined') {
+  require('leaflet-bing-layer');
+}
+
 const cloneLayer = require('leaflet-clonelayer');
 const intervalZooms = require('@/utils/zoomIntervalsGraticule');
 
@@ -765,6 +821,12 @@ export default {
       type: String,
       default: '',
     },
+
+    selectedBaseMap: {
+      type: Object,
+      default: null,
+    },
+
     leafSize: {
       type: Object,
       default: '',
@@ -786,7 +848,7 @@ export default {
     valueScale: null,
     valueNorthArrow: null,
     somatorioTotal: 0,
-
+    bingKey: 'AuhiCJHlGzhg93IqUH_oCpl_-ZUrIE6SPftlyGYUvr9Amx5nzA-WqGcPquyFZl4L',
     attribution:
             '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | <span style="color: red; font-weight: bold; width: 100%">Mapa não oficial</span>',
     optionsMap: {
@@ -823,6 +885,8 @@ export default {
       'supportLayersCategoryAntropismo',
       'supportLayersCategoryFire',
       'supportLayersCategoryRaster',
+      'showFeaturesSupportLayersProdes',
+      'supportLayersCategoryProdes',
     ]),
   },
 
@@ -885,6 +949,11 @@ export default {
 
         L.simpleGraticule(options).addTo(this.map);
 
+        if (this.selectedBaseMap && this.selectedBaseMap.options.label === 'Bing') {
+          const bingLayer = this.createBingLayer();
+          this.map.addLayer(bingLayer);
+        }
+
         this.$mainMap.eachLayer((layer) => {
           const cloned = cloneLayer(layer);
           this.map.addLayer(cloned);
@@ -897,6 +966,23 @@ export default {
       } catch (error) {
         error === '';
       }
+    },
+
+    createBingLayer() {
+      // Bing layer has need to be generated before being inserted
+      // on tileLayers array, and is generated by the Plugin
+      // leaflet-bing-layer
+      const bingLayer = this.$L.tileLayer.bing(this.bingKey, {
+        imagerySet: 'AerialWithLabelsOnDemand',
+        maxZoom: 21,
+        maxNativeZoom: 16,
+      });
+      bingLayer.options.attribution = 'Map data &copy; Bing contributors';
+      bingLayer.options.iconURL = '/img/bing.png';
+      bingLayer.options.label = 'Bing';
+      bingLayer.options.tag = 'Bing';
+
+      return bingLayer;
     },
 
     onMainMapMoved(e) {
