@@ -9,12 +9,12 @@
         >
           <nuxt />
         </div>
-        <v-row class="rounded-b-xl red darken-2">
+        <v-row class="secondary">
           <v-col />
         </v-row>
-        <v-row class="helpBar">
+        <v-row class="info">
           <v-card
-            class="ml-15"
+            class="ml-15 info"
             flat
             width="300"
             layout="row"
@@ -24,7 +24,6 @@
             <v-col>
               <v-img
                 width="70"
-
                 src="/img/funai.svg"
               />
             </v-col>
@@ -32,6 +31,7 @@
           <v-col>
             <v-card
               width="300"
+              class="info"
               flat
               layout="row"
               layout-wrap
@@ -51,6 +51,7 @@
             <v-card
               width="300"
               flat
+              class="info"
               layout="row"
               layout-wrap
               layout-align="space-between"
@@ -73,6 +74,7 @@
             <v-card
               width="300"
               flat
+              class="info"
               layout="row"
               layout-wrap
               layout-align="space-between"
@@ -93,6 +95,7 @@
             <v-card
               flat
               width="300"
+              class="info"
               layout="row"
               layout-wrap
               layout-align="space-between"
@@ -176,12 +179,9 @@ export default {
 .v-footer
     background-color: rgba(0,0,0,0.4) !important
 
-.helpBar
-  background-color: white
-
 .link-footer a
     cursor: pointer
-    color: #007ecf
+    color: white
     text-decoration: underline
 
 </style>

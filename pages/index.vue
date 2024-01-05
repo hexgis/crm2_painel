@@ -77,6 +77,7 @@
       <v-footer
         absolute
         elevation="4"
+        color="white"
       >
         <v-col>
           <v-row class="d-flex justify-center">

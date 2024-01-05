@@ -32,11 +32,14 @@
       </template>
       <span> {{ $t('zoom-to') }} </span>
     </v-tooltip>
-    <div class="coords-block">
+    <div
+      class="coords-block"
+    >
       <transition name="slide-x">
         <div
           v-if="zooming"
           class="drawer"
+          style="background-color: secondary"
         >
           <template v-if="coordType == $t('decimal-label')">
             <v-tooltip
@@ -176,7 +179,6 @@
               <b>E</b>
             </v-btn>
             <span class="separator" />
-            </v-btn>
           </template>
           <v-select
             v-model="coordType"
@@ -194,12 +196,6 @@
               mdi-navigation-outline
             </v-icon>
           </v-btn>
-          </v-tooltip>
-        </div>
-      </transition>
-    </div>
-  </div>
-</template>
         </div>
       </transition>
     </div>
@@ -410,7 +406,7 @@ export default {
 
     .drawer
         overflow: hidden
-        background-color: white
+        background-color: #d6d5d2
         border-radius: 4px 40px 40px 4px
         padding-left: 20px
         display: flex
