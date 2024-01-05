@@ -11,7 +11,7 @@
       <v-combobox
         v-model="filters.cr"
         label="Coordenação Regional"
-        :items="filterOptions.regionalFilters"
+        :items="flattened"
         item-value="co_cr"
         item-text="ds_cr"
         hide-details
@@ -365,6 +365,7 @@ export default {
       legendData: legend,
       checkNewFilters: false,
       dialog: false,
+      flattened: [],
     };
   },
   watch: {
@@ -374,6 +375,10 @@ export default {
         arrayCrPoulate.push(item.co_cr);
       });
       this.populateTiOptions(arrayCrPoulate);
+    },
+
+    'filterOptions.regionalFilters': function () {
+      this.populateCrOptions();
     },
   },
   computed: {
@@ -415,6 +420,25 @@ export default {
   },
 
   methods: {
+    populateCrOptions() {
+      const groups = {};
+
+      this.filterOptions.regionalFilters.forEach((x) => {
+        groups[x.no_regiao] = groups[x.no_regiao] || { ds_cr: x.ds_cr, list: [] };
+
+        groups[x.no_regiao].list.push(x);
+      });
+
+      Object.keys(groups).forEach((categoryId) => {
+        const category = groups[categoryId];
+        const categoryRegiao = categoryId;
+        this.flattened.push({ header: categoryRegiao });
+        this.flattened.push(...category.list);
+      });
+
+      return this.flattened;
+    },
+
     populateTiOptions(cr) {
       if (cr) this.$store.dispatch('priority/getTiOptions', cr);
       else this.filters.ti = null;

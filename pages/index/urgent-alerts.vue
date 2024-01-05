@@ -82,7 +82,7 @@
 
     <v-footer
       absolute
-      class="priority-footer"
+      color="white"
       elevation="4"
     >
       <v-col>

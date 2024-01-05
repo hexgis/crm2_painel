@@ -148,6 +148,6 @@ export default {
     pointer-events: none
     padding: 12px
     font-size: 1.1em
-    background: #DA2A3F
+    background: black
     color: whitesmoke
 </style>

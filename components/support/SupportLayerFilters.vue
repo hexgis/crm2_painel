@@ -58,7 +58,7 @@
           <v-select
             v-model="filters.co_cr"
             label="Coordenação Regional (Todas)"
-            :items="filterOptions.regionalFilters"
+            :items="flattened"
             item-value="co_cr"
             item-text="ds_cr"
             hide-details
@@ -143,6 +143,7 @@ export default {
 
   data: () => ({
     valid: false,
+    flattened: [],
     filters: {
       co_cr: [],
       co_funai: [],
@@ -154,6 +155,10 @@ export default {
   watch: {
     'filters.co_cr': function (value) {
       this.populateTiOptions(value);
+    },
+
+    'filterOptions.regionalFilters': function () {
+      this.populateCrOptions();
     },
   },
 
@@ -195,10 +200,31 @@ export default {
   },
 
   methods: {
+
+    populateCrOptions() {
+      const groups = {};
+
+      this.filterOptions.regionalFilters.forEach((x) => {
+        groups[x.no_regiao] = groups[x.no_regiao] || { ds_cr: x.ds_cr, list: [] };
+
+        groups[x.no_regiao].list.push(x);
+      });
+
+      Object.keys(groups).forEach((categoryId) => {
+        const category = groups[categoryId];
+        const categoryRegiao = categoryId;
+        this.flattened.push({ header: categoryRegiao });
+        this.flattened.push(...category.list);
+      });
+
+      return this.flattened;
+    },
+
     populateTiOptions(cr) {
       if (cr) this.$store.dispatch('supportLayers/getTiOptions', cr);
       else this.filters.ti = null;
     },
+
     verifyFilterType(type) {
       const keys = Object.keys(this.layer.layer_filters);
       for (const key in keys) {
