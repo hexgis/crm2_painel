@@ -33,19 +33,31 @@ export const state = () => ({
   tableMonitoring: [],
   tableCSVMonitoring: [],
   analyticsMonitoringcsv: [],
+  selectedStages: ['CR', 'DG', 'DR', 'FF'],
 });
 
 export const getters = {
   featuresLoaded(state) {
     return (
       state.features
-            && state.features.features
-            && state.features.features.length > 0
+      && state.features.features
+      && state.features.features.length > 0
     );
   },
 };
 
 export const mutations = {
+  setSelectedStages(state, value) {
+    state.selectedStages.push(value);
+  },
+
+  removeSelectedStages(state, value) {
+    const index = state.selectedStages.indexOf(value);
+    if (index !== -1) {
+      state.selectedStages.splice(index, 1);
+    }
+  },
+
   setFeatures(state, features) {
     state.features = features;
     state.isLoadingFeatures = false;
