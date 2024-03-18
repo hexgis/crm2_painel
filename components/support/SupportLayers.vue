@@ -5,18 +5,19 @@
   >
     <template v-for="layer in supportLayers">
       <SupportLayerItem
-        :key="layer.id"
+        :key="'support_' + layer.id"
         :layer="layer"
       />
     </template>
     <template v-for="layer in supportLayersCategoryAntropismo">
       <SupportLayerItem
-        :key="layer.id"
+        :key="'antropismo_' + layer.id"
         :layer="layer"
       />
     </template>
   </l-layer-group>
 </template>
+
 
 <script>
 import { mapState } from 'vuex';
