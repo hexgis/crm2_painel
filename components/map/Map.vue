@@ -353,11 +353,12 @@ export default {
         },
       },
       {
-        url: 'https://tiles.planet.com/basemaps/v1/planet-tiles/planet_medres_normalized_analytic_2023-10_mosaic/gmap/{z}/{x}/{y}.png?api_key=57cd3a8c44024cfdb7446ac37d8d1fe9',
+
+        url: 'https://tiles.planet.com/basemaps/v1/planet-tiles/global_monthly_2024_02_mosaic/gmap/{z}/{x}/{y}.png?api_key=PLAK12fdc2c5ec7341daa4f832072921587c',
         options: {
           Authorization: 'Access-Control-Allow-Origin',
-          label: 'Mosaics Planet 2023-10',
-          tag: 'Mosaics Planet 2023-10',
+          label: 'Mosaics Planet 2024-02',
+          tag: 'Mosaics Planet 2024-02',
           attribution:
                         'Map data &copy; <a href="https://tiles.planet.com/basemaps/v1/planet-tiles">Mosaics 2023-10</a> Planet',
           maxZoom: 21,
