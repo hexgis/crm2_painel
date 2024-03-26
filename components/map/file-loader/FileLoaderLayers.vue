@@ -79,7 +79,10 @@ export default {
       );
     },
     addFeatureVector(shouldFlyTo) {
-      this.$refs.feats.mapObject.clearLayers();
+      this.$refs.feats.mapObject.eachLayer((layer) => {
+        layer.bringToFront();
+      });
+
       this.vectorGrid = [];
 
       if (this.fileList.length) {
@@ -113,7 +116,7 @@ export default {
                   });
                 },
               })
-              .addTo(this.$refs.feats.mapObject);
+              .addTo(this.$refs.feats.mapObject).bringToFront();
           } else {
             newGrid = this.$L.vectorGrid
               .slicer(f.feature, {
@@ -134,7 +137,7 @@ export default {
               .on('click', (e) => {
                 this.feature = e.layer.properties || null;
               })
-              .addTo(this.$refs.feats.mapObject);
+              .addTo(this.$refs.feats.mapObject).bringToFront();
           }
 
           this.vectorGrid.push(newGrid);
