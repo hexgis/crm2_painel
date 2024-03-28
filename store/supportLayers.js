@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import axios from 'axios'
 
 export const state = () => ({
   showFeaturesSupportLayers: false,
@@ -33,7 +32,6 @@ export const state = () => ({
     regionalFilters: [],
     tiFilters: [],
   },
-  layerMetadata: {},
 });
 
 export const getters = {
@@ -91,11 +89,6 @@ export const getters = {
 };
 
 export const mutations = {
-  setLayerMetadata(state, metadata) {
-    console.log(metadata);
-    state.layerMetadata = metadata
-  },
-
   setshowFeaturesSupportLayers(state, showFeaturesSupportLayers) {
     state.showFeaturesSupportLayers = showFeaturesSupportLayers;
   },
@@ -117,7 +110,6 @@ export const mutations = {
   },
 
   setSupportLayersGroups(state, layersGroups) {
-    
     state.supportLayersGroups = {};
     state.supportLayers = {};
 
@@ -414,32 +406,6 @@ export const mutations = {
 };
 
 export const actions = {
-  async getLayerMetadata({ commit }, layerId) {
-    try {
-      const { data } = await axios.get(`http://localhost:8080/support/layers-info/?layer_id=${layerId}`)
-      if (Array.isArray(data) && data.length > 0) {
-        const metadados = data.find((item) => item.layer_id === layerId)
-        console.log(metadados);
-        if (metadados) {
-          const fonteRegex = /([^(]+)(?=\s*\()/
-          const fonteMatch = metadados.fonte.match(fonteRegex)
-          const linkRegex = /\(([^)]+)\)/
-          const linkMatch = metadados.fonte.match(linkRegex)
-
-          const metadata = {
-            data: metadados.dt_atualizacao,
-            fonte: fonteMatch ? fonteMatch[0] : metadados.fonte,
-            link: linkMatch ? linkMatch[1] : '',
-          }
-
-          commit('setLayerMetadata', metadata)
-        }
-      }
-    } catch (error) {
-      console.error('Erro ao obter os metadados da camada:', error)
-    }
-  },
-
   async getLayersGroups({ commit }) {
     commit('setLoading', true);
 

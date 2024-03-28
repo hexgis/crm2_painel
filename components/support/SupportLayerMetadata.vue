@@ -12,16 +12,16 @@
                     <span>Última atualização:</span>
                 </v-col>
                 <v-col cols="12" class="pb-2 pt-0 ml-6">
-                    <span>Data: {{ layerMetadata.data | formatDate }}</span>
+                    <span>{{ formatDate(supportLayers[layerId].layer_info.dt_atualizacao) }}</span>
                 </v-col>
                 <v-col cols="12" class="py-0 ml-2 font-weight-medium">
                     <span>Fonte:</span>
                 </v-col>
                 <v-col cols="6" class="pt-0 pb-2 ml-6">
-                    {{ layerMetadata.fonte }} -
+                    <span>{{ fonte }}</span>
                     <a
-                        v-if="layerMetadata.link"
-                        :href="layerMetadata.link"
+                        v-if="link"
+                        :href="link"
                         target="_blank"
                     >
                         <v-icon class="mb-1">mdi-open-in-new</v-icon>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
     name: 'SuporteMetadadosCamada',
@@ -44,35 +44,35 @@ export default {
             required: true,
         },
     },
-   
-    mounted() {
-        this.getLayerMetadata(this.layerId);
-    },
 
     computed: {
         frequenciaAtualizacao() {
             const today = new Date();
             const yesterday = new Date(today);
             yesterday.setDate(today.getDate() - 1);
-
-            const layerDate = new Date(this.layerMetadata.data);
+            const layerDate = new Date(this.supportLayers[this.layerId].layer_info.dt_atualizacao);
             layerDate.setDate(layerDate.getDate() + 1);
-
             return layerDate.getTime() >= yesterday.getTime() ? 'Diário' : '-';
         },
 
-        ...mapState({
-            layerMetadata: state => state.supportLayers.layerMetadata,
-        }),
+        fonte() {
+            const layerInfo = this.supportLayers[this.layerId].layer_info;
+            const fonteRegex = /([^(]+)(?=\s*\()/;
+            const fonteMatch = layerInfo.fonte.match(fonteRegex);
+            return fonteMatch ? fonteMatch[0] : layerInfo.fonte;
+        },
+
+        link() {
+            const layerInfo = this.supportLayers[this.layerId].layer_info;
+            const linkRegex = /\(([^)]+)\)/;
+            const linkMatch = layerInfo.fonte.match(linkRegex);
+            return linkMatch ? linkMatch[1] : '';
+        },
+        
+        ...mapState('supportLayers', ['supportLayers']),
     },
 
     methods: {
-        ...mapActions({
-            getLayerMetadata: 'supportLayers/getLayerMetadata',
-        }),
-    },
-
-    filters: {
         formatDate(value) {
             if (!value) return '';
             const [year, month, day] = value.split('-');
