@@ -31,21 +31,7 @@
     </v-btn>
     <div v-if="showDialogDocument">
       <DocumentDialog />
-    </div>
-    <v-footer
-      absolute
-      color="white"
-      elevation="4"
-    >
-      <v-col>
-        <v-row class="d-flex justify-center">
-          <v-img
-            max-width="200"
-            src="/img/logo-inteira-antiga.svg"
-          />
-        </v-row>
-      </v-col>
-    </v-footer>
+    </div>  
   </v-container>
 </template>
 
