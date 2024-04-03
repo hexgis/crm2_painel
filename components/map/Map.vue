@@ -353,8 +353,7 @@ export default {
         },
       },
       {
-
-        url: 'https://tiles.planet.com/basemaps/v1/planet-tiles/global_monthly_2024_02_mosaic/gmap/{z}/{x}/{y}.png?api_key=PLAK12fdc2c5ec7341daa4f832072921587c',
+        url: 'https://tiles.planet.com/basemaps/v1/planet-tiles/global_monthly_2024_02_mosaic/gmap/{z}/{x}/{y}.png?api_key=PLAK486c8860252848f4b84b1e0358d9fd2d',
         options: {
           Authorization: 'Access-Control-Allow-Origin',
           label: 'Mosaics Planet 2024-02',
