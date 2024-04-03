@@ -2,9 +2,8 @@
   <v-tabs
     v-model="activeTab"
     vertical
-
     optional
-    background-color="secondary"
+    background-color="primary"
     class="right-tabs fill-height"
   >
     <div class="top-buttons d-sm-none">
@@ -75,9 +74,25 @@
         </v-list>
       </div>
       <v-footer
+        v-if="this.$vuetify.theme.dark"
         absolute
         elevation="4"
-        color="white"
+        color="black"
+      >
+        <v-col>
+          <v-row class="d-flex justify-center">
+            <v-img
+              max-width="200"
+              src="/img/logo-inteira-antiga-branca.svg"
+            />
+          </v-row>
+        </v-col>
+      </v-footer>
+       <v-footer
+        v-if="!this.$vuetify.theme.dark"
+        absolute
+        elevation="4"
+        color="#ffffff"
       >
         <v-col>
           <v-row class="d-flex justify-center">

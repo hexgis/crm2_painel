@@ -26,8 +26,28 @@
       </template>
       <v-card>
         <v-card-title
-          v-if="hasFirstOrLastName"
+          v-if="!this.$vuetify.theme.dark && hasFirstOrLastName"
           class="username"
+        >
+          <v-icon dark>
+            mdi-account
+          </v-icon>
+          <span
+            v-if="!!user.first_name"
+            class="pl-2"
+          >
+            {{ user.first_name }}
+          </span>
+          <span
+            v-if="!!user.last_name"
+            class="pl-2"
+          >
+            {{ user.last_name }}
+          </span>
+        </v-card-title>
+        <v-card-title
+          v-if="this.$vuetify.theme.dark && hasFirstOrLastName"
+          class="username-dark"
         >
           <v-icon dark>
             mdi-account
@@ -148,6 +168,13 @@ export default {
     pointer-events: none
     padding: 12px
     font-size: 1.1em
-    background: black
+    background: #D92B3F
     color: whitesmoke
+
+.username-dark
+    pointer-events: none
+    padding: 12px
+    font-size: 1.1em
+    background: #D92B3F
+    color: whitesmoke    
 </style>

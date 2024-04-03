@@ -42,7 +42,7 @@
       ripple
       class="right-drawer-btn"
       :class="{ 'drawer-btn-opened': layerDrawer }"
-      color="secondary"
+      color="primary"
       @click.stop="layerDrawer ? closeDrawer() : openDrawer()"
     >
       <v-tooltip bottom>
