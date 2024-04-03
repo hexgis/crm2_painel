@@ -46,7 +46,9 @@
     </v-card-text>
     <v-card-actions class="px-5 py-4 justify-end">
       <v-btn
-        color="accent"
+        color="primary"
+        outlined
+        small
         :loading="isLoadingAgroData"
         :disabled="!valid"
         @click="submit"

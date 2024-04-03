@@ -76,7 +76,9 @@
       <v-col cols="12">
         <v-btn
           block
-          color="accent"
+          color="primary"
+          outlined
+          small
           :loading="isLoadingScenes"
           :disabled="!valid"
           @click="submit"

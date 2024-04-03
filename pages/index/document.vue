@@ -22,8 +22,9 @@
     </v-card-text>
 
     <v-btn
-      color="accent"
-      class=""
+      color="primary"
+      small
+      outlined
       @click="showDialog(true)"
     >
       {{ $t('input-label') }}
