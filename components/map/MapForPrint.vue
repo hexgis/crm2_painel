@@ -749,7 +749,7 @@
               As informações podem apresentar distorções em função
               das bases cartográficas utilizadas.
             </p>
-            <p>Modelo de mapa adaptado para formato A4.</p>
+            <p>Modelo de mapa adaptado para formato. {{ leafSize.type }}</p>
           </div>
           <v-divider v-if="showFeaturesMonitoring" />
           <div

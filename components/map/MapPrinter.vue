@@ -194,14 +194,12 @@ export default {
     map: {
       type: Object,
       default: null,
-
     },
 
     selectedBaseMap: {
       type: Object,
       default: null,
     },
-
   },
 
   data: () => ({
@@ -214,10 +212,10 @@ export default {
     select: { type: 'A4' },
     items: [
       { type: 'A4' },
-      // { type: 'A0' },
-      // { type: 'A1' },
-      // { type: 'A2' },
-      // { type: 'A3' },
+      { type: 'A0' },
+      { type: 'A1' },
+      { type: 'A2' },
+      { type: 'A3' },
     ],
   }),
 
@@ -272,7 +270,14 @@ export default {
             format: this.select.type,
             compression: 'SLOW',
           });
-          doc.addImage(image, 'JPEG', 0, 0, 210, 150);
+
+          const width = doc.internal.pageSize.getWidth();
+          const height = doc.internal.pageSize.getHeight();
+          const aspectRatio = node.offsetWidth / node.offsetHeight;
+          const imageWidth = aspectRatio >= 1 ? width : height * aspectRatio;
+          const imageHeight = aspectRatio >= 1 ? width / aspectRatio : height;
+
+          doc.addImage(image, 'JPEG', 0, 0, imageWidth, imageHeight);
           doc.save(`${nameImageDownload}.pdf`);
         });
         this.loadingGeneratePdf = false;
@@ -296,7 +301,6 @@ export default {
 .background__toolbar {
     background: linear-gradient(to bottom, rgb(28, 65, 113), rgb(28, 65, 113));
 }
-
 </style>
 
 <style>
