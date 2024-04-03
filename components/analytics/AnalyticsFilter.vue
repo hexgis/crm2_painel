@@ -94,7 +94,9 @@
     </v-card-text>
     <v-card-actions class="px-5 py-4 justify-end">
       <v-btn
-        color="accent"
+        color="primary"
+        small
+        outlined
         :loading="isLoadingData"
         :disabled="!valid"
         @click="submit"

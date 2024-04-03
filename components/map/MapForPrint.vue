@@ -1012,6 +1012,8 @@ p {
     border-top: 0.5px solid gray;
     border-bottom: 0.5px solid gray;
     height: 100%;
+    background-color: #ffffff;
+    color: black;
 }
 .hight_container_mini_map {
     height: 150px;

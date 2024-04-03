@@ -24,7 +24,7 @@
     >
       <v-toolbar
         dark
-        color="secondary"
+        color="primary"
       >
         <h3>{{ $t('print-dialog-label') }}</h3>
         <v-spacer />
@@ -76,6 +76,8 @@
                 <v-spacer />
                 <v-btn
                   color="primary"
+                  outlined
+                  small
                   @click="currentStep++"
                 >
                   {{ $t('input-button-first-step') }}
@@ -113,6 +115,8 @@
               <v-btn
                 color="primary"
                 class="mr-2"
+                outlined
+                small
                 :loading="loadingPrintImage"
                 @click="saveImage"
               >
@@ -125,6 +129,8 @@
               <v-btn
                 color="primary"
                 class="mr-2"
+                small
+                outlined
                 :loading="loadingGeneratePdf"
                 @click="generatePdf"
               >

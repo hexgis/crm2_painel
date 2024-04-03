@@ -45,6 +45,7 @@
           :label="$t('start-date-label')"
           required
           outlined
+          :min-date="'2015-01-01'"
         />
       </v-col>
       <v-col class="py-0">
@@ -52,8 +53,8 @@
           v-model="filters.endDate"
           :label="$t('end-date-label')"
           required
-          :min-date="filters.startDate"
           outlined
+          :min-date="'2015-01-01'"
         />
       </v-col>
     </v-row>
@@ -61,9 +62,7 @@
       no-gutters
       align="center"
     >
-      <v-col
-        v-show="showFeaturesMonitoring"
-      >
+      <v-col v-show="showFeaturesMonitoring">
         <v-btn
           color="accent"
           :loading="isLoadingGeoJson"
@@ -73,10 +72,7 @@
         >
           <v-tooltip left>
             <template #activator="{ on }">
-              <v-icon
-
-                v-on="on"
-              >
+              <v-icon v-on="on">
                 mdi-download
               </v-icon>
             </template>
@@ -84,18 +80,15 @@
           </v-tooltip>
         </v-btn>
         <v-btn
-          :loading="isLoadingStatistic "
+          :loading="isLoadingStatistic"
           small
           color="accent"
           icon
-          @click="showTableDialogAnalytics(true), dialog = true"
+          @click="showTableDialogAnalytics(true), (dialog = true)"
         >
           <v-tooltip left>
             <template #activator="{ on }">
-              <v-icon
-
-                v-on="on"
-              >
+              <v-icon v-on="on">
                 mdi-chart-box
               </v-icon>
             </template>
@@ -112,10 +105,7 @@
         >
           <v-tooltip left>
             <template #activator="{ on }">
-              <v-icon
-
-                v-on="on"
-              >
+              <v-icon v-on="on">
                 mdi-table
               </v-icon>
             </template>
@@ -131,7 +121,8 @@
         <v-btn
           block
           small
-          color="accent"
+          color="primary"
+          outlined
           :loading="isLoadingFeatures"
           @click="search"
         >
@@ -142,7 +133,8 @@
         <v-btn
           block
           small
-          color="accent"
+          color="primary"
+          outlined
           :loading="isLoadingFeatures"
           @click="search"
         >
@@ -191,9 +183,7 @@
             />
           </v-col>
 
-          <v-col
-            cols="10"
-          >
+          <v-col cols="10">
             <v-skeleton-loader type="text" />
           </v-col>
         </v-row>
@@ -435,7 +425,6 @@ export default {
       'isLoadingCSVMonitoring',
       'isLoadingStatistic',
       'analyticsMonitoringDialog',
-
     ]),
   },
 
@@ -448,7 +437,10 @@ export default {
       const groups = {};
 
       this.filterOptions.regionalFilters.forEach((x) => {
-        groups[x.no_regiao] = groups[x.no_regiao] || { ds_cr: x.ds_cr, list: [] };
+        groups[x.no_regiao] = groups[x.no_regiao] || {
+          ds_cr: x.ds_cr,
+          list: [],
+        };
 
         groups[x.no_regiao].list.push(x);
       });
@@ -500,24 +492,33 @@ export default {
     },
 
     search() {
-      if (
-        (this.filters.currentView
-    && this.filters.startDate
-    && this.filters.endDate)
-    || (this.filters.cr.length
-    && this.filters.startDate
-    && this.filters.endDate)
-      ) {
+      const { filters } = this;
+      const {
+        currentView, cr, startDate, endDate,
+      } = filters;
+
+      if ((currentView || cr.length) && startDate && endDate) {
+        const minDate = new Date('2015-01-01');
+        const start = new Date(startDate);
+        if (start < minDate) {
+          this.error = true;
+          return;
+        }
         this.error = false;
-        this.setFilters(this.filters);
+        this.setFilters(filters);
         this.$emit('onSearch');
         return;
       }
       this.error = true;
     },
     ...mapMutations('tableDialog', ['setshowTableDialog']),
-    ...mapMutations('monitoring', ['setFilters', 'settableDialogMonitoring',
-      'setLoadingTable', 'setLoadingStatistic', 'setanalyticsMonitoringDialog']),
+    ...mapMutations('monitoring', [
+      'setFilters',
+      'settableDialogMonitoring',
+      'setLoadingTable',
+      'setLoadingStatistic',
+      'setanalyticsMonitoringDialog',
+    ]),
     ...mapActions('monitoring', [
       'getFilterOptions',
       'getFeatures',
