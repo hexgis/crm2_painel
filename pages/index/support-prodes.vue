@@ -48,21 +48,7 @@
         />
       </template>
     </div>
-    <v-container>
-      <v-container>
-        <v-footer
-          absolute
-          color="white"
-          elevation="6"
-          class="d-flex justify-center"
-        >
-          <v-img
-            max-width="200"
-            src="/img/logo-inteira-antiga.svg"
-          />
-        </v-footer>
-      </v-container>
-    </v-container>
+   
   </v-container>
 </template>
 

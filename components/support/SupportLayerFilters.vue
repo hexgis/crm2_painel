@@ -93,7 +93,9 @@
       <v-col cols="12">
         <v-btn
           block
+          small
           color="primary"
+          outlined
           :disabled="!valid"
           :loading="loading"
           @click.prevent="filterLayer()"

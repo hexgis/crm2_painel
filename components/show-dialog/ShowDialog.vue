@@ -7,7 +7,7 @@
       max-width="350"
     >
       <v-card>
-        <v-card-title class="showDialog justify-center secondary">
+        <v-card-title class="showDialog justify-center warning">
           <div>
             <h3>{{ $t('title-dialog') }}</h3>
           </div>
@@ -23,7 +23,7 @@
           <v-btn
             small
             text
-            color="red"
+            color="primary"
             dark
             @click="dialog = false"
           >
