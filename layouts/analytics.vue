@@ -1,23 +1,13 @@
 <template>
   <v-app id="analytics">
     <v-main class="grey lighten-3">
-      <v-btn
-        fab
-        small
-        color="info"
+      <v-icon
         class="ma-2 map-button"
-        @click="$router.back()"
+        @click="$router.push('/')"
       >
-        <v-tooltip bottom>
-          <template #activator="{ on }">
-            <v-icon v-on="on">
-              mdi-arrow-left
-            </v-icon>
-          </template>
-          <span> {{ $t('map-button') }} </span>
-        </v-tooltip>
-      </v-btn>
-
+        mdi-arrow-left
+      </v-icon>
+      
       <nuxt />
     </v-main>
   </v-app>
