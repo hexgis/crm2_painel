@@ -75,8 +75,8 @@ export default {
       themes: {
         light: {
           primary: '#D92B3F', //vermelho - botão login, faixa login, loading login
-          secondary: '#200FDB', //azul 
-          accent: '#0FDB44', // verde 
+          secondary: '#D92B3F', //vermelho
+          accent: '#D92B3F', // vermelho
           error: '#da2a3f',
           warning: '#FFCE03',// amarelo 
           info: '#FFFFFF',//branco - fundo login
@@ -85,8 +85,8 @@ export default {
         },
         dark: {
           primary: '#D92B3F', // vermelho
-          secondary: '#4d5155',
-          accent: '#63676c',
+          secondary: '#D92B3F',// vermelho
+          accent: '#D92B3F',// vermelho
           error: '#2F4D6A',
           warning: '#FFCE03',//amarelo
           info: '#000000',//preto fundo login
