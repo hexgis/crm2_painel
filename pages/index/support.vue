@@ -22,6 +22,7 @@
             />
         </div>
         <v-list v-if="!$fetchState.pending" expand>
+            <SupportUser v-if="user" />
             <template v-for="group in orderedSupportLayersGroups">
                 <SupportLayersGroupBase
                     :key="'group_' + group.id"
@@ -55,18 +56,24 @@
 </i18n>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex';
 import _ from 'lodash'
 
 import SupportLayersGroupBase from '@/components/support/SupportLayersGroupBase'
 import SupportLayersGroupAntropismo from '@/components/support/SupportLayersGroupAntropismo'
+import SupportUser from '@/components/support/SupportUser'
 
 export default {
     name: 'Support',
 
-    components: { SupportLayersGroupBase, SupportLayersGroupAntropismo },
+    components: { SupportLayersGroupBase, SupportLayersGroupAntropismo, SupportUser },
 
     transition: 'scroll-y-transition',
+
+    data: () => ({
+    selectedLayers: [],
+    searchInput: null,
+  }),
 
     async fetch() {
         if (!Object.keys(this.supportCategoryGroupsBase).length) {
@@ -120,8 +127,49 @@ export default {
             'loading',
             'showFeaturesSupportLayers',
         ]),
+        ...mapState('userProfile', ['user']),
+
+        
     },
+
+    methods: {
+    disableAllLayers() {
+      this.disableAllLayersVisible();
+    },
+
+    expandAllGroups() {
+      this.setexpandAllLayers(true);
+    },
+
+    retractAllGroups() {
+      this.setretractAllLayers(true);
+    },
+
+    clearInput() {
+      this.retractAllGroups();
+    },
+
+    ...mapMutations('supportLayers', [
+      'changeDisplayLayer',
+      'setSearchLayer',
+      'setFilteredLayers',
+      'disableAllLayersVisible',
+      'setexpandAllLayers',
+      'setretractAllLayers',
+    ]),
+  },
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.options_buttons {
+    margin-left: 50% !important;
+}
+.layers-tab {
+  height: calc(100vh - 124px);
+  overflow-y: auto !important; ;
+}
+.support-tab {
+  overflow-y: hidden !important; ;
+}
+</style>

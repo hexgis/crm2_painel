@@ -292,6 +292,7 @@ export default {
     },
 
     saveIntoDb(index) {
+      this.files.splice(index, 1);
       this.saveToDatabase({ index });
     },
 
@@ -453,7 +454,7 @@ export default {
       this.readFile(f, reader, type);
     },
     ...mapMutations('map', ['addFileToMap', 'removeFileFromMap']),
-    ...mapActions('map', ['changeStyle']),
+    ...mapActions('map', ['changeStyle', 'saveToDatabase']),
   },
 };
 </script>

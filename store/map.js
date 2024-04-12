@@ -8,6 +8,7 @@ export const state = () => ({
   localBounds: [],
   buttonPopup: {},
   isDrawing: false,
+  hasAddLayer: false,
 });
 
 export const getters = {
@@ -65,6 +66,10 @@ export const mutations = {
   removeFileFromMap(state, fileIndex) {
     state.fileList.splice(fileIndex, 1);
   },
+
+  setHasLayer(state, hasLayer) {
+    state.hasAddLayer = hasLayer;
+  },
 };
 
 export const actions = {
@@ -82,5 +87,44 @@ export const actions = {
 
     commit('removeFileFromMap', fileIndex);
     commit('addFileToSpecificIndex', { file, fileIndex });
+  },
+
+  async saveToDatabase({ state, commit }, { index }) {
+    try {
+      const { feature } = state.fileList[index];
+      const { name } = state.fileList[index];
+
+      const response = await this.$api.post('user/upload-file/', {
+        name,
+        geometry: feature,
+      });
+
+      if (response) {
+        commit(
+          'alert/addAlert',
+          {
+            message: this.$i18n.t('upload-success', {
+              date: response.data.created_at,
+              name: response.data.name,
+              new_data: response.data.created,
+              updated_data: response.data.updated,
+            }),
+          },
+          { root: true },
+        );
+        commit('setHasLayer', true);
+      }
+    } catch (exception) {
+      commit(
+        'alert/addAlert',
+        {
+          message: this.$i18n.t('default-error', {
+            action: this.$i18n.t('retrieve'),
+            resource: this.$i18n.tc('imagery', 2),
+          }),
+        },
+        { root: true },
+      );
+    }
   },
 };

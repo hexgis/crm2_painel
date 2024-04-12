@@ -1,78 +1,75 @@
 <template>
-  <div>
-    <div v-if="confirmAction === true">
-      <v-btn
-        icon
-        class="cancel"
-        @click="confirmAction = false"
-      >
-        <v-icon size="50">
-          mdi-close-circle-outline
-        </v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        class="confirm"
-        @click="remove()"
-      >
-        <v-icon size="50">
-          mdi-check-circle-outline
-        </v-icon>
-      </v-btn>
+    <div class="d-flex flex-row">
+        <v-expand-x-transition>
+            <div v-show="confirmAction === true" class="overflow-hidden">
+                <div class="d-flex flex-row slide-button-area">
+                    <v-btn icon class="cancel" @click="confirmAction = false">
+                        <v-icon size="50">mdi-close-circle-outline</v-icon>
+                    </v-btn>
+                    <v-btn icon class="confirm" @click="confirm()">
+                        <v-icon size="50"
+                            >mdi-check-circle-outline</v-icon
+                        ></v-btn
+                    >
+                </div>
+            </div>
+        </v-expand-x-transition>
+        <div v-show="confirmAction !== true">
+            <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        icon
+                        class="button-icon"
+                        v-bind="attrs"
+                        @click="confirmAction = true"
+                        v-on="on"
+                    >
+                        <v-icon size="50">{{ icon }}</v-icon>
+                    </v-btn>
+                </template>
+                <span> {{ iconTooltip }}</span>
+            </v-tooltip>
+        </div>
     </div>
-    <div v-else>
-      <v-tooltip top>
-        <template #activator="{ on, attrs }">
-          <v-btn
-            icon
-            class="button-icon"
-            v-bind="attrs"
-            @click="confirmAction = true"
-            v-on="on"
-          >
-            <v-icon size="50">
-              {{ icon }}
-            </v-icon>
-          </v-btn>
-        </template>
-        <span> {{ iconTooltip }}</span>
-      </v-tooltip>
-    </div>
-  </div>
 </template>
 <script>
 export default {
-  props: {
-    icon: {
-      type: String,
-      required: true,
+    props: {
+        icon: {
+            type: String,
+            required: true,
+        },
+        iconTooltip: {
+            type: String,
+            default: '',
+        },
     },
-    iconTooltip: {
-      type: String,
-      default: '',
+    data() {
+        return {
+            confirmAction: {
+                type: Boolean,
+                default: false,
+            },
+        }
     },
-  },
-  data() {
-    return {
-      confirmAction: {
-        type: Boolean,
-        default: false,
-      },
-    };
-  },
-  methods: {
-    remove() {
-      this.confirmAction = false;
-      this.$emit('remove');
+    methods: {
+        confirm() {
+            this.confirmAction = false
+            this.$emit('confirm')
+        },
     },
-  },
-};
+}
 </script>
 <style scoped lang="sass">
 .button-icon
     opacity: 0.4
 .button-icon:hover
     opacity: 1
+
+.slide-button-area
+    background-color: whitesmoke
+    border-radius: 20px
+    box-shadow: 1px 1px 1px inset lightgray
 
 .cancel
     color: rgba(255, 65, 54, 0.4) !important
