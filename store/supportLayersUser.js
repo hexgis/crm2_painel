@@ -30,8 +30,8 @@ export const mutations = {
   },
 
   toggleLayerVisibility(state, { id, visible }) {
-    state.supportLayerUser[id].visible = visible;
-  },
+      state.supportLayerUser[id].visible = visible;
+      },
 
   setLayerOpacity(state, { id, opacity }) {
     state.supportLayerUser[id].opacity = opacity;
@@ -41,7 +41,6 @@ export const mutations = {
 export const actions = {
   async getLayersUser({ commit }) {
     const response = await this.$api.$get('user/upload-file/list/');
-    console.log(response);
     if (response) {
       commit('setSupportLayersUser', response);
     }
@@ -57,6 +56,7 @@ export const actions = {
       commit('setLayerLoading', { id, loading: false });
     }
   },
+
 
  
 };
