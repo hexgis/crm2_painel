@@ -150,7 +150,7 @@
 <i18n>
 {
     "en": {
-        "print-icon-label": "print out",
+        "print-icon-label": "Print out",
         "print-dialog-label": "Print Out",
         "dialog-text-first-step": "Type below the title of the map to be printed or, if you prefer, leave it blank",
         "input-title-label": "Map Title",
