@@ -42,7 +42,7 @@
       ripple
       class="right-drawer-btn"
       :class="{ 'drawer-btn-opened': layerDrawer }"
-      color="primary"
+      color="secondary"
       @click.stop="layerDrawer ? closeDrawer() : openDrawer()"
     >
       <v-tooltip bottom>
@@ -127,9 +127,9 @@ export default {
     timeout: 3000,
   }),
 
-  fetch() {
+   async fetch() {
     if (!this.$store.state.userProfile.user) {
-      this.$store.dispatch('userProfile/getUserData');
+      await this.$store.dispatch('userProfile/getUserData');
     }
   },
 
