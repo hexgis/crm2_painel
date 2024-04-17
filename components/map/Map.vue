@@ -86,6 +86,7 @@
               :map="map"
             />
             <MapPrinter
+              v-if="showMapPrinterButton"
               :map="map"
               :selected-base-map="selectedBaseMap"
             />
@@ -296,6 +297,7 @@ export default {
       dashArray: '5',
     },
     selectedBaseMap: null,
+    showMapPrinterButton: true,
 
     showImagery: process.env.IMAGERY === 'true',
     monitoringGeoserver: process.env.MONITORING_GEOSERVER === 'true',
@@ -636,7 +638,14 @@ export default {
 
     changeBaseMap(event) {
       this.selectedBaseMap = event;
+    
+      if (event.options.tag === 'Mosaics Planet 2024-02') {
+        this.showMapPrinterButton = false;
+      } else {
+        this.showMapPrinterButton = true;
+      }
     },
+
 
     refreshCoordinates(event) {
       this.cursorCoordinates.lat = event.latlng.lat.toFixed(4);
