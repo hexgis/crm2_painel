@@ -8,6 +8,7 @@ export const state = () => ({
   localBounds: [],
   buttonPopup: {},
   isDrawing: false,
+  indigenousLand: [],
 });
 
 export const getters = {
@@ -65,9 +66,25 @@ export const mutations = {
   removeFileFromMap(state, fileIndex) {
     state.fileList.splice(fileIndex, 1);
   },
+
+  setIndigenousLand(state, indigenousLand) {
+    state.indigenousLand = indigenousLand
+  }
+  ,
 };
 
 export const actions = {
+  async fetchSearchResults({ commit }, searchQuery) {
+    try {
+      const response = await this.$api.$get(`http://localhost:8080/support/busca-geo-ti/?param=${searchQuery}`);
+      commit('setIndigenousLand', response)
+      return response;
+
+    } catch (error) {
+      throw error;
+    }
+  },
+
   zoomToBounds({ commit }, bounds) {
     commit('setBounds', bounds);
     commit('toggleBoundsZoomed');

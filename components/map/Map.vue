@@ -19,6 +19,13 @@
               v-if="user.settings.map_search_button_visible"
               :map="map"
             />
+            <div class="pt-2">
+              <MapSearchTi
+                v-if="user.settings.map_search_button_visible"
+                :map="map"
+              />
+            </div>
+           
 
             <div v-if="user.settings.map_zoom_buttons_visible">
               <div class="d-flex">
@@ -127,6 +134,9 @@
           :visible="showInterestArea"
         />
 
+      
+        <MapIndigenousLand/>
+        
         <SupportLayers />
 
         <SupportLayersRaster />
@@ -157,10 +167,14 @@
         <!-- <WebhooksLayers /> -->
 
         <BaseWmsMetadataPopup :map="map" />
+     
         <LandUseLayers :map="map" />
         <PriorityLayers :map="map" />
 
         <AlertLayers :map="map" />
+
+      
+        
       </l-map>
 
       <div
@@ -208,6 +222,7 @@ import interestArea from '@/assets/interest_area.json';
 import MapPrinter from '@/components/map/MapPrinter.vue';
 
 import MapSearch from '@/components/map/MapSearch.vue';
+import MapSearchTi from '@/components/map/MapSearchTi.vue';
 import ZoomToCoords from '@/components/map/ZoomToCoords.vue';
 import FileLoaderControl from '@/components/map/file-loader/FileLoaderControl.vue';
 import FileLoaderLayers from '@/components/map/file-loader/FileLoaderLayers.vue';
@@ -221,6 +236,8 @@ import SupportLayersProdes from '@/components/support/SupportLayersProdes';
 import SupportLayersRaster from '@/components/support/SupportLayersRaster';
 // import ChangeDetectionLayers from '@/components/change-detection/ChangeDetectionLayers'
 import BaseWmsMetadataPopup from '@/components/base/BaseWmsMetadataPopup';
+
+
 // import AlgorithmLayers from '@/components/algorithms/AlgorithmLayers'
 // import WebhooksLayers from '@/components/webhooks/WebhooksLayers'
 import PriorityLayers from '@/components/priority/PriorityLayers';
@@ -228,9 +245,12 @@ import DeterLayers from '@/components/deter/DeterLayers';
 import AlertLayers from '@/components/urgent-alerts/AlertLayers';
 import LandUseLayers from '@/components/land-use/LandUseLayers';
 
+
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-basemaps/L.Control.Basemaps.css';
 import 'leaflet-minimap/dist/Control.MiniMap.min.css';
+import MapIndigenousLand from './MapIndigenousLand.vue';
+
 
 if (typeof window !== 'undefined') {
   require('leaflet-bing-layer');
@@ -249,6 +269,7 @@ export default {
     // MonitoringLayersGeoserver,
     SupportLayers,
     MapSearch,
+    MapSearchTi,
     ZoomToCoords,
     FileLoaderControl,
     FileLoaderLayers,
@@ -256,6 +277,8 @@ export default {
     DrawComponent,
     // ChangeDetectionLayers,
     BaseWmsMetadataPopup,
+
+    
     // AlgorithmLayers,
     // WebhooksLayers,
     MapPrinter,
@@ -265,6 +288,8 @@ export default {
     SupportLayersRaster,
     SupportLayersProdes,
     SupportLayersHazard,
+    MapIndigenousLand,
+   
   },
 
   data: () => ({
@@ -480,7 +505,7 @@ export default {
         )
         : [];
     },
-    ...mapState('map', ['bounds', 'boundsZoomed', 'loading']),
+    ...mapState('map', ['bounds', 'boundsZoomed', 'loading', 'indigenousLand']),
     ...mapState('userProfile', ['user']),
   },
 
