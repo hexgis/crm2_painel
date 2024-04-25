@@ -266,7 +266,7 @@ export default {
     SupportLayersRaster,
     SupportLayersProdes,
     SupportLayersHazard,
-     SupportUserLayersMap,
+    SupportUserLayersMap,
   },
 
   data: () => ({

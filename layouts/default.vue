@@ -127,7 +127,7 @@ export default {
     timeout: 3000,
   }),
 
-   async fetch() {
+  async fetch() {
     if (!this.$store.state.userProfile.user) {
       await this.$store.dispatch('userProfile/getUserData');
     }

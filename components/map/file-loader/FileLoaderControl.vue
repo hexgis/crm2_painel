@@ -66,7 +66,7 @@
                   :icon-tooltip="$t('remove-feature-tooltip')"
                   @remove="remove(i)"
                 />
-                
+
                 <v-tooltip top>
                   <template #activator="{ on, attrs }">
                     <v-btn
