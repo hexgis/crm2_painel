@@ -126,6 +126,7 @@
           :options-style="interestStyle"
           :visible="showInterestArea"
         />
+        <SupportUserLayersMap />
 
         <SupportLayers />
 
@@ -227,6 +228,7 @@ import PriorityLayers from '@/components/priority/PriorityLayers';
 import DeterLayers from '@/components/deter/DeterLayers';
 import AlertLayers from '@/components/urgent-alerts/AlertLayers';
 import LandUseLayers from '@/components/land-use/LandUseLayers';
+import SupportUserLayersMap from '@/components/support/SupportUserLayersMap';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-basemaps/L.Control.Basemaps.css';
@@ -265,6 +267,7 @@ export default {
     SupportLayersRaster,
     SupportLayersProdes,
     SupportLayersHazard,
+    SupportUserLayersMap,
   },
 
   data: () => ({

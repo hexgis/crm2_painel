@@ -147,7 +147,10 @@
               <span> {{ $t(btn.tooltip) }} </span>
             </v-tooltip>
           </template>
-          <v-tooltip
+
+          <!-- TODO: Vincular o botão de salvar abaixo com a função de salvar o desenho -->
+
+          <!-- <v-tooltip
             v-if="hasDraw && user"
             top
           >
@@ -160,7 +163,8 @@
               </v-icon>
             </template>
             <span> {{ $t('save-label') }} </span>
-          </v-tooltip>
+          </v-tooltip> -->
+
           <v-tooltip
             v-if="hasDraw "
             top
@@ -175,6 +179,7 @@
             </template>
             <span> {{ $t('download-label') }} </span>
           </v-tooltip>
+
           <v-btn
             fab
             ripple
