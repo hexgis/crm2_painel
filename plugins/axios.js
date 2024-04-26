@@ -9,7 +9,7 @@ export default function ({ $axios, store }, inject) {
                 Authorization: 'Bearer ' + token,
             },
         },
-        baseURL: process.env.API_URL,
+        baseURL: 'http://192.168.100.13:8080/',
     })
     const apiSkynet = $axios.create({
         headers: {
