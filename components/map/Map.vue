@@ -86,6 +86,7 @@
               :map="map"
             />
             <MapPrinter
+              v-if="showMapPrinterButton"
               :map="map"
               :selected-base-map="selectedBaseMap"
             />
@@ -125,6 +126,7 @@
           :options-style="interestStyle"
           :visible="showInterestArea"
         />
+        <SupportUserLayersMap />
 
         <SupportLayers />
 
@@ -226,6 +228,7 @@ import PriorityLayers from '@/components/priority/PriorityLayers';
 import DeterLayers from '@/components/deter/DeterLayers';
 import AlertLayers from '@/components/urgent-alerts/AlertLayers';
 import LandUseLayers from '@/components/land-use/LandUseLayers';
+import SupportUserLayersMap from '@/components/support/SupportUserLayersMap';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-basemaps/L.Control.Basemaps.css';
@@ -264,6 +267,7 @@ export default {
     SupportLayersRaster,
     SupportLayersProdes,
     SupportLayersHazard,
+    SupportUserLayersMap,
   },
 
   data: () => ({
@@ -296,6 +300,7 @@ export default {
       dashArray: '5',
     },
     selectedBaseMap: null,
+    showMapPrinterButton: true,
 
     showImagery: process.env.IMAGERY === 'true',
     monitoringGeoserver: process.env.MONITORING_GEOSERVER === 'true',
@@ -636,7 +641,14 @@ export default {
 
     changeBaseMap(event) {
       this.selectedBaseMap = event;
+    
+      if (event.options.tag === 'Mosaics Planet 2024-02') {
+        this.showMapPrinterButton = false;
+      } else {
+        this.showMapPrinterButton = true;
+      }
     },
+
 
     refreshCoordinates(event) {
       this.cursorCoordinates.lat = event.latlng.lat.toFixed(4);
