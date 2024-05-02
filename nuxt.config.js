@@ -4,9 +4,9 @@ require('dotenv').config();
 
 export default {
   // Outras configurações...
-  serverMiddleware: [
-    { path: '/api', handler: '~/server-middleware/express.js' },
-  ],
+  // serverMiddleware: [
+  //   { path: '/api', handler: '~/server-middleware/express.js' },
+  // ],
 
   mode: 'universal',
   /*
