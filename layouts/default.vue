@@ -176,17 +176,17 @@ export default {
       this.leafletRightControl = document.getElementsByClassName('leaflet-right');
     },
 
-    changeControlsStyle() {
-      if (this.showDrawer) {
-        Array.from(this.leafletRightControl).forEach((element) => {
-          element.classList.add('leaflet-right-drawer--offset');
-        });
-      } else {
-        Array.from(this.leafletRightControl).forEach((element) => {
-          element.classList.remove('leaflet-right-drawer--offset');
-        });
-      }
-    },
+   changeControlsStyle() {
+    if (this.showDrawer && this.leafletRightControl) {
+      Array.from(this.leafletRightControl).forEach((element) => {
+        element.classList.add('leaflet-right-drawer--offset');
+      });
+    } else if (!this.showDrawer && this.leafletRightControl) {
+      Array.from(this.leafletRightControl).forEach((element) => {
+        element.classList.remove('leaflet-right-drawer--offset');
+      });
+    }
+  },
   },
   head: () => ({
     title: 'CMR',
