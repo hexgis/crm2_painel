@@ -112,6 +112,7 @@
 <i18n>
 {
     "en": {
+        "analytics-tab": "Analytics",
         "catalog-tab": "My Image Database",
         "search-tab": "Monitoring",
         "layers-tab": "Layers",
@@ -126,6 +127,7 @@
         "deter-tab": "Deter"
     },
     "pt-br": {
+        "analytics-tab": "Analytics",
         "catalog-tab": "Meu acervo de imagens",
         "search-tab": "Monitoramento Diário",
         "layers-tab": "Camadas de Sobreposição",
@@ -166,6 +168,7 @@ export default {
 
     allTabs() {
       return [
+        
         {
           name: this.$t('layers-tab'),
           icon: 'mdi-layers',
@@ -231,12 +234,18 @@ export default {
           icon: 'mdi-dresser',
           route: '/mapoteca',
           show: process.env.ROUTE_MAPOTECA === 'true',
-        },
+        },        
         {
           name: this.$t('deter-tab'),
           icon: 'mdi-leaf',
           route: '/deter',
           show: process.env.ROUTE_DETER === 'true',
+        },
+        {
+          name: this.$t('analytics-tab'),
+          icon: 'mdi-chart-box-outline',
+          route: '/analytics',
+          show: process.env.ROUTE_ANALYTICS === 'true',
         },
       ];
     },
