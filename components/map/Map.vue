@@ -82,9 +82,12 @@
               @loads="loaded()"
             />
 
-            <DrawComponent
+            <DrawingPanel
               :map="map"
-            />
+              :show="activeMenu === 'DrawingPanel'"
+              @toggleTool="setActiveMenu"
+            />            
+
             <MapPrinter
               v-if="showMapPrinterButton"
               :map="map"
@@ -204,7 +207,6 @@
 import 'leaflet-draw/dist/leaflet.draw.css';
 import Vue from 'vue';
 import { mapState, mapMutations } from 'vuex';
-import DrawComponent from './DrawComponent.vue';
 import interestArea from '@/assets/interest_area.json';
 import MapPrinter from '@/components/map/MapPrinter.vue';
 
@@ -229,10 +231,10 @@ import DeterLayers from '@/components/deter/DeterLayers';
 import AlertLayers from '@/components/urgent-alerts/AlertLayers';
 import LandUseLayers from '@/components/land-use/LandUseLayers';
 import SupportUserLayersMap from '@/components/support/SupportUserLayersMap';
-
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-basemaps/L.Control.Basemaps.css';
 import 'leaflet-minimap/dist/Control.MiniMap.min.css';
+import DrawingPanel from '@/components/map/drawing-tool/DrawingPanel.vue';
 
 if (typeof window !== 'undefined') {
   require('leaflet-bing-layer');
@@ -255,7 +257,6 @@ export default {
     FileLoaderControl,
     FileLoaderLayers,
     PriorityLayers,
-    DrawComponent,
     // ChangeDetectionLayers,
     BaseWmsMetadataPopup,
     // AlgorithmLayers,
@@ -268,9 +269,10 @@ export default {
     SupportLayersProdes,
     SupportLayersHazard,
     SupportUserLayersMap,
+    DrawingPanel,
   },
 
-  data: () => ({
+  data: () => ({   
     map: null,
     zoom: 4,
     minZoom: 2,
@@ -483,7 +485,7 @@ export default {
         )
         : [];
     },
-    ...mapState('map', ['bounds', 'boundsZoomed', 'loading']),
+    ...mapState('map', ['bounds', 'boundsZoomed', 'loading', 'activeMenu']),
     ...mapState('userProfile', ['user']),
   },
 
@@ -658,6 +660,7 @@ export default {
       'setBounds',
       'setMapLoading',
       'setLocalBounds',
+      'setActiveMenu'
     ]),
   },
 };
