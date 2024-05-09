@@ -1,4 +1,5 @@
 export const state = () => ({
+  activeMenu: '',
   openDrawPopup: null,
   startDrawPopup: false,
   bounds: null,
@@ -29,6 +30,10 @@ export const getters = {
 };
 
 export const mutations = {
+  setActiveMenu(state, payload) {
+    state.activeMenu = payload !== state.activeMenu ? payload : '';
+  },
+
   setBounds: (state, bounds) => (state.bounds = bounds),
 
   setLocalBounds: (state, localBounds) => (state.localBounds = localBounds),
@@ -127,4 +132,43 @@ export const actions = {
       );
     }
   },
+
+  async saveDrawToDatabase({ commit }, { geometry, name }) {
+    try {
+      const response = await this.$api.post('user/upload-file/', {
+        name,
+        geometry,
+      });
+
+      if (response) {
+        commit(
+          'alert/addAlert',
+          {
+            message: this.$i18n.t('upload-success', {
+              date: response.data.created_at,
+              name: response.data.name,
+              new_data: response.data.created,
+              updated_data: response.data.updated,
+            }),
+          },
+          { root: true },
+        );
+        commit('setHasLayer', true);
+      }
+    } catch (exception) {
+      commit(
+        'alert/addAlert',
+        {
+          message: this.$i18n.t('default-error', {
+            action: this.$i18n.t('retrieve'),
+            resource: this.$i18n.tc('imagery', 2),
+          }),
+        },
+        { root: true },
+      );
+    }
+  },
+
+
+
 };
