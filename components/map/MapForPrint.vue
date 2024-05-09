@@ -505,14 +505,14 @@
                   no-gutters
                   align="center"
                 >
-                  <img
+                  <!-- <img
                     :src="
                       layer.wms.geoserver.preview_url +
                         layer.wms.geoserver_layer_name
                     "
                     width="30vw"
                     alt="CorLayer"
-                  >
+                  > -->
                   <v-col>
                     <p class="ml-1">
                       {{ layer.name }}
@@ -531,14 +531,14 @@
                   no-gutters
                   align="center"
                 >
-                  <img
+                  <!-- <img
                     :src="
                       layer.wms.geoserver.preview_url +
                         layer.wms.geoserver_layer_name
                     "
                     width="30vw"
                     alt="CorLayer"
-                  >
+                  > -->
                   <v-col>
                     <p class="ml-1">
                       {{ layer.name }}
@@ -557,14 +557,14 @@
                   no-gutters
                   align="center"
                 >
-                  <img
+                  <!-- <img
                     :src="
                       layer.wms.geoserver.preview_url +
                         layer.wms.geoserver_layer_name
                     "
                     width="30vw"
                     alt="CorLayer"
-                  >
+                  > -->
                   <v-col>
                     <p class="ml-1">
                       {{ layer.name }}
@@ -583,14 +583,14 @@
                   no-gutters
                   align="center"
                 >
-                  <img
+                  <!-- <img
                     :src="
                       layer.wms.geoserver.preview_url +
                         layer.wms.geoserver_layer_name
                     "
                     width="60vw"
                     alt="CorLayer"
-                  >
+                  > -->
                   <v-col>
                     <p class="ml-1">
                       {{ layer.name }}
@@ -609,14 +609,14 @@
                   no-gutters
                   align="center"
                 >
-                  <img
+                  <!-- <img
                     :src="
                       layer.wms.geoserver.preview_url +
                         layer.wms.geoserver_layer_name
                     "
                     width="30vw"
                     alt="CorLayer"
-                  >
+                  > -->
                   <v-col>
                     <p class="ml-1">
                       {{ layer.name }}
