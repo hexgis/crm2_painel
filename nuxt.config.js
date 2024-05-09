@@ -3,6 +3,11 @@ import messages from './plugins/i18n-messages.js';
 require('dotenv').config();
 
 export default {
+  // Outras configurações...
+  // serverMiddleware: [
+  //   { path: '/api', handler: '~/server-middleware/express.js' },
+  // ],
+
   mode: 'universal',
   /*
      ** Headers of the page
@@ -51,6 +56,7 @@ export default {
     '@nuxtjs/vuetify',
     '@nuxtjs/moment',
   ],
+
   /*
      ** Nuxt.js modules
      */
@@ -74,21 +80,22 @@ export default {
       dark: false,
       themes: {
         light: {
-          primary: '#da2a3f',
-          secondary: '#da2a3f',
-          accent: '#da2a3f',
+          primary: '#D92B3F', // vermelho - botão login, faixa login, loading login
+          secondary: '#D92B3F', // vermelho
+          accent: '#D92B3F', // vermelho
           error: '#da2a3f',
-          warning: '#da2a3f',
-          info: '#ffffff',
+          warning: '#FFCE03', // amarelo
+          info: '#FFFFFF', // branco - fundo login
           success: '#26A69A',
+          btn_login: '#D92B3F',
         },
         dark: {
-          primary: '#63676c',
-          secondary: '#4d5155',
-          accent: '#63676c',
+          primary: '#D92B3F', // vermelho
+          secondary: '#D92B3F', // vermelho
+          accent: '#D92B3F', // vermelho
           error: '#2F4D6A',
-          warning: '#1E3d59',
-          info: '#63676c',
+          warning: '#FFCE03', // amarelo
+          info: '#000000', // preto fundo login
           success: '#26A69A',
         },
       },

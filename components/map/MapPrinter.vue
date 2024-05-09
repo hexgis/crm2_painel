@@ -24,7 +24,7 @@
     >
       <v-toolbar
         dark
-        color="secondary"
+        color="primary"
       >
         <h3>{{ $t('print-dialog-label') }}</h3>
         <v-spacer />
@@ -76,6 +76,8 @@
                 <v-spacer />
                 <v-btn
                   color="primary"
+                  outlined
+                  small
                   @click="currentStep++"
                 >
                   {{ $t('input-button-first-step') }}
@@ -113,6 +115,8 @@
               <v-btn
                 color="primary"
                 class="mr-2"
+                outlined
+                small
                 :loading="loadingPrintImage"
                 @click="saveImage"
               >
@@ -125,6 +129,8 @@
               <v-btn
                 color="primary"
                 class="mr-2"
+                small
+                outlined
                 :loading="loadingGeneratePdf"
                 @click="generatePdf"
               >
@@ -144,7 +150,7 @@
 <i18n>
 {
     "en": {
-        "print-icon-label": "print out",
+        "print-icon-label": "Print out",
         "print-dialog-label": "Print Out",
         "dialog-text-first-step": "Type below the title of the map to be printed or, if you prefer, leave it blank",
         "input-title-label": "Map Title",
@@ -188,14 +194,12 @@ export default {
     map: {
       type: Object,
       default: null,
-
     },
 
     selectedBaseMap: {
       type: Object,
       default: null,
     },
-
   },
 
   data: () => ({
@@ -208,10 +212,10 @@ export default {
     select: { type: 'A4' },
     items: [
       { type: 'A4' },
-      // { type: 'A0' },
-      // { type: 'A1' },
-      // { type: 'A2' },
-      // { type: 'A3' },
+      { type: 'A0' },
+      { type: 'A1' },
+      { type: 'A2' },
+      { type: 'A3' },
     ],
   }),
 
@@ -266,7 +270,14 @@ export default {
             format: this.select.type,
             compression: 'SLOW',
           });
-          doc.addImage(image, 'JPEG', 0, 0, 210, 150);
+
+          const width = doc.internal.pageSize.getWidth();
+          const height = doc.internal.pageSize.getHeight();
+          const aspectRatio = node.offsetWidth / node.offsetHeight;
+          const imageWidth = aspectRatio >= 1 ? width : height * aspectRatio;
+          const imageHeight = aspectRatio >= 1 ? width / aspectRatio : height;
+
+          doc.addImage(image, 'JPEG', 0, 0, imageWidth, imageHeight);
           doc.save(`${nameImageDownload}.pdf`);
         });
         this.loadingGeneratePdf = false;
@@ -290,7 +301,6 @@ export default {
 .background__toolbar {
     background: linear-gradient(to bottom, rgb(28, 65, 113), rgb(28, 65, 113));
 }
-
 </style>
 
 <style>

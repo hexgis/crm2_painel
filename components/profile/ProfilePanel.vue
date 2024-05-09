@@ -129,7 +129,7 @@ export default {
 
   computed: {
     hasFirstOrLastName() {
-      return this.user && (this.user.first_name || this.user.last_name);
+            return this.user && (this.user.first_name || this.user.last_name);
     },
     ...mapState('userProfile', ['user']),
   },

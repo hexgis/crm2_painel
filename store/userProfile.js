@@ -1,6 +1,5 @@
 export const state = () => ({
   user: null,
-  updating: false,
   showDrawer: false,
 });
 
@@ -8,22 +7,12 @@ export const mutations = {
   setUser(state, { user }) {
     state.user = user;
   },
-
-  setUserSettings(state, { settings }) {
-    state.user = { ...state.user, settings };
-  },
-
-  setUpdating(state, updating) {
-    state.updating = updating;
-  },
   closeDrawer(state) {
     state.showDrawer = false;
   },
-
   openDrawer(state) {
     state.showDrawer = true;
   },
-
 };
 
 export const actions = {
@@ -52,13 +41,14 @@ export const actions = {
     });
   },
 
-  async updateSettings({ commit }, settings) {
-    return await this.$api
-      .$put('user-profile/update-settings', settings)
-      .then((data) => {
-        commit('setUserSettings', {
-          settings: data,
-        });
-      });
-  },
+  // async getUserData({ commit, dispatch }) {
+  //   await this.$api.$get('user/logged/').then((data) => {
+  //     commit('setUser', {
+  //       user: data,
+  //     });
+  //   }).catch((error) => {
+  //     console.error('Erro ao receber dados:', error);
+  //     dispatch('auth/logout', null, { root: true });
+  //   });
+  // },
 };

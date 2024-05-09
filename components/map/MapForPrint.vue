@@ -505,14 +505,14 @@
                   no-gutters
                   align="center"
                 >
-                  <img
+                  <!-- <img
                     :src="
                       layer.wms.geoserver.preview_url +
                         layer.wms.geoserver_layer_name
                     "
                     width="30vw"
                     alt="CorLayer"
-                  >
+                  > -->
                   <v-col>
                     <p class="ml-1">
                       {{ layer.name }}
@@ -531,14 +531,14 @@
                   no-gutters
                   align="center"
                 >
-                  <img
+                  <!-- <img
                     :src="
                       layer.wms.geoserver.preview_url +
                         layer.wms.geoserver_layer_name
                     "
                     width="30vw"
                     alt="CorLayer"
-                  >
+                  > -->
                   <v-col>
                     <p class="ml-1">
                       {{ layer.name }}
@@ -557,14 +557,14 @@
                   no-gutters
                   align="center"
                 >
-                  <img
+                  <!-- <img
                     :src="
                       layer.wms.geoserver.preview_url +
                         layer.wms.geoserver_layer_name
                     "
                     width="30vw"
                     alt="CorLayer"
-                  >
+                  > -->
                   <v-col>
                     <p class="ml-1">
                       {{ layer.name }}
@@ -583,14 +583,14 @@
                   no-gutters
                   align="center"
                 >
-                  <img
+                  <!-- <img
                     :src="
                       layer.wms.geoserver.preview_url +
                         layer.wms.geoserver_layer_name
                     "
                     width="60vw"
                     alt="CorLayer"
-                  >
+                  > -->
                   <v-col>
                     <p class="ml-1">
                       {{ layer.name }}
@@ -609,14 +609,14 @@
                   no-gutters
                   align="center"
                 >
-                  <img
+                  <!-- <img
                     :src="
                       layer.wms.geoserver.preview_url +
                         layer.wms.geoserver_layer_name
                     "
                     width="30vw"
                     alt="CorLayer"
-                  >
+                  > -->
                   <v-col>
                     <p class="ml-1">
                       {{ layer.name }}
@@ -749,7 +749,7 @@
               As informações podem apresentar distorções em função
               das bases cartográficas utilizadas.
             </p>
-            <p>Modelo de mapa adaptado para formato A4.</p>
+            <p>Modelo de mapa adaptado para formato. {{ leafSize.type }}</p>
           </div>
           <v-divider v-if="showFeaturesMonitoring" />
           <div
@@ -1012,6 +1012,8 @@ p {
     border-top: 0.5px solid gray;
     border-bottom: 0.5px solid gray;
     height: 100%;
+    background-color: #ffffff;
+    color: black;
 }
 .hight_container_mini_map {
     height: 150px;

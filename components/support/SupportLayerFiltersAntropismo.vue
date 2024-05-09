@@ -85,6 +85,8 @@
         <v-btn
           block
           color="primary"
+          small
+          outlined
           :disabled="!valid"
           :loading="loading"
           @click.prevent="filterLayer()"

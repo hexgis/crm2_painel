@@ -2,9 +2,8 @@
   <v-tabs
     v-model="activeTab"
     vertical
-
     optional
-    background-color="secondary"
+    background-color="primary"
     class="right-tabs fill-height"
   >
     <div class="top-buttons d-sm-none">
@@ -75,9 +74,25 @@
         </v-list>
       </div>
       <v-footer
+        v-if="this.$vuetify.theme.dark"
         absolute
         elevation="4"
-        color="white"
+        color="black"
+      >
+        <v-col>
+          <v-row class="d-flex justify-center">
+            <v-img
+              max-width="200"
+              src="/img/logo-inteira-antiga-branca.svg"
+            />
+          </v-row>
+        </v-col>
+      </v-footer>
+       <v-footer
+        v-if="!this.$vuetify.theme.dark"
+        absolute
+        elevation="4"
+        color="#ffffff"
       >
         <v-col>
           <v-row class="d-flex justify-center">
@@ -97,6 +112,7 @@
 <i18n>
 {
     "en": {
+        "analytics-tab": "Analytics",
         "catalog-tab": "My Image Database",
         "search-tab": "Monitoring",
         "layers-tab": "Layers",
@@ -111,6 +127,7 @@
         "deter-tab": "Deter"
     },
     "pt-br": {
+        "analytics-tab": "Analytics",
         "catalog-tab": "Meu acervo de imagens",
         "search-tab": "Monitoramento Diário",
         "layers-tab": "Camadas de Sobreposição",
@@ -151,6 +168,7 @@ export default {
 
     allTabs() {
       return [
+        
         {
           name: this.$t('layers-tab'),
           icon: 'mdi-layers',
@@ -216,12 +234,18 @@ export default {
           icon: 'mdi-dresser',
           route: '/mapoteca',
           show: process.env.ROUTE_MAPOTECA === 'true',
-        },
+        },        
         {
           name: this.$t('deter-tab'),
           icon: 'mdi-leaf',
           route: '/deter',
           show: process.env.ROUTE_DETER === 'true',
+        },
+        {
+          name: this.$t('analytics-tab'),
+          icon: 'mdi-chart-box-outline',
+          route: '/analytics',
+          show: process.env.ROUTE_ANALYTICS === 'true',
         },
       ];
     },

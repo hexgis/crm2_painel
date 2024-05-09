@@ -113,7 +113,8 @@
         <v-btn
           small
           block
-          color="accent"
+          color="primary"
+          outlined
           :loading="isLoadingFeatures"
           @click="search"
         >
@@ -124,7 +125,8 @@
         <v-btn
           small
           block
-          color="accent"
+          color="primary"
+          outlined
           :loading="isLoadingFeatures"
           @click="search"
         >

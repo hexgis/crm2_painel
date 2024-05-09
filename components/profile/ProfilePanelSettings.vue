@@ -8,12 +8,12 @@
     <v-card
       v-if="!showMap"
       min-height="600"
-      color="secondary"
+      
     >
       <v-card-title
-        class="ml-n2 secondary"
+        class="ml-n2 primary"
       >
-        {{ $t('settings-label') }}
+        {{ $t('settings-label') }} dasfa
         <v-spacer />
         <v-btn
           icon
@@ -26,7 +26,7 @@
       <v-tabs
         v-model="activeTab"
         :vertical="!$vuetify.breakpoint.mobile"
-        dark
+        background-color="#bfbfbf"
         class="settings-tabs fill-height"
       >
         <template v-for="(tab, index) in tabs">
