@@ -16,6 +16,17 @@ export const mutations = {
 };
 
 export const actions = {
+  // async getUserData({ commit, dispatch }) {
+  //   await this.$api.$get('user/logged/').then((data) => {
+  //     commit('setUser', {
+  //       user: data,
+  //     });
+  //   }).catch((error) => {
+  //     console.error('Erro ao receber dados:', error);
+  //     dispatch('auth/logout', null, { root: true });
+  //   });
+  // },
+  
   getUserData({ commit }) {
     // return await this.$api.$get('user-profile/logged').then((data) => {
     //     commit('setUser', {
@@ -40,15 +51,4 @@ export const actions = {
       },
     });
   },
-
-  // async getUserData({ commit, dispatch }) {
-  //   await this.$api.$get('user/logged/').then((data) => {
-  //     commit('setUser', {
-  //       user: data,
-  //     });
-  //   }).catch((error) => {
-  //     console.error('Erro ao receber dados:', error);
-  //     dispatch('auth/logout', null, { root: true });
-  //   });
-  // },
 };
