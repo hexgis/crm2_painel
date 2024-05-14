@@ -84,7 +84,7 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import interestArea from '@/assets/interest_area.json';
-import MapPrinter from '@/components/map/MapPrinter.vue';
+import MapPrinter from '@/components/map/print-map/MapPrinter.vue';
 
 import MapSearch from '@/components/map/MapSearch.vue';
 import ZoomToCoords from '@/components/map/ZoomToCoords.vue';

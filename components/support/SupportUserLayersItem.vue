@@ -1,8 +1,8 @@
 <template>
-  <l-layer-group v-if="feature">
+  <l-layer-group v-if="layer.geometry">
     <l-feature-group ref="features">
       <l-geo-json
-        :geojson="feature"
+        :geojson="layer.geometry"
         :visible="visible"
         :options-style="opacity"
         :options="{ onEachFeature, pointToLayer }"
@@ -76,18 +76,7 @@ export default {
       color: this.getRandomColor(),
     };
   },
-
-  watch: {
-    'layer.geometry': {
-      deep: true,
-      handler(newgeometry, oldgeometry) {
-        if (newgeometry) {
-          this.feature = this.layer.geometry;
-        }
-      },
-    },
-  },
-
+  
   computed: {
     visible() {
       return this.layer.visible;
