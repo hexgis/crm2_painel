@@ -16,11 +16,12 @@
                         :layer="layer"
                     />
                 </template>
-            </l-layer-group> </template
-    ></l-layer-group>
+            </l-layer-group>
+        </template>
+    </l-layer-group>
 </template>
-  </l-layer-group>
-</template>
+
+
 
 <script>
 import { mapState } from 'vuex'

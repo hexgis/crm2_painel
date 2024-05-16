@@ -1,5 +1,5 @@
 <template>
-    <l-layer-group :visible="showFeatures">
+    <l-layer-group>
         <template v-for="layer in supportLayerUser">
             <SupportUserLayersItem :key="layer.id" :layer="layer" />
         </template>
