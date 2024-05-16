@@ -93,6 +93,12 @@
               :map="map"
               :selected-base-map="selectedBaseMap"
             />
+            <Highlighter
+              :map="map"
+              :show="activeMenu === 'Highlighter'"
+              @toggleTool="setActiveMenuMarker"
+            
+            />
           </div>
         </l-control>
         <l-control
@@ -236,6 +242,9 @@ import 'leaflet-basemaps/L.Control.Basemaps.css';
 import 'leaflet-minimap/dist/Control.MiniMap.min.css';
 import DrawingPanel from '@/components/map/drawing-tool/DrawingPanel.vue';
 
+import Highlighter from '@/components/map/Highlighter.vue';
+
+
 if (typeof window !== 'undefined') {
   require('leaflet-bing-layer');
   require('leaflet-basemaps');
@@ -270,6 +279,8 @@ export default {
     SupportLayersHazard,
     SupportUserLayersMap,
     DrawingPanel,
+   
+    Highlighter
   },
 
   data: () => ({   
@@ -660,7 +671,8 @@ export default {
       'setBounds',
       'setMapLoading',
       'setLocalBounds',
-      'setActiveMenu'
+      'setActiveMenu',
+      'setActiveMenuMarker'
     ]),
   },
 };
