@@ -47,8 +47,7 @@
                                     v-model="coordType"
                                     :items="options"
                                     class="pt-0"
-                                ></v-select>
-
+                                />
                                 <div v-if="coordType === $t('decimal-label')">
                                     <v-row>
                                         <v-col cols="6" class="py-0">
@@ -89,16 +88,18 @@
                                                     />
                                                 </template>
                                                 <span>Longitude</span>
-                                            </v-tooltip>                                            
-                                        </v-col>                              
-                                    </v-row>                                   
+                                            </v-tooltip>
+                                        </v-col>
+                                    </v-row>
                                 </div>
                                 <div v-if="coordType === $t('dms-label')">
                                     <v-row>
                                         <v-col cols="3" class="pt-0">
                                             <v-text-field
                                                 v-model="degN"
-                                                :placeholder="$t('degree-label')"
+                                                :placeholder="
+                                                    $t('degree-label')
+                                                "
                                                 class="dms-field"
                                                 :class="degNError"
                                                 suffix="°"
@@ -110,7 +111,9 @@
                                         <v-col cols="3" class="pt-0">
                                             <v-text-field
                                                 v-model="minN"
-                                                :placeholder="$t('minute-label')"
+                                                :placeholder="
+                                                    $t('minute-label')
+                                                "
                                                 class="dms-field"
                                                 :class="minNError"
                                                 suffix="'"
@@ -122,7 +125,9 @@
                                         <v-col cols="3" class="pt-0">
                                             <v-text-field
                                                 v-model="secN"
-                                                :placeholder="$t('second-label')"
+                                                :placeholder="
+                                                    $t('second-label')
+                                                "
                                                 class="dms-field"
                                                 :class="secNError"
                                                 suffix='"'
@@ -131,11 +136,12 @@
                                                 flat
                                             />
                                         </v-col>
-                                        <v-col cols="3" class="pt-0">
+                                        <v-col cols="3" class="pt-0 mt-2">
                                             <v-btn
                                                 v-if="!north"
                                                 density="comfortable"
                                                 @click="toggleActivate()"
+                                                small
                                             >
                                                 <b>S</b>
                                             </v-btn>
@@ -143,12 +149,13 @@
                                                 v-if="north"
                                                 density="comfortable"
                                                 @click="toggleActivate()"
+                                                small
                                             >
                                                 <b>N</b>
                                             </v-btn>
-                                         </v-col>
+                                        </v-col>
                                     </v-row>
-                                    <v-row >
+                                    <v-row>
                                         <v-col cols="3" class="pt-0">
                                             <v-text-field
                                                 v-model="degW"
@@ -196,81 +203,106 @@
                                                 v-if="!east"
                                                 density="comfortable"
                                                 @click="toggleActivateEast()"
+                                                small
                                             >
                                                 <b>W</b>
                                             </v-btn>
-
                                             <v-btn
                                                 v-if="east"
                                                 density="comfortable"
                                                 @click="toggleActivateEast()"
+                                                small
                                             >
                                                 <b>E</b>
                                             </v-btn>
                                         </v-col>
                                     </v-row>
                                 </div>
-                                <v-btn @click="addMarker" class="mt-0">Add Marker</v-btn>
-                                
-                                <v-card-actions v-if="this.showEdit">
-                                    <v-btn
-                                        v-for="btn in buttonsEdit"
-                                        :key="btn.icon"
-                                        icon
-                                        class="btn-tools"
-                                        x-small
-                                        @click="handleButtonEditClick(btn.type)"
-                                    >
-                                        <v-tooltip top>
-                                            <template #activator="{ on }">
-                                                <v-icon v-on="on">{{
-                                                    btn.icon
-                                                }}</v-icon>
-                                            </template>
-                                            {{ getTooltipText(btn.icon) }}
-                                        </v-tooltip>
-                                    </v-btn>
-                                </v-card-actions>
+                                <v-divider></v-divider>
+                                <v-row>
+                                    <v-col cols="1">
+                                        <v-btn
+                                            fab
+                                            ripple
+                                            height="36"
+                                            width="36"
+                                            class="mt-2"
+                                            @click="addMarker"
+                                        >
+                                            <v-icon color="error">
+                                                mdi-map-marker
+                                            </v-icon>
+                                        </v-btn>
+                                    </v-col>
+                                    <v-col cols="2" class="ml-2">
+                                        <v-card-actions v-if="this.showEdit">
+                                            <v-btn
+                                                v-for="btn in buttonsEdit"
+                                                :key="btn.icon"
+                                                icon
+                                                class="btn-tools"
+                                                x-small
+                                                @click="
+                                                    handleButtonEditClick(
+                                                        btn.type
+                                                    )
+                                                "
+                                            >
+                                                <v-tooltip top>
+                                                    <template
+                                                        #activator="{ on }"
+                                                    >
+                                                        <v-icon v-on="on">{{
+                                                            btn.icon
+                                                        }}</v-icon>
+                                                    </template>
+                                                    {{
+                                                        getTooltipText(btn.icon)
+                                                    }}
+                                                </v-tooltip>
+                                            </v-btn>
+                                        </v-card-actions>
+                                    </v-col>
+                                    <v-col cols="8">
+                                        <v-card-actions
+                                            v-if="isButtonEditClicked"
+                                        >
+                                            <div class="ml-4 mt-1">
+                                                <v-btn
+                                                    v-if="
+                                                        isEditButtonActive ||
+                                                        isDeleteButtonActive
+                                                    "
+                                                    color="success"
+                                                    class="btn-action"
+                                                    @click.stop="save()"
+                                                    x-small
+                                                >
+                                                    <span>Salvar</span>
+                                                </v-btn>
+                                                <v-btn
+                                                    v-if="isDeleteButtonActive"
+                                                    class="btn-action"
+                                                    color="accent"
+                                                    x-small
+                                                    @click.stop="
+                                                        clearAllDrawings
+                                                    "
+                                                >
+                                                    <span>Remover todos</span>
+                                                </v-btn>
+                                            </div>
+                                        </v-card-actions>
+                                    </v-col>
+                                </v-row>
                             </v-container>
-                        </v-card-actions>
-                        <v-card-actions v-if="isButtonEditClicked">
-                            <div
-                                class="row no-gutters align-center justify-space-between ml-1"
-                            >
-                               
-                                <div class="col-4">
-                                    <v-btn
-                                        color="success"
-                                        class="btn-action"
-                                        @click.stop="save()"
-                                    >
-                                        <span>Save</span>
-                                    </v-btn>
-                                </div>
-                                <div class="col-4">
-                                    <v-btn
-                                        v-if="isDeleteButtonActive"
-                                        class="btn-action"
-                                        color="accent"
-                                        @click.stop="clearAllDrawings"
-                                    >
-                                        <span>Clear All</span>
-                                    </v-btn>
-                                </div>
-                            </div>
                         </v-card-actions>
                     </v-card>
                 </div>
             </transition>
         </div>
         <div id="map" style="height: 500px; width: 100%"></div>
-        <BaseDialog
-            v-if="downloadDialog"
-            :label="$t('download-label')"
-            :type="'Download'"
-            @close="downloadDialog = false"
-            @action="generateJson"
-        />
+
         <BaseDialog
             v-if="saveDialog"
             :label="$t('save-label')"
@@ -321,7 +353,7 @@
 </i18n>
 
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 import BaseDialog from '@/components/map/drawing-tool/BaseDialog'
 import getGeometryArea from '~/plugins/getGeometryArea'
 
@@ -354,17 +386,16 @@ export default {
             { icon: 'mdi-delete-outline', type: 'Delete' },
             { icon: 'mdi-database-plus-outline', type: 'Save' },
         ],
-        createdControl: false,
+
         activeButton: null,
-        drawingFinished: false,
+
         isButtonEditClicked: false,
         newValueContent: [],
         isDeleteButtonActive: false,
-        loadingRelationship: false,
-        downloadDialog: false,
+        isEditButtonActive: false,
+
         saveDialog: false,
-        drawnItems: null,
-        textBoxId: [],
+
         lat: '',
         lng: '',
         latError: '',
@@ -417,102 +448,84 @@ export default {
         },
 
         addMarker() {
-            let latitude
-            let longitude
+            let latitude, longitude
             let hasError = false
 
-            if (this.coordType === this.$i18n.t('dms-label')) {
-                // Check for errors in DMS fields
-                if (
-                    !this.degN ||
-                    !this.minN ||
-                    !this.secN ||
-                    !this.degW ||
-                    !this.minW ||
-                    !this.secW ||
-                    isNaN(this.degN) ||
-                    isNaN(this.minN) ||
-                    isNaN(this.secN) ||
-                    isNaN(this.degW) ||
-                    isNaN(this.minW) ||
-                    isNaN(this.secW)
-                ) {
-                    if (!this.degN || isNaN(this.degN)) this.degNError = true
-                    if (!this.minN || isNaN(this.minN)) this.minNError = true
-                    if (!this.secN || isNaN(this.secN)) this.secNError = true
-                    if (!this.degW || isNaN(this.degW)) this.degWError = true
-                    if (!this.minW || isNaN(this.minW)) this.minWError = true
-                    if (!this.secW || isNaN(this.secW)) this.secWError = true
-                    hasError = true
-                } else {
-                    if (this.north) {
-                        latitude = this.calculteDecimal(
-                            this.degN,
-                            this.minN,
-                            this.secN
-                        )
-                    } else {
-                        latitude = this.calculteNegativeDecimal(
-                            this.degN,
-                            this.minN,
-                            this.secN
-                        )
+            const validateDMSInput = () => {
+                const fields = ['degN', 'minN', 'secN', 'degW', 'minW', 'secW']
+                fields.forEach((field) => {
+                    if (!this[field] || isNaN(this[field])) {
+                        this[`${field}Error`] = true
+                        hasError = true
                     }
-
-                    if (this.east) {
-                        longitude = this.calculteDecimal(
-                            this.degW,
-                            this.minW,
-                            this.secW
-                        )
-                    } else {
-                        longitude = this.calculteNegativeDecimal(
-                            this.degW,
-                            this.minW,
-                            this.secW
-                        )
-                    }
-                }
-            } else if (this.coordType === this.$i18n.t('decimal-label')) {
-                // Check for errors in Decimal fields
-                if (
-                    !this.lat ||
-                    !this.lng ||
-                    isNaN(this.lat) ||
-                    isNaN(this.lng)
-                ) {
-                    if (!this.lat || isNaN(this.lat)) this.latError = true
-                    if (!this.lng || isNaN(this.lng)) this.lngError = true
-                    hasError = true
-                } else {
-                    latitude = parseFloat(this.lat)
-                    longitude = parseFloat(this.lng)
-                }
-            } else {
-                hasError = true
+                })
             }
 
-            if (hasError) {
-                return
+            const validateDecimalInput = () => {
+                if (!this.lat || isNaN(this.lat)) {
+                    this.latError = true
+                    hasError = true
+                }
+                if (!this.lng || isNaN(this.lng)) {
+                    this.lngError = true
+                    hasError = true
+                }
             }
+
+            const calculateLatitudeLongitude = () => {
+                if (this.coordType === this.$i18n.t('dms-label')) {
+                    validateDMSInput()
+                    if (!hasError) {
+                        latitude = this.north
+                            ? this.calculateDecimal(
+                                  this.degN,
+                                  this.minN,
+                                  this.secN
+                              )
+                            : this.calculateNegativeDecimal(
+                                  this.degN,
+                                  this.minN,
+                                  this.secN
+                              )
+                        longitude = this.east
+                            ? this.calculateDecimal(
+                                  this.degW,
+                                  this.minW,
+                                  this.secW
+                              )
+                            : this.calculateNegativeDecimal(
+                                  this.degW,
+                                  this.minW,
+                                  this.secW
+                              )
+                    }
+                } else if (this.coordType === this.$i18n.t('decimal-label')) {
+                    validateDecimalInput()
+                    if (!hasError) {
+                        latitude = parseFloat(this.lat)
+                        longitude = parseFloat(this.lng)
+                    }
+                } else {
+                    hasError = true
+                }
+            }
+
+            calculateLatitudeLongitude()
+
+            if (hasError) return
+
             this.showEdit = true
             this.map.flyTo([latitude, longitude], 12)
 
-            // Criar um novo marcador
             const novoMarcador = L.marker([latitude, longitude])
-
-            // Adicionar o novo marcador ao mapa e ao grupo de itens desenhados
             novoMarcador.addTo(this.map)
             this.drawnItems.addLayer(novoMarcador)
 
-            // Adicionar manipulador de evento de clique para exclusão
-            novoMarcador.on('click', (e) => {
-                if (this.isDeleteButtonActive) {
-                    this.drawnItems.removeLayer(novoMarcador)
-                }
+            novoMarcador.on('click', () => {
+                this.drawnItems.removeLayer(novoMarcador)
+                this.map.removeLayer(novoMarcador)
             })
 
-            // Atualizar o marcador central
             this.center = novoMarcador
 
             this.handleButtonEditClick()
@@ -530,6 +543,13 @@ export default {
             } else {
                 this.isDeleteButtonActive = false
             }
+
+            if (type === 'Edit') {
+                this.isEditButtonActive = true
+            } else {
+                this.isEditButtonActive = false
+            }
+
             if (type === 'Edit' || type === 'Delete') {
                 this.drawInstance = new this.$L.EditToolbar[type](this.map, {
                     featureGroup: this.drawnItems,
@@ -537,10 +557,7 @@ export default {
                 this.originalDrawnItems = this.drawnItems.toGeoJSON()
                 this.drawInstance.enable()
             }
-            if (type === 'Download') {
-                this.isButtonEditClicked = false
-                this.downloadDialog = true
-            }
+
             if (type === 'Save') {
                 this.isButtonEditClicked = false
                 this.saveDialog = true
@@ -549,41 +566,21 @@ export default {
 
         clearAllDrawings() {
             if (this.drawnItems) {
+                this.drawnItems.eachLayer((layer) => {
+                    this.map.removeLayer(layer)
+                })
                 this.drawnItems.clearLayers()
                 this.isButtonEditClicked = false
-                this.drawInstance.disable()
-                // Remove layers associated with IDs stored in textBoxId
-                this.textBoxId.forEach((id) => {
-                    const layerToRemove = this.map._layers[id]
-                    if (layerToRemove) {
-                        this.map.removeLayer(this.center)
-                    }
-                })
-                // Clear the textBoxId array
-                this.textBoxId = []
+                if (this.drawInstance) {
+                    this.drawInstance.disable()
+                }
             }
         },
 
-        removeMarker() {
-            if (this.center) {
-                this.map.removeLayer(this.center)
-                this.center = null
-            }
-        },
-
-        /**
-         * Generates a JSON representation of the current drawing.
-         *
-         * @param {object} obj - An object representing the drawing.
-         */
         generateJson(obj) {
-            // Create an array to store circle geometries.
             const circles = []
-            // Iterate through the layers in drawnItems.
             Object.values(this.drawnItems._layers).forEach((layer) => {
-                // Check if the layer has a radius (is a circle).
                 if (layer._mRadius) {
-                    // Extract coordinates and create a polygon representing the circle.
                     const coordinates = [layer._latlng.lng, layer._latlng.lat]
                     const circle = markerToPolygon(
                         coordinates,
@@ -593,9 +590,8 @@ export default {
                     circles.push(circle)
                 }
             })
-            // Convert drawnItems to GeoJSON format.
+
             const geometry = this.drawnItems.toGeoJSON()
-            // Iterate through the circle geometries and add them to the GeoJSON.
             circles.forEach((circle) => {
                 const circleGeojson = {
                     type: 'Feature',
@@ -607,12 +603,11 @@ export default {
                 }
                 geometry.features.push(circleGeojson)
             })
-            // Define available actions for the drawing.
+
             const actions = {
-                Download: () => this.downloadDraw(geometry, obj.name),
                 Save: () => this.saveIntoDb(geometry, obj.name),
             }
-            // Get the specified action based on obj.type and execute it.
+
             const action = actions[obj.type]
             if (action) {
                 action()
@@ -620,30 +615,22 @@ export default {
         },
 
         save() {
-            // Disable the drawing functionality.
             this.setIsDrawing(false)
-            // Iterate through all the drawn layers.
             Object.values(this.drawnItems._layers).forEach((layer) => {
-                // Get the geometry area of the layer.
                 this.contentPopupDraw = getGeometryArea(layer)
-                // Add the area of the current drawing to the list of new content values.
                 this.newValueContent.push({
                     content: this.contentPopupDraw,
                     id: layer._leaflet_id,
                 })
-                // Clear the list of new content values after the loop completes.
                 this.$nextTick(() => {
                     this.newValueContent = []
                 })
             })
-            // Set the variable controlling the edit button to false.
             this.isButtonEditClicked = false
-            // Disable the drawing functionality.
             this.drawInstance.disable()
         },
 
         saveIntoDb(geometry, name) {
-            console.log(geometry)
             this.saveDrawToDatabase({ geometry, name })
             this.saveDialog = false
         },
@@ -704,6 +691,7 @@ export default {
     padding: 0px !important
     margin: 0px !important
     color: inherit !important
+    margin-top: 10px !important
 
 .slide-x-drawer-enter-active, .slide-x-drawer-leave-active
     transition: all 0.4s ease-out !important
@@ -715,10 +703,13 @@ export default {
     transition-delay: 0.3s !important
 
 .decimal-field
-        width: 105px
+    width: 105px
 
-.error
-    border: 2px solid red
-    background-color: #ffe6e6
+.col-6
+    flex: 0 0 50%
+    max-width: 50%
+    height: 60px
+
+.btn-action
+    margin-top: 6px
 </style>
-
