@@ -86,16 +86,18 @@
               :map="map"
               :show="activeMenu === 'DrawingPanel'"
               @toggleTool="setActiveMenu"
-            />            
+            />
 
             <MapPrinter
-              v-if="showMapPrinterButton"
               :map="map"
               :selected-base-map="selectedBaseMap"
+              :show-tms="tmsToPrint.visible"
             />
           </div>
         </l-control>
-        <l-control
+
+        <!-- <l-control
+
           position="bottomleft"
         >
           <div>
@@ -107,7 +109,7 @@
               />
             </v-col>
           </div>
-        </l-control>
+        </l-control>-->
         <l-control
           class="leaflet-coordinates-control"
           position="bottomleft"
@@ -123,12 +125,42 @@
           position="bottomleft"
         />
 
+        <l-control
+
+          position="bottomleft"
+          class="leaflet-logo-control"
+        >
+          <v-img
+            class="my-4 ml-0 northArrow"
+            height="40"
+            width="35"
+            :src="northArrow"
+          />
+          <v-col
+            cols="12"
+            class="pa-0"
+          >
+            <a
+              href="https://www.gov.br/funai/pt-br"
+              target="_blank"
+            >
+              <v-img
+                contain
+                width="50"
+                :src="logo_funai"
+                class="logo-flags"
+              />
+            </a>
+          </v-col>
+        </l-control>
+
         <l-geo-json
           ref="interestArea"
           :geojson="interestArea"
           :options-style="interestStyle"
           :visible="showInterestArea"
         />
+
         <SupportUserLayersMap />
 
         <SupportLayers />
@@ -208,7 +240,7 @@ import 'leaflet-draw/dist/leaflet.draw.css';
 import Vue from 'vue';
 import { mapState, mapMutations } from 'vuex';
 import interestArea from '@/assets/interest_area.json';
-import MapPrinter from '@/components/map/MapPrinter.vue';
+import MapPrinter from '@/components/map/print-map/MapPrinter';
 
 import MapSearch from '@/components/map/MapSearch.vue';
 import ZoomToCoords from '@/components/map/ZoomToCoords.vue';
@@ -272,7 +304,19 @@ export default {
     DrawingPanel,
   },
 
-  data: () => ({   
+  props: {
+
+    mainMap: {
+      type: Object,
+      default: null,
+    },
+
+  },
+
+  data: () => ({
+    northArrow: process.env.NORTH_ARROW,
+    logo_cmr: process.env.DEFAULT_LOGO_IMAGE_CMR,
+    logo_funai: process.env.DEFAULT_LOGO_IMAGE_FUNAI,
     map: null,
     zoom: 4,
     minZoom: 2,
@@ -359,20 +403,21 @@ export default {
           zIndex: 1,
         },
       },
-      {
-        url: 'https://tiles.planet.com/basemaps/v1/planet-tiles/global_monthly_2024_03_mosaic/gmap/{z}/{x}/{y}.png?api_key=PLAK486c8860252848f4b84b1e0358d9fd2d',
-        options: {
-          Authorization: 'Access-Control-Allow-Origin',
-          label: 'Mosaics Planet 2024-03',
-          tag: 'Mosaics Planet 2024-03',
-          attribution:
-                        'Map data &copy; <a href="https://tiles.planet.com/basemaps/v1/planet-tiles">Mosaics 2023-10</a> Planet',
-          maxZoom: 21,
-          maxNativeZoom: 19,
-          zIndex: 1,
-          subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-        },
-      },
+      // {
+      //   url: 'https://tiles.planet.com/basemaps/v1/planet-tiles/global_monthly_2024_03_mosaic/gmap/{z}/{x}/{y}.png?api_key=PLAK486c8860252848f4b84b1e0358d9fd2d',
+      //   options: {
+      //     Authorization: 'Access-Control-Allow-Origin',
+      //     label: 'Mosaics Planet 2024-03',
+      //     tag: 'Mosaics Planet 2024-03',
+      //     attribution:
+      //                   'Map data &copy; <a href="https://tiles.planet.com/basemaps/v1/planet-tiles">Mosaics 2023-10</a> Planet',
+      //     maxZoom: 21,
+      //     maxNativeZoom: 19,
+      //     zIndex: 1,
+      //     subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+      //   },
+      // },
+
       // {
       //     url:
       //         '//securewatch.digitalglobe.com/earthservice/wmtsaccess?connectId={connectid}&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&TileMatrixSet=EPSG:3857&LAYER=DigitalGlobe:ImageryTileService&FORMAT=image/jpeg&STYLE=&featureProfile=Vivid_2019&TileMatrix=EPSG:3857:{z}&TILEROW={y}&TILECOL={x}',
@@ -485,7 +530,7 @@ export default {
         )
         : [];
     },
-    ...mapState('map', ['bounds', 'boundsZoomed', 'loading', 'activeMenu']),
+    ...mapState('map', ['bounds', 'boundsZoomed', 'loading', 'activeMenu', 'tmsToPrint']),
     ...mapState('userProfile', ['user']),
   },
 
@@ -643,14 +688,13 @@ export default {
 
     changeBaseMap(event) {
       this.selectedBaseMap = event;
-    
+
       if (event.options.tag === 'Mosaics Planet 2024-02') {
         this.showMapPrinterButton = false;
       } else {
         this.showMapPrinterButton = true;
       }
     },
-
 
     refreshCoordinates(event) {
       this.cursorCoordinates.lat = event.latlng.lat.toFixed(4);
@@ -660,7 +704,7 @@ export default {
       'setBounds',
       'setMapLoading',
       'setLocalBounds',
-      'setActiveMenu'
+      'setActiveMenu',
     ]),
   },
 };
@@ -751,4 +795,17 @@ export default {
         width: 140px
 .div-spacer
     height: 20px
+
+.leaflet-logo-control
+    margin-left: 6px !important
+    margin-bottom: 15px
+
+.northArrow
+    margin-left: -3px
+    opacity: 0.4
+    transition: all ease 0.1s
+
+.northArrow:hover
+    opacity: 1
+    transform: scale(1.1)
 </style>
