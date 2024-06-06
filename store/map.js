@@ -76,7 +76,8 @@ export const mutations = {
 export const actions = {
   async fetchSearchResults({ commit }, searchQuery) {
     try {
-      const response = await this.$api.$get(`/support/busca-geo-ti/?param=${searchQuery}`);
+      const response = await this.$api.$get(`/funai/ti-by-name/?param=${searchQuery}`);
+      console.log(response)
       commit('setIndigenousLand', response)
       return response;
 
