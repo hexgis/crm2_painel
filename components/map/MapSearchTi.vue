@@ -35,7 +35,14 @@
                     item-text="label"
                     solo
                     @click.stop="searchQuery = ''"
-                />
+                >
+                    <template v-slot:item="searchResults">
+                        <div
+                            v-html="formatItem(searchResults)"
+                            @click="handleItemClick(searchResults)"
+                        ></div>
+                    </template>
+                </v-autocomplete>
             </transition>
         </div>
     </div>
@@ -53,7 +60,7 @@
 </i18n>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
     name: 'MapSearchTi',
@@ -76,7 +83,7 @@ export default {
 
     watch: {
         searchQuery() {
-            if (!this.searchQuery || !(this.searchQuery.length > 4)) {
+            if (!this.searchQuery || !(this.searchQuery.length >= 3)) {
                 this.searchResults = []
                 this.isLoading = false
                 return
@@ -91,12 +98,63 @@ export default {
         },
     },
 
+    computed: {
+        ...mapState('map', ['indigenousLand']),
+    },
+
     methods: {
         ...mapActions('map', ['fetchSearchResults']),
 
         async searchOnProvider(response) {
             try {
                 const data = await this.fetchSearchResults(response)
+                data.map((item) =>
+                    this.searchResults.push(
+                      `**Terra Indígena:** ${item?.no_ti || '-'}
+                      **Município:** ${item?.no_municipio || '-'}
+                      **Coordenação Regional:** ${item?.ds_cr || '-'}`
+                  ))
+            } catch (error) {
+                console.error('Erro ao buscar os resultados:', error)
+            }
+
+        },
+        formatItem(text) {
+            let formattedText = text.item.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            formattedText = formattedText.replace(/\n/g, '<br>')
+            return formattedText
+        },
+
+          clearItem(text) {
+            let formattedText = text.item.replace(/\*\*.*?\*\*/g, '');
+            formattedText = formattedText.replace(/\n/g, ' ');
+            formattedText = formattedText.replace(/\s+/g, ' ').trim();
+            this.searchQuery = formattedText
+        },
+
+        findMatchingLandIndex(item) {
+            const itemName = item.toLowerCase();
+            for (let i = 0; i < this.indigenousLand.length; i++) {
+                if (
+                    itemName.includes(this.indigenousLand[i].no_ti.toLowerCase()) &&
+                    itemName.includes(this.indigenousLand[i].ds_cr.toLowerCase()) &&
+                    itemName.includes(this.indigenousLand[i].no_municipio.toLowerCase())                 
+                ) {
+                    return i;
+                }
+            }
+            return -1;
+        },
+
+        async goToIndigenousLands({item}) { 
+            const index = this.findMatchingLandIndex(item);
+            if (index === -1) {
+                console.error('No matching indigenous land found.');
+                return;
+            }
+            const matchingLand = this.indigenousLand[index];
+            try {
+                const data = await this.$api.$get(`funai/busca-geo-ti?id=${matchingLand.id}`)
                 // Verifique se há dados retornados e se há features na coleção
                 if (data && data.features && data.features.length > 0) {
                     // Inicialize os limites vazios
@@ -124,6 +182,11 @@ export default {
                 console.error('Erro ao buscar os resultados:', error)
             }
         },
+        handleItemClick(item) {
+            this.searchQuery = item.label;
+            this.goToIndigenousLands(item);
+            this.clearItem(item);
+        },
     },
 }
 </script>
@@ -141,4 +204,8 @@ export default {
 
     .v-input__control
         min-height: 36px !important
+
+div[role=listbox] > div:nth-child(n):not(:last-child)
+    border-bottom: 1px solid lightgray
+    margin-bottom: 10px
 </style>

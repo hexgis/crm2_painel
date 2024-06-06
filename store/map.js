@@ -8,6 +8,11 @@ export const state = () => ({
   localBounds: [],
   buttonPopup: {},
   isDrawing: false,
+  basemaps: [],
+  tmsToPrint: {
+    visible: false,
+  },
+  hasAddLayer: false,
   indigenousLand: [],
 });
 
@@ -67,6 +72,20 @@ export const mutations = {
     state.fileList.splice(fileIndex, 1);
   },
 
+  setTmsToPrint(state, {
+    visible, tmsUrl, geoserverName, wmsUrl, bounds,
+  }) {
+    state.tmsToPrint.visible = visible;
+    state.tmsToPrint.tmsUrl = tmsUrl;
+    state.tmsToPrint.geoserverName = geoserverName;
+    state.tmsToPrint.wmsUrl = wmsUrl;
+    state.tmsToPrint.bounds = bounds;
+  },
+
+  setHasLayer(state, hasLayer) {
+    state.hasAddLayer = hasLayer;
+  },
+
   setIndigenousLand(state, indigenousLand) {
     state.indigenousLand = indigenousLand
   }
@@ -77,7 +96,6 @@ export const actions = {
   async fetchSearchResults({ commit }, searchQuery) {
     try {
       const response = await this.$api.$get(`/funai/ti-by-name/?param=${searchQuery}`);
-      console.log(response)
       commit('setIndigenousLand', response)
       return response;
 
