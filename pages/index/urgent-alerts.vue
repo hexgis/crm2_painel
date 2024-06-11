@@ -49,7 +49,7 @@
           </v-icon>
           Desmatamento em Regeneração
         </v-row>
-        <v-row class="mb-2">
+        <!-- <v-row class="mb-2">
           <v-icon
             class="mr-2"
             color="#b35900"
@@ -57,7 +57,7 @@
             mdi-square
           </v-icon>
           Fogo em Floresta
-        </v-row>
+        </v-row> -->
         <v-row class="mb-2">
           <v-icon
             class="mr-2"
@@ -70,7 +70,7 @@
         <v-row class="mb-2">
           <v-icon
             class="mr-2"
-            color="#ff3333"
+            color="#b35900"
           >
             mdi-square
           </v-icon>

@@ -58,7 +58,7 @@
                 ></v-row>
                 <v-row>
                     <v-col>
-                        <v-icon class="mr-2" color="#b35900">mdi-square</v-icon>
+                        <v-icon class="mr-2" color="#ff3333">mdi-square</v-icon>
                         <span class="grey--text text--darken-2">
                             Fogo em Floresta
                         </span>
@@ -83,7 +83,7 @@
 
                 <v-row>
                     <v-col>
-                        <v-icon class="mr-2" color="#ff3333">mdi-square</v-icon>
+                        <v-icon class="mr-2" color="#b35900">mdi-square</v-icon>
                         <span class="grey--text text--darken-2">
                             Corte Raso
                         </span>
