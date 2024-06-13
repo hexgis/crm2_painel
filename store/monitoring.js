@@ -34,6 +34,7 @@ export const state = () => ({
   tableCSVMonitoring: [],
   analyticsMonitoringcsv: [],
   selectedStages: ['CR', 'DG', 'DR', 'FF'],
+  stageItemActive: [],
 });
 
 export const getters = {
@@ -61,6 +62,10 @@ export const mutations = {
   setFeatures(state, features) {
     state.features = features;
     state.isLoadingFeatures = false;
+  },
+
+  setStageItemActive(state, value){
+    state.stageItemActive = value
   },
 
   setshowFeaturesMonitoring(state, showFeaturesMonitoring) {
@@ -136,6 +141,12 @@ export const mutations = {
 };
 
 export const actions = {
+  async updateFeatures({ state, commit }){
+    let updatedFeatures =  { features: state.stageItemActive, ...state.features }
+    commit('setFeatures', updatedFeatures);
+    commit('setshowFeaturesMonitoring', true);
+  },
+
   async getFeatures({ state, commit, rootGetters }) {
     commit('setLoadingGeoJson', true);
     commit('setLoadingStatistic', true);
@@ -179,8 +190,15 @@ export const actions = {
           { root: true },
         );
       } else {
+        let stageItemActive = []
+        response.features.map((item)=>{
+          state.selectedStages.map((stageActive) => {
+            stageActive === item.properties.no_estagio ? stageItemActive.push(item) : ""
+          })
+        })
         commit('setFeatures', response);
         commit('setshowFeaturesMonitoring', true);
+        commit('setStageItemActive', stageItemActive);
         const total = await this.$api.$get(
           'monitoring/consolidated/map-stats/',
           {
@@ -994,6 +1012,27 @@ export const actions = {
       commit('setLoadingCSV', false);
     }
   },
+
+  selectedStages(){
+    let features = this.features
+            features.map((item)=>{
+                if (item.properties.no_estagio && value === 'CR'){
+                    this.featureNoEstagio.cr.push(item);
+                    commit('setSelectedStages', item)
+                }
+                if (item.properties.no_estagio && value === 'DG'){
+                    this.featureNoEstagio.dg.push(item);
+                    commit('setSelectedStages', item)
+                }
+                if (item.properties.no_estagio && value === 'FF'){
+                    this.featureNoEstagio.ff.push(item);
+                    commit('setSelectedStages', item)
+                }
+                if (item.properties.no_estagio && value === 'DR'){
+                    this.featureNoEstagio.dr.push(item);
+                    commit('setSelectedStages', item)
+                }
+  })},
 
   async downloadTableMonitoring({ commit, state, rootGetters }) {
     commit('setLoadingCSV', true);
