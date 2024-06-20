@@ -25,7 +25,7 @@
         />
       </v-col>
 
-      <v-col cols="6">
+      <v-col class="py-0 full-width">
         <BaseDateField
           v-model="filters.startDate"
           :label="$t('start-date-label')"
@@ -34,7 +34,7 @@
         />
       </v-col>
 
-      <v-col cols="6">
+      <v-col class="py-0 full-width">
         <BaseDateField
           v-model="filters.endDate"
           :label="$t('end-date-label')"
@@ -48,7 +48,7 @@
         <v-row align="center">
           <v-col
             cols="8"
-            class="pt-0 v-label "
+            class="pt-0 v-label teste "
           >
             {{ $t('cloud-cover-label') }}
           </v-col>
@@ -172,3 +172,16 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+@media (max-width: 768px) {
+  .full-width {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .teste {
+    font-size: 0.9rem;
+  }
+}
+</style>

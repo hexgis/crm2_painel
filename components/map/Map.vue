@@ -513,8 +513,8 @@ export default {
     },
     miniMapOptions: {
       togglePreview: false,
-      height: 125,
-      width: 125,
+      height: 0,
+      width: 0,
     },
     localBounds: [],
   }),
@@ -647,6 +647,14 @@ export default {
         osm.url,
         this.miniMapLayerOptions,
       );
+
+      if (window.innerWidth <= 768) {
+        this.miniMapOptions.height = 75;
+        this.miniMapOptions.width = 75;
+      } else {
+        this.miniMapOptions.height = 125;
+        this.miniMapOptions.width = 125;
+      }
 
       this.miniMap = new this.$L.Control.MiniMap(
         miniMapLayer,
@@ -808,4 +816,12 @@ export default {
 .northArrow:hover
     opacity: 1
     transform: scale(1.1)
+
+@media (max-width: 768px)    
+
+  .basemap img 
+    width: 54px
+
+  .basemap span
+    font-size: 10px  
 </style>

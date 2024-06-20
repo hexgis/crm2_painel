@@ -39,7 +39,7 @@
       </v-row>
     </v-slide-y-transition>
     <v-row class="pt-1">
-      <v-col class="py-0">
+      <v-col class="py-0 full-width">
         <BaseDateField
           v-model="filters.startDate"
           :label="$t('start-date-label')"
@@ -48,7 +48,7 @@
           :min-date="'2015-01-01'"
         />
       </v-col>
-      <v-col class="py-0">
+      <v-col class="py-0 full-width">
         <BaseDateField
           v-model="filters.endDate"
           :label="$t('end-date-label')"
@@ -196,7 +196,7 @@
     >
       <v-col
         cols="7"
-        class="grey--text text--darken-2"
+        class="grey--text text--darken-2 text-label"
       >
         {{ $t('polygon-label') }}:
       </v-col>
@@ -531,3 +531,17 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+@media (max-width: 768px) {
+  .full-width {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .text-label {
+    font-size: 0.8rem;
+    padding-right: 0px;
+  }
+}
+</style>

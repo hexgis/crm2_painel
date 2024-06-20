@@ -7,7 +7,7 @@
                 </h4>
                 <v-tooltip>
                     <template #activator="{ on }">
-                        <v-icon class="mr-2 ml-2" v-on="on">
+                        <v-icon class="infoIconMargin" v-on="on">
                             mdi-information
                         </v-icon>
                     </template>
@@ -97,13 +97,6 @@
             </v-col>
         </div>
         <ShowDialog />
-        <v-footer absolute color="white" elevation="4">
-            <v-col>
-                <v-row class="d-flex justify-center">
-                    <v-img max-width="200" src="/img/logo-inteira-antiga.svg" />
-                </v-row>
-            </v-col>
-        </v-footer>
     </v-container>
 </template>
 
@@ -235,8 +228,23 @@ export default {
 }
 </script>
 
-<style scoped>
+
+<style scoped lang="scss">
 .container-height {
     max-height: 90vh;
+}
+
+.selected {
+    background-color: red
+}
+
+.infoIconMargin {
+    margin-left: 4px;
+  }
+  
+@media (max-width: 768px) {
+  .infoIconMargin {
+    margin-left: 2px;
+  }
 }
 </style>

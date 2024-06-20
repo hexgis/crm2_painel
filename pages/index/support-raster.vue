@@ -2,13 +2,13 @@
   <v-container class="pa-0">
     <div class="tab-header justify-space-between">
       <v-row>
-        <h4 class="subtitle-2 text-uppercase font-weight-regular">
+        <h4 class="subtitle-2 text-uppercase font-weight-regular teste">
           {{ $t('title') }}
         </h4>
         <v-tooltip>
           <template #activator="{ on }">
             <v-icon
-              class="mr-2 ml-2"
+              class="infoIconMargin"
               v-on="on"
             >
               mdi-information
@@ -18,13 +18,15 @@
             Fonte de dados: Geoserver - FUNAI
           </span>
         </v-tooltip>
+        <v-switch
+          v-show="!loading"
+          v-model="showFeatures"
+          class="mt-n1 teste1"
+          hide-details
+        />
       </v-row>
-      <v-switch
-        v-show="!loading"
-        v-model="showFeatures"
-        class="mt-n1 ml-5"
-        hide-details
-      />
+      
+     
     </div>
     <v-list
       v-if="!$fetchState.pending"
@@ -108,4 +110,39 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.container-height {
+    max-height: 90vh;
+}
+
+.selected {
+    background-color: red
+}
+
+.infoIconMargin {
+    margin-left: 4px;
+  }
+
+.teste1 {
+    margin-left: 60px
+    
+       
+  }  
+  
+@media (max-width: 768px) {
+  .infoIconMargin {
+    margin-left: 2px;
+  }
+
+  .teste {
+    font-size: 90% !important;
+  }
+
+  .teste1 {
+    margin-top: 10px;
+    margin-left: 0px
+    
+       
+  }
+}
+</style>
