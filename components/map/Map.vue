@@ -362,21 +362,22 @@ export default {
           maxZoom: 21,
           maxNativeZoom: 18,
           zIndex: 1,
+          
         },
       },
-      // {
-      //   url: 'https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
-      //   options: {
-      //     label: 'Google Satellite',
-      //     tag: 'Google Satellite',
-      //     attribution:
-      //                   'Map data &copy; <a href="//maps.google.com/">Google</a> sattelite imagery',
-      //     maxZoom: 21,
-      //     maxNativeZoom: 19,
-      //     subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-      //     zIndex: 1,
-      //   },
-      // },
+      {
+        url: '//{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+        options: {
+          label: 'Google Satellite',
+          tag: 'Google Satellite',
+          attribution:
+                        'Map data &copy; <a href="//maps.google.com/">Google</a> sattelite imagery',
+          maxZoom: 21,
+          maxNativeZoom: 19,
+          subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+          zIndex: 1,
+        },
+      },
       {
         url: '//mt0.google.com/vt/lyrs=r&hl=en&x={x}&y={y}&z={z}',
         options: {
@@ -403,21 +404,6 @@ export default {
           zIndex: 1,
         },
       },
-      // {
-      //   url: 'https://tiles.planet.com/basemaps/v1/planet-tiles/global_monthly_2024_03_mosaic/gmap/{z}/{x}/{y}.png?api_key=PLAK486c8860252848f4b84b1e0358d9fd2d',
-      //   options: {
-      //     Authorization: 'Access-Control-Allow-Origin',
-      //     label: 'Mosaics Planet 2024-03',
-      //     tag: 'Mosaics Planet 2024-03',
-      //     attribution:
-      //                   'Map data &copy; <a href="https://tiles.planet.com/basemaps/v1/planet-tiles">Mosaics 2023-10</a> Planet',
-      //     maxZoom: 21,
-      //     maxNativeZoom: 19,
-      //     zIndex: 1,
-      //     subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-      //   },
-      // },
-
       // {
       //     url:
       //         '//securewatch.digitalglobe.com/earthservice/wmtsaccess?connectId={connectid}&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&TileMatrixSet=EPSG:3857&LAYER=DigitalGlobe:ImageryTileService&FORMAT=image/jpeg&STYLE=&featureProfile=Vivid_2019&TileMatrix=EPSG:3857:{z}&TILEROW={y}&TILECOL={x}',
@@ -469,7 +455,7 @@ export default {
       //     },
       // },
       {
-        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        url: '//server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
         options: {
           label: 'ArcMap',
           tag: 'ArcMap',
@@ -480,19 +466,20 @@ export default {
           zIndex: 1,
         },
       },
-      // {
-      //   url: 'https://tiles.planet.com/basemaps/v1/planet-tiles/planet_medres_visual_2020-10_mosaic/gmap/{z}/{x}/{y}.png?api_key=57cd3a8c44024cfdb7446ac37d8d1fe9',
-      //   options: {
-      //     label: 'Planet - Out/2020',
-      //     tag: 'Planet - Out/2020',
-      //     attribution:
-      //                   'Map data &copy; <a href="//www.planet.com/">Planet</a>',
-      //     maxZoom: 21,
-      //     maxNativeZoom: 15,
-      //     zIndex: 1,
-      //   },
-      // },
+      {
+        url: 'https://tiles.planet.com/basemaps/v1/planet-tiles/planet_medres_visual_2020-10_mosaic/gmap/{z}/{x}/{y}.png?api_key=57cd3a8c44024cfdb7446ac37d8d1fe9',
+        options: {
+          label: 'Planet - Out/2020',
+          tag: 'Planet - Out/2020',
+          attribution:
+                        'Map data &copy; <a href="//www.planet.com/">Planet</a>',
+          maxZoom: 21,
+          maxNativeZoom: 15,
+          zIndex: 1,
+        },
+      },
     ],
+
     bingKey:
             'AuhiCJHlGzhg93IqUH_oCpl_-ZUrIE6SPftlyGYUvr9Amx5nzA-WqGcPquyFZl4L',
 
