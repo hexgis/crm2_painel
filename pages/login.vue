@@ -2,7 +2,7 @@
     <v-layout align-center justify-center>
         <v-flex xs12 sm8 md4 lg3 xl3>
             <v-form @submit.prevent="login">
-                <v-card tile class="elevation-6 teste" style="margin-top: 50%">
+                <v-card tile class="elevation-6 login-card" style="margin-top: 50%">
                     <div v-if="this.$vuetify.theme.dark">
                         <v-toolbar flat dark color="black">
                             <v-progress-linear
@@ -16,7 +16,7 @@
                                 <v-container class="d-flex justify-center">
                                     <v-img
                                         max-width="200"
-                                        class="teste2"
+                                        class="logo-img "
                                         contain
                                         src="/img/logo-inteira-antiga-branca.svg"
                                     />
@@ -37,7 +37,7 @@
                                 <v-container class="d-flex justify-center">
                                     <v-img
                                         max-width="200"
-                                        class="teste2"
+                                        class="logo-img"
                                         contain
                                         src="/img/logo-inteira-antiga.svg"
                                     />
@@ -172,13 +172,13 @@ export default {
 
 
 @media (max-width: 768px) {
-.teste {
+.login-card {
     width: 60%;
     margin-top: 25% !important;
     margin-left: auto;
     margin-right: auto;
 }
-.teste2 {
+.logo-img  {
     width: 150px !important;
 }
 }

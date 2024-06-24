@@ -115,7 +115,7 @@ export default {
         leafletRightControl: null,
         snackbar: true,
         timeout: 3000,
-        teste: 0,
+        windowWidth: 0,
     }),
 
     async fetch() {
@@ -148,11 +148,11 @@ export default {
                 this.openDrawer()
             }
         },
-        teste() {
+        windowWidth() {
             if (window.innerWidth > 768) {
-                this.teste = window.innerWidth
+                this.windowWidth = window.innerWidth
             } else {
-                this.teste = window.innerWidth
+                this.windowWidth = window.innerWidth
             }
         },
     },
@@ -194,7 +194,7 @@ export default {
             }
         },
         updateWindowWidth() {
-            this.teste = window.innerWidth
+            this.windowWidth = window.innerWidth
         },
     },
     head: () => ({

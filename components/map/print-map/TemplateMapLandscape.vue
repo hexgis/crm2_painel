@@ -1,7 +1,7 @@
 <template>
   <div>
     <style>
-      @media print { @page { size: landscape; margin: 0 } }
+      @media print { @page { size: landscape; margin: 0 } }      
     </style>
     <v-dialog
       v-model="showDialog"

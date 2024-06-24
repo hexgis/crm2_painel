@@ -48,7 +48,7 @@
         <v-row align="center">
           <v-col
             cols="8"
-            class="pt-0 v-label teste "
+            class="pt-0 v-label mobile-font-size "
           >
             {{ $t('cloud-cover-label') }}
           </v-col>
@@ -180,7 +180,7 @@ export default {
     max-width: 100%;
   }
 
-  .teste {
+  .mobile-font-size {
     font-size: 0.9rem;
   }
 }

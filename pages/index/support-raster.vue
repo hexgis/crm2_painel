@@ -2,7 +2,7 @@
   <v-container class="pa-0">
     <div class="tab-header justify-space-between">
       <v-row>
-        <h4 class="subtitle-2 text-uppercase font-weight-regular teste">
+        <h4 class="subtitle-2 text-uppercase font-weight-regular tab-title">
           {{ $t('title') }}
         </h4>
         <v-tooltip>
@@ -21,7 +21,7 @@
         <v-switch
           v-show="!loading"
           v-model="showFeatures"
-          class="mt-n1 teste1"
+          class="mt-n1 switch-margin"
           hide-details
         />
       </v-row>
@@ -123,9 +123,8 @@ export default {
     margin-left: 4px;
   }
 
-.teste1 {
-    margin-left: 60px
-    
+.switch-margin {
+    margin-left: 60px 
        
   }  
   
@@ -134,15 +133,13 @@ export default {
     margin-left: 2px;
   }
 
-  .teste {
+  .tab-title {
     font-size: 90% !important;
   }
 
-  .teste1 {
+  .switch-margin {
     margin-top: 10px;
-    margin-left: 0px
-    
-       
+    margin-left: 0px  
   }
 }
 </style>

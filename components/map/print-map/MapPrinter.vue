@@ -1,6 +1,6 @@
 <template>
   <div class="button-print-map d-flex mt-2">
-    <v-tooltip right>
+    <v-tooltip right v-if="!isScreenSmall">
       <template #activator="{ on }">
         <v-btn
           fab
@@ -37,9 +37,11 @@
       </v-toolbar>
       <v-card>
         <v-tabs vertical>
-          <v-tab>
-            {{ $t('dialog-title-first-step') }}
-          </v-tab>
+          <div v-show="!isScreenSmall">
+          <v-tab >
+              {{ $t('dialog-title-first-step') }}
+            </v-tab>
+          </div>
           <v-tab-item>
             <v-card>
               <v-card-text>
@@ -115,31 +117,6 @@
                   }`"
                   :items="items"
                 />
-                <v-text-field
-                  v-model="textMap"
-                  class="mt-6 pa-0"
-                  :maxlength="100"
-                />
-                <v-text-field
-                  v-model="departmentMap"
-                  :label="$t('input-dpto-label')"
-                  class="mt-6 pa-0"
-                  :maxlength="100"
-                />
-                <v-text-field
-                  v-model="districtMap"
-                  :label="$t('input-district-label')"
-                  class="mt-6 pa-0"
-                  :maxlength="100"
-                />
-                <v-text-field
-                  v-model="pageMap"
-                  :label="$t('input-page-label')"
-                  class="mt-6 pa-0"
-                  :maxlength="4"
-                />
-
-               
               </v-card-text>
             </v-card>
           </v-tab-item>
@@ -155,39 +132,21 @@
           "print-icon-label": "Print out",
           "print-dialog-label": "Print Out",
           "dialog-title-first-step": "Standard Model",
-         
           "dialog-text-first-step":
           "Type below the title of the map to be printed or, if you prefer, leave it blank",
           "input-title-label": "Map Title",
- 
-          "input-dpto-label": "Department",
-          "input-district-label": "Localization",
-          "input-page-label": "Page",
           "input-size-hint": "Print Size",
-          "input-button-first-step": "Continue",
-          "input-button-back-second-step": "Back",
-          "input-button-print-image": "Save Image",
-          "input-button-pdf-image": "Generate PDF",
-          "image-error": "Error generating image."
+          "input-button-first-step": "Continue"
       },
       "pt-br": {
           "print-icon-label": "Imprimir",
           "print-dialog-label": "Impressão",
           "dialog-title-first-step": "Modelo Padrão",
-        
           "dialog-text-first-step":
           "Digite abaixo o título do mapa a ser impresso ou, se preferir, deixe em branco",
           "input-title-label": "Título do Mapa",
-     
-          "input-dpto-label": "Departamento",
-          "input-district-label": "Localização",
-          "input-page-label": "Folha",
           "input-size-hint": "Tamanho da Impressão",
-          "input-button-first-step": "Continuar",
-          "input-button-back-second-step": "Voltar",
-          "input-button-print-image": "Salvar Imagem",
-          "input-button-pdf-image": "Gerar PDF",
-          "image-error": "Erro ao gerar imagem."
+          "input-button-first-step": "Continuar"
       }
   }
 </i18n>
@@ -213,55 +172,29 @@ export default {
       type: Object,
       default: null,
     },
-
-    showTms: {
-      type: Boolean,
-      default: false,
-    },
-
   },
 
   data: () => ({
     showDialogLandscape: false,
-    showDialogPortrait: false,
     dialogPrint: false,
-    currentStep: 1,
-    loadingPrintImage: false,
     mapTitle: '',
-    textMap: '',
-    departmentMap: '',
-    districtMap: '',
-    pageMap: '',
-    dataUrlImagePrint: null,
     select: { type: 'A4' },
     items: [
       { type: 'A4' },
-      { type: 'A0' },
-      { type: 'A1' },
-      { type: 'A2' },
       { type: 'A3' },
-    ],
-    selectModel: { model: 'Modelo 1' },
-    models: [
-      { model: 'Modelo 1' },
-      { model: 'Modelo 2' },
     ],
   }),
 
-
-
-  watch: {
-    showTms() {
-      if (this.showTms) this.dialogPrint = true;
+  computed: {
+    isScreenSmall() {
+      return window.innerWidth < 768;
     },
   },
-
+  
   methods: {
     closeDialogPrinter() {
       this.dialogPrint = false;
-      this.showDialogPortrait = false;
       this.showDialogLandscape = false;
-      this.currentStep = 1;
       this.setTmsToPrint({
         visible: false,
         url: '',
@@ -270,8 +203,7 @@ export default {
     },
     ...mapState('map', ['tmsToPrint']),
     ...mapMutations('map', ['setTmsToPrint']),
-
   },
-
 };
 </script>
+
