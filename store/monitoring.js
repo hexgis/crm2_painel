@@ -1014,24 +1014,28 @@ export const actions = {
   },
 
   selectedStages(){
-    let features = this.features
-            features.map((item)=>{
-                if (item.properties.no_estagio && value === 'CR'){
-                    this.featureNoEstagio.cr.push(item);
-                    commit('setSelectedStages', item)
-                }
-                if (item.properties.no_estagio && value === 'DG'){
-                    this.featureNoEstagio.dg.push(item);
-                    commit('setSelectedStages', item)
-                }
-                if (item.properties.no_estagio && value === 'FF'){
-                    this.featureNoEstagio.ff.push(item);
-                    commit('setSelectedStages', item)
-                }
-                if (item.properties.no_estagio && value === 'DR'){
-                    this.featureNoEstagio.dr.push(item);
-                    commit('setSelectedStages', item)
-                }
+    let features = this.features;
+    features.forEach((item) => {
+      if (item.properties.no_estagio) {
+        switch (value) {
+          case 'CR':
+            this.featureNoEstagio.cr.push(item);
+            commit('setSelectedStages', item);
+            break;
+          case 'DG':
+            this.featureNoEstagio.dg.push(item);
+            commit('setSelectedStages', item);
+            break;
+          case 'FF':
+            this.featureNoEstagio.ff.push(item);
+            commit('setSelectedStages', item);
+            break;
+          case 'DR':
+            this.featureNoEstagio.dr.push(item);
+            commit('setSelectedStages', item);
+            break;
+        }
+      }
   })},
 
   async downloadTableMonitoring({ commit, state, rootGetters }) {
