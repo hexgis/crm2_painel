@@ -1,7 +1,7 @@
 <template>
   <div>
     <style>
-      @media print { @page { size: landscape; margin: 0 } }      
+      @media print { @page { size: landscape; margin: 0 } }
     </style>
     <v-dialog
       v-model="showDialog"
@@ -21,12 +21,11 @@
           </v-icon>
         </v-btn>
       </v-card-title>
-      <v-container
-        style="background-color: white; max-width: 1185px;"
-      >
+      <v-container style="background-color: white; max-width: 100%">
         <v-row
+          id="map-for-print"
           no-gutters
-          style="width: 1030px; height: 730px"
+          style="width: 1230px; height: 780px"
         >
           <v-col
             cols="8"
@@ -36,6 +35,7 @@
               :leaf-size="leafSize"
               :main-map="mainMap"
               :selected-base-map="selectedBaseMap"
+              class="teste"
               @updateBounds="updateBounds"
               @getCenter="getCenter"
             />
@@ -46,7 +46,7 @@
           >
             <div class="border_container">
               <div class="d-flex justify-center align-center ma-4">
-                 <div style="width: 25%">
+                <div style="width: 25%">
                   <v-img
                     contain
                     :src="logo_funai"
@@ -69,7 +69,9 @@
                   {{ print_title }}
                 </p>
               </div>
-              <div class="d-flex justify-center hight_container_mini_map">
+              <div
+                class="d-flex justify-center hight_container_mini_map"
+              >
                 <MiniMap
                   v-if="currentBouldMap"
                   :current-bould-map="currentBouldMap"
@@ -93,17 +95,24 @@
                         v-if="layer.visible"
                         no-gutters
                         align="center"
+                        class="image-container"
                       >
                         <img
                           v-if="layer.wms"
-                          :src="layer.wms.geoserver.preview_url +
-                            layer.wms.geoserver_layer_name"
+                          :src="
+                            layer.wms.geoserver
+                              .preview_url +
+                              layer.wms
+                                .geoserver_layer_name
+                          "
                           class="layer-thumbnail"
                           alt="CorLayer"
                         >
                         <img
                           v-else-if="vectorImage(layer)"
-                          :src="`data:image/png;base64,${vectorImage(layer)}`"
+                          :src="`data:image/png;base64,${vectorImage(
+                            layer
+                          )}`"
                           class="layer-thumbnail"
                           alt="CorLayer"
                         >
@@ -119,25 +128,31 @@
                 <v-divider />
                 <div class="ma-1">
                   <p>
-                    {{ print_info }} {{ $t('text-address') }}{{ todayDate() }}
+                    {{ print_info }} {{ $t('text-address0') }}
+                  </p>
+                  <p>
+                    {{ print_info }} {{ $t('text-address')
+                    }}{{ todayDate() }}
                   </p>
                 </div>
                 <v-divider />
-                <div class="ma-1 ">
-                  <p >
+                <div class="ma-1">
+                  <p>
                     {{ $t('author-label') }}
                   </p>
                   <p>
                     {{ $t('text-info') }}
                   </p>
-                  <p>{{ $t('text-format') }}{{ leafSize.type }}.</p>
+                  <p>
+                    {{ $t('text-format') }}{{ leafSize.type }}.
+                  </p>
                 </div>
               </div>
             </div>
           </v-col>
         </v-row>
         <div class="no-print">
-          <div class="d-flex flex-row mr-6 mt-2 ">
+          <div class="d-flex flex-row mr-6 mt-2">
             <v-btn
               class="ml-4 mb-2"
               @click="$emit('back')"
@@ -160,35 +175,36 @@
     </v-dialog>
   </div>
 </template>
+
 <i18n>
   {
       "en": {
           "print-out": "Print Out",
           "legend": "Legend:",
+          "text-address0": " | Print date: ",
           "text-address": " | Print date: ",
           "text-info": "The information may be distorted depending on the cartographic bases used.",
           "text-format": "Format-adapted map template ",
           "input-button-back-second-step": "Back",
           "input-button-pdf-image": "Generate PDF",
-          "image-error": "Error generating image.",
           "author-label": "Author: "
       },
       "pt-br": {
           "print-out": "Impressão",
           "legend": "Legenda:",
+          "text-address0": " | CENTRO DE MONITORAMENTO REMOTO - https://cmr.funai.gov.br ",
           "text-address": " | Data da impressão: ",
           "text-info": "As informações podem apresentar distorções em função das bases cartográficas utilizadas.",
           "text-format": "Modelo de mapa adaptado para formato ",
           "input-button-back-second-step": "Voltar",
           "input-button-pdf-image": "Gerar PDF",
-          "image-error": "Erro ao gerar imagem.",
           "author-label": "Autor: "
       }
   }
 </i18n>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 import MapForPrint from './MapForPrint.vue';
 import MiniMap from '@/components/map/print-map/MiniMap.vue';
 
@@ -241,8 +257,6 @@ export default {
   }),
 
   computed: {
-   
-
     showDialog() {
       return this.showDialogLandscape;
     },
@@ -277,39 +291,68 @@ export default {
       this.mapCenter = center;
     },
 
+    adjustMapSizeForPrint(tamanho) {
+      const mapDimensions = this.getMapDimensions(tamanho);
+      document.getElementById('map-for-print').style.width = `${mapDimensions.width}px`;
+      document.getElementById('map-for-print').style.height = `${mapDimensions.height}px`;
+    },
+
+    getMapDimensions(tamanho) {
+      switch (tamanho) {
+        case 'A4':
+          return { width: 1100, height: 750 }; // in mm or appropriate units
+        case 'A3':
+          return { width: 1450, height: 860 };
+          // Add more cases as needed
+        default:
+          return { width: 210, height: 297 }; // Default to A4
+      }
+    },
+
     print() {
-      this.inputPrintLog(this.currentBouldMap);
+      this.adjustMapSizeForPrint(this.leafSize.type);
       const style = document.createElement('style');
       style.setAttribute('media', 'print');
       window.print();
     },
-
-    ...mapActions('userProfile', ['inputPrintLog']),
   },
 };
 </script>
 
 <style scoped>
+.teste {
+  width: 100%;
+
+}
+
+.vue2leaflet-map teste leaflet-container leaflet-touch leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom{
+  height: 30vh !important;
+}
+
+@page {
+    size: landscape;
+    margin: 0;
+}
 
 @media print {
-.logo {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+    .container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100% !important;
+        overflow: hidden !important;
+        box-shadow: none;
+    }
+    .no-print {
+        display: none;
+    }
 }
 
-.container {
-    position:fixed;
-    top: 0px !important;
-    left: 0 !important;
+.layer-thumbnail {
     width: 100%;
-    height: 100% !important;
-    overflow: hidden !important;
-    background-color: rgb(255, 255, 255) !important;
-    box-shadow: none;
-}
-.no-print{
-    display: none;
-}
+    height: auto; /* Garante que a altura se ajuste proporcionalmente à largura */
+    max-width: 100%; /* Garante que a imagem não ultrapasse a largura do container */
 }
 
 p {
@@ -317,11 +360,7 @@ p {
     margin: 0;
 }
 
-.v-application .ml-8 {
-    margin-left: 20px !important;
-}
-
-.font-title p{
+.font-title p {
     font-size: medium;
     margin: 0px;
     padding: 0px;
@@ -334,65 +373,39 @@ p {
     line-break: anywhere;
     width: 100%;
 }
+
 .print-mini-map-text {
     color: dimgray !important;
     font-size: xx-small;
     white-space: nowrap;
 }
+
 .border_container_legend {
-    border: 0.5px  gray;
+    border: 0.5px gray;
     background: #fff;
-    border-radius: 5px ;
+    border-radius: 5px;
     box-shadow: 0 0 5px #bbb !important;
     height: 100%;
 }
+
 .border_container {
     border-right: 0.5px solid gray;
     border-top: 0.5px solid gray;
     border-bottom: 0.5px solid gray;
     height: 100%;
 }
+
 .hight_container_mini_map {
     height: 150px;
     max-height: 150px;
     width: 100%;
 }
-.font-page p{
+
+.font-page p {
     font-size: large;
 }
 
-</style>
-
-<style>
-
-.layer-thumbnail {
-    width: 0.8vw;
+.image-container {
+    width: 100%; /* Garante que o container tenha largura suficiente */
 }
-.leaflet-grid-label .gridlabel-vert {
-    margin-left: 8px;
-    -webkit-transform: rotate(90deg);
-    transform: rotate(90deg);
-    color: #000;
-}
-.leaflet-grid-label .gridlabel-vert,
-.leaflet-grid-label .gridlabel-horiz {
-    padding-left: 2px;
-    color: #000;
-    text-shadow:
-    0px 0px 0px rgba(255, 255, 255, 1),
-    0px 0px 2px rgba(255,255,255, 1),
-    0px 0px 9px rgba(255, 255, 255, 1);
-}
-.leaflet-container .leaflet-control-mapbounds {
-    background-color: rgba(255, 255, 255, 0.7) !important;
-    box-shadow: 0 0 5px #bbb !important;
-    padding: 0 5px !important;
-    margin: 0 !important;
-    color: #333 !important;
-    font: 11px/1.5 'Helvetica Neue', Arial, Helvetica, sans-serif !important;
-}
-.leaflet-control-attribution {
-    white-space: nowrap !important;
-}
-
 </style>

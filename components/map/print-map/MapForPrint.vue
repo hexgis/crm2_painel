@@ -5,47 +5,34 @@
             ref="printMap"
             :bounds="tmsToPrint.bounds || bounds"
         >
-            <l-layer-group v-if="tmsToPrint.visible">
+            <div id="map-container">
+                <l-control position="bottomright" class="custom-control"
+                    ><span
+                        style="
+                            color: red !important;
+                            font-weight: bold !important;
+                            padding: 5px;
+                            background-color: #e7f1e2;
+                        "
+                    >
+                        Mapa não oficial
+                    </span></l-control
+                >
                 <l-tile-layer
-                    :tms="true"
-                    :url="
-                        tmsToPrint.tmsUrl.replace('.xml', '.tms') +
-                        '/{z}/{x}/{y}.png'
-                    "
-                    :visible="tmsToPrint.visible"
-                    :options="{
-                        zIndex: 2,
-                        maxZoom: 21,
-                        maxNativeZoom: 18,
-                    }"
+                    v-if="!selectedBaseMap"
+                    :url="'//{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}.png'"
                 />
-            </l-layer-group>
+                <l-tile-layer
+                    v-if="
+                        selectedBaseMap &&
+                        selectedBaseMap.options.label != 'Bing'
+                    "
+                    :url="selectedBaseMap._url"
+                    :attribution="selectedBaseMap.options.attribution"
+                    :options="optionsMap"
+                />
+            </div>
 
-            <l-lwms-tile-layer
-                ref="wmsLayer"
-                :base-url="tmsToPrint.wmsUrl"
-                :layers="tmsToPrint.geoserverName"
-                format="image/png"
-                :transparent="true"
-                :z-index="3"
-                :visible="tmsToPrint.visible"
-                :options="wmsOptions"
-            />
-
-            <l-tile-layer
-                v-if="!selectedBaseMap"
-                :url="'//{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}.png'"
-                :attribution="attribution"
-                :options="optionsMap"
-            />
-            <l-tile-layer
-                v-if="
-                    selectedBaseMap && selectedBaseMap.options.label != 'Bing'
-                "
-                :url="selectedBaseMap._url"
-                :attribution="selectedBaseMap.options.attribution"
-                :options="optionsMap"
-            />
             <l-control-scale v-if="valueScale" position="bottomleft" />
             <l-control v-if="valueNorthArrow" position="bottomleft">
                 <img
@@ -53,65 +40,6 @@
                     alt="northarrow"
                     class="north-arrow"
                 />
-            </l-control>
-            <l-control v-if="legend" position="bottomright">
-                <v-row no-gutters>
-                    <v-col cols="12" class="pl-1">
-                        <div class="border_container_legend">
-                            <div>
-                                <p class="font-weight-bold d-block ma-1 pt-1">
-                                    Legenda:
-                                </p>
-                                <div class="ma-1 flex-wrap" style="width: 100%">
-                                    <div v-if="showFeaturesSupportLayers">
-                                        <div
-                                            v-for="layer in supportLayers"
-                                            :key="layer.id"
-                                        >
-                                            <v-row
-                                                v-if="layer.visible"
-                                                no-gutters
-                                                align="center"
-                                            >
-                                                <img
-                                                    v-if="layer.wms"
-                                                    :src="
-                                                        layer.wms.geoserver
-                                                            .preview_url +
-                                                        layer.wms
-                                                            .geoserver_layer_name
-                                                    "
-                                                    class="layer-thumbnail"
-                                                    alt="CorLayer"
-                                                />
-                                                <img
-                                                    v-else-if="
-                                                        vectorImage(layer)
-                                                    "
-                                                    :src="`data:image/png;base64,${vectorImage(
-                                                        layer
-                                                    )}`"
-                                                    class="layer-thumbnail"
-                                                    alt="CorLayer"
-                                                />
-                                                <v-col>
-                                                    <p
-                                                        class="ml-1"
-                                                        style="
-                                                            margin-bottom: 1px;
-                                                        "
-                                                    >
-                                                        {{ layer.name }}
-                                                    </p>
-                                                </v-col>
-                                            </v-row>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </v-col>
-                </v-row>
             </l-control>
 
             <PriorityLayers :map="map" />
@@ -209,8 +137,7 @@ export default {
         valueNorthArrow: null,
         bingKey:
             'AuhiCJHlGzhg93IqUH_oCpl_-ZUrIE6SPftlyGYUvr9Amx5nzA-WqGcPquyFZl4L',
-        attribution:
-            '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+
         optionsMap: {
             name: 'printMap',
             zoomControl: false,
@@ -235,10 +162,7 @@ export default {
             return options
         },
         ...mapState('map', ['bounds', 'tmsToPrint']),
-        ...mapState('supportLayers', [
-            'showFeaturesSupportLayers',
-            'supportLayers',
-        ]),
+        ...mapState('supportLayers', ['supportLayers']),
     },
 
     mounted() {
@@ -346,23 +270,3 @@ export default {
     },
 }
 </script>
-
-<style>
-.layer-thumbnail {
-    width: 0.8vw;
-}
-
-.north-arrow,
-.north-arrow:after {
-    height: 35px;
-    width: 30px;
-}
-
-.border_container_legend {
-    border: 0.5px gray;
-    background: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 5px #bbb !important;
-    height: 100%;
-}
-</style>

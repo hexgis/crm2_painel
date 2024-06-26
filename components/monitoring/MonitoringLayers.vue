@@ -76,8 +76,8 @@ export default {
 
         style: {
             CR: {
-                weight: 2.5,
-                color: '#ff3333',
+                weight: 2.5,               
+                color: '#b35900',
                 fill: true,
                 fillOpacity: 1,
             },
@@ -89,7 +89,7 @@ export default {
             },
             FF: {
                 weight: 2.5,
-                color: '#b35900',
+                color: '#ff3333',
                 fill: true,
                 fillOpacity: 1,
             },

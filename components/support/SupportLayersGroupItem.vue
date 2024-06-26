@@ -34,8 +34,7 @@
             </span>
           </v-list-item-title>
         </v-list-item-content>
-        <!-- TODO: Discoment this code when backend is ready  -->
-        <!-- <v-list-item-action
+        <v-list-item-action
           v-if="layer.visible && layer.layer_filters.length != 0"
           @click.stop=""
         >
@@ -56,7 +55,7 @@
           >
             {{ icon }}
           </v-icon>
-        </v-list-item-action> -->
+        </v-list-item-action>
         <v-list-item-action @click.stop="">
           <v-switch
             :input-value="layer.visible"
