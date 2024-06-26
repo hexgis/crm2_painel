@@ -51,7 +51,7 @@
     </v-row>
 
     <v-row class="pt-1">
-      <v-col class="py-0">
+      <v-col class="py-0 full-width">
         <BaseDateField
           v-model="filters.startDate"
           :label="$t('start-date-label')"
@@ -60,7 +60,7 @@
         />
       </v-col>
 
-      <v-col class="py-0">
+      <v-col class="py-0 full-width">
         <BaseDateField
           v-model="filters.endDate"
           :label="$t('end-date-label')"
@@ -197,13 +197,13 @@
       <v-row v-if="showFeatures && total">
         <v-col
           cols="7"
-          class="grey--text text--darken-2"
+          class="grey--text text--darken-2 text-label"
         >
           {{ $t('polygon-label') }}:
         </v-col>
         <v-col
           cols="5"
-          class="text-right"
+          class="text-right text-label"
         >
           {{ total.total }}
         </v-col>
@@ -216,13 +216,13 @@
       >
         <v-col
           cols="7"
-          class="grey--text text--darken-2"
+          class="grey--text text--darken-2 text-label"
         >
           {{ $t('total-area-label') }}:
         </v-col>
         <v-col
           cols="5"
-          class="text-right"
+          class="text-right text-label"
         >
           {{
             total.area_ha.toLocaleString($i18n.locale, {
@@ -240,7 +240,7 @@
     >
       <v-col
         cols="4"
-        class="grey--text text--darken-2 mt-1"
+        class="grey--text text--darken-2 mt-1 text-label"
       >
         {{ $t('opacity-label') }}
       </v-col>
@@ -260,7 +260,7 @@
       justify="space-between"
     >
       <v-col>
-        <span class="grey--text text--darken-2">
+        <span class="grey--text text--darken-2 text-label">
           {{ $t('heat-map-label') }}
         </span>
       </v-col>
@@ -477,4 +477,16 @@ export default {
 };
 </script>
 
-<style scoped lang="sass"></style>
+<style scoped lang="scss">
+@media (max-width: 768px) {
+  .full-width {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .text-label {
+    font-size: 0.8rem;
+    padding-right: 0px;
+  }
+}
+</style>

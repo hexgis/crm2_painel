@@ -38,7 +38,7 @@
     </v-slide-y-transition>
 
     <v-row class="pt-5">
-      <v-col class="py-0">
+      <v-col class="py-0 full-width">
         <BaseDateField
           v-model="filters.startDate"
           :label="$t('start-date-label')"
@@ -47,7 +47,7 @@
         />
       </v-col>
 
-      <v-col class="py-0">
+      <v-col class="py-0 full-width">
         <BaseDateField
           v-model="filters.endDate"
           :label="$t('end-date-label')"
@@ -454,4 +454,12 @@ export default {
 };
 </script>
 
-<style scoped lang="sass"></style>
+<style scoped lang="scss">
+@media (max-width: 768px) {
+  .full-width {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+</style>
+

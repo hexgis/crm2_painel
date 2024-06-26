@@ -1,6 +1,6 @@
 <template>
   <v-form class="fill-height">
-    <v-card class="px-3 py-3">
+    <v-card class="px-3 py-3" elevation="0">
       <v-row>
         <v-col cols="12 ">
           <v-switch

@@ -1,81 +1,37 @@
 <template>
   <l-layer-group ref="popup">
     <l-popup
-      :options="{
-        minWidth: 420,
-        maxHeight: 360,
-        className: 'card-popup',
-        color: 'secondary'
-      }"
+      :options="popupOptions"
     >
-      <v-card
-        class="fill-height"
-      >
+      <v-card class="fill-height">
         <v-tabs
           v-if="data && Object.keys(data).length"
           background-color="primary"
           dark
           class="fill-height"
         >
-          <template
-            v-for="(layerData, layerName) in data"
-          >
-            <v-tab
-              :key="layerName"
-            >
+          <template v-for="(layerData, layerName) in data">
+            <v-tab :key="layerName">
               {{ layerName }}
             </v-tab>
 
-            <v-tab-item
-              :key="layerName"
-              class="fill-height"
-            >
-              <v-card-text
-                style="max-height: 312px; overflow-y: auto"
-              >
-                <template
-                  v-for="(feature, i) in layerData.layers"
-                >
-                  <v-row
-                    v-show="i != 0"
-                    :key="i"
-                    class="mx-0 grey lighten-2"
-                  >
+            <v-tab-item :key="layerName" class="fill-height">
+              <v-card-text style="max-height: 312px; overflow-y: auto">
+                <template v-for="(feature, i) in layerData.layers">
+                  <v-row v-show="i != 0" :key="i" class="mx-0 grey lighten-2">
                     <v-col />
                   </v-row>
                   <template v-for="(value, field) in feature">
-                    <v-row
-
-                      :key="field + i"
-                      :align="field.align"
-                      class="mx-0 list-separator"
-                      dense
-                    >
-                      <v-col
-                        cols="5"
-                        class="text-right"
-                      >
+                    <v-row :key="field + i" :align="field.align" class="mx-0 list-separator" dense>
+                      <v-col cols="5" class="text-right">
                         {{ formatField(field) }}:
                       </v-col>
-                      <v-col
-                        cols="7"
-                        class="text-subtitle-2"
-                        style="overflow-wrap: anywhere"
-                      >
-                        <a
-                          v-if="isValidUrl(value)"
-                          :href="value"
-                          target="_blank"
-                        >
+                      <v-col cols="7" class="text-subtitle-2" style="overflow-wrap: anywhere">
+                        <a v-if="isValidUrl(value)" :href="value" target="_blank">
                           {{ value }}
                         </a>
                         <span v-else>
-                          {{
-                            formatValue(
-                              value,
-                              field
-                            )
-                          }}
+                          {{ formatValue(value, field) }}
                         </span>
                       </v-col>
                     </v-row>
@@ -83,32 +39,18 @@
                 </template>
 
                 <template v-if="layerData.loading">
-                  <v-row
-                    v-for="i in 3"
-                    :key="i"
-                    dense
-                  >
-                    <v-col
-                      cols="5"
-                      class="text-right"
-                    >
-                      <v-skeleton-loader
-                        class="pt-1"
-                        type="text"
-                      />
+                  <v-row v-for="i in 3" :key="i" dense>
+                    <v-col cols="5" class="text-right">
+                      <v-skeleton-loader class="pt-1" type="text" />
                     </v-col>
                     <v-col cols="7">
-                      <v-skeleton-loader
-                        class="pt-1"
-                        type="text"
-                      />
+                      <v-skeleton-loader class="pt-1" type="text" />
                     </v-col>
                   </v-row>
                 </template>
 
                 <div v-else-if="!layerData.layers.length">
-                  Não há dados nesse ponto para a camada
-                  selecionada.
+                  Não há dados nesse ponto para a camada selecionada.
                 </div>
               </v-card-text>
             </v-tab-item>
@@ -118,19 +60,6 @@
     </l-popup>
   </l-layer-group>
 </template>
-
-<i18n>
-{
-    "en": {
-        "no-data": "There's no data at this point for the selected layer.",
-        "layer-api-error": "Unable to acquire support layer information."
-    },
-    "pt-br": {
-        "no-data": "Não há dados nesse ponto para a camada selecionada.",
-        "layer-api-error": "Não foi possível resgatar as informações das camadas de apoio."
-    }
-}
-</i18n>
 
 <script>
 export default {
@@ -148,6 +77,20 @@ export default {
     popup: null,
     data: null,
   }),
+
+  computed: {
+    isSmallScreen() {
+      return window.innerWidth < 768;
+    },
+    popupOptions() {
+      return {
+        minWidth: this.isSmallScreen ? 300 : 420,
+        maxHeight: this.isSmallScreen ? 280 : 360,
+        className: 'card-popup',
+        color: 'secondary',
+      };
+    },
+  },
 
   watch: {
     map() {
@@ -191,10 +134,10 @@ export default {
     formatValue(value, field) {
       if (
         typeof value === 'string'
-                && (field.startsWith('dt_')
-                    || field.startsWith('data_')
-                    || field.startsWith('date'))
-                && this.$moment(value).isValid()
+        && (field.startsWith('dt_')
+          || field.startsWith('data_')
+          || field.startsWith('date'))
+        && this.$moment(value).isValid()
       ) {
         value = this.$moment(value).format('DD/MM/YYYY');
       } else if (typeof value === 'boolean') {
@@ -288,9 +231,10 @@ export default {
 
       return (
         layer._url
-                + this.$L.Util.getParamString(params, layer._url, true)
+        + this.$L.Util.getParamString(params, layer._url, true)
       );
     },
   },
 };
 </script>
+

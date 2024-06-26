@@ -7,7 +7,7 @@
                 </h4>
                 <v-tooltip>
                     <template #activator="{ on }">
-                        <v-icon class="mr-2 ml-2" v-on="on">
+                        <v-icon class="infoIconMargin" v-on="on">
                             mdi-information
                         </v-icon>
                     </template>
@@ -97,13 +97,6 @@
             </v-col>
         </div>
         <ShowDialog />
-        <v-footer absolute color="white" elevation="4">
-            <v-col>
-                <v-row class="d-flex justify-center">
-                    <v-img max-width="200" src="/img/logo-inteira-antiga.svg" />
-                </v-row>
-            </v-col>
-        </v-footer>
     </v-container>
 </template>
 
@@ -192,25 +185,43 @@ export default {
             'isLoadingFeatures',
             'isLoadingStatistic',
             'analyticsMonitoringDialog',
+            'stageItemActive',
+            'selectedStages',
+            'setStageItemActive'
         ]),
     },
 
     methods: {
-        handleCheckboxChange(newValue, description) {
+        async handleCheckboxChange(newValue, description) {
             if (newValue) {
-                this.updateDescription(description)
+                await this.updateDescription(description)
             } else {
-                this.removeDescription(description)
+                await this.removeDescription(description)
             }
-            this.search()
-        },
-        
-        updateDescription(value) {
-            this.$store.commit('monitoring/setSelectedStages', value)
         },
 
-        removeDescription(value) {
+        updateStageItemList(){
+            let stageItemActive = []
+            this.features.features.map((item)=>{
+            this.selectedStages.map((stageActive) => {
+                stageActive === item.properties.no_estagio
+                    ? stageItemActive.push(item) 
+                    : ""
+                    })
+                })
+             this.$store.commit('monitoring/setStageItemActive', stageItemActive)
+        },
+        
+        async updateDescription(value) {
+            this.updateStageItemList();
+            this.$store.commit('monitoring/setSelectedStages', value)
+            await this.updateFeatures()
+        },
+
+        async removeDescription(value) {
             this.$store.commit('monitoring/removeSelectedStages', value)
+            this.updateStageItemList();
+            await this.updateFeatures()
         },
 
         search() {
@@ -228,6 +239,7 @@ export default {
 
         ...mapActions('monitoring', [
             'getFeatures',
+            'updateFeatures',
             'getDataTableMonitoring',
             'getDataAnalyticsMonitoringByFunaiYear',
         ]),
@@ -235,8 +247,23 @@ export default {
 }
 </script>
 
-<style scoped>
+
+<style scoped lang="scss">
 .container-height {
     max-height: 90vh;
+}
+
+.selected {
+    background-color: red
+}
+
+.infoIconMargin {
+    margin-left: 4px;
+  }
+  
+@media (max-width: 768px) {
+  .infoIconMargin {
+    margin-left: 2px;
+  }
 }
 </style>
