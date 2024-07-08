@@ -335,6 +335,11 @@ export default {
 }
 
 @media print {
+    .logo {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+  }
+
     .container {
         position: fixed;
         top: 0;
@@ -348,7 +353,6 @@ export default {
         display: none;
     }
 }
-
 
 p {
     font-size: xx-small;
