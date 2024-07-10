@@ -77,7 +77,7 @@ export default {
             searchQuery: null,
             searchResults: [],
             isLoading: false,
-            isSearching: false,           
+            isSearching: false,
         }
     },
 
@@ -137,8 +137,9 @@ export default {
             for (let i = 0; i < this.indigenousLand.length; i++) {
                 if (
                     itemName.includes(this.indigenousLand[i].no_ti.toLowerCase()) &&
-                    itemName.includes(this.indigenousLand[i].ds_cr.toLowerCase()) &&
-                    itemName.includes(this.indigenousLand[i].no_municipio.toLowerCase())                 
+                    itemName.includes(this.indigenousLand[i].ds_cr.toLowerCase())
+                    // TODO: verificar null  no_municipio &&
+                    // itemName.includes(this.indigenousLand[i].no_municipio.toLowerCase()
                 ) {
                     return i;
                 }
@@ -146,7 +147,7 @@ export default {
             return -1;
         },
 
-        async goToIndigenousLands({item}) { 
+        async goToIndigenousLands({item}) {
             const index = this.findMatchingLandIndex(item);
             if (index === -1) {
                 console.error('No matching indigenous land found.');
@@ -154,7 +155,7 @@ export default {
             }
             const matchingLand = this.indigenousLand[index];
             try {
-                const data = await this.$api.$get(`funai/busca-geo-ti?id=${matchingLand.id}`)
+                const data = await this.$api.$get(`/funai/busca-geo-ti/?id=${matchingLand.id}`)
                 // Verifique se há dados retornados e se há features na coleção
                 if (data && data.features && data.features.length > 0) {
                     // Inicialize os limites vazios
