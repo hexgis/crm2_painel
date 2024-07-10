@@ -13,7 +13,7 @@
       <v-card-title
         class="ml-n2 primary"
       >
-        {{ $t('settings-label') }} dasfa
+        {{ $t('settings-label') }} 
         <v-spacer />
         <v-btn
           icon
@@ -165,21 +165,7 @@ export default {
 </script>
 
 <style lang="sass">
-@media (min-width: 960px)
-    .settings-tabs
-        > .v-slide-group > .v-slide-group__wrapper > .v-slide-group__content
-            > .v-tab
-                justify-content: flex-end
-            > .v-tabs-slider-wrapper
-                left: 230px !important
-                width: 3px !important
 
-        > .v-window, > .v-window > .v-window__container > .v-window-item
-            overflow-y: auto
-            height: 100%
-            .v-card
-                height: 100%
-                display: flex
-                justify-content: space-between
-                flex-direction: column
+
+
 </style>
