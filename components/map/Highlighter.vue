@@ -92,7 +92,7 @@
                                         </v-col>
                                     </v-row>
                                 </div>
-                                <div v-if="coordType === $t('dms-label')">
+                                <div v-else>
                                     <v-row>
                                         <v-col cols="3" class="pt-0">
                                             <v-text-field
@@ -433,13 +433,13 @@ export default {
             this.show = !this.show
         },
 
-        calculteDecimal(deg, min, sec) {
+        calculateDecimal(deg, min, sec) {
             return (
                 parseFloat(deg) + parseFloat(min / 60) + parseFloat(sec / 3600)
             )
         },
 
-        calculteNegativeDecimal(deg, min, sec) {
+        calculateNegativeDecimal(deg, min, sec) {
             return -(
                 parseFloat(deg) +
                 parseFloat(min / 60) +
@@ -473,7 +473,13 @@ export default {
             }
 
             const calculateLatitudeLongitude = () => {
-                if (this.coordType === this.$i18n.t('dms-label')) {
+                if (this.coordType === this.$i18n.t('decimal-label')) {
+                    validateDecimalInput()
+                    if (!hasError) {
+                        latitude = parseFloat(this.lat)
+                        longitude = parseFloat(this.lng)
+                    }
+                } else {
                     validateDMSInput()
                     if (!hasError) {
                         latitude = this.north
@@ -499,14 +505,6 @@ export default {
                                   this.secW
                               )
                     }
-                } else if (this.coordType === this.$i18n.t('decimal-label')) {
-                    validateDecimalInput()
-                    if (!hasError) {
-                        latitude = parseFloat(this.lat)
-                        longitude = parseFloat(this.lng)
-                    }
-                } else {
-                    hasError = true
                 }
             }
 
