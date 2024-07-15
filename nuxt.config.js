@@ -105,16 +105,16 @@ export default {
   i18n: {
     vueI18nLoader: true,
     locales: ['pt-br', 'en'],
-    defaultLocale: 'en',
+    defaultLocale: 'pt-br',
     vueI18n: {
-      fallbackLocale: 'en',
+      fallbackLocale: 'pt-br',
       messages,
     },
   },
 
   moment: {
     locales: ['pt-br'],
-    defaultLocale: 'en',
+    defaultLocale: 'pt-br',
   },
   /*
      ** Build configuration
