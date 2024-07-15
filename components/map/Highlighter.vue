@@ -27,324 +27,286 @@
       <span> {{ $t('upload-hint') }} </span>
     </v-tooltip>
 
-    <div class="drawer-block">
-      <transition name="slide-x-drawer">
-        <div
-          v-if="show"
-          class="upload-options-drawer file-button"
-        >
-          <span> {{ $t('upload-hint') }} </span>
-          <v-file-input
-            type="btn"
-            hide-input
-            prepend-icon="mdi-map-marker"
-            full-width
-          />
-        </div>
-      </transition>
-      <transition name="slide-x-drawer">
-        <div v-if="show">
-          <v-card
-            class="ml-6 mt-1"
-            min-width="350"
-            variant="outlined"
-          >
-            <v-card-actions class="pa-0">
-              <v-container class="pt-0">
-                <v-select
-                  v-model="coordType"
-                  :items="options"
-                  class="pt-0"
-                />
-                <div v-if="coordType === $t('decimal-label')">
-                  <v-row>
-                    <v-col
-                      cols="6"
-                      class="py-0"
-                    >
-                      <v-tooltip top>
-                        <template
-                          #activator="{ on, attrs }"
-                        >
-                          <v-text-field
-                            v-model="lat"
-                            placeholder="-8.62065"
-                            class="decimal-field"
-                            :class="latError"
-                            suffix="°"
-                            solo
-                            flat
-                            v-bind="attrs"
-                            v-on="on"
-                          />
-                        </template>
-                        <span>Latitude</span>
-                      </v-tooltip>
-                    </v-col>
-                    <v-col
-                      cols="6"
-                      class="py-0"
-                    >
-                      <v-tooltip top>
-                        <template
-                          #activator="{ on, attrs }"
-                        >
-                          <v-text-field
-                            v-model="lng"
-                            class="decimal-field"
-                            :class="lngError"
-                            placeholder="-53.32244"
-                            suffix="°"
-                            solo
-                            flat
-                            v-bind="attrs"
-                            v-on="on"
-                          />
-                        </template>
-                        <span>Longitude</span>
-                      </v-tooltip>
-                    </v-col>
-                  </v-row>
+        <div class="drawer-block">
+            <transition name="slide-x-drawer">
+                <div v-if="show" class="upload-options-drawer file-button">
+                    <span> {{ $t('upload-hint') }} </span>
+                    <v-file-input
+                        type="btn"
+                        hide-input
+                        prepend-icon="mdi-map-marker"
+                        full-width
+                    />
                 </div>
-                <div v-if="coordType === $t('dms-label')">
-                  <v-row>
-                    <v-col
-                      cols="3"
-                      class="pt-0"
+            </transition>
+            <transition name="slide-x-drawer">
+                <div v-if="show">
+                    <v-card
+                        class="ml-6 mt-1"
+                        min-width="350"
+                        variant="outlined"
                     >
-                      <v-text-field
-                        v-model="degN"
-                        :placeholder="
-                          $t('degree-label')
-                        "
-                        class="dms-field"
-                        :class="degNError"
-                        suffix="°"
-                        solo
-                        hide-details
-                        flat
-                      />
-                    </v-col>
-                    <v-col
-                      cols="3"
-                      class="pt-0"
-                    >
-                      <v-text-field
-                        v-model="minN"
-                        :placeholder="
-                          $t('minute-label')
-                        "
-                        class="dms-field"
-                        :class="minNError"
-                        suffix="'"
-                        solo
-                        hide-details
-                        flat
-                      />
-                    </v-col>
-                    <v-col
-                      cols="3"
-                      class="pt-0"
-                    >
-                      <v-text-field
-                        v-model="secN"
-                        :placeholder="
-                          $t('second-label')
-                        "
-                        class="dms-field"
-                        :class="secNError"
-                        suffix="&quot;"
-                        solo
-                        hide-details
-                        flat
-                      />
-                    </v-col>
-                    <v-col
-                      cols="3"
-                      class="pt-0 mt-2"
-                    >
-                      <v-btn
-                        v-if="!north"
-                        density="comfortable"
-                        small
-                        @click="toggleActivate()"
-                      >
-                        <b>S</b>
-                      </v-btn>
-                      <v-btn
-                        v-if="north"
-                        density="comfortable"
-                        small
-                        @click="toggleActivate()"
-                      >
-                        <b>N</b>
-                      </v-btn>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col
-                      cols="3"
-                      class="pt-0"
-                    >
-                      <v-text-field
-                        v-model="degW"
-                        :placeholder="
-                          $t('degree-label')
-                        "
-                        class="dms-field"
-                        :class="degWError"
-                        suffix="°"
-                        solo
-                        hide-details
-                        flat
-                      />
-                    </v-col>
-                    <v-col
-                      cols="3"
-                      class="pt-0"
-                    >
-                      <v-text-field
-                        v-model="minW"
-                        :placeholder="
-                          $t('minute-label')
-                        "
-                        class="dms-field"
-                        :class="minWError"
-                        suffix="'"
-                        solo
-                        hide-details
-                        flat
-                      />
-                    </v-col>
-                    <v-col
-                      cols="3"
-                      class="pt-0"
-                    >
-                      <v-text-field
-                        v-model="secW"
-                        :placeholder="
-                          $t('second-label')
-                        "
-                        class="dms-field"
-                        :class="secWError"
-                        suffix="&quot;"
-                        solo
-                        hide-details
-                        flat
-                      />
-                    </v-col>
-                    <v-col cols="3">
-                      <v-btn
-                        v-if="!east"
-                        density="comfortable"
-                        small
-                        @click="toggleActivateEast()"
-                      >
-                        <b>W</b>
-                      </v-btn>
-                      <v-btn
-                        v-if="east"
-                        density="comfortable"
-                        small
-                        @click="toggleActivateEast()"
-                      >
-                        <b>E</b>
-                      </v-btn>
-                    </v-col>
-                  </v-row>
+                        <v-card-actions class="pa-0">
+                            <v-container class="pt-0">
+                                <v-select
+                                    v-model="coordType"
+                                    :items="options"
+                                    class="pt-0"
+                                />
+                                <div v-if="coordType === $t('decimal-label')">
+                                    <v-row>
+                                        <v-col cols="6" class="py-0">
+                                            <v-tooltip top>
+                                                <template
+                                                    #activator="{ on, attrs }"
+                                                >
+                                                    <v-text-field
+                                                        v-model="lat"
+                                                        placeholder="-8.62065"
+                                                        class="decimal-field"
+                                                        :class="latError"
+                                                        suffix="°"
+                                                        solo
+                                                        flat
+                                                        v-bind="attrs"
+                                                        v-on="on"
+                                                    />
+                                                </template>
+                                                <span>Latitude</span>
+                                            </v-tooltip>
+                                        </v-col>
+                                        <v-col cols="6" class="py-0">
+                                            <v-tooltip top>
+                                                <template
+                                                    #activator="{ on, attrs }"
+                                                >
+                                                    <v-text-field
+                                                        v-model="lng"
+                                                        class="decimal-field"
+                                                        :class="lngError"
+                                                        placeholder="-53.32244"
+                                                        suffix="°"
+                                                        solo
+                                                        flat
+                                                        v-bind="attrs"
+                                                        v-on="on"
+                                                    />
+                                                </template>
+                                                <span>Longitude</span>
+                                            </v-tooltip>
+                                        </v-col>
+                                    </v-row>
+                                </div>
+                                <div v-else>
+                                    <v-row>
+                                        <v-col cols="3" class="pt-0">
+                                            <v-text-field
+                                                v-model="degN"
+                                                :placeholder="
+                                                    $t('degree-label')
+                                                "
+                                                class="dms-field"
+                                                :class="degNError"
+                                                suffix="°"
+                                                solo
+                                                hide-details
+                                                flat
+                                            />
+                                        </v-col>
+                                        <v-col cols="3" class="pt-0">
+                                            <v-text-field
+                                                v-model="minN"
+                                                :placeholder="
+                                                    $t('minute-label')
+                                                "
+                                                class="dms-field"
+                                                :class="minNError"
+                                                suffix="'"
+                                                solo
+                                                hide-details
+                                                flat
+                                            />
+                                        </v-col>
+                                        <v-col cols="3" class="pt-0">
+                                            <v-text-field
+                                                v-model="secN"
+                                                :placeholder="
+                                                    $t('second-label')
+                                                "
+                                                class="dms-field"
+                                                :class="secNError"
+                                                suffix='"'
+                                                solo
+                                                hide-details
+                                                flat
+                                            />
+                                        </v-col>
+                                        <v-col cols="3" class="pt-0 mt-2">
+                                            <v-btn
+                                                v-if="!north"
+                                                density="comfortable"
+                                                @click="toggleActivate()"
+                                                small
+                                            >
+                                                <b>S</b>
+                                            </v-btn>
+                                            <v-btn
+                                                v-if="north"
+                                                density="comfortable"
+                                                @click="toggleActivate()"
+                                                small
+                                            >
+                                                <b>N</b>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row>
+                                        <v-col cols="3" class="pt-0">
+                                            <v-text-field
+                                                v-model="degW"
+                                                :placeholder="
+                                                    $t('degree-label')
+                                                "
+                                                class="dms-field"
+                                                :class="degWError"
+                                                suffix="°"
+                                                solo
+                                                hide-details
+                                                flat
+                                            />
+                                        </v-col>
+                                        <v-col cols="3" class="pt-0">
+                                            <v-text-field
+                                                v-model="minW"
+                                                :placeholder="
+                                                    $t('minute-label')
+                                                "
+                                                class="dms-field"
+                                                :class="minWError"
+                                                suffix="'"
+                                                solo
+                                                hide-details
+                                                flat
+                                            />
+                                        </v-col>
+                                        <v-col cols="3" class="pt-0">
+                                            <v-text-field
+                                                v-model="secW"
+                                                :placeholder="
+                                                    $t('second-label')
+                                                "
+                                                class="dms-field"
+                                                :class="secWError"
+                                                suffix='"'
+                                                solo
+                                                hide-details
+                                                flat
+                                            />
+                                        </v-col>
+                                        <v-col cols="3">
+                                            <v-btn
+                                                v-if="!east"
+                                                density="comfortable"
+                                                @click="toggleActivateEast()"
+                                                small
+                                            >
+                                                <b>W</b>
+                                            </v-btn>
+                                            <v-btn
+                                                v-if="east"
+                                                density="comfortable"
+                                                @click="toggleActivateEast()"
+                                                small
+                                            >
+                                                <b>E</b>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-row>
+                                </div>
+                                <v-divider></v-divider>
+                                <v-row>
+                                    <v-col cols="1">
+                                        <v-btn
+                                            fab
+                                            ripple
+                                            height="36"
+                                            width="36"
+                                            class="mt-2"
+                                            @click="addMarker"
+                                        >
+                                            <v-icon color="error">
+                                                mdi-map-marker
+                                            </v-icon>
+                                        </v-btn>
+                                    </v-col>
+                                    <v-col cols="2" class="ml-2">
+                                        <v-card-actions v-if="this.showEdit">
+                                            <v-btn
+                                                v-for="btn in buttonsEdit"
+                                                :key="btn.icon"
+                                                icon
+                                                class="btn-tools"
+                                                x-small
+                                                @click="
+                                                    handleButtonEditClick(
+                                                        btn.type
+                                                    )
+                                                "
+                                            >
+                                                <v-tooltip top>
+                                                    <template
+                                                        #activator="{ on }"
+                                                    >
+                                                        <v-icon v-on="on">{{
+                                                            btn.icon
+                                                        }}</v-icon>
+                                                    </template>
+                                                    {{
+                                                        getTooltipText(btn.icon)
+                                                    }}
+                                                </v-tooltip>
+                                            </v-btn>
+                                        </v-card-actions>
+                                    </v-col>
+                                    <v-col cols="8">
+                                        <v-card-actions
+                                            v-if="isButtonEditClicked"
+                                        >
+                                            <div class="ml-4 mt-1">
+                                                <v-btn
+                                                    v-if="
+                                                        isEditButtonActive ||
+                                                        isDeleteButtonActive
+                                                    "
+                                                    color="success"
+                                                    class="btn-action"
+                                                    @click.stop="save()"
+                                                    x-small
+                                                >
+                                                    <span>Salvar</span>
+                                                </v-btn>
+                                                <v-btn
+                                                    v-if="isDeleteButtonActive"
+                                                    class="btn-action"
+                                                    color="accent"
+                                                    x-small
+                                                    @click.stop="
+                                                        clearAllDrawings
+                                                    "
+                                                >
+                                                    <span>Remover todos</span>
+                                                </v-btn>
+                                            </div>
+                                        </v-card-actions>
+                                    </v-col>
+                                </v-row>
+                            </v-container>
+                        </v-card-actions>
+                    </v-card>
                 </div>
-                <v-divider />
-                <v-row>
-                  <v-col cols="1">
-                    <v-btn
-                      fab
-                      ripple
-                      height="36"
-                      width="36"
-                      class="mt-2"
-                      @click="addMarker"
-                    >
-                      <v-icon color="error">
-                        mdi-map-marker
-                      </v-icon>
-                    </v-btn>
-                  </v-col>
-                  <v-col
-                    cols="2"
-                    class="ml-2"
-                  >
-                    <v-card-actions v-if="showEdit">
-                      <v-btn
-                        v-for="btn in buttonsEdit"
-                        :key="btn.icon"
-                        icon
-                        class="btn-tools"
-                        x-small
-                        @click="
-                          handleButtonEditClick(
-                            btn.type
-                          )
-                        "
-                      >
-                        <v-tooltip top>
-                          <template
-                            #activator="{ on }"
-                          >
-                            <v-icon v-on="on">
-                              {{
-                                btn.icon
-                              }}
-                            </v-icon>
-                          </template>
-                          {{
-                            getTooltipText(btn.icon)
-                          }}
-                        </v-tooltip>
-                      </v-btn>
-                    </v-card-actions>
-                  </v-col>
-                  <v-col cols="8">
-                    <v-card-actions
-                      v-if="isButtonEditClicked"
-                    >
-                      <div class="ml-4 mt-1">
-                        <v-btn
-                          v-if="
-                            isEditButtonActive ||
-                              isDeleteButtonActive
-                          "
-                          color="success"
-                          class="btn-action"
-                          x-small
-                          @click.stop="save()"
-                        >
-                          <span>Salvar</span>
-                        </v-btn>
-                        <v-btn
-                          v-if="isDeleteButtonActive"
-                          class="btn-action"
-                          color="accent"
-                          x-small
-                          @click.stop="
-                            clearAllDrawings
-                          "
-                        >
-                          <span>Remover todos</span>
-                        </v-btn>
-                      </div>
-                    </v-card-actions>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-actions>
-          </v-card>
+            </transition>
         </div>
-      </transition>
-    </div>
-    <div
-      id="map"
-      style="height: 500px; width: 100%"
-    />
+        <div id="map" style="height: 500px; width: 100%"></div>
 
     <BaseDialog
       v-if="saveDialog"
@@ -471,10 +433,24 @@ export default {
     },
   },
 
-  methods: {
-    selectDraw() {
-      this.show = !this.show;
-    },
+    methods: {
+        selectDraw() {
+            this.show = !this.show
+        },
+
+        calculateDecimal(deg, min, sec) {
+            return (
+                parseFloat(deg) + parseFloat(min / 60) + parseFloat(sec / 3600)
+            )
+        },
+
+        calculateNegativeDecimal(deg, min, sec) {
+            return -(
+                parseFloat(deg) +
+                parseFloat(min / 60) +
+                parseFloat(sec / 3600)
+            )
+        },
 
     addMarker() {
       let latitude; let
@@ -512,54 +488,52 @@ export default {
                 + parseFloat(sec / 3600)
       );
 
-      const calculateLatitudeLongitude = () => {
-        if (this.coordType === this.$i18n.t('dms-label')) {
-          validateDMSInput();
-          if (!hasError) {
-            latitude = this.north
-              ? calculateDecimal(
-                this.degN,
-                this.minN,
-                this.secN,
-              )
-              : calculateNegativeDecimal(
-                this.degN,
-                this.minN,
-                this.secN,
-              );
-            longitude = this.east
-              ? calculateDecimal(
-                this.degW,
-                this.minW,
-                this.secW,
-              )
-              : calculateNegativeDecimal(
-                this.degW,
-                this.minW,
-                this.secW,
-              );
-          }
-        } else if (this.coordType === this.$i18n.t('decimal-label')) {
-          validateDecimalInput();
-          if (!hasError) {
-            latitude = parseFloat(this.lat);
-            longitude = parseFloat(this.lng);
-          }
-        } else {
-          hasError = true;
-        }
-      };
+            const calculateLatitudeLongitude = () => {
+                if (this.coordType === this.$i18n.t('decimal-label')) {
+                    validateDecimalInput()
+                    if (!hasError) {
+                        latitude = parseFloat(this.lat)
+                        longitude = parseFloat(this.lng)
+                    }
+                } else {
+                    validateDMSInput()
+                    if (!hasError) {
+                        latitude = this.north
+                            ? this.calculateDecimal(
+                                  this.degN,
+                                  this.minN,
+                                  this.secN
+                              )
+                            : this.calculateNegativeDecimal(
+                                  this.degN,
+                                  this.minN,
+                                  this.secN
+                              )
+                        longitude = this.east
+                            ? this.calculateDecimal(
+                                  this.degW,
+                                  this.minW,
+                                  this.secW
+                              )
+                            : this.calculateNegativeDecimal(
+                                  this.degW,
+                                  this.minW,
+                                  this.secW
+                              )
+                    }
+                }
+            }
 
-      calculateLatitudeLongitude();
+            calculateLatitudeLongitude()
 
-      if (hasError) return;
+            if (hasError) return
 
-      this.showEdit = true;
-      this.map.flyTo([latitude, longitude], 12);
+            this.showEdit = true
+            this.map.flyTo([latitude, longitude], 12)
 
-      const novoMarcador = L.marker([latitude, longitude]);
-      novoMarcador.addTo(this.map);
-      this.drawnItems.addLayer(novoMarcador);
+            const novoMarcador = L.marker([latitude, longitude])
+            novoMarcador.addTo(this.map)
+            this.drawnItems.addLayer(novoMarcador)
 
       novoMarcador.on('click', () => {
         this.drawnItems.removeLayer(novoMarcador);
