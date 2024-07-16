@@ -326,7 +326,7 @@ export default {
         },
 
         fetchInstrumentoGestao(co_funai) {
-            const url = `http://localhost:8080/funai/instrumento-gestao/?co_funai=${co_funai}`
+            const url = `https://cmr.funai.gov.br/priority_api/funai/instrumento-gestao/?co_funai=${co_funai}`
             this.$axios
                 .get(url)
                 .then((response) => {
