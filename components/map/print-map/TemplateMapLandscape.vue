@@ -79,14 +79,14 @@
                 />
               </div>
               <div>
-                <p class="d-block ma-1">
+                <p v-if="supportLayers" class="d-block ma-1">
                   {{ $t('legend') }}
                 </p>
                 <div
                   class="ma-1 flex-wrap"
                   style="width: 100%"
                 >
-                  <div v-if="showFeaturesSupportLayers">
+                  <div v-if="showFeaturesSupportLayers" >
                     <div
                       v-for="layer in supportLayers"
                       :key="layer.id"
@@ -152,7 +152,7 @@
           </v-col>
         </v-row>
         <div class="no-print">
-          <div class="d-flex flex-row mr-6 mt-2">
+          <div class="d-flex flex-row align-md-center mr-6 mt-2">
             <v-btn
               class="ml-4 mb-2"
               @click="$emit('back')"
@@ -406,5 +406,9 @@ p {
 
 .image-container {
     width: 100%; /* Garante que o container tenha largura suficiente */
+}
+
+img.layer-thumbnail{
+    width: 25px;
 }
 </style>
