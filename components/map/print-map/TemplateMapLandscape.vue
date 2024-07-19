@@ -87,7 +87,7 @@
                   class="ma-1 flex-wrap"
                   style="width: 100%"
                 >
-                  <div v-if="showFeaturesSupportLayers">
+                  <div v-if="showFeaturesSupportLayers" >
                     <div
                       v-for="layer in supportLayers"
                       :key="layer.id"
