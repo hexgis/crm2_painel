@@ -78,15 +78,16 @@
                   :map-center="mapCenter"
                 />
               </div>
-              <div>
-                <p v-if="supportLayers" class="d-block ma-1">
+              <div class="legend-info-map">
+                <div>
+                <p v-if="showFeaturesSupportLayers" class="d-block ma-1">
                   {{ $t('legend') }}
                 </p>
                 <div
                   class="ma-1 flex-wrap"
                   style="width: 100%"
                 >
-                  <div v-if="showFeaturesSupportLayers" >
+                  <div v-if="showFeaturesSupportLayers">
                     <div
                       v-for="layer in supportLayers"
                       :key="layer.id"
@@ -125,27 +126,30 @@
                     </div>
                   </div>
                 </div>
-                <v-divider />
-                <div class="ma-1">
-                  <p>
-                    {{ print_info }} {{ $t('text-address0') }}
-                  </p>
-                  <p>
-                    {{ print_info }} {{ $t('text-address')
-                    }}{{ todayDate() }}
-                  </p>
                 </div>
-                <v-divider />
-                <div class="ma-1">
-                  <p>
-                    {{ $t('author-label') }}
-                  </p>
-                  <p>
-                    {{ $t('text-info') }}
-                  </p>
-                  <p>
-                    {{ $t('text-format') }}{{ leafSize.type }}.
-                  </p>
+                  <div>
+                    <v-divider />
+                    <div class="ma-1">
+                      <p>
+                        {{ print_info }} {{ $t('text-address0') }}
+                      </p>
+                      <p>
+                        {{ print_info }} {{ $t('text-address')
+                        }}{{ todayDate() }}
+                      </p>
+                    </div>
+                    <v-divider />
+                    <div class="ma-1">
+                      <p>
+                        {{ $t('author-label') }}
+                      </p>
+                      <p>
+                        {{ $t('text-info') }}
+                      </p>
+                      <p>
+                        {{ $t('text-format') }}{{ leafSize.type }}.
+                      </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -327,6 +331,14 @@ export default {
 
 .vue2leaflet-map teste leaflet-container leaflet-touch leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom{
   height: 30vh !important;
+}
+
+.legend-info-map{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 60%;
+  padding-bottom: 10px;
 }
 
 @page {
