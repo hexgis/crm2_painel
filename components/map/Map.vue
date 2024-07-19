@@ -814,6 +814,11 @@ export default {
     opacity: 1
     transform: scale(1.1)
 
+@media print 
+  .leaflet-control-zoom
+    display: none
+  
+
 @media (max-width: 768px)
 
   .basemap img
