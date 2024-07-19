@@ -85,7 +85,7 @@
                 </p>
                 <div
                   class="ma-1 flex-wrap"
-                  style="width: 100%"
+                  style="width: 100%; max-height: 19rem; overflow: hidden;"
                 >
                   <div v-if="showFeaturesSupportLayers" >
                     <div

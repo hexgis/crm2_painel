@@ -6,18 +6,6 @@
             :bounds="tmsToPrint.bounds || bounds"
         >
             <div id="map-container">
-                <l-control position="bottomright" class="custom-control"
-                    ><span
-                        style="
-                            color: red !important;
-                            font-weight: bold !important;
-                            padding: 5px;
-                            background-color: #e7f1e2;
-                        "
-                    >
-                        Mapa não oficial
-                    </span></l-control
-                >
                 <l-tile-layer
                     v-if="!selectedBaseMap"
                     :url="'//{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}.png'"
@@ -270,3 +258,12 @@ export default {
     },
 }
 </script>
+<style lang="sass">
+.leaflet-control-attribution.leaflet-control:nth-child(1)::after
+    content: '| Mapa não oficial'
+    color: red !important
+    font-weight: bold !important
+    padding: 5px
+    background-color: #fffff179
+
+</style>
