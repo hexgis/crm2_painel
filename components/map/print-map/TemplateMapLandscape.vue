@@ -79,14 +79,60 @@
                 />
               </div>
               <div class="legend-info-map">
-                <div>
-                <p v-if="showFeaturesSupportLayers" class="d-block ma-1">
-                  {{ $t('legend') }}
-                </p>
-                <div
-                  class="ma-1 flex-wrap"
-                  style="width: 100%; max-height: 19rem; overflow: hidden;"
-                >
+                <div class="legend-info-map legend-info-map-details">
+                  <div>
+                    <p v-if="showFeaturesSupportLayers" class="d-block ma-1">
+                      {{ $t('legend')}}
+                    </p>
+                    <div
+                      class="ma-1 flex-wrap"
+                      style="width: 100%; max-height: 8rem; overflow: hidden;"
+                    >
+                      <div v-if="showFeaturesSupportLayers" >
+                        <div
+                          v-for="layer in supportLayers"
+                          :key="layer.id"
+                        >
+                          <v-row
+                            v-if="layer.visible"
+                            no-gutters
+                            align="center"
+                            class="image-container"
+                          >
+                            <img
+                              v-if="layer.wms"
+                              :src="
+                                layer.wms.geoserver
+                                  .preview_url +
+                                  layer.wms
+                                    .geoserver_layer_name
+                              "
+                              class="layer-thumbnail"
+                              alt="CorLayer"
+                            >
+                            <img
+                              v-else-if="vectorImage(layer)"
+                              :src="`data:image/png;base64,${vectorImage(
+                                layer
+                              )}`"
+                              class="layer-thumbnail"
+                              alt="CorLayer"
+                            >
+                            <v-col>
+                              <p class="ml-1">
+                                {{ layer.name }}
+                              </p>
+                            </v-col>
+                          </v-row>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                  <v-divider />
+                  <p v-if="showFeaturesSupportLayers" class="d-block ma-1">
+                    Bases Cartográficas:
+                  </p>
                   <div v-if="showFeaturesSupportLayers" >
                     <div
                       v-for="layer in supportLayers"
@@ -98,28 +144,9 @@
                         align="center"
                         class="image-container"
                       >
-                        <img
-                          v-if="layer.wms"
-                          :src="
-                            layer.wms.geoserver
-                              .preview_url +
-                              layer.wms
-                                .geoserver_layer_name
-                          "
-                          class="layer-thumbnail"
-                          alt="CorLayer"
-                        >
-                        <img
-                          v-else-if="vectorImage(layer)"
-                          :src="`data:image/png;base64,${vectorImage(
-                            layer
-                          )}`"
-                          class="layer-thumbnail"
-                          alt="CorLayer"
-                        >
                         <v-col>
                           <p class="ml-1">
-                            {{ layer.name }}
+                            <strong>{{ layer.name || '-' }}: </strong>{{ layer.wms.geoserver_layer_name || '-' }}. Fonte: {{ layer.layer_info.fonte || '-' }}, Data de atualização: {{ handleData(layer.layer_info.dt_atualizacao) }}.
                           </p>
                         </v-col>
                       </v-row>
@@ -277,6 +304,12 @@ export default {
       return layer.vector.thumbnail_blob || layer.vector.image;
     },
 
+    handleData(data){
+      if(!data) return '-';
+      const [year, month, day] = data.split('-');
+      return `${day}/${month}/${year}`;
+    },
+
     todayDate() {
       const date = new Date();
       const dd = date.getDate();
@@ -338,7 +371,11 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   height: 60%;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
+}
+
+.legend-info-map-details{
+  height: 100%;
 }
 
 @page {

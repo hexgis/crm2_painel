@@ -261,8 +261,8 @@ export default {
 <style lang="sass">
 .leaflet-control-attribution.leaflet-control:nth-child(1)::after
     content: '| Mapa não oficial'
-    color: red !important
-    font-weight: bold !important
+    color: red
+    font-weight: bold
     padding: 5px
     background-color: #fffff179
 
