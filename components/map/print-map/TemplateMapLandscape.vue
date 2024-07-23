@@ -78,15 +78,62 @@
                   :map-center="mapCenter"
                 />
               </div>
-              <div>
-                <p class="d-block ma-1">
-                  {{ $t('legend') }}
-                </p>
-                <div
-                  class="ma-1 flex-wrap"
-                  style="width: 100%"
-                >
-                  <div v-if="showFeaturesSupportLayers">
+              <div class="legend-info-map">
+                <div class="legend-info-map legend-info-map-details">
+                  <div>
+                    <p v-if="showFeaturesSupportLayers" class="d-block ma-1">
+                      {{ $t('legend')}}
+                    </p>
+                    <div
+                      class="ma-1 flex-wrap"
+                      style="width: 100%; max-height: 8rem; overflow: hidden;"
+                    >
+                      <div v-if="showFeaturesSupportLayers" >
+                        <div
+                          v-for="layer in supportLayers"
+                          :key="layer.id"
+                        >
+                          <v-row
+                            v-if="layer.visible"
+                            no-gutters
+                            align="center"
+                            class="image-container"
+                          >
+                            <img
+                              v-if="layer.wms"
+                              :src="
+                                layer.wms.geoserver
+                                  .preview_url +
+                                  layer.wms
+                                    .geoserver_layer_name
+                              "
+                              class="layer-thumbnail"
+                              alt="CorLayer"
+                            >
+                            <img
+                              v-else-if="vectorImage(layer)"
+                              :src="`data:image/png;base64,${vectorImage(
+                                layer
+                              )}`"
+                              class="layer-thumbnail"
+                              alt="CorLayer"
+                            >
+                            <v-col>
+                              <p class="ml-1">
+                                {{ layer.name }}
+                              </p>
+                            </v-col>
+                          </v-row>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                  <v-divider />
+                  <p v-if="showFeaturesSupportLayers" class="d-block ma-1">
+                    Bases Cartográficas:
+                  </p>
+                  <div v-if="showFeaturesSupportLayers" >
                     <div
                       v-for="layer in supportLayers"
                       :key="layer.id"
@@ -97,62 +144,46 @@
                         align="center"
                         class="image-container"
                       >
-                        <img
-                          v-if="layer.wms"
-                          :src="
-                            layer.wms.geoserver
-                              .preview_url +
-                              layer.wms
-                                .geoserver_layer_name
-                          "
-                          class="layer-thumbnail"
-                          alt="CorLayer"
-                        >
-                        <img
-                          v-else-if="vectorImage(layer)"
-                          :src="`data:image/png;base64,${vectorImage(
-                            layer
-                          )}`"
-                          class="layer-thumbnail"
-                          alt="CorLayer"
-                        >
                         <v-col>
                           <p class="ml-1">
-                            {{ layer.name }}
+                            <strong>{{ layer.name || '-' }}: </strong>{{ layer.wms.geoserver_layer_name || '-' }}. Fonte: {{ layer.layer_info.fonte || '-' }}, Data de atualização: {{ handleData(layer.layer_info.dt_atualizacao) }}.
                           </p>
                         </v-col>
                       </v-row>
                     </div>
                   </div>
                 </div>
-                <v-divider />
-                <div class="ma-1">
-                  <p>
-                    {{ print_info }} {{ $t('text-address0') }}
-                  </p>
-                  <p>
-                    {{ print_info }} {{ $t('text-address')
-                    }}{{ todayDate() }}
-                  </p>
                 </div>
-                <v-divider />
-                <div class="ma-1">
-                  <p>
-                    {{ $t('author-label') }}
-                  </p>
-                  <p>
-                    {{ $t('text-info') }}
-                  </p>
-                  <p>
-                    {{ $t('text-format') }}{{ leafSize.type }}.
-                  </p>
+                  <div>
+                    <v-divider />
+                    <div class="ma-1">
+                      <p>
+                        {{ print_info }} {{ $t('text-address0') }}
+                      </p>
+                      <p>
+                        {{ print_info }} {{ $t('text-address')
+                        }}{{ todayDate() }}
+                      </p>
+                    </div>
+                    <v-divider />
+                    <div class="ma-1">
+                      <p>
+                        {{ $t('author-label') }}
+                      </p>
+                      <p>
+                        {{ $t('text-info') }}
+                      </p>
+                      <p>
+                        {{ $t('text-format') }}{{ leafSize.type }}.
+                      </p>
+                  </div>
                 </div>
               </div>
             </div>
           </v-col>
         </v-row>
         <div class="no-print">
-          <div class="d-flex flex-row mr-6 mt-2">
+          <div class="d-flex flex-row align-md-center mr-6 mt-2">
             <v-btn
               class="ml-4 mb-2"
               @click="$emit('back')"
@@ -273,6 +304,12 @@ export default {
       return layer.vector.thumbnail_blob || layer.vector.image;
     },
 
+    handleData(data){
+      if(!data) return '-';
+      const [year, month, day] = data.split('-');
+      return `${day}/${month}/${year}`;
+    },
+
     todayDate() {
       const date = new Date();
       const dd = date.getDate();
@@ -327,6 +364,18 @@ export default {
 
 .vue2leaflet-map teste leaflet-container leaflet-touch leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom{
   height: 30vh !important;
+}
+
+.legend-info-map{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 60%;
+  padding-bottom: 5px;
+}
+
+.legend-info-map-details{
+  height: 100%;
 }
 
 @page {
@@ -406,5 +455,9 @@ p {
 
 .image-container {
     width: 100%; /* Garante que o container tenha largura suficiente */
+}
+
+img.layer-thumbnail{
+    width: 25px;
 }
 </style>
