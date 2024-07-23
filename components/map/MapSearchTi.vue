@@ -1,61 +1,61 @@
 <template>
-    <div class="d-flex">
-        <v-tooltip right :disabled="isSearching">
-            <template #activator="{ on }">
-                <v-btn
-                    fab
-                    ripple
-                    height="36"
-                    width="36"
-                    class="search-button"
-                    :loading="isLoading"
-                    v-on="on"
-                    @click.stop="isSearching = !isSearching"
-                >
-                    <v-icon> mdi-image-search-outline </v-icon>
-                </v-btn>
-            </template>
-            <span> {{ $t('search-label') }} </span>
-        </v-tooltip>
-        <div class="search-input-container">
-            <transition name="slide-x">
-                <v-autocomplete
-                    v-if="isSearching"
-                    :label="$t('search-label')"
-                    :loading="isLoading"
-                    :items="searchResults"
-                    :search-input.sync="searchQuery"
-                    background-color="white"
-                    class="search-input"
-                    flat
-                    auto-select-first
-                    height="40px"
-                    hide-no-data
-                    hide-details
-                    item-text="label"
-                    solo
-                    @click.stop="searchQuery = ''"
-                >
-                    <template v-slot:item="searchResults">
-                        <div
-                            v-html="formatItem(searchResults)"
-                            @click="handleItemClick(searchResults)"
-                        ></div>
-                    </template>
-                </v-autocomplete>
-            </transition>
-        </div>
-    </div>
+  <div class="d-flex">
+      <v-tooltip right :disabled="isSearching">
+          <template #activator="{ on }">
+              <v-btn
+                  fab
+                  ripple
+                  height="36"
+                  width="36"
+                  class="search-button"
+                  :loading="isLoading"
+                  v-on="on"
+                  @click.stop="isSearching = !isSearching"
+              >
+                  <v-icon> mdi-image-search-outline </v-icon>
+              </v-btn>
+          </template>
+          <span> {{ $t('search-label') }} </span>
+      </v-tooltip>
+      <div class="search-input-container">
+          <transition name="slide-x">
+              <v-autocomplete
+                  v-if="isSearching"
+                  :label="$t('search-label')"
+                  :loading="isLoading"
+                  :items="searchResults"
+                  :search-input.sync="searchQuery"
+                  background-color="white"
+                  class="search-input"
+                  flat
+                  auto-select-first
+                  height="40px"
+                  hide-no-data
+                  hide-details
+                  item-text="label"
+                  solo
+                  @click.stop="searchQuery = ''"
+              >
+                  <template v-slot:item="searchResults">
+                      <div
+                          v-html="formatItem(searchResults)"
+                          @click="handleItemClick(searchResults)"
+                      ></div>
+                  </template>
+              </v-autocomplete>
+          </transition>
+      </div>
+  </div>
 </template>
 
 <i18n>
 {
-    "en": {
-        "search-label": "Search for Indigenous Lands"
-    },
-    "pt-br": {
-        "search-label": "Pesquisar por Terras Indígenas"
-    }
+  "en": {
+      "search-label": "Search for Indigenous Lands"
+  },
+  "pt-br": {
+      "search-label": "Pesquisar por Terras Indígenas"
+  }
 }
 </i18n>
 
@@ -63,150 +63,158 @@
 import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
-    name: 'MapSearchTi',
+  name: 'MapSearchTi',
 
-    props: {
-        map: {
-            type: Object,
-            default: null,
-        },
-    },
+  props: {
+      map: {
+          type: Object,
+          default: null,
+      },
+  },
 
-    data() {
-        return {
-            searchQuery: null,
-            searchResults: [],
-            isLoading: false,
-            isSearching: false,
+  data() {
+      return {
+          searchQuery: null,
+          searchResults: [],
+          isLoading: false,
+          isSearching: false,
+      }
+  },
+
+  watch: {
+      searchQuery() {
+          if (!this.searchQuery || !(this.searchQuery.length >= 3)) {
+              this.searchResults = []
+              this.isLoading = false
+              return
+          }
+          if (this.searchTimeout) {
+              clearTimeout(this.searchTimeout)
+          }
+          this.searchTimeout = setTimeout(
+              () => this.searchOnProvider(this.searchQuery),
+              1000
+          )
+      },
+  },
+
+  computed: {
+      ...mapState('map', ['indigenousLand']),
+  },
+
+  methods: {
+      ...mapActions('map', ['fetchSearchResults']),
+
+      async searchOnProvider(response) {
+          try {
+              const data = await this.fetchSearchResults(response)
+              data.map((item) =>
+                  this.searchResults.push(
+                    `**Terra Indígena:** ${item?.no_ti || '-'}
+                    **Município:** ${item?.no_municipio || '-'}
+                    **Coordenação Regional:** ${item?.ds_cr || '-'}`
+                ))
+          } catch (error) {
+              console.error('Erro ao buscar os resultados:', error)
+          }
+
+      },
+      formatItem(text) {
+          let formattedText = text.item.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+          formattedText = formattedText.replace(/\n/g, '<br>')
+          return formattedText
+      },
+
+        clearItem(text) {
+          let formattedText = text.item.replace(/\*\*.*?\*\*/g, '');
+          formattedText = formattedText.replace(/\n/g, ' ');
+          formattedText = formattedText.replace(/\s+/g, ' ').trim();
+          this.searchQuery = formattedText
+      },
+
+      findMatchingLandIndex(item) {
+          const itemName = item.toLowerCase();
+          for (let i = 0; i < this.indigenousLand.length; i++) {
+              if (
+                  itemName.includes(this.indigenousLand[i].no_ti.toLowerCase()) &&
+                  itemName.includes(this.indigenousLand[i].ds_cr.toLowerCase()) &&
+                  itemName.includes(this.indigenousLand[i].no_municipio.toLowerCase())
+              ) {
+                  return i;
+              }
+          }
+          return -1;
+      },
+
+      async goToIndigenousLands({item}) {
+    const index = this.findMatchingLandIndex(item);
+    if (index === -1) {
+        console.error('No matching indigenous land found.');
+        return;
+    }
+    const matchingLand = this.indigenousLand[index];
+    try {
+        const data = await this.$api.$get(`funai/busca-geo-ti?id=${matchingLand.id}`);
+        // Verifique se há dados retornados e se há features na coleção
+        if (data && data.features && data.features.length > 0) {
+            // Inicialize os limites vazios
+            let bounds = L.latLngBounds();
+            // Armazene todos os polígonos
+            let polygons = [];
+
+            // Itere sobre todas as features e todas as coordenadas para ajustar os limites
+            data.features.forEach((feature) => {
+                feature.geometry.coordinates.forEach((polygon) => {
+                    let latLngs = polygon[0].map(coordinate => {
+                        console.log(coordinate[1], coordinate[0]);
+                        bounds.extend(L.latLng(coordinate[1], coordinate[0]));
+                        return [coordinate[1], coordinate[0]];
+                    });
+                    polygons.push(latLngs);
+                });
+            });
+
+            // Verifique se this.map está definido
+            if (this.map) {
+                // Ajuste os limites do mapa para as coordenadas
+                this.map.flyToBounds(bounds);
+
+                // Adicione o polígono ao mapa
+                polygons.forEach(latLngs => {
+                    L.polygon(latLngs).addTo(this.map);
+                });
+            } else {
+                console.error('O objeto do mapa não está definido.');
+            }
         }
-    },
-
-    watch: {
-        searchQuery() {
-            if (!this.searchQuery || !(this.searchQuery.length >= 3)) {
-                this.searchResults = []
-                this.isLoading = false
-                return
-            }
-            if (this.searchTimeout) {
-                clearTimeout(this.searchTimeout)
-            }
-            this.searchTimeout = setTimeout(
-                () => this.searchOnProvider(this.searchQuery),
-                1000
-            )
-        },
-    },
-
-    computed: {
-        ...mapState('map', ['indigenousLand']),
-    },
-
-    methods: {
-        ...mapActions('map', ['fetchSearchResults']),
-
-        async searchOnProvider(response) {
-            try {
-                const data = await this.fetchSearchResults(response)
-                data.map((item) =>
-                    this.searchResults.push(
-                      `**Terra Indígena:** ${item?.no_ti || '-'}
-                      **Município:** ${item?.no_municipio || '-'}
-                      **Coordenação Regional:** ${item?.ds_cr || '-'}`
-                  ))
-            } catch (error) {
-                console.error('Erro ao buscar os resultados:', error)
-            }
-
-        },
-        formatItem(text) {
-            let formattedText = text.item.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-            formattedText = formattedText.replace(/\n/g, '<br>')
-            return formattedText
-        },
-
-          clearItem(text) {
-            let formattedText = text.item.replace(/\*\*.*?\*\*/g, '');
-            formattedText = formattedText.replace(/\n/g, ' ');
-            formattedText = formattedText.replace(/\s+/g, ' ').trim();
-            this.searchQuery = formattedText
-        },
-
-        findMatchingLandIndex(item) {
-            const itemName = item.toLowerCase();
-            for (let i = 0; i < this.indigenousLand.length; i++) {
-                if (
-                    itemName.includes(this.indigenousLand[i].no_ti.toLowerCase()) &&
-                    itemName.includes(this.indigenousLand[i].ds_cr.toLowerCase())
-                    // TODO: verificar null  no_municipio &&
-                    // itemName.includes(this.indigenousLand[i].no_municipio.toLowerCase()
-                ) {
-                    return i;
-                }
-            }
-            return -1;
-        },
-
-        async goToIndigenousLands({item}) {
-            const index = this.findMatchingLandIndex(item);
-            if (index === -1) {
-                console.error('No matching indigenous land found.');
-                return;
-            }
-            const matchingLand = this.indigenousLand[index];
-            try {
-                const data = await this.$api.$get(`/funai/busca-geo-ti/?id=${matchingLand.id}`)
-                // Verifique se há dados retornados e se há features na coleção
-                if (data && data.features && data.features.length > 0) {
-                    // Inicialize os limites vazios
-                    let bounds = L.latLngBounds()
-                    // Itere sobre todas as features e todas as coordenadas para ajustar os limites
-                    data.features.forEach((feature) => {
-                        feature.geometry.coordinates.forEach((polygon) => {
-                            polygon[0].forEach((coordinate) => {
-                                bounds.extend(
-                                    L.latLng(coordinate[1], coordinate[0])
-                                )
-                            })
-                        })
-                    })
-
-                    // Verifique se this.map está definido
-                    if (this.map) {
-                        // Ajuste os limites do mapa para as coordenadas
-                        this.map.flyToBounds(bounds)
-                    } else {
-                        console.error('O objeto do mapa não está definido.')
-                    }
-                }
-            } catch (error) {
-                console.error('Erro ao buscar os resultados:', error)
-            }
-        },
-        handleItemClick(item) {
-            this.searchQuery = item.label;
-            this.goToIndigenousLands(item);
-            this.clearItem(item);
-        },
-    },
+    } catch (error) {
+        console.error('Erro ao buscar os resultados:', error);
+    }
+},
+      handleItemClick(item) {
+          this.searchQuery = item.label;
+          this.goToIndigenousLands(item);
+          this.clearItem(item);
+      },
+  },
 }
 </script>
 
 
 <style lang="sass">
 .search-button
-    z-index: 5
+  z-index: 5
 
 .search-input-container
-    overflow: hidden
-    margin-left: -20px !important
-    height: 36px
-    font-size: 20px
+  overflow: hidden
+  margin-left: -20px !important
+  height: 36px
+  font-size: 20px
 
-    .v-input__control
-        min-height: 36px !important
+  .v-input__control
+      min-height: 36px !important
 
 div[role=listbox] > div:nth-child(n):not(:last-child)
-    border-bottom: 1px solid lightgray
-    margin-bottom: 10px
+  border-bottom: 1px solid lightgray
+  margin-bottom: 10px
 </style>
