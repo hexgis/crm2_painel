@@ -61,6 +61,7 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
+import { convertTextToHtml, convertHtmlToText } from '@/utils/formatText'
 
 export default {
   name: 'MapSearchTi',
@@ -119,17 +120,13 @@ export default {
           }
 
       },
+
       formatItem(text) {
-          let formattedText = text.item.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-          formattedText = formattedText.replace(/\n/g, '<br>')
-          return formattedText
+        return convertTextToHtml(text)
       },
 
-        clearItem(text) {
-          let formattedText = text.item.replace(/\*\*.*?\*\*/g, '');
-          formattedText = formattedText.replace(/\n/g, ' ');
-          formattedText = formattedText.replace(/\s+/g, ' ').trim();
-          this.searchQuery = formattedText
+      clearItem(text) {
+        this.searchQuery = convertHtmlToText(text)
       },
 
       findMatchingLandIndex(item) {
