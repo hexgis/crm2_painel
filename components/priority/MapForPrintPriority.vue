@@ -585,6 +585,11 @@ p {
 </style>
 
 <style>
+
+.v-dialog:not(.v-dialog--fullscreen) {
+  max-height: 100%;
+}
+
 .leaflet-grid-label .gridlabel-vert {
     margin-left: 8px;
     -webkit-transform: rotate(90deg);
@@ -612,5 +617,9 @@ p {
 
 .leaflet-control-attribution {
     white-space: nowrap !important;
+}
+
+.v-card__subtitle, .v-card__text, .v-card__title{
+    padding: 8px 16px;
 }
 </style>
