@@ -565,8 +565,6 @@ export default {
 
   methods: {
     showPopupOnMap(data) {
-      console.log(data);
-      console.log('entrou');
       // Mostrar o popup no mapa com os dados relevantes
       this.clickCoordinates = data.coordinates;
       this.showPopup = true;
