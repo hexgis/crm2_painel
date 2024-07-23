@@ -264,6 +264,5 @@ export default {
     color: red
     font-weight: bold
     padding: 5px
-    background-color: #fffff179
 
 </style>
