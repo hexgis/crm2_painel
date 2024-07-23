@@ -155,18 +155,13 @@ export default {
     const matchingLand = this.indigenousLand[index];
     try {
         const data = await this.$api.$get(`funai/busca-geo-ti?id=${matchingLand.id}`);
-        // Verifique se há dados retornados e se há features na coleção
         if (data && data.features && data.features.length > 0) {
-            // Inicialize os limites vazios
             let bounds = L.latLngBounds();
-            // Armazene todos os polígonos
             let polygons = [];
 
-            // Itere sobre todas as features e todas as coordenadas para ajustar os limites
             data.features.forEach((feature) => {
                 feature.geometry.coordinates.forEach((polygon) => {
                     let latLngs = polygon[0].map(coordinate => {
-                        console.log(coordinate[1], coordinate[0]);
                         bounds.extend(L.latLng(coordinate[1], coordinate[0]));
                         return [coordinate[1], coordinate[0]];
                     });
@@ -174,12 +169,8 @@ export default {
                 });
             });
 
-            // Verifique se this.map está definido
             if (this.map) {
-                // Ajuste os limites do mapa para as coordenadas
                 this.map.flyToBounds(bounds);
-
-                // Adicione o polígono ao mapa
                 polygons.forEach(latLngs => {
                     L.polygon(latLngs).addTo(this.map);
                 });
