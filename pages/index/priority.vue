@@ -11,7 +11,7 @@
         <v-tooltip>
           <template #activator="{ on }">
             <v-icon
-              class="mr-2 ml-2"
+              class="infoIconMargin"
               v-on="on"
             >
               mdi-information
@@ -181,11 +181,23 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .container-height {
     max-height: 90vh;
 }
+
 .selected {
     background-color: red
 }
+
+.infoIconMargin {
+    margin-left: 4px;
+  }
+  
+@media (max-width: 768px) {
+  .infoIconMargin {
+    margin-left: 2px;
+  }
+}
 </style>
+

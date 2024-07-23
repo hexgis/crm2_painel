@@ -1,13 +1,6 @@
 <template>
   <l-layer-group ref="popup">
-    <l-popup
-      :options="{
-        minWidth: 420,
-        maxHeight: 360,
-        className: 'card-popup',
-        color: 'secondary',
-      }"
-    >
+    <l-popup :options="popupOptions">
       <v-card class="fill-height">
         <v-tabs
           v-if="data && Object.keys(data).length"
@@ -106,25 +99,68 @@
               </v-card-text>
             </v-tab-item>
           </template>
+
+          <!-- New tab for InstrumentoGestao -->
+          <v-tab
+            v-if="
+              instrumentoGestao &&
+                Object.keys(instrumentoGestao).length
+            "
+          >
+            Instrumento Gestão
+          </v-tab>
+
+          <v-tab-item
+            v-if="
+              instrumentoGestao &&
+                Object.keys(instrumentoGestao).length
+            "
+            class="fill-height"
+          >
+            <v-card-text
+              style="max-height: 312px; overflow-y: auto"
+            >
+              <v-row
+                v-for="(value, field) in instrumentoGestao"
+                :key="field"
+                class="mx-0 list-separator"
+                dense
+              >
+                <v-col
+                  cols="5"
+                  class="text-right"
+                >
+                  {{ formatField(field) }}:
+                </v-col>
+                <v-col
+                  cols="7"
+                  class="text-subtitle-2"
+                  style="overflow-wrap: anywhere"
+                >
+                  <span>
+                    {{ formatValue(value, field) }}
+                  </span>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-tab-item>
         </v-tabs>
       </v-card>
     </l-popup>
   </l-layer-group>
 </template>
-
 <i18n>
-{
-    "en": {
-        "no-data": "There's no data at this point for the selected layer.",
-        "layer-api-error": "Unable to acquire support layer information."
-    },
-    "pt-br": {
-        "no-data": "Não há dados nesse ponto para a camada selecionada.",
-        "layer-api-error": "Não foi possível resgatar as informações das camadas de apoio."
-    }
-}
-</i18n>
-
+  {
+      "en": {
+          "no-data": "There's no data at this point for the selected layer.",
+          "layer-api-error": "Unable to acquire support layer information."
+      },
+      "pt-br": {
+          "no-data": "Não há dados nesse ponto para a camada selecionada.",
+          "layer-api-error": "Não foi possível resgatar as informações das camadas de apoio."
+      }
+  }
+  </i18n>
 <script>
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 
@@ -142,7 +178,22 @@ export default {
     hasPopup: false,
     popup: null,
     data: null,
+    instrumentoGestao: {}, // Changed to an empty object
   }),
+
+  computed: {
+    isSmallScreen() {
+      return window.innerWidth < 768;
+    },
+    popupOptions() {
+      return {
+        minWidth: this.isSmallScreen ? 300 : 420,
+        maxHeight: this.isSmallScreen ? 280 : 360,
+        className: 'card-popup',
+        color: 'secondary',
+      };
+    },
+  },
 
   watch: {
     map() {
@@ -154,6 +205,10 @@ export default {
 
   methods: {
     formatField(field) {
+      if (!field || typeof field !== 'string') {
+        return ''; // or handle appropriately if field is not a string
+      }
+
       const replacements = {
         dt_: ['Data ', 'dt_'],
         co_: ['Codigo ', 'co_'],
@@ -168,10 +223,10 @@ export default {
       const prefix = field.match(/^\w+_/)
         ? field.match(/^\w+_/)
         : field.match(/^\w+/);
-      const key = prefix[0];
+      const key = prefix ? prefix[0] : ''; // handle case where prefix is null or undefined
       const regex = /^[A-Za-z]{2}_\w+$/;
 
-      if (key in replacements) {
+      if (key && key in replacements) {
         field = field.replace(
           replacements[key][1],
           replacements[key][0],
@@ -216,44 +271,50 @@ export default {
     getFeatureInfo(evt) {
       this.hasPopup = false;
       this.data = {};
+      this.instrumentoGestao = {}; // Clear previous data
+
       this.map.eachLayer((layer) => {
         if (Object.prototype.hasOwnProperty.call(layer, 'wmsParams')) {
-          if (layer.wmsParams.queryable) {
-            this.hasPopup = true;
+          this.hasPopup = true;
 
-            const layerName = layer.wmsParams.name;
-            this.data[layerName] = {
-              layers: [],
-              loading: true,
-            };
+          const layerName = layer.wmsParams.name;
+          this.data[layerName] = {
+            layers: [],
+            loading: true,
+          };
 
-            const url = this.getFeatureInfoUrl(evt.latlng, layer);
+          const url = this.getFeatureInfoUrl(evt.latlng, layer);
 
-            this.$axios
-              .get(url)
-              .then(({ data }) => {
-                if (
-                  data
-                                    && data.features
-                                    && data.features.length
-                ) {
-                  for (const feature of data.features) {
-                    this.data[layerName].layers.push(
-                      feature.properties,
-                    );
-                  }
+          this.$axios
+            .get(url)
+            .then(({ data }) => {
+              if (data && data.features && data.features.length) {
+                for (const feature of data.features) {
+                  this.data[layerName].layers.push(
+                    feature.properties,
+                  );
                 }
-              })
-              .catch(() => {
-                this.$store.commit('alert/addAlert', {
-                  message: this.$t('layer-api-error'),
-                });
-              })
-              .finally(() => {
-                this.data[layerName].loading = false;
-                this.$forceUpdate();
+              }
+
+              // Fetch InstrumentoGestao data if available
+              const coFunaiLayer = this.data[
+                layerName
+              ].layers.find((layer) => layer.co_funai);
+              if (coFunaiLayer) {
+                this.fetchInstrumentoGestao(
+                  coFunaiLayer.co_funai,
+                );
+              }
+            })
+            .catch(() => {
+              this.$store.commit('alert/addAlert', {
+                message: this.$t('layer-api-error'),
               });
-          }
+            })
+            .finally(() => {
+              this.data[layerName].loading = false;
+              this.$forceUpdate();
+            });
         } else if (layer.feature) {
           if (
             layer.feature.geometry.type === 'MultiPolygon'
@@ -283,7 +344,6 @@ export default {
       }
     },
 
-    // 4326
     getFeatureInfoUrl(latlng, layer) {
       const point = this.map.latLngToContainerPoint(
         latlng,
@@ -314,6 +374,26 @@ export default {
         layer._url
                 + this.$L.Util.getParamString(params, layer._url, true)
       );
+    },
+
+    fetchInstrumentoGestao(co_funai) {
+      const url = `http://localhost:8080/funai/instrumento-gestao/?co_funai=${co_funai}`;
+      this.$axios
+        .get(url)
+        .then((response) => {
+          if (response.data && response.data.length > 0) {
+            const data = response.data[0];
+            this.instrumentoGestao = Array.isArray(data)
+              ? data[0]
+              : data; // Verifica se é um array antes de acessar o índice 0
+          } else {
+            this.instrumentoGestao = {};
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+          this.instrumentoGestao = {};
+        });
     },
   },
 };

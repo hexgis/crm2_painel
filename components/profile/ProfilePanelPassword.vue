@@ -4,7 +4,7 @@
     class="fill-height"
     @submit.prevent="changePassword"
   >
-    <v-card>
+    <v-card elevation="0">
       <v-progress-linear
         v-show="isLoading"
         class="my-0 login-progress"
