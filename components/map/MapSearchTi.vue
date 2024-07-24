@@ -134,8 +134,7 @@ export default {
           for (let i = 0; i < this.indigenousLand.length; i++) {
               if (
                   itemName.includes(this.indigenousLand[i].no_ti.toLowerCase()) &&
-                  itemName.includes(this.indigenousLand[i].ds_cr.toLowerCase()) &&
-                  itemName.includes(this.indigenousLand[i].no_municipio.toLowerCase())
+                  itemName.includes(this.indigenousLand[i].ds_cr.toLowerCase())
               ) {
                   return i;
               }
@@ -151,7 +150,7 @@ export default {
     }
     const matchingLand = this.indigenousLand[index];
     try {
-        const data = await this.$api.$get(`/funai/busca-geo-ti?id=${matchingLand.id}`);
+        const data = await this.$api.$get(`/funai/busca-geo-ti/?id=${matchingLand.id}`);
         if (data && data.features && data.features.length > 0) {
             let bounds = L.latLngBounds();
             let polygons = [];

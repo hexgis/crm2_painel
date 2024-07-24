@@ -183,7 +183,7 @@ export const mutations = {
   },
 
   setIndigenousLand(state, indigenousLand) {
-    state.indigenousLand = indigenousLand
+    state.indigenousLand = indigenousLand;
   }
   ,
 };
@@ -192,9 +192,8 @@ export const actions = {
   async fetchSearchResults({ commit }, searchQuery) {
     try {
       const response = await this.$api.$get(`/funai/ti-by-name/?param=${searchQuery}`);
-      commit('setIndigenousLand', response)
+      commit('setIndigenousLand', response);
       return response;
-
     } catch (error) {
       throw error;
     }
@@ -302,7 +301,5 @@ export const actions = {
       );
     }
   },
-
-
 
 };
