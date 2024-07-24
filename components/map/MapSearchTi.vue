@@ -151,7 +151,7 @@ export default {
     }
     const matchingLand = this.indigenousLand[index];
     try {
-        const data = await this.$api.$get(`funai/busca-geo-ti?id=${matchingLand.id}`);
+        const data = await this.$api.$get(`/funai/busca-geo-ti?id=${matchingLand.id}`);
         if (data && data.features && data.features.length > 0) {
             let bounds = L.latLngBounds();
             let polygons = [];
