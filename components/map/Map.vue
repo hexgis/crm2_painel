@@ -76,11 +76,6 @@
 
             <div class="div-spacer" />
 
-            <ZoomToCoords
-              v-if="!$vuetify.breakpoint.mobile"
-              :map="map"
-            />
-
             <FileLoaderControl
               :map="map"
               :files="loadedFiles"
@@ -258,7 +253,6 @@ import MapPrinter from '@/components/map/print-map/MapPrinter';
 
 import MapSearch from '@/components/map/MapSearch.vue';
 import MapSearchTi from '@/components/map/MapSearchTi.vue';
-import ZoomToCoords from '@/components/map/ZoomToCoords.vue';
 import FileLoaderControl from '@/components/map/file-loader/FileLoaderControl.vue';
 import FileLoaderLayers from '@/components/map/file-loader/FileLoaderLayers.vue';
 // import ImageryLayers from '@/components/imagery/ImageryLayers'
@@ -303,7 +297,6 @@ export default {
     SupportLayers,
     MapSearch,
     MapSearchTi,
-    ZoomToCoords,
     FileLoaderControl,
     FileLoaderLayers,
     PriorityLayers,
@@ -482,18 +475,6 @@ export default {
                         'Map data &copy; <a href="//desktop.arcgis.com/en/arcmap/">ArcGis Basemap</a>',
           maxZoom: 21,
           maxNativeZoom: 19,
-          zIndex: 1,
-        },
-      },
-      {
-        url: 'https://tiles.planet.com/basemaps/v1/planet-tiles/planet_medres_visual_2020-10_mosaic/gmap/{z}/{x}/{y}.png?api_key=57cd3a8c44024cfdb7446ac37d8d1fe9',
-        options: {
-          label: 'Planet - Out/2020',
-          tag: 'Planet - Out/2020',
-          attribution:
-                        'Map data &copy; <a href="//www.planet.com/">Planet</a>',
-          maxZoom: 21,
-          maxNativeZoom: 15,
           zIndex: 1,
         },
       },
@@ -838,10 +819,9 @@ export default {
     opacity: 1
     transform: scale(1.1)
 
-@media print 
+@media print
   .leaflet-control-zoom
     display: none
-  
 
 @media (max-width: 768px)
 
