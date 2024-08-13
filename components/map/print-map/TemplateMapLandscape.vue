@@ -45,16 +45,18 @@
             class="pl-1 mt-2"
           >
             <div class="border_container">
-              <div class="d-flex justify-center align-center ma-4">
+              <div class="d-flex justify-space-between pl-8 pr-8 ga-1 align-center ma-4">
                 <div style="width: 25%">
                   <v-img
+                    style="opacity: 0.5;"
                     contain
                     :src="logo_funai"
                     class="logo"
                   />
                 </div>
-                <div style="width: 25%">
+                <div style="width: 50%">
                   <v-img
+                    style="opacity: 0.5;"
                     contain
                     :src="logo_cmr"
                     class="logo"
