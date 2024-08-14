@@ -1,31 +1,26 @@
 <template>
-  <div class="d-flex mt-2">
-    <v-tooltip right>
-      <template #activator="{ on }">
-        <v-btn
-          fab
-          ripple
-          height="36"
-          width="36"
-          class="button-drawer"
-          @click="selectDraw()"
-          v-on="on"
-        >
-          <transition name="slide-x drawer-button">
-            <v-icon v-if="!show">
-              mdi-map-marker
-            </v-icon>
-            <v-icon
-              v-else
-              class="back-icon"
-            >
-              mdi-arrow-left
-            </v-icon>
-          </transition>
-        </v-btn>
-      </template>
-      <span> {{ $t('upload-hint') }} </span>
-    </v-tooltip>
+    <div class="d-flex mt-2">
+        <v-tooltip right>
+            <template #activator="{ on }">
+                <v-btn
+                    fab
+                    ripple
+                    height="36"
+                    width="36"
+                    class="button-drawer"
+                    @click="selectDraw()"
+                    v-on="on"
+                >
+                    <transition name="slide-x drawer-button">
+                        <v-icon v-if="!show"> mdi-map-marker </v-icon>
+                        <v-icon v-else class="back-icon">
+                            mdi-arrow-left
+                        </v-icon>
+                    </transition>
+                </v-btn>
+            </template>
+            <span> {{ $t('upload-hint') }} </span>
+        </v-tooltip>
 
         <div class="drawer-block">
             <transition name="slide-x-drawer">
@@ -43,7 +38,7 @@
                 <div v-if="show">
                     <v-card
                         class="ml-6 mt-1"
-                        min-width="350"
+                        min-width="345"
                         variant="outlined"
                     >
                         <v-card-actions class="pa-0">
@@ -257,9 +252,16 @@
                                                     <template
                                                         #activator="{ on }"
                                                     >
-                                                        <v-icon v-on="on">{{
-                                                            btn.icon
-                                                        }}</v-icon>
+                                                        <v-icon v-on="on">
+                                                            {{
+                                                                btn.icon ===
+                                                                'mdi-palette-outline'
+                                                                    ? palette
+                                                                        ? 'mdi-close'
+                                                                        : 'mdi-palette-outline'
+                                                                    : btn.icon
+                                                            }}
+                                                        </v-icon>
                                                     </template>
                                                     {{
                                                         getTooltipText(btn.icon)
@@ -268,7 +270,8 @@
                                             </v-btn>
                                         </v-card-actions>
                                     </v-col>
-                                    <v-col cols="8">
+
+                                    <v-col cols="8" class="ml-5">
                                         <v-card-actions
                                             v-if="isButtonEditClicked"
                                         >
@@ -299,6 +302,17 @@
                                             </div>
                                         </v-card-actions>
                                     </v-col>
+                                    <v-expand-transition>
+                                        <div v-show="palette" class="ml-5">
+                                            <v-color-picker
+                                                :value="layerStyle"
+                                                hide-mode-switch
+                                                mode="hexa"
+                                                dot-size="15"
+                                                @input="updateColor"
+                                            />
+                                        </div>
+                                    </v-expand-transition>
                                 </v-row>
                             </v-container>
                         </v-card-actions>
@@ -308,14 +322,14 @@
         </div>
         <div id="map" style="height: 500px; width: 100%"></div>
 
-    <BaseDialog
-      v-if="saveDialog"
-      :label="$t('save-label')"
-      :type="'Save'"
-      @close="saveDialog = false"
-      @action="generateJson"
-    />
-  </div>
+        <BaseDialog
+            v-if="saveDialog"
+            :label="$t('save-label')"
+            :type="'Save'"
+            @close="saveDialog = false"
+            @action="generateJson"
+        />
+    </div>
 </template>
 
 <i18n>
@@ -335,7 +349,8 @@
     "dms-north": "N",
     "dms-west": "W",
     "dms-south": "S",
-    "dms-est": "E"
+    "dms-est": "E",
+    "tooltips.mdi-palette-outline": "Color palette"
   },
   "pt-br": {
     "upload-hint": "Marcador",
@@ -352,88 +367,132 @@
     "dms-north": "N",
     "dms-west": "O",
     "dms-south": "S",
-    "dms-est": "E"
+    "dms-est": "E",
+    "tooltips.mdi-palette-outline": "Paleta de cores"
   }
 }
 </i18n>
 
 <script>
-import { mapMutations, mapActions } from 'vuex';
-import BaseDialog from '@/components/map/drawing-tool/BaseDialog';
-import getGeometryArea from '~/plugins/getGeometryArea';
+import { mapMutations, mapActions, mapGetters } from 'vuex'
+import BaseDialog from '@/components/map/drawing-tool/BaseDialog'
+import getGeometryArea from '~/plugins/getGeometryArea'
 
-const { stringify } = require('wkt');
-const circleToPolygon = require('circle-to-polygon');
+const { stringify } = require('wkt')
+const circleToPolygon = require('circle-to-polygon')
 
 export default {
-  name: 'Highlighter',
+    name: 'Highlighter',
 
-  components: {
-    BaseDialog,
-  },
-
-  props: {
-    map: {
-      type: Object,
-      default: null,
+    components: {
+        BaseDialog,
     },
-    show: {
-      type: Boolean,
-      default: false,
+
+    props: {
+        map: {
+            type: Object,
+            default: null,
+        },
+        show: {
+            type: Boolean,
+            default: false,
+        },
     },
-  },
 
-  data: () => ({
-    coordType: 'Decimal',
-    options: ['Decimal', 'D.M.S.'],
-    buttonsEdit: [
-      { icon: 'mdi-pencil-box', type: 'Edit' },
-      { icon: 'mdi-delete-outline', type: 'Delete' },
-      { icon: 'mdi-database-plus-outline', type: 'Save' },
-    ],
+    data: () => ({
+        coordType: 'Decimal',
+        options: ['Decimal', 'D.M.S.'],
+        buttonsEdit: [
+            { icon: 'mdi-pencil-box', type: 'Edit' },
+            { icon: 'mdi-delete-outline', type: 'Delete' },
+            { icon: 'mdi-database-plus-outline', type: 'Save' },
+            { icon: 'mdi-palette-outline', type: 'Color' },
+        ],
 
-    activeButton: null,
+        activeButton: null,
 
-    isButtonEditClicked: false,
-    newValueContent: [],
-    isDeleteButtonActive: false,
-    isEditButtonActive: false,
+        isButtonEditClicked: false,
+        newValueContent: [],
+        isDeleteButtonActive: false,
+        isEditButtonActive: false,
 
-    saveDialog: false,
+        saveDialog: false,
 
-    lat: '',
-    lng: '',
-    latError: '',
-    lngError: '',
-    degN: '',
-    minN: '',
-    secN: '',
-    degW: '',
-    minW: '',
-    secW: '',
-    north: true,
-    east: true,
-    degNError: '',
-    minNError: '',
-    secNError: '',
-    degWError: '',
-    minWError: '',
-    secWError: '',
-    drawnItems: L.featureGroup(),
-    center: null,
-    showEdit: false,
-  }),
+        lat: '',
+        lng: '',
+        latError: '',
+        lngError: '',
+        degN: '',
+        minN: '',
+        secN: '',
+        degW: '',
+        minW: '',
+        secW: '',
+        north: true,
+        east: true,
+        degNError: '',
+        minNError: '',
+        secNError: '',
+        degWError: '',
+        minWError: '',
+        secWError: '',
+        drawnItems: L.featureGroup(),
+        center: null,
+        showEdit: false,
+        palette: false,
+        selectedColor: '#FF0000FF',
+        layerStyle: '#FF0000FF',
+    }),
 
-  watch: {
-    show() {
-      if (!this.show) {
-        this.clearActiveButton();
-        this.isButtonEditClicked = false;
-      }
+    watch: {
+        show() {
+            if (!this.show) {
+                this.clearActiveButton()
+                this.isButtonEditClicked = false
+            }
+        },
+
+        selectedColor() {
+            this.updateColor(this.selectedColor)
+        },
     },
-  },
 
     methods: {
+        updateColor(color) {
+            this.selectedColor = color
+            this.layerStyle = color
+            this.updateMarkersColor()
+        },
+
+        updateMarkersColor() {
+            this.drawnItems.eachLayer((layer) => {
+                if (layer instanceof L.Marker) {
+                    this.map.removeLayer(layer)
+                    this.drawnItems.removeLayer(layer)
+                    const svgIcon = L.divIcon({
+                        className: 'custom-icon',
+                        html: `<svg id="Layer_1" style="enable-background:new 0 0 91 91;" version="1.1" viewBox="0 0 91 91" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
+                        <g>
+                            <path d="M66.9,41.8c0-11.3-9.1-20.4-20.4-20.4c-11.3,0-20.4,9.1-20.4,20.4c0,11.3,20.4,32.4,20.4,32.4S66.9,53.1,66.9,41.8z
+                            M37,41.4c0-5.2,4.3-9.5,9.5-9.5c5.2,0,9.5,4.2,9.5,9.5c0,5.2-4.2,9.5-9.5,9.5C41.3,50.9,37,46.6,37,41.4z" fill="${this.layerStyle}" stroke="${this.layerStyle}" stroke-width="2" />
+                        </g>
+                    </svg>`,
+                        iconSize: [54, 54],
+                        iconAnchor: [28, 45],
+                    })
+                    const newMarker = L.marker(layer.getLatLng(), {
+                        icon: svgIcon,
+                    })
+                    newMarker.addTo(this.map)
+                    this.drawnItems.addLayer(newMarker)
+                    newMarker.on('click', () => {
+                        this.drawnItems.removeLayer(newMarker)
+                        this.map.removeLayer(newMarker)
+                    })
+                }
+            })
+        },
+
         selectDraw() {
             this.show = !this.show
         },
@@ -452,41 +511,41 @@ export default {
             )
         },
 
-    addMarker() {
-      let latitude; let
-        longitude;
-      let hasError = false;
+        addMarker() {
+            let latitude
+            let longitude
+            let hasError = false
 
-      const validateDMSInput = () => {
-        const fields = ['degN', 'minN', 'secN', 'degW', 'minW', 'secW'];
-        fields.forEach((field) => {
-          if (!this[field] || isNaN(this[field])) {
-            this[`${field}Error`] = true;
-            hasError = true;
-          }
-        });
-      };
+            const validateDMSInput = () => {
+                const fields = ['degN', 'minN', 'secN', 'degW', 'minW', 'secW']
+                fields.forEach((field) => {
+                    if (!this[field] || isNaN(this[field])) {
+                        this[`${field}Error`] = true
+                        hasError = true
+                    }
+                })
+            }
 
-      const validateDecimalInput = () => {
-        if (!this.lat || isNaN(this.lat)) {
-          this.latError = true;
-          hasError = true;
-        }
-        if (!this.lng || isNaN(this.lng)) {
-          this.lngError = true;
-          hasError = true;
-        }
-      };
+            const validateDecimalInput = () => {
+                if (!this.lat || isNaN(this.lat)) {
+                    this.latError = true
+                    hasError = true
+                }
+                if (!this.lng || isNaN(this.lng)) {
+                    this.lngError = true
+                    hasError = true
+                }
+            }
 
-      const calculateDecimal = (deg, min, sec) => (
-        parseFloat(deg) + parseFloat(min / 60) + parseFloat(sec / 3600)
-      );
+            const calculateDecimal = (deg, min, sec) =>
+                parseFloat(deg) + parseFloat(min / 60) + parseFloat(sec / 3600)
 
-      const calculateNegativeDecimal = (deg, min, sec) => -(
-        parseFloat(deg)
-                + parseFloat(min / 60)
-                + parseFloat(sec / 3600)
-      );
+            const calculateNegativeDecimal = (deg, min, sec) =>
+                -(
+                    parseFloat(deg) +
+                    parseFloat(min / 60) +
+                    parseFloat(sec / 3600)
+                )
 
             const calculateLatitudeLongitude = () => {
                 if (this.coordType === this.$i18n.t('decimal-label')) {
@@ -530,199 +589,207 @@ export default {
 
             this.showEdit = true
             this.map.flyTo([latitude, longitude], 12)
-
-            const novoMarcador = L.marker([latitude, longitude])
+            const svgIcon = L.divIcon({
+                className: 'custom-icon',
+                html: `<svg id="Layer_1" style="enable-background:new 0 0 91 91;" version="1.1" viewBox="0 0 91 91" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
+                <g>
+                    <path d="M66.9,41.8c0-11.3-9.1-20.4-20.4-20.4c-11.3,0-20.4,9.1-20.4,20.4c0,11.3,20.4,32.4,20.4,32.4S66.9,53.1,66.9,41.8z
+                    M37,41.4c0-5.2,4.3-9.5,9.5-9.5c5.2,0,9.5,4.2,9.5,9.5c0,5.2-4.2,9.5-9.5,9.5C41.3,50.9,37,46.6,37,41.4z" fill="${this.layerStyle}" stroke="${this.layerStyle}" stroke-width="2" />
+                </g>
+            </svg>`,
+                iconSize: [54, 54],
+                iconAnchor: [28, 45],
+            })
+            const novoMarcador = L.marker([latitude, longitude], {
+                icon: svgIcon,
+            })
             novoMarcador.addTo(this.map)
             this.drawnItems.addLayer(novoMarcador)
 
-      novoMarcador.on('click', () => {
-        this.drawnItems.removeLayer(novoMarcador);
-        this.map.removeLayer(novoMarcador);
-      });
+            novoMarcador.on('click', () => {
+                if (this.isDeleteButtonActive) {
+                    this.drawnItems.removeLayer(novoMarcador)
+                    this.map.removeLayer(novoMarcador)
+                }
+            })
 
-      this.center = novoMarcador;
+            this.center = novoMarcador
 
-      this.handleButtonEditClick();
-      this.show = true;
+            this.handleButtonEditClick()
+            this.show = true
+        },
+
+        handleButtonEditClick(type) {
+            this.isButtonEditClicked = true
+            this.activeButton = null
+            if (this.drawInstance) {
+                this.drawInstance.disable()
+            }
+            if (type === 'Delete') {
+                this.isDeleteButtonActive = true
+            } else {
+                this.isDeleteButtonActive = false
+            }
+
+            if (type === 'Edit') {
+                this.isEditButtonActive = true
+            } else {
+                this.isEditButtonActive = false
+            }
+
+            if (type === 'Edit' || type === 'Delete') {
+                this.drawInstance = new this.$L.EditToolbar[type](this.map, {
+                    featureGroup: this.drawnItems,
+                })
+                this.originalDrawnItems = this.drawnItems.toGeoJSON()
+                this.drawInstance.enable()
+            }
+
+            if (type === 'Save') {
+                this.isButtonEditClicked = false
+
+                this.isDeleteButtonActive = false
+                this.saveDialog = true
+            }
+
+            if (type === 'Color') {
+                this.palette = !this.palette
+            }
+        },
+
+        clearAllDrawings() {
+            if (this.drawnItems) {
+                this.drawnItems.eachLayer((layer) => {
+                    this.map.removeLayer(layer)
+                })
+                this.drawnItems.clearLayers()
+                this.isButtonEditClicked = false
+                if (this.drawInstance) {
+                    this.drawInstance.disable()
+                }
+                this.isDeleteButtonActive = false
+            }
+        },
+
+        generateJson(obj) {
+            const geometry = this.drawnItems.toGeoJSON()
+            const features = geometry.features.map((feature) => {
+                if (feature.geometry.type === 'Point') {
+                    feature.properties.color = this.layerStyle
+                }
+                return feature
+            })
+
+            const updatedGeometry = { ...geometry, features }
+
+            const actions = {
+                Save: () => this.saveIntoDb(updatedGeometry, obj.name),
+            }
+
+            const action = actions[obj.type]
+            if (action) {
+                action()
+            }
+        },
+
+        save() {
+            this.setIsDrawing(false)
+            Object.values(this.drawnItems._layers).forEach((layer) => {
+                this.contentPopupDraw = getGeometryArea(layer)
+                this.newValueContent.push({
+                    content: this.contentPopupDraw,
+                    id: layer._leaflet_id,
+                })
+                this.$nextTick(() => {
+                    this.newValueContent = []
+                })
+            })
+            this.isButtonEditClicked = false
+            this.isDeleteButtonActive = false
+            this.drawInstance.disable()
+        },
+
+        saveIntoDb(geometry, name) {
+            this.saveDrawToDatabase({ geometry, name })
+            this.saveDialog = false
+        },
+
+        toggleActivate() {
+            this.north = !this.north
+        },
+        toggleActivateEast() {
+            this.east = !this.east
+        },
+
+        selectDraw() {
+            this.$emit('toggleTool', 'Highlighter')
+        },
+
+        getTooltipText(icon) {
+            const language = this.$i18n.locale
+            return this.$t(`tooltips.${icon}`, null, language)
+        },
+
+        clearActiveButton() {
+            this.activeButton = null
+            if (this.drawInstance) {
+                this.drawInstance.disable()
+            }
+        },
+
+        ...mapActions('map', ['saveDrawToDatabase']),
+        ...mapMutations('map', ['setIsDrawing']),
+        ...mapMutations('supportLayersUser', ['setLayerColor', 'SET_COLOR']),
     },
-
-    handleButtonEditClick(type) {
-      this.isButtonEditClicked = true;
-      this.activeButton = null;
-      if (this.drawInstance) {
-        this.drawInstance.disable();
-      }
-      if (type === 'Delete') {
-        this.isDeleteButtonActive = true;
-      } else {
-        this.isDeleteButtonActive = false;
-      }
-
-      if (type === 'Edit') {
-        this.isEditButtonActive = true;
-      } else {
-        this.isEditButtonActive = false;
-      }
-
-      if (type === 'Edit' || type === 'Delete') {
-        this.drawInstance = new this.$L.EditToolbar[type](this.map, {
-          featureGroup: this.drawnItems,
-        });
-        this.originalDrawnItems = this.drawnItems.toGeoJSON();
-        this.drawInstance.enable();
-      }
-
-      if (type === 'Save') {
-        this.isButtonEditClicked = false;
-        this.saveDialog = true;
-      }
-    },
-
-    clearAllDrawings() {
-      if (this.drawnItems) {
-        this.drawnItems.eachLayer((layer) => {
-          this.map.removeLayer(layer);
-        });
-        this.drawnItems.clearLayers();
-        this.isButtonEditClicked = false;
-        if (this.drawInstance) {
-          this.drawInstance.disable();
-        }
-      }
-    },
-
-    generateJson(obj) {
-      const circles = [];
-      Object.values(this.drawnItems._layers).forEach((layer) => {
-        if (layer._mRadius) {
-          const coordinates = [layer._latlng.lng, layer._latlng.lat];
-          const circle = markerToPolygon(
-            coordinates,
-            layer._mRadius,
-            512,
-          );
-          circles.push(circle);
-        }
-      });
-
-      const geometry = this.drawnItems.toGeoJSON();
-      circles.forEach((circle) => {
-        const circleGeojson = {
-          type: 'Feature',
-          geometry: {
-            coordinates: circle.coordinates,
-            type: circle.type,
-          },
-          properties: {},
-        };
-        geometry.features.push(circleGeojson);
-      });
-
-      const actions = {
-        Save: () => this.saveIntoDb(geometry, obj.name),
-      };
-
-      const action = actions[obj.type];
-      if (action) {
-        action();
-      }
-    },
-
-    save() {
-      this.setIsDrawing(false);
-      Object.values(this.drawnItems._layers).forEach((layer) => {
-        this.contentPopupDraw = getGeometryArea(layer);
-        this.newValueContent.push({
-          content: this.contentPopupDraw,
-          id: layer._leaflet_id,
-        });
-        this.$nextTick(() => {
-          this.newValueContent = [];
-        });
-      });
-      this.isButtonEditClicked = false;
-      this.drawInstance.disable();
-    },
-
-    saveIntoDb(geometry, name) {
-      this.saveDrawToDatabase({ geometry, name });
-      this.saveDialog = false;
-    },
-
-    toggleActivate() {
-      this.north = !this.north;
-    },
-    toggleActivateEast() {
-      this.east = !this.east;
-    },
-
-    selectDraw() {
-      this.$emit('toggleTool', 'Highlighter');
-    },
-
-    getTooltipText(icon) {
-      const language = this.$i18n.locale;
-      return this.$t(`tooltips.${icon}`, null, language);
-    },
-
-    clearActiveButton() {
-      this.activeButton = null;
-      if (this.drawInstance) {
-        this.drawInstance.disable();
-      }
-    },
-
-    ...mapActions('map', ['saveDrawToDatabase']),
-    ...mapMutations('map', ['setIsDrawing']),
-  },
-};
+}
 </script>
+
 
 <style lang="sass" scoped>
 .back-icon
-    transform: rotate(0deg)
+  transform: rotate(0deg)
 
 .drawer-block
-    margin-left: -18px
-    overflow: hidden
-    position: absolute
-    left: 35px
-    min-width: 300px
-    .upload-options-drawer
-        position: relative
-        z-index: 2
-        display: flex
-        align-items: center
-        justify-content: space-between
-        background-color: white
-        border-radius: 4px 40px 40px 4px
-        background-color: white
-        transition: ease all 0.6s
-        padding-left: 35px
+  margin-left: -18px
+  overflow: hidden
+  position: absolute
+  left: 35px
+  min-width: 300px
+  .upload-options-drawer
+    position: relative
+    z-index: 2
+    display: flex
+    align-items: center
+    justify-content: space-between
+    background-color: white
+    border-radius: 4px 40px 40px 4px
+    background-color: white
+    transition: ease all 0.6s
+    padding-left: 35px
 
 .btn-tools
-    padding: 0px !important
-    margin: 0px !important
-    color: inherit !important
-    margin-top: 10px !important
+  padding: 0px !important
+  margin: 0px !important
+  color: inherit !important
+  margin-top: 10px !important
 
 .slide-x-drawer-enter-active, .slide-x-drawer-leave-active
-    transition: all 0.4s ease-out !important
+  transition: all 0.4s ease-out !important
 
 .slide-x-drawer-enter, .slide-x-drawer-leave-to
-    transform: translateX(-100%)
+  transform: translateX(-100%)
 
 .slide-x-drawer-leave-active
-    transition-delay: 0.3s !important
+  transition-delay: 0.3s !important
 
 .decimal-field
-    width: 105px
+  width: 105px
 
 .col-6
-    flex: 0 0 50%
-    max-width: 50%
-    height: 60px
+  flex: 0 0 50%
+  max-width: 50%
+  height: 60px
 
 .btn-action
-    margin-top: 6px
+  margin-top: 6px
 </style>
