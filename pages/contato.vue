@@ -73,6 +73,16 @@
         </v-col>
       </v-row>
     </div>
+    <v-dialog v-model="showSuccessDialog" max-width="400">
+      <v-card>
+        <v-card-title class="text-h5">{{ $t('success-title') }}</v-card-title>
+        <v-card-text>{{ $t('success-message') }}</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="closeDialog">{{ $t('close') }}</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -95,7 +105,10 @@
     "phone-required": "This field is required.",
     "phone-valid": "Phone number must be valid.",
     "message-required": "This field is required.",
-    "message-min-length": "Message must be at least 10 characters long."
+    "message-min-length": "Message must be at least 10 characters long.",
+    "success-title": "Success",
+    "success-message": "Your message has been sent successfully!",
+    "close": "Close"
   },
   "pt-br": {
     "hero-title": "Contato",
@@ -114,7 +127,10 @@
     "phone-required": "Este campo é obrigatório.",
     "phone-valid": "Número de telefone deve ser válido.",
     "message-required": "Este campo é obrigatório.",
-    "message-min-length": "Mensagem deve ter no mínimo 10 caracteres."
+    "message-min-length": "Mensagem deve ter no mínimo 10 caracteres.",
+    "success-title": "Agradecemos seu contato!",
+    "success-message": "Sua mensagem foi enviada com sucesso!",
+    "close": "Fechar"
   }
 }
 </i18n>
@@ -136,7 +152,8 @@ export default {
     lastname: '',
     email: '',
     phone: '',
-    message: ''
+    message: '',
+    showSuccessDialog: false
   }),
   computed: {
     phoneMask() {
@@ -177,14 +194,18 @@ export default {
           "phone": this.phone,
           "message": this.message
         })
-        console.log('Formulário enviado:', {
-          firstname: this.firstname,
-          surname: this.lastname,
-          email: this.email,
-          phone: this.phone,
-          message: this.message
-        })
+        this.showSuccessDialog = true
+
+        this.firstname = ''
+        this.lastname = ''
+        this.email = ''
+        this.phone = ''
+        this.message = ''
       }
+    },
+    closeDialog() {
+      this.showSuccessDialog = false
+      this.$router.push(this.localePath('/portal'))
     }
   }
 }
