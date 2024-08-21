@@ -2,7 +2,7 @@
     <v-layout align-center justify-center>
         <v-flex xs12 sm8 md4 lg3 xl3>
             <v-form @submit.prevent="login">
-                <v-card tile class="elevation-6 login-card" style="margin-top: 50%">
+                <v-card tile class="elevation-6 login-card" style="margin-top: 40%">
                     <div v-if="this.$vuetify.theme.dark">
                         <v-toolbar flat dark color="black">
                             <v-progress-linear
@@ -107,7 +107,7 @@
                 </v-card>
                 <v-dialog v-model="showStatusModal" max-width="550">
                     <v-card>
-                        <v-card-title :style="{ backgroundColor: statusTitle === $t('success') ? '#F0F0F0' :  '#D92B3F' }">
+                        <v-card-title :style="{ backgroundColor: statusTitle === $t('success') ? '#ffcc00' :  '#D92B3F' }">
                             {{ statusTitle }}
                         </v-card-title>
                         <v-card-text class="pt-4">{{ statusMessage }}</v-card-text>
@@ -209,7 +209,7 @@ export default {
 
             this.authenticate({
                 username: this.username,
-                password: this.password,
+                password: this.password
             })
                 .then((_) => {
                     this.isLoading = false
