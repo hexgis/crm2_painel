@@ -162,6 +162,10 @@ export default {
         id: this.layerId,
         visible: !this.layer.visible,
       });
+      this.setshowFeaturesSupportLayers(false)
+      setTimeout(() => {
+        this.setshowFeaturesSupportLayers(true)
+      }, 1);
 
       this.isOpen = this.layer.visible;
     },
@@ -175,6 +179,7 @@ export default {
 
     ...mapMutations('supportLayers', [
       'toggleLayerVisibilityRaster',
+      'setshowFeaturesSupportLayers',
       'setLayerOpacityRaster',
     ]),
   },
