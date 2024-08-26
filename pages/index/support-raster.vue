@@ -15,7 +15,7 @@
             </v-icon>
           </template>
           <span>
-            Fonte de dados: Geoserver - FUNAI
+           {{ $t('data-source-label') }}
           </span>
         </v-tooltip>
         <v-switch
@@ -25,8 +25,8 @@
           hide-details
         />
       </v-row>
-      
-     
+
+
     </div>
     <v-list
       v-if="!$fetchState.pending"
@@ -48,7 +48,7 @@
         />
       </template>
     </div>
-    
+
   </v-container>
 </template>
 
@@ -56,11 +56,13 @@
 {
     "en": {
 
-        "title": "High Resolution and Mosaics"
+        "title": "High Resolution and Mosaics",
+        "data-source-label": "Datasource: Geoserver - FUNAI"
     },
 
     "pt-br": {
-        "title": "Alta Resolução e Mosaicos"
+        "title": "Alta Resolução e Mosaicos",
+        "data-source-label": "Fonte de dados: Geoserver - FUNAI"
 
     }
 }
@@ -124,10 +126,10 @@ export default {
   }
 
 .switch-margin {
-    margin-left: 60px 
-       
-  }  
-  
+    margin-left: 60px
+
+  }
+
 @media (max-width: 768px) {
   .infoIconMargin {
     margin-left: 2px;
@@ -139,7 +141,7 @@ export default {
 
   .switch-margin {
     margin-top: 10px;
-    margin-left: 0px  
+    margin-left: 0px
   }
 }
 </style>

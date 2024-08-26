@@ -283,7 +283,7 @@
                                                     @click.stop="save()"
                                                     x-small
                                                 >
-                                                    <span>Salvar</span>
+                                                    <span>{{ $t('save-label')}}</span>
                                                 </v-btn>
                                                 <v-btn
                                                     v-if="isDeleteButtonActive"
@@ -294,7 +294,7 @@
                                                         clearAllDrawings
                                                     "
                                                 >
-                                                    <span>Remover todos</span>
+                                                    <span>{{ $t('remove-all')}}</span>
                                                 </v-btn>
                                             </div>
                                         </v-card-actions>
@@ -335,7 +335,8 @@
     "dms-north": "N",
     "dms-west": "W",
     "dms-south": "S",
-    "dms-est": "E"
+    "dms-est": "E",
+    "remove-all": "Remove all"
   },
   "pt-br": {
     "upload-hint": "Marcador",
@@ -352,7 +353,8 @@
     "dms-north": "N",
     "dms-west": "O",
     "dms-south": "S",
-    "dms-est": "E"
+    "dms-est": "E",
+    "remove-all": "Remover todos"
   }
 }
 </i18n>

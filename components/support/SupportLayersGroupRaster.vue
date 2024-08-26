@@ -20,13 +20,13 @@
               </v-icon>
             </template>
             <span>
-              O mosaico de imagens de alta resolução
+              {{ $t('mosaic-line-1') }}
               <br>
-              é formado por imagens dos satélites Spot 6 e 7,
+              {{ $t('mosaic-line-2') }}
               <br>
-              com uma resolução espacial de 1,5 metros,
+              {{ $t('mosaic-line-3') }}
               <br>
-              abrangendo datas entre os anos de 2018 e 2019.
+              {{ $t('mosaic-line-4') }}
               <br>
             </span>
           </v-tooltip>
@@ -48,7 +48,22 @@
     <v-divider />
   </v-list-group>
 </template>
-
+<i18n>
+  {
+      "en": {
+        "mosaic-line-1": "The high-resolution image mosaic",
+        "mosaic-line-2": "is composed of images from the Spot 6 and 7 satellites,",
+        "mosaic-line-3": "with a spatial resolution of 1.5 meters,",
+        "mosaic-line-4": "covering dates between the years 2018 and 2019."
+      },
+      "pt-br": {
+        "mosaic-line-1": "O mosaico de imagens de alta resolução",
+        "mosaic-line-2": "é formado por imagens dos satélites Spot 6 e 7,",
+        "mosaic-line-3": "com uma resolução espacial de 1,5 metros,",
+        "mosaic-line-4": "abrangendo datas entre os anos de 2018 e 2019."
+      }
+  }
+</i18n>
 <script>
 import { mapState } from 'vuex';
 import _ from 'lodash';

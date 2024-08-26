@@ -11,7 +11,7 @@
                             mdi-information
                         </v-icon>
                     </template>
-                    <span> Fonte de dados: Geoserver - FUNAI </span>
+                    <span> {{ $t('data-source') }} </span>
                 </v-tooltip>
             </v-row>
             <v-switch
@@ -47,10 +47,12 @@
 <i18n>
 {
     "en": {
-        "title": "Layers"
+        "title": "Layers",
+        "data-source": "Data source: Geoserver - FUNAI"
     },
     "pt-br": {
-        "title": "Camadas"
+        "title": "Camadas",
+        "data-source": "Fonte de dados: Geoserver - FUNAI"
     }
 }
 </i18n>
@@ -129,7 +131,7 @@ export default {
         ]),
         ...mapState('userProfile', ['user']),
 
-        
+
     },
 
     methods: {

@@ -3,7 +3,7 @@
     <v-row class="px-3 py-3">
       <v-select
         v-model="filters.cr"
-        label="Coordenação Regional"
+        :label="$t('regional-coordination-label')"
         :items="flattened"
         item-value="co_cr"
         item-text="ds_cr"
@@ -22,7 +22,7 @@
       >
         <v-select
           v-model="filters.ti"
-          label="Terras Indigenas"
+          :label="$t('indigenous-lands-label')"
           :items="filterOptions.tiFilters"
           item-text="no_ti"
           item-value="co_funai"
@@ -41,7 +41,7 @@
     >
       <v-select
         v-model="filters.year"
-        label="Ano"
+        :label="$t('year-label')"
         :items="filterOptions.year"
         item-text="nu_ano"
         item-value="map_year"
@@ -83,7 +83,7 @@
                 mdi-table
               </v-icon>
             </template>
-            <span>Tabela</span>
+            <span>{{ $t('table-label') }}</span>
           </v-tooltip>
         </v-btn>
       </v-col>
@@ -246,6 +246,9 @@
 <i18n>
     {
         "en": {
+            "regional-coordination-label": "Regional Coordination",
+            "indigenous-lands-label": "Indigenous Lands",
+            "year-label": "Year",
             "search-label": "Search",
             "opacity-label": "Opacity",
             "current-view-label": "Search in current area?",
@@ -254,15 +257,20 @@
             "heat-map-label": "Heat map",
             "polygon-label": "Total polygons count",
             "end-date-label": "End Date",
+            "table-label": "Table",
             "table-name": "Table Land Use"
         },
         "pt-br": {
+            "regional-coordination-label": "Coordenação Regional",
+            "indigenous-lands-label": "Terras Indígenas",
+            "year-label": "Ano",
             "search-label": "Buscar",
             "opacity-label": "Opacidade",
             "current-view-label": "Pesquisar nesta área?",
             "total-area-label": "Área total",
             "heat-map-label": "Mapa de calor",
             "polygon-label": "Total de polígonos",
+            "table-label": "Tabela",
             "start-date-label": "Data Início",
             "end-date-label": "Data Fim",
             "table-name": "Tabela de Uso e Ocupação do Solo"
