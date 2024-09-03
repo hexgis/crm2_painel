@@ -60,7 +60,7 @@ export default {
 
     async updateThemeSettings(isDark) { 
       try {
-        const response = await this.$axios.patch('http://localhost:8080/user/update-settings/', {
+        const response = await this.$axios.patch('/user/update-settings/', {
           theme_mode: isDark
         }, {
           headers: {

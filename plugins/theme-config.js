@@ -6,7 +6,7 @@ export default async ({ $axios, store, $vuetify }) => {
       if (!token) throw new Error('No auth token found');
   
       $axios.setToken(token, 'Bearer');
-      const { settings } = await $axios.$get('http://localhost:8080/user/logged/');
+      const { settings } = await $axios.$get('/user/logged/');
       const isDarkMode = settings.dark_mode_active;
       store.commit('setTheme', isDarkMode);
       $vuetify.theme.dark = isDarkMode;
