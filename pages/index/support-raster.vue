@@ -7,7 +7,10 @@
         </h6>
         <v-tooltip>
           <template #activator="{ on }">
-            <v-icon class="infoIconMargin" v-on="on">
+            <v-icon
+              class="infoIconMargin"
+              v-on="on"
+            >
               mdi-information
             </v-icon>
           </template>
@@ -21,7 +24,10 @@
         />
       </v-row>
     </div>
-    <v-col cols="12" class="pb-0">
+    <v-col
+      cols="12"
+      class="pb-0"
+    >
       <v-autocomplete
         v-model="selectedLayers"
         :label="$t('search-label')"
@@ -35,7 +41,11 @@
         @click:clear="clearInput"
       />
     </v-col>
-    <v-list v-if="!$fetchState.pending" expand class="pt-0">
+    <v-list
+      v-if="!$fetchState.pending"
+      expand
+      class="pt-0"
+    >
       <template v-for="group in filteredGroups">
         <SupportLayersGroupRaster
           :key="group.id"
@@ -69,9 +79,9 @@
 </i18n>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
-import _ from 'lodash'
-import SupportLayersGroupRaster from '@/components/support/SupportLayersGroupRaster'
+import { mapState, mapMutations } from 'vuex';
+import _ from 'lodash';
+import SupportLayersGroupRaster from '@/components/support/SupportLayersGroupRaster';
 
 export default {
   name: 'SupportRaster',
@@ -84,63 +94,76 @@ export default {
   }),
   async fetch() {
     if (!Object.keys(this.supportCategoryGroupsRaster).length) {
-      await this.$store.dispatch('supportLayers/getCategoryGroupsRasters')
+      await this.$store.dispatch('supportLayers/getCategoryGroupsRasters');
     }
   },
   computed: {
     orderedSupportLayersGroups() {
-      return _.sortBy(this.supportCategoryGroupsRaster, 'order')
+      return _.sortBy(this.supportCategoryGroupsRaster, 'order');
     },
 
     orderedSupportLayersGroupsItens() {
-      return _.sortBy(this.supportLayersCategoryRaster, 'order')
+      return _.sortBy(this.supportLayersCategoryRaster, 'order');
     },
 
     showFeatures: {
       get() {
         return this.$store.state.supportLayers
-          .showFeaturesSupportLayersRaster
+          .showFeaturesSupportLayersRaster;
       },
       set(value) {
         this.$store.commit(
           'supportLayers/setshowFeaturesSupportLayersRaster',
-          value
-        )
+          value,
+        );
       },
     },
 
+    /**
+   * Filtra os grupos de camadas de suporte com base nas camadas selecionadas.
+   * - Se `selectedLayers` estiver vazio, retorna todos os grupos ordenados.
+   * - Caso contrário, retorna apenas os grupos que contêm camadas que foram selecionadas.
+   * - Atualiza os IDs das camadas filtradas para uso em outras partes do sistema.
+   *
+   * @returns {Array} Lista de grupos filtrados com base nas camadas selecionadas.
+    */
     filteredGroups() {
-      if (this.selectedLayers.length) {
-        this.setSearchLayer(true);
-        let filteredLayersId = [];
-        const filteredItens = [];
-        const filteredGroup = [];
-        for (const filter of this.selectedLayers) {
-          filteredItens.push(
-            ...this.orderedSupportLayersGroupsItens.filter(
-              (layer) => layer.name === filter
-            )
-          )
-        }
-        for (const group of this.orderedSupportLayersGroups) {
-          const { layers } = group;
-          for (const layer of layers) {
-            for (const item of filteredItens) {
-              if (item.id === layer) {
-                filteredLayersId = filteredLayersId.concat(item.id);
-                if (!filteredGroup.includes(group)) {
-                  filteredGroup.push(group);
-                }
-              }
-            }
-          }
-        }
-        this.setFilteredLayers(filteredLayersId);
-        return filteredGroup;
+      if (!this.selectedLayers.length) {
+        this.setSearchLayer(false);
+        this.setFilteredLayers(null);
+        return _.sortBy(this.orderedSupportLayersGroups, 'order');
       }
-      this.setSearchLayer(false);
-      this.setFilteredLayers(null);
-      return _.sortBy(this.orderedSupportLayersGroups, 'order');
+
+      this.setSearchLayer(true);
+
+      const selectedLayersSet = new Set(this.selectedLayers);
+
+      const filteredLayersItens = this.orderedSupportLayersGroupsItens.filter(
+        (item) => selectedLayersSet.has(item.name),
+      );
+
+      const filteredItemsMap = filteredLayersItens.reduce((acc, item) => {
+        acc[item.id] = item;
+        return acc;
+      }, {});
+
+      const { filteredLayersId, filteredGroups } = this.orderedSupportLayersGroups.reduce(
+        (acc, group) => {
+          const { layers } = group;
+          const matchedLayers = layers.filter((layer) => filteredItemsMap[layer]);
+
+          if (matchedLayers.length) {
+            matchedLayers.forEach((layer) => acc.filteredLayersId.add(layer));
+            acc.filteredGroups.push(group);
+          }
+
+          return acc;
+        },
+        { filteredLayersId: new Set(), filteredGroups: [] },
+      );
+
+      this.setFilteredLayers(Array.from(filteredLayersId));
+      return filteredGroups;
     },
 
     ...mapState('supportLayers', [
@@ -156,8 +179,8 @@ export default {
       setSearchLayer: 'setSearchLayer',
     }),
     clearInput() {
-      this.selectedLayers = []
+      this.selectedLayers = [];
     },
   },
-}
+};
 </script>
