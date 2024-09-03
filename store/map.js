@@ -27,6 +27,7 @@ export const state = () => ({
     visible: false,
   },
   hasAddLayer: false,
+  indigenousLand: [],
 });
 
 export const getters = {
@@ -180,9 +181,24 @@ export const mutations = {
   setHasLayer(state, hasLayer) {
     state.hasAddLayer = hasLayer;
   },
+
+  setIndigenousLand(state, indigenousLand) {
+    state.indigenousLand = indigenousLand;
+  }
+  ,
 };
 
 export const actions = {
+  async fetchSearchResults({ commit }, searchQuery) {
+    try {
+      const response = await this.$api.$get(`/funai/ti-by-name/?param=${searchQuery}`);
+      commit('setIndigenousLand', response);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
   zoomToBounds({ commit }, bounds) {
     commit('setBounds', bounds);
     commit('toggleBoundsZoomed');
@@ -285,7 +301,5 @@ export const actions = {
       );
     }
   },
-
-
 
 };

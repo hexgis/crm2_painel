@@ -278,6 +278,7 @@ export default {
   .v-dialog > .v-card > .v-card__title
     background: #DA2A3F
     color: whitesmoke
+    padding: 8px 16px
 
     > .v-btn--icon
       color: whitesmoke
