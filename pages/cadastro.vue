@@ -319,12 +319,24 @@ export default {
       }
     },
     async submitForm() {
-      console.log("Form data:", this.formData);
+      const data = new FormData();
+      data.append('name', this.formData.name);
+      data.append('email', this.formData.email);
+      data.append('department', this.formData.department);
+      data.append('registration', this.formData.registration);
+      data.append('coordinatorName', this.formData.coordinatorName);
+      data.append('coordinatorEmail', this.formData.coordinatorEmail);
+      data.append('coordinatorDepartment', this.formData.coordinatorDepartment);
+      data.append('siapeRegistration', this.formData.siapeRegistration);
+      data.append('attachment', this.formData.attachment);
+
       if (this.$refs.form.validate()) {
         try {
-          // TODO: CHANGE RESPONSE VARIABLE TO POINT TO API POST METHOD ONCE ITS DONE.
-          const response = await this.simulateRequest();
-
+          await this.$api.post('/portal/cadastro', data, {
+            headers:{
+              'Content-Type': 'multipart/form-data'
+            }
+          })
           this.isSuccess = true;
           this.modalTitle = this.$t('success');
           this.modalMessage = this.$t('request-submitted-successfully');
@@ -336,13 +348,6 @@ export default {
           this.showModal = true;
         }
       }
-    },
-    simulateRequest() {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          reject();
-        }, 1000);
-      });
     },
     redirectToPortal() {
       this.$router.push('/portal');
