@@ -1,7 +1,8 @@
 <template>
   <l-layer-group ref="popup">
     <l-popup :options="popupOptions">
-      <v-card class="fill-height">
+      <LoadingIconVue v-if="isLoadingData"/>
+      <v-card v-else class="fill-height">
         <v-tabs
           v-if="data && Object.keys(data).length"
           background-color="primary"
@@ -163,10 +164,13 @@
   </i18n>
 <script>
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
+import LoadingIconVue from '../map/file-loader/LoadingIcon.vue';
 
 export default {
   name: 'BaseWmsMetadataPopup',
-
+  components:{
+    LoadingIconVue
+  },
   props: {
     map: {
       type: Object,
@@ -179,9 +183,13 @@ export default {
     popup: null,
     data: null,
     instrumentoGestao: {}, // Changed to an empty object
+    loadingData: false
   }),
 
   computed: {
+    isLoadingData(){
+        return this.loadingData
+    },
     isSmallScreen() {
       return window.innerWidth < 768;
     },
@@ -284,7 +292,7 @@ export default {
           };
 
           const url = this.getFeatureInfoUrl(evt.latlng, layer);
-
+          this.loadingData = true;
           this.$axios
             .get(url)
             .then(({ data }) => {
@@ -312,6 +320,7 @@ export default {
               });
             })
             .finally(() => {
+              this.loadingData = false;
               this.data[layerName].loading = false;
               this.$forceUpdate();
             });
@@ -376,8 +385,9 @@ export default {
       );
     },
 
-    fetchInstrumentoGestao(co_funai) {
-      const url = this.$api.$get(`funai/instrumento-gestao/?co_funai=${co_funai}`);
+    async fetchInstrumentoGestao(co_funai) {
+      this.loadingData = true;
+      const url = await this.$api.$get(`funai/instrumento-gestao/?co_funai=${co_funai}`);
       this.$axios
         .get(url)
         .then((response) => {
@@ -390,6 +400,7 @@ export default {
             this.instrumentoGestao = {};
           }
         })
+        .finally(()=> this.loadingData = false)
         .catch((error) => {
           console.error('Error fetching data:', error);
           this.instrumentoGestao = {};
