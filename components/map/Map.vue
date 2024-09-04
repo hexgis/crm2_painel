@@ -143,6 +143,11 @@
             :src="northArrow"
           />
           <v-col
+            class="pa-0 pb-4"
+          >
+            <ChangeLocation />
+          </v-col>
+          <v-col
             cols="12"
             class="pa-0"
           >
@@ -166,7 +171,6 @@
           :options-style="interestStyle"
           :visible="showInterestArea"
         />
-
         <SupportUserLayersMap />
 
         <MapIndigenousLand />
@@ -276,6 +280,8 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-basemaps/L.Control.Basemaps.css';
 import 'leaflet-minimap/dist/Control.MiniMap.min.css';
 import DrawingPanel from '@/components/map/drawing-tool/DrawingPanel.vue';
+import ChangeLocation from './ChangeLocation.vue';
+
 import Highlighter from '@/components/map/Highlighter.vue';
 import MapIndigenousLand from '@/components/map/MapIndigenousLand';
 
@@ -312,6 +318,7 @@ export default {
     SupportLayersProdes,
     SupportLayersHazard,
     SupportUserLayersMap,
+    ChangeLocation,
     DrawingPanel,
     MapIndigenousLand,
     Highlighter,

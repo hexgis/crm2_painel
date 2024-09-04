@@ -34,14 +34,6 @@
         </v-list-item-title>
       </v-list-item-content>
 
-      <!-- <v-list-item-action v-if="disabledHeatmap">
-                <v-switch
-                    :input-value="layer.visible"
-                    :disabled="true"
-                    :loading="layer.loading"
-                    @change="toggleLayer"
-                />
-            </v-list-item-action> -->
       <v-list-item-action @click.stop="">
         <v-switch
           :input-value="layer.visible"
@@ -106,7 +98,6 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import tmsLegend from '@/assets/tmsLegend.png';
-
 import SupportLayerFilters from '@/components/support/SupportLayerFilters';
 
 export default {
@@ -162,12 +153,16 @@ export default {
         id: this.layerId,
         visible: !this.layer.visible,
       });
-      this.setshowFeaturesSupportLayers(false)
-      setTimeout(() => {
-        this.setshowFeaturesSupportLayers(true)
-      }, 1);
 
       this.isOpen = this.layer.visible;
+      this.setshowFeaturesSupportLayers(false);
+      setTimeout(() => {
+        this.setshowFeaturesSupportLayers(true);
+      }, 1);
+
+      const activeLayers = Object.values(
+        this.supportLayersCategoryRaster,
+      ).filter((layer) => layer.visible);
     },
 
     updateLayerOpacity(opacity) {
@@ -188,6 +183,6 @@ export default {
 
 <style lang="sass">
 .v-list-group--active
-    border-bottom: solid 0px black !important
-    border-top: solid 0px black !important
+  border-bottom: solid 0px black !important
+  border-top: solid 0px black !important
 </style>

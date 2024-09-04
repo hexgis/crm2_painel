@@ -81,12 +81,12 @@
               <div class="legend-info-map">
                 <div class="legend-info-map legend-info-map-details">
                   <div>
-                    <p v-if="showFeaturesSupportLayers" class="d-block ma-1">
+                    <p v-if="showFeaturesSupportLayers || showFeaturesMonitoring" class="d-block ma-1">
                       {{ $t('legend')}}
                     </p>
                     <div
                       class="ma-1 flex-wrap"
-                      style="width: 100%; max-height: 8rem; overflow: hidden;"
+                      style="width: 100%; max-height: 100%; overflow: hidden;"
                     >
                       <div v-if="showFeaturesSupportLayers" >
                         <div
@@ -123,6 +123,23 @@
                                 {{ layer.name }}
                               </p>
                             </v-col>
+                          </v-row>
+                        </div>
+                      </div>
+                      <div v-if="showFeaturesMonitoring">
+                        <div
+                          v-for="layer in activeMonitoringLabel"
+                          :key="layer.id"
+                        >
+                          <v-row no-gutters align="center" class="image-container">
+                            <v-icon class="mr-2" :color="layer.color">
+                              mdi-square
+                            </v-icon>
+                            <span class="ml-1">
+                              <p>{{ layer.name }}</p>
+                            </span>
+                          </v-row>
+                          <v-row>
                           </v-row>
                         </div>
                       </div>
@@ -218,7 +235,11 @@
           "text-format": "Format-adapted map template ",
           "input-button-back-second-step": "Back",
           "input-button-pdf-image": "Generate PDF",
-          "author-label": "Author: "
+          "author-label": "Author: ",
+          "clear-cut": "Clear Cut",
+          "degradation": "Degradation",
+          "forest-fire": "Forest Fire",
+          "regeneration-deforestation": "Regeneration Deforestation"
       },
       "pt-br": {
           "print-out": "Impressão",
@@ -229,7 +250,11 @@
           "text-format": "Modelo de mapa adaptado para formato ",
           "input-button-back-second-step": "Voltar",
           "input-button-pdf-image": "Gerar PDF",
-          "author-label": "Autor: "
+          "author-label": "Autor: ",
+          "clear-cut": "Corte Raso",
+          "degradation": "Degradação",
+          "forest-fire": "Fogo em Floresta",
+          "regeneration-deforestation": "Desmatamento em Regeneração"
       }
   }
 </i18n>
@@ -285,6 +310,7 @@ export default {
     logo_cmr: process.env.DEFAULT_LOGO_IMAGE_CMR,
     print_title: process.env.PRINT_TITLE,
     print_info: process.env.PRINT_INFO,
+    activeMonitoringLabel: [],
   }),
 
   computed: {
@@ -297,6 +323,36 @@ export default {
       'showFeaturesSupportLayers',
       'supportLayers',
     ]),
+    ...mapState('monitoring', ['selectedStages', 'showFeaturesMonitoring'])
+  },
+
+  mounted(){
+    console.log(this.showFeaturesMonitoring, this.showFeaturesSupportLayers)
+    if (this.selectedStages){
+      this.selectedStages.forEach(item => {
+        item === 'CR' ? this.activeMonitoringLabel.push({
+          id: 'cr',
+          color: '#ff3333',
+          name: this.$t('clear-cut')
+        }) :
+        item === 'DG' ? this.activeMonitoringLabel.push({
+          id: 'dg',
+          color: '#ff8000',
+          name: this.$t('degradation')
+        }) :
+        item === 'FF' ? this.activeMonitoringLabel.push({
+          id: 'ff',
+          color: '#b35900',
+          name: this.$t('forest-fire')
+        }) :
+        item === 'DR' ? this.activeMonitoringLabel.push({
+          id: 'dr',
+          color: '#990099',
+          name: this.$t('regeneration-deforestation')
+        }) : ''
+      });
+    }
+
   },
 
   methods: {
