@@ -94,8 +94,7 @@
                 </template>
 
                 <div v-else-if="!layerData.layers.length">
-                  Não há dados nesse ponto para a camada
-                  selecionada.
+                  {{ $t('no-data') }}
                 </div>
               </v-card-text>
             </v-tab-item>
@@ -108,7 +107,7 @@
                 Object.keys(instrumentoGestao).length
             "
           >
-            Instrumento Gestão
+            {{ $t('instrument-management') }}
           </v-tab>
 
           <v-tab-item
@@ -154,11 +153,13 @@
   {
       "en": {
           "no-data": "There's no data at this point for the selected layer.",
-          "layer-api-error": "Unable to acquire support layer information."
+          "layer-api-error": "Unable to acquire support layer information.",
+          "instrument-management": "Management Instrument"
       },
       "pt-br": {
           "no-data": "Não há dados nesse ponto para a camada selecionada.",
-          "layer-api-error": "Não foi possível resgatar as informações das camadas de apoio."
+          "layer-api-error": "Não foi possível resgatar as informações das camadas de apoio.",
+          "instrument-management": "Instrumento de Gestão"
       }
   }
   </i18n>
