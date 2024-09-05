@@ -32,6 +32,8 @@ export const state = () => ({
     regionalFilters: [],
     tiFilters: [],
   },
+  filteredLayers: [],
+  filteredLayersId: [],
 });
 
 export const getters = {
@@ -89,6 +91,21 @@ export const getters = {
 };
 
 export const mutations = {
+
+  toggleLayerActive(state, layerId) {
+    for (const group of Object.values(state.supportCategoryGroupsRaster)) {
+      const layer = group.layers.find(layer => layer.id === layerId)
+      if (layer) {
+        layer.active = !layer.active
+        break
+      }
+    }
+  },
+
+  setFilteredLayers(state, layers) {
+    state.filteredLayersId = layers;
+  },
+
   setshowFeaturesSupportLayers(state, showFeaturesSupportLayers) {
     state.showFeaturesSupportLayers = showFeaturesSupportLayers;
   },
@@ -402,6 +419,10 @@ export const mutations = {
 
   setLoading(state, loading) {
     state.loading = loading;
+  },
+
+  setSearchLayer(state, search) {
+    state.searchLayer = search;
   },
 };
 
