@@ -10,7 +10,7 @@
     <v-row class="px-3 pb-5">
       <v-combobox
         v-model="filters.cr"
-        label="Coordenação Regional (Todas)"
+        :label="$t('regional-coordination-label')"
         :items="flattened"
         item-value="co_cr"
         item-text="ds_cr"
@@ -27,7 +27,7 @@
       >
         <v-combobox
           v-model="filters.ti"
-          label="Terras Indigenas"
+          :label="$t('indigenous-lands-label')"
           :items="filterOptions.tiFilters"
           item-text="no_ti"
           item-value="co_funai"
@@ -76,7 +76,7 @@
                 mdi-download
               </v-icon>
             </template>
-            <span>Download</span>
+            <span>{{ $t('download-label') }}</span>
           </v-tooltip>
         </v-btn>
         <v-btn
@@ -92,7 +92,7 @@
                 mdi-chart-box
               </v-icon>
             </template>
-            <span>Estatística</span>
+            <span>{{ $t('statistics-label') }}</span>
           </v-tooltip>
         </v-btn>
 
@@ -109,7 +109,7 @@
                 mdi-table
               </v-icon>
             </template>
-            <span>Tabela</span>
+            <span>{{ $t('table-label') }}</span>
           </v-tooltip>
         </v-btn>
       </v-col>
@@ -313,7 +313,12 @@
     "total-area-label": "Total Area",
     "heat-map-label": "Heat Map",
     "polygon-label": "Polygon Count",
-    "table-name": "Monitoring Table"
+    "table-name": "Monitoring Table",
+    "regional-coordination-label": "Regional Coordination (All)",
+    "indigenous-lands-label": "Indigenous Lands",
+    "download-label": "Download",
+    "statistics-label": "Statistics",
+    "table-label": "Table"
     },
     "pt-br": {
     "monitoring-label": "Monitoramento Diário",
@@ -325,7 +330,12 @@
     "total-area-label": "Área total",
     "heat-map-label": "Mapa de Calor",
     "polygon-label": "Total de polígonos",
-    "table-name": "Tabela de monitoramento"
+    "table-name": "Tabela de Monitoramento",
+      "regional-coordination-label": "Coordenação Regional (Todas)",
+      "indigenous-lands-label": "Terras Indígenas",
+      "download-label": "Baixar",
+      "statistics-label": "Estatísticas",
+      "table-label": "Tabela"
     }
     }
   </i18n>

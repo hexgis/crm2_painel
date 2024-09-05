@@ -9,7 +9,7 @@
     <v-row class="px-3 pb-1 py-3">
       <v-combobox
         v-model="filters.cr"
-        label="Coordenação Regional (Todas)"
+        :label="$t('regional-coordination-label')"
         :items="flattened"
         item-value="co_cr"
         item-text="ds_cr"
@@ -26,7 +26,7 @@
       >
         <v-combobox
           v-model="filters.ti"
-          label="Terras Indigenas (Todas)"
+          :label="$t('indigenous-lands-label')"
           :items="filterOptions.tiFilters"
           item-text="no_ti"
           item-value="co_funai"
@@ -97,7 +97,7 @@
                 mdi-table
               </v-icon>
             </template>
-            <span>Tabela</span>
+            <span>{{ $t('table-label') }}</span>
           </v-tooltip>
         </v-btn>
       </v-col>
@@ -291,7 +291,10 @@
             "heat-map-label": "Heat Map",
             "polygon-label": "Polygon count",
             "end-date-label": "End Date",
-            "table-name": "Urgent Alerts"
+            "table-name": "Urgent Alerts",
+            "regional-coordination-label": "Regional Coordination (All)",
+            "indigenous-lands-label": "Indigenous Lands (All)",
+            "table-label": "Table"
         },
         "pt-br": {
             "search-label": "Buscar",
@@ -302,7 +305,10 @@
             "polygon-label": "Total de polígonos",
             "start-date-label": "Data Início",
             "end-date-label": "Data Fim",
-            "table-name": "Alertas Urgentes"
+            "table-name": "Alertas Urgentes",
+            "regional-coordination-label": "Coordenação Regional (Todas)",
+            "indigenous-lands-label": "Terras Indígenas (Todas)",
+            "table-label": "Tabela"
         }
     }
 </i18n>

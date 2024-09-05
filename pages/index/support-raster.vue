@@ -14,7 +14,9 @@
               mdi-information
             </v-icon>
           </template>
-          <span> Fonte de dados: Geoserver - FUNAI </span>
+          <span>
+           {{ $t('data-source-label') }}
+          </span>
         </v-tooltip>
         <v-switch
           v-show="!loading"
@@ -23,6 +25,8 @@
           hide-details
         />
       </v-row>
+
+
     </div>
     <v-col
       cols="12"
@@ -62,6 +66,7 @@
         class="mx-4 my-5"
       />
     </div>
+
   </v-container>
 </template>
 
@@ -69,11 +74,13 @@
 {
   "en": {
     "search-label": "Search layer",
-    "title": "High Resolution and Mosaics"
+    "title": "High Resolution and Mosaics",
+    "data-source-label": "Datasource: Geoserver - FUNAI"
   },
   "pt-br": {
     "search-label": "Buscar camada",
-    "title": "Alta Resolução e Mosaicos"
+    "title": "Alta Resolução e Mosaicos",
+    "data-source-label": "Fonte de dados: Geoserver - FUNAI"
   }
 }
 </i18n>
@@ -184,3 +191,37 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+.container-height {
+    max-height: 90vh;
+}
+
+.selected {
+    background-color: red
+}
+
+.infoIconMargin {
+    margin-left: 4px;
+  }
+
+.switch-margin {
+    margin-left: 60px
+
+  }
+
+@media (max-width: 768px) {
+  .infoIconMargin {
+    margin-left: 2px;
+  }
+
+  .tab-title {
+    font-size: 90% !important;
+  }
+
+  .switch-margin {
+    margin-top: 10px;
+    margin-left: 0px
+  }
+}
+</style>

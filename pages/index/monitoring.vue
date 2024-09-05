@@ -15,14 +15,13 @@
             </v-icon>
           </template>
           <span>
-            O Monitoramento é baseado na interpretação
+            {{ $t('monitoring-info-part1') }}
             <br>
-            visual do Landsat-8 com intervalo de 32 dias.
+            {{ $t('monitoring-info-part2') }}
             <br>
-            As detecções do monitoramento são contempladas
+            {{ $t('monitoring-info-part3') }}
             <br>
-            a partir de 30 de agosto de 2015 (variável por
-            órbita-ponto).
+            {{ $t('monitoring-info-part4') }}
           </span>
         </v-tooltip>
       </v-row>
@@ -43,7 +42,7 @@
     >
       <v-divider />
       <p class="font-weight-regular pt-2 grey--text text--darken-2">
-        Legenda:
+        {{ $t('legend') }}
       </p>
       <v-col class="grey--text text--darken-2">
         <v-row>
@@ -55,7 +54,7 @@
               mdi-square
             </v-icon>
             <span class="grey--text text--darken-2">
-              Desmatamento em Regeneração
+              {{ $t('recovery-deforestation') }}
             </span>
           </v-col>
           <v-col
@@ -77,7 +76,7 @@
               mdi-square
             </v-icon>
             <span class="grey--text text--darken-2">
-              Fogo em Floresta
+              {{ $t('forest-fire') }}
             </span>
           </v-col>
           <v-col
@@ -101,7 +100,7 @@
             </v-icon>
 
             <span class="grey--text text--darken-2">
-              Degradação
+              {{ $t('degradation') }}
             </span>
           </v-col>
           <v-col
@@ -124,7 +123,7 @@
               mdi-square
             </v-icon>
             <span class="grey--text text--darken-2">
-              Corte Raso
+              {{ $t('clear-cutting') }}
             </span>
           </v-col>
           <v-col
@@ -148,12 +147,28 @@
 <i18n>
     {
         "en": {
-            "title": "Daily Monitoring"
-
+          "title": "Daily Monitoring",
+          "monitoring-info-part1": "Monitoring is based on visual interpretation",
+          "monitoring-info-part2": "of Landsat-8 with a 32-day interval.",
+          "monitoring-info-part3": "Monitoring detections are available",
+          "monitoring-info-part4": "from August 30, 2015 (variable by orbit-point).",
+          "legend": "Legend:",
+          "recovery-deforestation": "Regenerating Deforestation",
+          "forest-fire": "Forest Fire",
+          "degradation": "Degradation",
+          "clear-cutting": "Clear-Cutting"
         },
         "pt-br": {
-            "title": "Monitoramento Diário"
-
+          "title": "Monitoramento Diário",
+          "monitoring-info-part1": "O Monitoramento é baseado na interpretação",
+          "monitoring-info-part2": "visual do Landsat-8 com intervalo de 32 dias.",
+          "monitoring-info-part3": "As detecções do monitoramento são contempladas",
+          "monitoring-info-part4": "a partir de 30 de agosto de 2015 (variável por órbita-ponto).",
+          "legend": "Legenda:",
+          "recovery-deforestation": "Desmatamento em Regeneração",
+          "forest-fire": "Fogo em Floresta",
+          "degradation": "Degradação",
+          "clear-cutting": "Corte Raso"
         }
     }
 </i18n>
