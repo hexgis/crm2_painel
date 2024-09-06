@@ -99,7 +99,7 @@
     "contact-message": "Message",
     "contact-submit": "Submit",
     "name-required": "This field is required.",
-    "name-max-length": "Name must be at most 10 characters long.",
+    "name-max-length": "Name must be at most 50 characters long.",
     "email-required": "This field is required.",
     "email-valid": "Email must be valid.",
     "phone-required": "This field is required.",
@@ -108,7 +108,10 @@
     "message-min-length": "Message must be at least 10 characters long.",
     "success-title": "Success",
     "success-message": "Your message has been sent successfully!",
-    "close": "Close"
+    "close": "Close",
+    "name-only-letters": "The name must contain only letters and spaces.",
+    "message-max-length": "The message must be at most 200 characters long",
+    "message-no-special-characters": "The message must not contain special characters"
   },
   "pt-br": {
     "hero-title": "Contato",
@@ -121,7 +124,7 @@
     "contact-message": "Mensagem",
     "contact-submit": "Enviar",
     "name-required": "Este campo é obrigatório.",
-    "name-max-length": "O nome deve ter no máximo 10 caracteres.",
+    "name-max-length": "O nome deve ter no máximo 50 caracteres.",
     "email-required": "Este campo é obrigatório.",
     "email-valid": "E-mail deve ser válido.",
     "phone-required": "Este campo é obrigatório.",
@@ -130,7 +133,10 @@
     "message-min-length": "Mensagem deve ter no mínimo 10 caracteres.",
     "success-title": "Agradecemos seu contato!",
     "success-message": "Sua mensagem foi enviada com sucesso!",
-    "close": "Fechar"
+    "close": "Fechar",
+    "name-only-letters": "O nome deve conter apenas letras e espaços.",
+    "message-max-length": "A mensagem deve conter no máximo 200 caracteres",
+    "message-no-special-characters": "A mensagem não deve conter caracteres especiais."
   }
 }
 </i18n>
@@ -162,7 +168,8 @@ export default {
     nameRules() {
       return [
         value => !!value || this.$t('name-required'),
-        value => (value && value.length <= 10) || this.$t('name-max-length')
+        value => (value && value.length <= 50) || this.$t('name-max-length'),
+        value => /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/.test(value) || this.$t('name-only-letters')
       ]
     },
     emailRules() {
@@ -180,7 +187,9 @@ export default {
     messageRules() {
       return [
         value => !!value || this.$t('message-required'),
-        value => (value && value.length >= 10) || this.$t('message-min-length')
+        value => (value && value.length >= 10) || this.$t('message-min-length'),
+        value => (value && value.length <= 200) || this.$t('message-max-length'),
+        value => /^[A-Za-z0-9\s]*$/.test(value) || this.$t('message-no-special-characters')
       ]
     }
   },
