@@ -1,5 +1,10 @@
 <template>
-    <v-list-group v-if="group" v-show="checkSearchLayer()" v-model="value">
+      <v-list-group
+        v-if="group && (isPlanet ? group.name.includes('Planet') : !group.name.includes('Planet'))" 
+       
+        v-show="checkSearchLayer()"
+        v-model="value"
+    >
         <template #activator>
             <template v-if="activeLayerCount > 0">
                 <v-badge color="#b2b1b1" offset-x="-270" offset-y="10">
@@ -16,7 +21,7 @@
                 </v-list-item-title>
             </v-list-item-content>
 
-            <v-col v-if="group.name === 'Alta Resolução'">
+            <v-col v-if="group.name === 'Alta Resolução' && !isPlanet">
                 <div>
                     <v-tooltip>
                         <template #activator="{ on }">
@@ -82,6 +87,10 @@ export default {
         group: {
             type: Object,
             default: null,
+        },
+        isPlanet: {
+            type: Boolean,
+            default: false,
         },
     },
 
