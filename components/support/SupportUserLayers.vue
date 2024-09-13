@@ -264,6 +264,7 @@ export default {
                 this.layer.id
             ].geometry.features.map((feature) => feature.geometry.type)
             this.isPointType = geometryTypes.every((type) => type === 'Point')
+            this.name = this.layer.name
             this.toggleLayerVisibility({
                 id: this.layer.id,
                 visible: !this.layer.visible,
@@ -296,7 +297,7 @@ export default {
             try {
                 await this.$api.$patch(
                     `user/upload-file/geo/${this.layer.id}/update-properties/`,
-                    { color: this.layerStyle }
+                    { color: this.layerStyle, name: this.name }
                 )
                 await this.getLayersUser()
             } catch (exc) {
@@ -326,12 +327,6 @@ export default {
         async updateLayer() {
             this.rename = false
             try {
-                await this.$api.$patch(
-                    `user/upload-file/${this.layer.id}/update/`,
-                    {
-                        name: this.name,
-                    }
-                )
                 await this.getLayersUser()
             } catch (exc) {
                 this.$store.commit('alert/addAlert', {
