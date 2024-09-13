@@ -125,6 +125,20 @@
                     </div>
                   </div>
                 </div>
+                <div class="ma-1">
+                  <div v-for="layer in supportLayerUser" :key="layer.id">
+                    <v-row no-gutters align="center" v-if="layer.visible" class="image-container">
+                      <v-icon class="layer-thumbnail" style="font-size: 40px;" :color="layer.properties.color">
+                        mdi-square
+                      </v-icon>
+                      <span class="ml-1">
+                        <p>{{ layer.name }}</p>
+                      </span>
+                    </v-row>
+                    <v-row>
+                    </v-row>
+                  </div>
+                </div>
                 <v-divider />
                 <div class="ma-1">
                   <p>
@@ -260,7 +274,7 @@ export default {
     showDialog() {
       return this.showDialogLandscape;
     },
-
+    ...mapState('supportLayersUser', ['supportLayerUser']),
     ...mapState('map', ['bounds']),
     ...mapState('supportLayers', [
       'showFeaturesSupportLayers',
@@ -406,5 +420,9 @@ p {
 
 .image-container {
     width: 100%; /* Garante que o container tenha largura suficiente */
+}
+
+.row {
+  margin: 0!important;
 }
 </style>
