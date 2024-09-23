@@ -4,6 +4,7 @@
     :style="{ backgroundImage: `url(${backgroundImage})`, 'background-size': 'cover'}"
   >
     <div class="hero--logged-area">
+      <ChangeLocation />
       <v-btn rounded class="hero--btn" to="/login"><v-icon> mdi-account-key </v-icon>{{ $t('btn-restricted-area')}}</v-btn>
     </div>
     <div class="hero--wrapper flex-column justify-md-space-between align-sm-center">
@@ -85,8 +86,12 @@
   </i18n>
 
 <script>
+import ChangeLocation from '@/components/map/ChangeLocation.vue';
 export default {
   name: 'HeroBanner',
+  components: {
+    ChangeLocation
+  },
   props: {
     heroTitle: {
       type: String,
@@ -147,8 +152,10 @@ a
 
   &--logged-area
     position: absolute
+    display: flex
+    gap: 1rem
     right: 10%
-    top: 5px
+    top: 10px
 
     .v-btn > .v-btn__content .v-icon
       padding-right: 0.5rem
