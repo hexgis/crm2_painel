@@ -158,7 +158,7 @@ export default {
     },
     async resetPassword() {
       try {
-        await axios.post(`http://localhost:8080/auth/confirmar/?code=${this.confirmationCode}`, {
+        await this.$api.$post(`auth/confirmar/?code=${this.confirmationCode}`, {
           new_password: this.password,
           confirm_password: this.confirmPassword,
           code: this.confirmationCode

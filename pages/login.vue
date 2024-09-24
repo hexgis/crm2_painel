@@ -222,7 +222,7 @@ export default {
         },
         async handleResetPassword() {
             try {
-                await axios.post('http://localhost:8080/auth/password-reset/', { email: this.email });
+                await this.$api.$post('auth/password-reset/', { email: this.email });
                 this.showStatusModal = true;
                 this.statusTitle = this.$t('success');
                 this.statusMessage = `${this.$t('email-found')} ${this.email}. ${this.$t('check-email')}`;
