@@ -116,7 +116,7 @@ export default {
       'showFeaturesMonitoring',
       'selectedStages',
     ]),
-    ...mapGetters('monitoring', ['featuresLoaded']),
+    ...mapGetters('monitoring', ['featuresLoaded', 'getShowFeaturesMonitoring']),
   },
 
   watch: {
@@ -192,7 +192,10 @@ export default {
                 && this.features.features.length
       ) {
         this.createMonitoramentoHeatLayer();
-        this.flyTo();
+
+        if (this.getShowFeaturesMonitoring){
+          this.flyTo();
+        }
 
         this.vectorGrid = this.$L.vectorGrid
           .slicer(this.features, {
