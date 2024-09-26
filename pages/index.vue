@@ -197,7 +197,7 @@ export default {
         {
           name: this.$t('analytics-tab'),
           icon: 'mdi-chart-box-outline',
-          route: '/analytics',
+          route: '/statistics',
           show: process.env.ROUTE_ANALYTICS === 'true',
         },
       ];
@@ -218,6 +218,9 @@ export default {
       this.tabs.splice(1, 1);
     }
     this.handleCompareTab();
+    if (this.$route.path === '/statistics') {
+      this.settings = true;
+    }
   },
 
   methods: {
