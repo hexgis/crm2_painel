@@ -25,17 +25,14 @@
 
         <v-tab-item :transition="false" :reverse-transition="false">
             <div id="img-wrapper" class="d-flex justify-center">
-                <v-img
-                contain
-                :src="logo_funai"
-                />
+                <v-img contain :src="logo_funai" />
             </div>
             <nuxt-child keep-alive />
 
             <div
                 v-if="isIndex"
                 class="info d-flex flex-column align-content-space-between"
-                style="height: 90%;"
+                style="height: 90%"
             >
                 <v-list>
                     <v-list-item
@@ -57,7 +54,7 @@
 <i18n>
 {
   "en": {
-    "analytics-tab": "Analytics",
+    "analytics-tab": "Statistics",
     "catalog-tab": "My Image Database",
     "search-tab": "Monitoring",
     "layers-tab": "Layers",
@@ -72,7 +69,7 @@
     "deter-tab": "Deter"
   },
   "pt-br": {
-    "analytics-tab": "Analytics",
+    "analytics-tab": "Estatísticas",
     "catalog-tab": "Meu acervo de imagens",
     "search-tab": "Monitoramento Diário",
     "layers-tab": "Camadas de Sobreposição",
@@ -188,7 +185,7 @@ export default {
                 {
                     name: this.$t('analytics-tab'),
                     icon: 'mdi-chart-box-outline',
-                    route: '/analytics',
+                    route: '/statistics',
                     show: process.env.ROUTE_ANALYTICS === 'true',
                 },
             ]
@@ -209,6 +206,9 @@ export default {
             this.tabs.splice(1, 1)
         }
         this.handleCompareTab()
+        if (this.$route.path === '/statistics') {
+            this.settings = true
+        }
     },
 
     methods: {
@@ -235,38 +235,38 @@ export default {
 </script>
 
 <style lang="sass">
-  .v-list-item__title
+.v-list-item__title
     margin-bottom: 15px !important
 
-  .tab-icon
+.tab-icon
     padding-top: 4px
     color: white !important
     font-size: 180% !important
 
-  .right-tabs
+.right-tabs
     flex-direction: row-reverse
     position: relative
     min-height: 550px
 
     > .v-slide-group > .v-slide-group__wrapper > .v-slide-group__content
-      min-height: 550px
-      > .v-tab
+        min-height: 550px
+    > .v-tab
         min-width: 0px
 
     > .v-tabs-slider-wrapper
-      left: 52px !important
+        left: 52px !important
 
     > .v-window, > .v-window > .v-window__container > .v-window-item
-      overflow-y: auto
-      height: 100%
-      display: block !important
-      margin-bottom: 50px
+        overflow-y: auto
+        height: 100%
+        display: block !important
+        margin-bottom: 50px
 
-  .scroll-y-transition-enter-active,
-  .scroll-y-transition-leave-active
+.scroll-y-transition-enter-active,
+.scroll-y-transition-leave-active
     transition: 0.15s cubic-bezier(0.25, 0.8, 0.5, 1) !important
 
-  .back-mobile-button
+.back-mobile-button
     min-width: 0 !important
     display: block
     border-radius: none
@@ -275,15 +275,15 @@ export default {
     background-color: transparent !important
     color: white !important
 
-  .v-dialog > .v-card > .v-card__title
+.v-dialog > .v-card > .v-card__title
     background: #DA2A3F
     color: whitesmoke
     padding: 8px 16px
 
     > .v-btn--icon
-      color: whitesmoke
+        color: whitesmoke
 
-  #img-wrapper
+#img-wrapper
     position: absolute
     bottom: 0
     width: 100%
@@ -291,24 +291,23 @@ export default {
     background: #F5F5F5
     padding: 5px 0
 
-  @media (max-width: 768px)
+@media (max-width: 768px)
     .v-list-item__title
-      margin-bottom: 12px !important
-      font-size: 0.9rem !important
+        margin-bottom: 12px !important
+        font-size: 0.9rem !important
 
     .tab-icon
-      padding-top: 4px
-      color: white !important
-      font-size: 150% !important
+        padding-top: 4px
+        color: white !important
+        font-size: 150% !important
 
-  @media (max-height: 620px)
+@media (max-height: 620px)
     .v-list-item__title
-      margin-bottom: 0 !important
+        margin-bottom: 0 !important
 
     .v-list-item
-      min-height: 40px
+        min-height: 40px
 
     .v-tabs--vertical > .v-tabs-bar .v-tab
-      height: 41px
-
+        height: 41px
 </style>
