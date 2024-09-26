@@ -143,7 +143,7 @@
     "columns": "columns"
   },
   "pt-br": {
-    "analyticsTitle": "Análise",
+    "analyticsTitle": "Analítico",
     "groupBy": "Agrupar por",
     "indigenousLand": "Terra Indígena",
     "indigenousLandMonthYear": "Terra Indígena, Mês e Ano",

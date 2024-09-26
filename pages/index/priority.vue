@@ -91,8 +91,6 @@
     </div>
 
     <ShowDialog />
-
-
   </v-container>
 </template>
 
@@ -112,7 +110,7 @@
         },
         "pt-br": {
             "title": "Polígonos Prioritários",
-            "analytics-label": "Analytics",
+            "analytics-label": "Analítico",
             "data-source": "Fonte de dados: Banco de dados - FUNAI",
             "legend-very-high": "Muito Alta",
             "legend-high": "Alta",
@@ -212,4 +210,3 @@ export default {
   }
 }
 </style>
-
