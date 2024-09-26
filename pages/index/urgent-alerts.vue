@@ -98,7 +98,7 @@
         },
         "pt-br": {
             "title": "Alerta Urgente",
-            "analytics-label": "Analytics",
+            "analytics-label": "Analítico",
             "map-label": "Mapa",
             "table-name": "Tabela de Alerta Urgente",
             "update-info": "Atualizado frequentemente pela equipe de cartografia do CMR.",
