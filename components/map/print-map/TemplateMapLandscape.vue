@@ -329,7 +329,6 @@ export default {
   },
 
   mounted(){
-    console.log(this.showFeaturesMonitoring, this.showFeaturesSupportLayers)
     if (this.selectedStages){
       this.selectedStages.forEach(item => {
         item === 'CR' ? this.activeMonitoringLabel.push({

@@ -22,6 +22,7 @@
             />
         </div>
         <v-list v-if="!$fetchState.pending" expand>
+            <SupportLayersActive v-if="user" />
             <SupportUser v-if="user" />
             <template v-for="group in orderedSupportLayersGroups">
                 <SupportLayersGroupBase
@@ -63,12 +64,13 @@ import _ from 'lodash'
 
 import SupportLayersGroupBase from '@/components/support/SupportLayersGroupBase'
 import SupportLayersGroupAntropismo from '@/components/support/SupportLayersGroupAntropismo'
+import SupportLayersActive from '@/components/support/SupportLayersActive'
 import SupportUser from '@/components/support/SupportUser'
 
 export default {
     name: 'Support',
 
-    components: { SupportLayersGroupBase, SupportLayersGroupAntropismo, SupportUser },
+    components: { SupportLayersGroupBase, SupportLayersGroupAntropismo, SupportUser, SupportLayersActive },
 
     transition: 'scroll-y-transition',
 
