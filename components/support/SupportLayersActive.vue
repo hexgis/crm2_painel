@@ -65,17 +65,12 @@ export default {
   data() {
     return {
       concatenatedLayers: [],
+      reordenatedLayers: []
     };
   },
   computed: {
     ...mapState('supportLayersUser', ['supportLayerUser']),
-    ...mapState('map', ['hasAddLayer']),
-    ...mapState('userProfile', ['user']),
-    ...mapState('map', ['bounds']),
-    ...mapState('supportLayers', [
-      'showFeaturesSupportLayers',
-      'supportLayers',
-    ]),
+    ...mapState('supportLayers', ['supportLayers', 'ordenedLayers']),
     ...mapState('monitoring', ['selectedStages', 'showFeaturesMonitoring']),
     dragOptions() {
       return {
@@ -129,12 +124,31 @@ export default {
         ...visibleSupportLayerUser,
         ...visibleActiveMonitoring
       ];
-
     },
 
-    onDragChange(event) {
-      console.log('Nova ordem:', this.concatenatedLayers.map((layer)=> layer.name));
-    }
+    onDragChange() {
+      this.reordenatedLayers = [...this.concatenatedLayers];
+      this.handleRemoveSupportLayers(this.concatenatedLayers);
+
+      setTimeout(() => {
+        this.handleAddSupportLayers(this.reordenatedLayers);
+      }, 100);
+    },
+
+    handleRemoveSupportLayers(orderedLayers) {
+      this.$store.dispatch('supportLayers/removeSupportLayers', {
+        concatenatedLayers: orderedLayers
+      });
+    },
+
+    handleAddSupportLayers(orderedLayers) {
+      this.$store.dispatch('supportLayers/addSupportLayers', {
+        layers: orderedLayers
+      });
+      this.$nextTick(() => {
+        this.concatenatedLayers = [...this.reordenatedLayers]
+      })
+    },
   }
 };
 </script>

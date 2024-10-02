@@ -2,18 +2,10 @@ import Vue from 'vue';
 
 export const state = () => ({
   supportLayerUser: {},
-  activeMonitoringLabel: [],
-  supportLayers: [],
   popupInfo: {},
 });
 
 export const mutations = {
-  reorderLayers(state, payload) {
-    state.supportLayers = payload.supportLayers;
-    state.supportLayerUser = payload.supportLayerUser;
-    state.activeMonitoringLabel = payload.activeMonitoringLabel;
-  },
-
   setSupportLayersUser(state, LayersUser) {
     state.supportLayerUser = {};
     for (const layer of LayersUser) {
