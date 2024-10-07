@@ -93,6 +93,29 @@
                       class="ma-1 flex-wrap"
                       style="width: 100%; max-height: 100%; overflow: hidden;"
                     >
+                      <div
+                        v-for="layer in supportLayerUser"
+                        :key="layer.id"
+                      >
+                        <v-row
+                          v-if="layer.visible"
+                          no-gutters
+                          align="center"
+                          class="image-container"
+                        >
+                          <v-icon
+                            class="layer-thumbnail"
+                            style="font-size: 40px;"
+                            :color="layer.properties.color"
+                          >
+                            mdi-square
+                          </v-icon>
+                          <span class="ml-1">
+                            <p>{{ layer.name }}</p>
+                          </span>
+                        </v-row>
+                        <v-row />
+                      </div>
                       <div v-if="showFeaturesSupportLayers">
                         <div
                           v-for="layer in supportLayers"
@@ -177,7 +200,7 @@
                         >
                           <v-col>
                             <p class="ml-1">
-                              <strong>{{ layer.name || '-' }}: </strong>{{ layer.wms.geoserver_layer_name || '-' }}. Fonte: {{ layer.layer_info.fonte || '-' }}, Data de atualização: {{ handleData(layer.layer_info.dt_atualizacao) }}.
+                              <strong>{{ layer.name || '-' }}. </strong> Fonte: {{ layer.layer_info.fonte || '-' }}, Data de atualização: {{ handleData(layer.layer_info.dt_atualizacao) }}.
                             </p>
                           </v-col>
                         </v-row>
@@ -185,31 +208,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="ma-1">
-                  <div
-                    v-for="layer in supportLayerUser"
-                    :key="layer.id"
-                  >
-                    <v-row
-                      v-if="layer.visible"
-                      no-gutters
-                      align="center"
-                      class="image-container"
-                    >
-                      <v-icon
-                        class="layer-thumbnail"
-                        style="font-size: 40px;"
-                        :color="layer.properties.color"
-                      >
-                        mdi-square
-                      </v-icon>
-                      <span class="ml-1">
-                        <p>{{ layer.name }}</p>
-                      </span>
-                    </v-row>
-                    <v-row />
-                  </div>
-                </div>
+
                 <div>
                   <v-divider />
                   <div class="ma-1">
