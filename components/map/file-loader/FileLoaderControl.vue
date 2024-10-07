@@ -64,7 +64,7 @@
                 <ConfirmButton
                   icon="mdi-delete-outline"
                   :icon-tooltip="$t('remove-feature-tooltip')"
-                  @remove="remove(i)"
+                  @confirm="remove(i)"
                 />
 
                 <v-tooltip top>
@@ -154,7 +154,7 @@
                     align="center"
                   >
                     <v-col cols="4">
-                      Opacidade
+                      {{ $t('opacity') }}
                     </v-col>
                     <v-col cols="8">
                       <v-slider
@@ -194,7 +194,8 @@
         "file-error-parsing-gpx": "Found problems while parsing GPX file. Please, validate your file.",
         "file-error-parsing-kmlz": "Found problems while parsing KMZ/KML file. Please, validate your file",
         "file-error-general": "File type not acceptable on system.",
-        "file-error-internal": "Internal Error: "
+        "file-error-internal": "Internal Error: ",
+        "opacity": "Opacity"
     },
     "pt-br": {
         "go-to-tooltip": "Ir para feições",
@@ -207,7 +208,8 @@
         "file-error-parsing-gpx": "Problemas encontrados durante a análise do arquivo GPX. Por favor, valide o arquivo.",
         "file-error-parsing-kmlz": "Problemas encontrados durante a análise do arquivo KMZ/KML. Por favor, valide o arquivo",
         "file-error-general": "Arquivo não aceito pelo sistema.",
-        "file-error-internal": "Erro interno: "
+        "file-error-internal": "Erro interno: ",
+        "opacity": "Opacidade"
     }
 }
 </i18n>
@@ -460,6 +462,8 @@ export default {
 </script>
 
 <style lang="sass">
+.button-drawer
+    z-index: 9999
 .file-option-class
     position: relative
     top: 36px

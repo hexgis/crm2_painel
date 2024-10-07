@@ -15,9 +15,9 @@
             </v-icon>
           </template>
           <span>
-            Atualizado frequentemente pela equipe de cartografia do CMR.
+            {{ $t('update-info') }}
             <br>
-            Fonte de dados: Banco de dados - FUNAI
+            {{ $t('data-source') }}
           </span>
         </v-tooltip>
       </v-row>
@@ -37,7 +37,7 @@
     >
       <v-divider class="mt-1" />
       <p class="font-weight-regular pt-2 grey--text text--darken-2">
-        Legenda:
+        {{ $t('legend') }}:
       </p>
       <v-col class="grey--text text--darken-2">
         <v-row class="mb-2">
@@ -47,7 +47,7 @@
           >
             mdi-square
           </v-icon>
-          Desmatamento em Regeneração
+          {{ $t('regeneration-deforestation') }}
         </v-row>
         <!-- <v-row class="mb-2">
           <v-icon
@@ -65,7 +65,7 @@
           >
             mdi-square
           </v-icon>
-          Degradação
+          {{ $t('degradation') }}
         </v-row>
         <v-row class="mb-2">
           <v-icon
@@ -74,7 +74,7 @@
           >
             mdi-square
           </v-icon>
-          Corte Raso
+          {{ $t('clear-cut') }}
         </v-row>
         <v-spacer />
       </v-col>
@@ -88,13 +88,25 @@
             "title": "Urgent Alerts",
             "analytics-label": "Analytics",
             "map-label": "Map",
-            "table-name": "Table Urgent Alerts"
+            "table-name": "Table Urgent Alerts",
+            "update-info": "Frequently updated by the CMR cartography team.",
+            "data-source": "Data source: Database - FUNAI",
+            "legend": "Legend",
+            "regeneration-deforestation": "Regeneration Deforestation",
+            "degradation": "Degradation",
+            "clear-cut": "Clear Cut"
         },
         "pt-br": {
             "title": "Alerta Urgente",
-            "analytics-label": "Analytics",
+            "analytics-label": "Analítico",
             "map-label": "Mapa",
-            "table-name": "Tabela de Alerta Urgente"
+            "table-name": "Tabela de Alerta Urgente",
+            "update-info": "Atualizado frequentemente pela equipe de cartografia do CMR.",
+            "data-source": "Fonte de dados: Banco de dados - FUNAI",
+            "legend": "Legenda",
+            "regeneration-deforestation": "Desmatamento em Regeneração",
+            "degradation": "Degradação",
+            "clear-cut": "Corte Raso"
         }
     }
 </i18n>
