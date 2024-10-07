@@ -22,7 +22,7 @@
             />
         </div>
         <v-list v-if="!$fetchState.pending" expand>
-            <SupportLayersActive v-if="user" />
+            <SupportLayersActive />
             <SupportUser v-if="user" />
             <template v-for="group in orderedSupportLayersGroups">
                 <SupportLayersGroupBase
@@ -130,7 +130,9 @@ export default {
             'supportCategoryGroupsAntropismo',
             'loading',
             'showFeaturesSupportLayers',
-        ]),
+
+          ]),
+        ...mapState('supportLayersUser', ['supportLayerUser']),
         ...mapState('userProfile', ['user']),
 
 

@@ -1,6 +1,6 @@
 <template>
-  <v-list-group>
-    <template #activator>
+  <v-list-group v-if="concatenatedLayers.length || concatenatedUserLayers.length">
+    <template #activator >
       <v-list-item-content>
         <v-list-item-title class="text-wrap">
           <span class="text-cursor">
@@ -11,10 +11,37 @@
     </template>
     <v-container class="py-0 my-0">
       <template v-if="Object.keys(supportLayerUser).length">
+        <div v-if="concatenatedUserLayers.length" class="text-layer mt-2">
+          {{ $t('user-active-layers') }}
+        </div>
+        <v-list expand>
+          <draggable v-bind="dragOptions" v-model="concatenatedUserLayers" @change="onUserDragChange">
+            <template v-for="layer in concatenatedUserLayers">
+              <v-row :key="layer.id" v-if="layer.visible" style="flex-wrap: nowrap;" no-gutters align="center" class="image-container">
+                <v-icon style="font-size: 1rem;">mdi-arrow-split-horizontal</v-icon>
+                <img v-if="layer.wms" :src="layer.wms.geoserver.preview_url + layer.wms.geoserver_layer_name" class="layer-thumbnail" alt="UserLayer">
+                <v-icon v-else style="font-size: 40px;" class="mr-2" :color="layer.properties?.color || layer.color">
+                  mdi-square
+                </v-icon>
+                <span class="ml-1">
+                  <p>{{ layer.name }}</p>
+                </span>
+              </v-row>
+            </template>
+          </draggable>
+        </v-list>
+      </template>
+    </v-container>
+    <v-container class="py-0 my-0">
+      <template v-if="Object.keys(supportLayerUser).length">
+        <div v-if="concatenatedLayers.length" class="text-layer">
+          {{ $t('support-active-layers') }}
+        </div>
         <v-list expand>
           <draggable v-bind="dragOptions" v-model="concatenatedLayers" @change="onDragChange">
           <template v-for="layer in concatenatedLayers">
-              <v-row :key="layer.id" v-if="layer.visible" no-gutters align="center" class="image-container">
+              <v-row :key="layer.id" v-if="layer.visible" style="flex-wrap: nowrap;" no-gutters align="center" class="image-container">
+                <v-icon style="font-size: 1rem;">mdi-arrow-split-horizontal</v-icon>
                 <img v-if="layer.wms" :src="layer.wms.geoserver.preview_url + layer.wms.geoserver_layer_name" class="layer-thumbnail" alt="CorLayer">
                 <v-icon v-else style="font-size: 40px;" class="mr-2" :color="layer.properties?.color || layer.color">
                   mdi-square
@@ -27,12 +54,8 @@
           </draggable>
         </v-list>
       </template>
-      <template v-else>
-        <div class="text-layer">
-          {{ $t('text-layer') }}
-        </div>
-      </template>
     </v-container>
+
     <v-divider />
   </v-list-group>
 </template>
@@ -40,11 +63,13 @@
   {
       "en": {
           "title": "Active Layers",
-          "text-layer":"Layers can be added to the 'User Layers' group by drawing a polygon with the drawing tool and subsequently saving it as a new layer. Alternatively, an external file can be uploaded through the 'Upload a File' option. Both functionalities are avaiable in the left sidebar menu."
+          "user-active-layers": "User active layers",
+          "support-active-layers": "Support active layers"
       },
       "pt-br": {
           "title": "Camadas Ativas",
-          "text-layer":"Para adicionar camadas ao grupo 'Camadas do Usuário', desenhe um polígono utilizando a ferramenta de desenho e, em seguida, salve como uma nova camada. Alternativamente, é possível também carregar um arquivo externo por meio da opção 'Carregar um Arquivo'. Ambas funcionalidades estão disponíveis no menu lateral esquerdo."
+          "user-active-layers": "Camadas do Usuário ativas",
+          "support-active-layers": "Camadas de Sobreposição ativas"
       }
   }
   </i18n>
@@ -65,12 +90,14 @@ export default {
   data() {
     return {
       concatenatedLayers: [],
-      reordenatedLayers: []
+      concatenatedUserLayers: [],
+      reordenatedLayers: [],
+      reordenatedUserLayers: []
     };
   },
   computed: {
     ...mapState('supportLayersUser', ['supportLayerUser']),
-    ...mapState('supportLayers', ['supportLayers', 'ordenedLayers']),
+    ...mapState('supportLayers', ['supportLayers', 'orderedLayers']),
     ...mapState('monitoring', ['selectedStages', 'showFeaturesMonitoring']),
     dragOptions() {
       return {
@@ -95,17 +122,30 @@ export default {
       deep: true,
     },
     supportLayerUser: {
-      handler: 'updateConcatenatedLayers',
+      handler: 'updateConcatenatedUserLayers',
       deep: true,
     },
     activeMonitoringLabel: {
       handler: 'updateConcatenatedLayers',
+      deep: true,
+    },
+    reordenatedLayers: {
+      handler(activeLayers){
+        this.handleListSupportLayers(activeLayers)
+      } ,
+      deep: true,
+    },
+    reordenatedUserLayers: {
+      handler(activeLayers){
+        this.handleListSupportLayers(activeLayers)
+      } ,
       deep: true,
     }
   },
   created() {
     this.getInfo();
     this.updateConcatenatedLayers();
+    this.updateConcatenatedUserLayers();
   },
   methods: {
     async getInfo() {
@@ -116,23 +156,34 @@ export default {
 
     updateConcatenatedLayers() {
       const visibleSupportLayers = this.supportLayers ? Object.values(this.supportLayers).filter(layer => layer.visible) : [];
-      const visibleSupportLayerUser = this.supportLayerUser ? Object.values(this.supportLayerUser).filter(layer => layer.visible) : [];
       const visibleActiveMonitoring = this.activeMonitoringLabel ? Object.values(this.activeMonitoringLabel).filter(layer => layer.visible) : [];
 
+      this.$nextTick(() => {
       this.concatenatedLayers = [
         ...visibleSupportLayers,
-        ...visibleSupportLayerUser,
         ...visibleActiveMonitoring
-      ];
+      ]})
+    },
+
+    updateConcatenatedUserLayers() {
+      const visibleUserLayers = this.supportLayerUser ? Object.values(this.supportLayerUser).filter(layer => layer.visible) : [];
+      this.$nextTick(() => {
+        this.concatenatedUserLayers = [...visibleUserLayers];
+      })
     },
 
     onDragChange() {
       this.reordenatedLayers = [...this.concatenatedLayers];
-      this.handleRemoveSupportLayers(this.concatenatedLayers);
+      this.reordenatedUserLayers = [...this.concatenatedUserLayers];
+      this.handleRemoveSupportLayers(this.reordenatedLayers);
+      this.handleAddSupportLayers(this.reordenatedLayers);
+    },
 
-      setTimeout(() => {
-        this.handleAddSupportLayers(this.reordenatedLayers);
-      }, 100);
+    onUserDragChange() {
+      this.reordenatedLayers = [...this.concatenatedLayers];
+      this.reordenatedUserLayers = [...this.concatenatedUserLayers];
+      this.handleRemoveSupportLayers(this.reordenatedUserLayers);
+      this.handleAddSupportLayers(this.reordenatedUserLayers);
     },
 
     handleRemoveSupportLayers(orderedLayers) {
@@ -142,13 +193,25 @@ export default {
     },
 
     handleAddSupportLayers(orderedLayers) {
+      this.$nextTick(() => {
+        this.concatenatedLayers = [...this.reordenatedLayers]
+        this.concatenatedUserLayers = [...this.reordenatedUserLayers]
+      })
       this.$store.dispatch('supportLayers/addSupportLayers', {
         layers: orderedLayers
       });
+    },
+
+    handleListSupportLayers(activeLayers){
+      if (activeLayers === this.concatenatedLayers){
+        this.handleAddSupportLayers(this.reordenatedLayers)
+        this.handleAddSupportLayers(this.reordenatedUserLayers)
+      }
       this.$nextTick(() => {
         this.concatenatedLayers = [...this.reordenatedLayers]
+        this.concatenatedUserLayers = [...this.reordenatedUserLayers]
       })
-    },
+    }
   }
 };
 </script>
@@ -157,9 +220,7 @@ export default {
 .text-layer
   font-size: 12px
   padding: 6px
-  margin-left: 4px
-  margin-right: 6px
-  margin-bottom: 4px
+  margin: 4px 6px 4px 0
   text-align: justify
   background: #d7dae766
 
@@ -168,4 +229,9 @@ export default {
 
 .v-application p
   margin-bottom: 0
+
+.ghost
+  opacity: 0.3
+  background: #d92b3f40
+
 </style>
