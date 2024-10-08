@@ -1,7 +1,8 @@
 <template>
   <v-col class="px-4">
     <v-row class="px-3 py-3">
-      <v-select
+      <v-autocomplete
+        ref="filters.cr"
         v-model="filters.cr"
         :label="$t('regional-coordination-label')"
         :items="flattened"
@@ -12,25 +13,30 @@
         clearable
         required
         :error="errorRegional"
+        :search-input.sync="searchCr"
+        @change="clearSearchCr"
       />
     </v-row>
 
     <v-slide-y-transition>
       <v-row
-        v-if="filters.cr && filterOptions.tiFilters"
         class="px-3 pb-3"
       >
-        <v-select
+        <v-autocomplete
+          ref="filters.ti"
           v-model="filters.ti"
           :label="$t('indigenous-lands-label')"
-          :items="filterOptions.tiFilters"
+          :items="filteredTiFilters"
           item-text="no_ti"
           item-value="co_funai"
           hide-details
           clearable
+          chips
           required
           multiple
           :error="errorTi"
+          :search-input.sync="searchTi"
+          @change="clearSearchTi"
         />
       </v-row>
     </v-slide-y-transition>
@@ -327,7 +333,6 @@ export default {
     'filterOptions.regionalFilters': function () {
       this.populateCrOptions();
     },
-
   },
 
   computed: {
@@ -348,7 +353,14 @@ export default {
         this.$store.commit('land-use/setHeatMap', value);
       },
     },
-
+    filteredTiFilters() {
+      if (this.searchTi) {
+        return this.filterOptions.tiFilters.filter(item =>
+          item.no_ti.toLowerCase().includes(this.searchTi.toLowerCase())
+        );
+      }
+      return this.filterOptions.tiFilters;
+    },
     ...mapState('land-use', [
       'features',
       'isLoadingGeoJson',
@@ -367,6 +379,7 @@ export default {
 
   mounted() {
     this.getFilterOptions();
+    this.populateTiOptions();
   },
 
   methods: {
@@ -380,18 +393,29 @@ export default {
       });
 
       Object.keys(groups).forEach((categoryId) => {
-        const category = groups[categoryId];
-        const categoryRegiao = categoryId;
-        this.flattened.push({ header: categoryRegiao });
-        this.flattened.push(...category.list);
+        const categoryExists = this.flattened.some(item => item.header === categoryId);
+        if (!categoryExists) {
+          const category = groups[categoryId];
+          const categoryRegiao = categoryId;
+          this.flattened.push({ header: categoryRegiao });
+          this.flattened.push(...category.list);
+        }
       });
 
       return this.flattened;
     },
 
+    clearSearchCr() {
+      this.searchCr = '';
+    },
+
+    clearSearchTi() {
+      this.searchTi = '';
+    },
+
     populateTiOptions(cr) {
       if (cr) this.$store.dispatch('land-use/getTiOptions', cr);
-      else this.filters.ti = null;
+      else this.$store.dispatch('land-use/getTiOptions');
     },
 
     populateYearsOptions(ti) {
