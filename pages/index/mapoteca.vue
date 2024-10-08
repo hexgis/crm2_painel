@@ -40,7 +40,6 @@
     <div v-if="showDialogMapoteca">
       <MapotecaDialog />
     </div>
-
   </v-container>
 </template>
 
@@ -60,7 +59,7 @@
         },
         "pt-br": {
             "title": "Mapoteca",
-            "analytics-label": "Analytics",
+            "analytics-label": "Analítico",
             "map-label": "Mapa",
             "input-label": "Pesquisar",
             "related": "Relacionados:",

@@ -58,7 +58,7 @@
         },
         "pt-br": {
             "title": "Documental",
-            "analytics-label": "Analytics",
+            "analytics-label": "Analítico",
             "map-label": "Mapa",
             "description": "Ambiente de pesquisa de documentos de acordo com as ações.",
             "available-actions": "Ações Disponíveis:",
