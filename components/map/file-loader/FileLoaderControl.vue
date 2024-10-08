@@ -64,7 +64,7 @@
                 <ConfirmButton
                   icon="mdi-delete-outline"
                   :icon-tooltip="$t('remove-feature-tooltip')"
-                  @remove="remove(i)"
+                  @confirm="remove(i)"
                 />
 
                 <v-tooltip top>
@@ -462,6 +462,8 @@ export default {
 </script>
 
 <style lang="sass">
+.button-drawer
+    z-index: 9999
 .file-option-class
     position: relative
     top: 36px
