@@ -19,6 +19,12 @@
               v-if="user.settings.map_search_button_visible"
               :map="map"
             />
+            <div class="pt-2">
+              <MapSearchTi
+                v-if="user.settings.map_search_button_visible"
+                :map="map"
+              />
+            </div>
 
             <div v-if="user.settings.map_zoom_buttons_visible">
               <div class="d-flex">
@@ -69,11 +75,6 @@
             </div>
 
             <div class="div-spacer" />
-
-            <ZoomToCoords
-              v-if="!$vuetify.breakpoint.mobile"
-              :map="map"
-            />
 
             <FileLoaderControl
               :map="map"
@@ -141,6 +142,7 @@
             width="35"
             :src="northArrow"
           />
+
           <v-col
             cols="12"
             class="pa-0"
@@ -165,8 +167,9 @@
           :options-style="interestStyle"
           :visible="showInterestArea"
         />
-
         <SupportUserLayersMap />
+
+        <MapIndigenousLand />
 
         <SupportLayers />
 
@@ -188,9 +191,8 @@
           @loads="loaded()"
         />
 
-        <MonitoringLayers
-          :map="map"
-        />
+        <MonitoringLayers :map="map" />
+
         <DeterLayers :map="map" />
 
         <!-- <AlgorithmLayers /> -->
@@ -198,7 +200,9 @@
         <!-- <WebhooksLayers /> -->
 
         <BaseWmsMetadataPopup :map="map" />
+
         <LandUseLayers :map="map" />
+
         <PriorityLayers :map="map" />
 
         <AlertLayers :map="map" />
@@ -248,7 +252,7 @@ import interestArea from '@/assets/interest_area.json';
 import MapPrinter from '@/components/map/print-map/MapPrinter';
 
 import MapSearch from '@/components/map/MapSearch.vue';
-import ZoomToCoords from '@/components/map/ZoomToCoords.vue';
+import MapSearchTi from '@/components/map/MapSearchTi.vue';
 import FileLoaderControl from '@/components/map/file-loader/FileLoaderControl.vue';
 import FileLoaderLayers from '@/components/map/file-loader/FileLoaderLayers.vue';
 // import ImageryLayers from '@/components/imagery/ImageryLayers'
@@ -274,6 +278,7 @@ import 'leaflet-minimap/dist/Control.MiniMap.min.css';
 import DrawingPanel from '@/components/map/drawing-tool/DrawingPanel.vue';
 
 import Highlighter from '@/components/map/Highlighter.vue';
+import MapIndigenousLand from '@/components/map/MapIndigenousLand';
 
 if (typeof window !== 'undefined') {
   require('leaflet-bing-layer');
@@ -292,7 +297,7 @@ export default {
     // MonitoringLayersGeoserver,
     SupportLayers,
     MapSearch,
-    ZoomToCoords,
+    MapSearchTi,
     FileLoaderControl,
     FileLoaderLayers,
     PriorityLayers,
@@ -309,7 +314,7 @@ export default {
     SupportLayersHazard,
     SupportUserLayersMap,
     DrawingPanel,
-
+    MapIndigenousLand,
     Highlighter,
   },
 
@@ -319,7 +324,6 @@ export default {
       type: Object,
       default: null,
     },
-
   },
 
   data: () => ({
@@ -387,21 +391,21 @@ export default {
           zIndex: 1,
         },
       },
+      // {
+      //   url: '//mt0.google.com/vt/lyrs=r&hl=en&x={x}&y={y}&z={z}',
+      //   options: {
+      //     label: 'Google Roadmap',
+      //     tag: 'Google Roadmap',
+      //     attribution:
+      //                   'Map data &copy; <a href="//maps.google.com/">Google</a> Altered roadmap',
+      //     maxZoom: 21,
+      //     maxNativeZoom: 19,
+      //     subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+      //     zIndex: 1,
+      //   },
+      // },
       {
-        url: '//mt0.google.com/vt/lyrs=r&hl=en&x={x}&y={y}&z={z}',
-        options: {
-          label: 'Google Roadmap',
-          tag: 'Google Roadmap',
-          attribution:
-                        'Map data &copy; <a href="//maps.google.com/">Google</a> Altered roadmap',
-          maxZoom: 21,
-          maxNativeZoom: 19,
-          subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-          zIndex: 1,
-        },
-      },
-      {
-        url: '//mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}',
+        url: '//mt0.google.com/vt/lyrs=y&hl=pt&x={x}&y={y}&z={z}',
         options: {
           label: 'Google Hybrid',
           tag: 'Google Hybrid',
@@ -475,18 +479,6 @@ export default {
           zIndex: 1,
         },
       },
-      {
-        url: 'https://tiles.planet.com/basemaps/v1/planet-tiles/planet_medres_visual_2020-10_mosaic/gmap/{z}/{x}/{y}.png?api_key=57cd3a8c44024cfdb7446ac37d8d1fe9',
-        options: {
-          label: 'Planet - Out/2020',
-          tag: 'Planet - Out/2020',
-          attribution:
-                        'Map data &copy; <a href="//www.planet.com/">Planet</a>',
-          maxZoom: 21,
-          maxNativeZoom: 15,
-          zIndex: 1,
-        },
-      },
     ],
 
     bingKey:
@@ -526,7 +518,14 @@ export default {
         )
         : [];
     },
-    ...mapState('map', ['bounds', 'boundsZoomed', 'loading', 'activeMenu', 'tmsToPrint']),
+    ...mapState('map', [
+      'bounds',
+      'boundsZoomed',
+      'loading',
+      'activeMenu',
+      'tmsToPrint',
+      'indigenousLand',
+    ]),
     ...mapState('userProfile', ['user']),
   },
 
@@ -547,6 +546,13 @@ export default {
   },
 
   methods: {
+    showPopupOnMap(data) {
+      // Mostrar o popup no mapa com os dados relevantes
+      this.clickCoordinates = data.coordinates;
+      this.showPopup = true;
+      this.tiName = 'Nome da TI'; // Defina o nome da TI conforme necessário
+      this.popupData = data;
+    },
     checkUserSettings(settingsProperty) {
       return this.user ? this.user.settings[settingsProperty] : true;
     },
@@ -717,87 +723,87 @@ export default {
 
 <style lang="sass">
 .leaflet-draw-tooltip
-    z-index: 6
+  z-index: 6
 
 .map-action-buttons
-    z-index: 4
-    opacity: 0.84
+  z-index: 4
+  opacity: 0.84
 
-    .v-icon
-        font-size: 18px !important
+  .v-icon
+    font-size: 18px !important
 
 .leaflet-tooltip-right:before,
 .leaflet-tooltip-left:before
-    right: 0
-    left: 0
-    margin-left: 0px
-    border-right-color: transparent !important
-    border-left-color: transparent !important
+  right: 0
+  left: 0
+  margin-left: 0px
+  border-right-color: transparent !important
+  border-left-color: transparent !important
 
 .leaflet-container
-    font-family: 'Roboto', sans-serif !important
-    line-height: 1.5 !important
+  font-family: 'Roboto', sans-serif !important
+  line-height: 1.5 !important
 
 .card-popup
-    .leaflet-popup-content
-        margin: 0px
+  .leaflet-popup-content
+    margin: 0px
 
     .leaflet-popup-scrolled
-        border: none
+      border: none
 
 .leaflet-popup-content-wrapper
-    padding: 0px
-    border: 0px !important
-    border-radius: 4px !important
-    box-shadow: none
-    -webkit-box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12) !important
-    box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12) !important
+  padding: 0px
+  border: 0px !important
+  border-radius: 4px !important
+  box-shadow: none
+  -webkit-box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12) !important
+  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12) !important
 
 .leaflet-coordinates-control
-    background: rgba(255, 255, 255, 0.7)
-    padding: 0 5px
-    font-size: 11px
-    color: #333
-    margin-left: 0 !important
-    margin-bottom: 0 !important
+  background: rgba(255, 255, 255, 0.7)
+  padding: 0 5px
+  font-size: 11px
+  color: #333
+  margin-left: 0 !important
+  margin-bottom: 0 !important
 
 .nation-logo-container
-    margin-left: -3px
+  margin-left: -3px
 
 .logo-flags
-    margin-left: -3px
-    opacity: 0.4
-    transition: all ease 0.1s
+  margin-left: -3px
+  opacity: 0.4
+  transition: all ease 0.1s
 
 .logo-flags:hover
-    opacity: 1
-    transform: scale(1.1)
+  opacity: 1
+  transform: scale(1.1)
 
 .logo-hex
-    opacity: 0.4
-    display: flex
-    flex-direction: row
+  opacity: 0.4
+  display: flex
+  flex-direction: row
 
 .basemap.active
-    border: 0
+  border: 0
 
 .loading-background
-    position: absolute
-    top: 0px
-    left: 0px
-    height: 100%
-    width: 100%
-    background-color: rgba(245, 245, 245, 0.4)
-    z-index: 3
+  position: absolute
+  top: 0px
+  left: 0px
+  height: 100%
+  width: 100%
+  background-color: rgba(245, 245, 245, 0.4)
+  z-index: 3
+  display: flex
+  align-items: center
+  justify-content: center
+
+  div
     display: flex
     align-items: center
-    justify-content: center
-
-    div
-        display: flex
-        align-items: center
-        justify-content: space-around
-        width: 140px
+    justify-content: space-around
+    width: 140px
 .div-spacer
     height: 20px
 
@@ -813,6 +819,10 @@ export default {
 .northArrow:hover
     opacity: 1
     transform: scale(1.1)
+
+@media print
+  .leaflet-control-zoom
+    display: none
 
 @media (max-width: 768px)
 

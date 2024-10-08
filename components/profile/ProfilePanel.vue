@@ -51,6 +51,12 @@
             {{ $t('preferences-button') }}
           </span>
         </v-list-item>
+        <v-list-item @click="goToMain()">
+          <v-icon> mdi-home </v-icon>
+          <span class="pl-2">
+            {{ $t('home-button') }}
+          </span>
+        </v-list-item>
         <v-list-item @click="logout()">
           <v-icon> mdi-logout </v-icon>
           <span class="pl-2"> {{ $t('logout-button') }} </span>
@@ -70,12 +76,14 @@
     "en": {
         "profile-tooltip": "Profile",
         "preferences-button": "Preferences",
-        "logout-button": "Log out"
+        "logout-button": "Log out",
+        "home-button": "Home"
     },
     "pt-br": {
         "profile-tooltip": "Perfil",
         "preferences-button": "Preferências",
-        "logout-button": "Sair"
+        "logout-button": "Sair",
+        "home-button": "Início"
     }
 }
 </i18n>
@@ -122,6 +130,9 @@ export default {
   methods: {
     openSettings() {
       this.settingsOpened = true;
+    },
+    goToMain() {
+      this.$router.replace(this.localePath('/portal'));
     },
 
     ...mapActions('auth', ['logout']),

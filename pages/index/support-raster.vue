@@ -1,29 +1,32 @@
 <template>
-    <v-container class="pa-0">
-        <div class="tab-header justify-space-between">
-            <v-row>
-                <h6
-                    class="subtitle-2 text-uppercase font-weight-regular tab-title"
-                >
-                    {{ $t('title') }}
-                </h6>
-                <v-tooltip>
-                    <template #activator="{ on }">
-                        <v-icon class="infoIconMargin" v-on="on">
-                            mdi-information
-                        </v-icon>
-                    </template>
-                    <span>Fonte de dados: Geoserver - FUNAI</span>
-                </v-tooltip>
-                <v-switch
-                    v-show="!loading"
-                    v-model="showFeatures"
-                    class="mt-n1 switch-margin"
-                    hide-details
-                />
-            </v-row>
-        </div>
-        <v-tabs
+ <v-container class="pa-0">
+    <div class="tab-header justify-space-between">
+      <v-row>
+        <h6 class="subtitle-2 text-uppercase font-weight-regular tab-title">
+          {{ $t('title') }}
+        </h6>
+        <v-tooltip>
+          <template #activator="{ on }">
+            <v-icon
+              class="infoIconMargin"
+              v-on="on"
+            >
+              mdi-information
+            </v-icon>
+          </template>
+          <span>
+           {{ $t('data-source-label') }}
+          </span>
+        </v-tooltip>
+        <v-switch
+          v-show="!loading"
+          v-model="showFeatures"
+          class="mt-n1 switch-margin"
+          hide-details
+        />
+      </v-row>
+    </div>
+    <v-tabs
             v-model="tab"
             background-color="#D42A3E"
             centered
@@ -113,8 +116,13 @@
                             @click:clear="clearInput"
                         />
                     </v-col>
-                    <v-list v-if="!$fetchState.pending" expand class="pt-0">
-                        <template v-for="group in filteredGroups">
+
+                    <v-list
+      v-if="!$fetchState.pending"
+      expand
+      class="pt-0"
+    >
+    <template v-for="group in filteredGroups">
                             <SupportLayersGroupRaster
                                 :key="group.id"
                                 :group="group"
@@ -122,8 +130,8 @@
                                 :isPlanet="true"
                             />
                         </template>
-                    </v-list>
-                </v-card>
+    </v-list>
+  </v-card>
             </v-tab-item>
         </v-tabs-items>
         <div v-if="$fetchState.pending">
@@ -143,21 +151,23 @@
     "search-label": "Search layer",
     "search-label-years": "Search layer years",
     "search-label-month": "Search layer month",
-    "title": "High Resolution and Mosaics"
+    "title": "High Resolution and Mosaics",
+    "data-source-label": "Datasource: Geoserver - FUNAI"
   },
   "pt-br": {
     "search-label": "Buscar camada",
     "search-label-years": "Buscar camada por ano",
     "search-label-month": "Buscar camada por mês",
-    "title": "Alta Resolução e Mosaicos"
+    "title": "Alta Resolução e Mosaicos",
+    "data-source-label": "Fonte de dados: Geoserver - FUNAI"
   }
 }
 </i18n>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
-import _ from 'lodash'
-import SupportLayersGroupRaster from '@/components/support/SupportLayersGroupRaster'
+import { mapState, mapMutations } from 'vuex';
+import _ from 'lodash';
+import SupportLayersGroupRaster from '@/components/support/SupportLayersGroupRaster';
 
 export default {
     name: 'SupportRaster',
@@ -206,18 +216,19 @@ export default {
                 .value()
         },
 
-        showFeatures: {
-            get() {
-                return this.$store.state.supportLayers
-                    .showFeaturesSupportLayersRaster
-            },
-            set(value) {
-                this.$store.commit(
-                    'supportLayers/setshowFeaturesSupportLayersRaster',
-                    value
-                )
-            },
-        },
+
+    showFeatures: {
+      get() {
+        return this.$store.state.supportLayers
+          .showFeaturesSupportLayersRaster
+      },
+      set(value) {
+        this.$store.commit(
+          'supportLayers/setshowFeaturesSupportLayersRaster',
+          value
+        )
+      },
+    },
 
         groupsFilteredByYear() {
             if (!this.selectedYears.length) {
@@ -297,3 +308,37 @@ export default {
     },
 }
 </script>
+
+<style scoped lang="scss">
+.container-height {
+    max-height: 90vh;
+}
+
+.selected {
+    background-color: red
+}
+
+.infoIconMargin {
+    margin-left: 4px;
+  }
+
+.switch-margin {
+    margin-left: 60px
+
+  }
+
+@media (max-width: 768px) {
+  .infoIconMargin {
+    margin-left: 2px;
+  }
+
+  .tab-title {
+    font-size: 90% !important;
+  }
+
+  .switch-margin {
+    margin-top: 10px;
+    margin-left: 0px
+  }
+}
+</style>

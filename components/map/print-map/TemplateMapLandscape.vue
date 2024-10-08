@@ -45,16 +45,18 @@
             class="pl-1 mt-2"
           >
             <div class="border_container">
-              <div class="d-flex justify-center align-center ma-4">
+              <div class="d-flex justify-space-between pl-8 pr-8 ga-1 align-center ma-4">
                 <div style="width: 25%">
                   <v-img
+                    style="opacity: 0.5;"
                     contain
                     :src="logo_funai"
                     class="logo"
                   />
                 </div>
-                <div style="width: 25%">
+                <div style="width: 50%">
                   <v-img
+                    style="opacity: 0.5;"
                     contain
                     :src="logo_cmr"
                     class="logo"
@@ -78,81 +80,165 @@
                   :map-center="mapCenter"
                 />
               </div>
-              <div>
-                <p class="d-block ma-1">
-                  {{ $t('legend') }}
-                </p>
-                <div
-                  class="ma-1 flex-wrap"
-                  style="width: 100%"
-                >
-                  <div v-if="showFeaturesSupportLayers">
-                    <div
-                      v-for="layer in supportLayers"
-                      :key="layer.id"
+              <div class="legend-info-map">
+                <div class="legend-info-map legend-info-map-details">
+                  <div>
+                    <p
+                      v-if="showFeaturesSupportLayers || showFeaturesMonitoring"
+                      class="d-block ma-1"
                     >
-                      <v-row
-                        v-if="layer.visible"
-                        no-gutters
-                        align="center"
-                        class="image-container"
+                      {{ $t('legend') }}
+                    </p>
+                    <div
+                      class="ma-1 flex-wrap"
+                      style="width: 100%; max-height: 100%; overflow: hidden;"
+                    >
+                      <div
+                        v-for="layer in supportLayerUser"
+                        :key="layer.id"
                       >
-                        <img
-                          v-if="layer.wms"
-                          :src="
-                            layer.wms.geoserver
-                              .preview_url +
-                              layer.wms
-                                .geoserver_layer_name
-                          "
-                          class="layer-thumbnail"
-                          alt="CorLayer"
+                        <v-row
+                          v-if="layer.visible"
+                          no-gutters
+                          align="center"
+                          class="image-container"
                         >
-                        <img
-                          v-else-if="vectorImage(layer)"
-                          :src="`data:image/png;base64,${vectorImage(
-                            layer
-                          )}`"
-                          class="layer-thumbnail"
-                          alt="CorLayer"
+                          <v-icon
+                            class="layer-thumbnail"
+                            style="font-size: 40px;"
+                            :color="layer.properties.color"
+                          >
+                            mdi-square
+                          </v-icon>
+                          <span class="ml-1">
+                            <p>{{ layer.name }}</p>
+                          </span>
+                        </v-row>
+                        <v-row />
+                      </div>
+                      <div v-if="showFeaturesSupportLayers">
+                        <div
+                          v-for="layer in supportLayers"
+                          :key="layer.id"
                         >
-                        <v-col>
-                          <p class="ml-1">
-                            {{ layer.name }}
-                          </p>
-                        </v-col>
-                      </v-row>
+                          <v-row
+                            v-if="layer.visible"
+                            no-gutters
+                            align="center"
+                            class="image-container"
+                          >
+                            <img
+                              v-if="layer.wms"
+                              :src="
+                                layer.wms.geoserver
+                                  .preview_url +
+                                  layer.wms
+                                    .geoserver_layer_name
+                              "
+                              class="layer-thumbnail"
+                              alt="CorLayer"
+                            >
+                            <img
+                              v-else-if="vectorImage(layer)"
+                              :src="`data:image/png;base64,${vectorImage(
+                                layer
+                              )}`"
+                              class="layer-thumbnail"
+                              alt="CorLayer"
+                            >
+                            <v-col>
+                              <p class="ml-1">
+                                {{ layer.name }}
+                              </p>
+                            </v-col>
+                          </v-row>
+                        </div>
+                      </div>
+                      <div v-if="showFeaturesMonitoring">
+                        <div
+                          v-for="layer in activeMonitoringLabel"
+                          :key="layer.id"
+                        >
+                          <v-row
+                            no-gutters
+                            align="center"
+                            class="image-container"
+                          >
+                            <v-icon
+                              class="mr-2"
+                              :color="layer.color"
+                            >
+                              mdi-square
+                            </v-icon>
+                            <span class="ml-1">
+                              <p>{{ layer.name }}</p>
+                            </span>
+                          </v-row>
+                          <v-row />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <v-divider />
+                    <p
+                      v-if="showFeaturesSupportLayers"
+                      class="d-block ma-1"
+                    >
+                      Bases Cartográficas:
+                    </p>
+                    <div v-if="showFeaturesSupportLayers">
+                      <div
+                        v-for="layer in supportLayers"
+                        :key="layer.id"
+                      >
+                        <v-row
+                          v-if="layer.visible"
+                          no-gutters
+                          align="center"
+                          class="image-container"
+                        >
+                          <v-col>
+                            <p class="ml-1">
+                              <strong>{{ layer.name || '-' }}. </strong> Fonte: {{ layer.layer_info.fonte || '-' }}, Data de atualização: {{ handleData(layer.layer_info.dt_atualizacao) }}.
+                            </p>
+                          </v-col>
+                        </v-row>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <v-divider />
-                <div class="ma-1">
-                  <p>
-                    {{ print_info }} {{ $t('text-address0') }}
-                  </p>
-                  <p>
-                    {{ print_info }} {{ $t('text-address')
-                    }}{{ todayDate() }}
-                  </p>
-                </div>
-                <v-divider />
-                <div class="ma-1">
-                  <p>
-                    {{ $t('author-label') }}
-                  </p>
-                  <p>
-                    {{ $t('text-info') }}
-                  </p>
-                  <p>
-                    {{ $t('text-format') }}{{ leafSize.type }}.
-                  </p>
+
+                <div>
+                  <v-divider />
+                  <div class="ma-1">
+                    <p>
+                      {{ print_info }} {{ $t('text-address0') }}
+                    </p>
+                    <p>
+                      {{ print_info }} {{ $t('text-address')
+                      }}{{ todayDate() }}
+                    </p>
+                  </div>
+                  <v-divider />
+                  <div class="ma-1">
+                    <p>
+                      {{ $t('author-label') }}
+                    </p>
+                    <p>
+                      {{ $t('text-info') }}
+                    </p>
+                    <p>
+                      {{ $t('text-format') }}{{ leafSize.type }}.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </v-col>
         </v-row>
         <div class="no-print">
-          <div class="d-flex flex-row mr-6 mt-2">
+          <div class="d-flex flex-row align-md-center mr-6 mt-2">
             <v-btn
               class="ml-4 mb-2"
               @click="$emit('back')"
@@ -187,7 +273,11 @@
           "text-format": "Format-adapted map template ",
           "input-button-back-second-step": "Back",
           "input-button-pdf-image": "Generate PDF",
-          "author-label": "Author: "
+          "author-label": "Author: ",
+          "clear-cut": "Clear Cut",
+          "degradation": "Degradation",
+          "forest-fire": "Forest Fire",
+          "regeneration-deforestation": "Regeneration Deforestation"
       },
       "pt-br": {
           "print-out": "Impressão",
@@ -198,7 +288,11 @@
           "text-format": "Modelo de mapa adaptado para formato ",
           "input-button-back-second-step": "Voltar",
           "input-button-pdf-image": "Gerar PDF",
-          "author-label": "Autor: "
+          "author-label": "Autor: ",
+          "clear-cut": "Corte Raso",
+          "degradation": "Degradação",
+          "forest-fire": "Fogo em Floresta",
+          "regeneration-deforestation": "Desmatamento em Regeneração"
       }
   }
 </i18n>
@@ -254,23 +348,59 @@ export default {
     logo_cmr: process.env.DEFAULT_LOGO_IMAGE_CMR,
     print_title: process.env.PRINT_TITLE,
     print_info: process.env.PRINT_INFO,
+    activeMonitoringLabel: [],
   }),
 
   computed: {
     showDialog() {
       return this.showDialogLandscape;
     },
-
+    ...mapState('supportLayersUser', ['supportLayerUser']),
     ...mapState('map', ['bounds']),
     ...mapState('supportLayers', [
       'showFeaturesSupportLayers',
       'supportLayers',
     ]),
+    ...mapState('monitoring', ['selectedStages', 'showFeaturesMonitoring']),
+  },
+
+  mounted() {
+    console.log(this.showFeaturesMonitoring, this.showFeaturesSupportLayers);
+    if (this.selectedStages) {
+      this.selectedStages.forEach((item) => {
+        item === 'CR' ? this.activeMonitoringLabel.push({
+          id: 'cr',
+          color: '#ff3333',
+          name: this.$t('clear-cut'),
+        })
+          : item === 'DG' ? this.activeMonitoringLabel.push({
+            id: 'dg',
+            color: '#ff8000',
+            name: this.$t('degradation'),
+          })
+            : item === 'FF' ? this.activeMonitoringLabel.push({
+              id: 'ff',
+              color: '#b35900',
+              name: this.$t('forest-fire'),
+            })
+              : item === 'DR' ? this.activeMonitoringLabel.push({
+                id: 'dr',
+                color: '#990099',
+                name: this.$t('regeneration-deforestation'),
+              }) : '';
+      });
+    }
   },
 
   methods: {
     vectorImage(layer) {
       return layer.vector.thumbnail_blob || layer.vector.image;
+    },
+
+    handleData(data) {
+      if (!data) return '-';
+      const [year, month, day] = data.split('-');
+      return `${day}/${month}/${year}`;
     },
 
     todayDate() {
@@ -327,6 +457,18 @@ export default {
 
 .vue2leaflet-map teste leaflet-container leaflet-touch leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom{
   height: 30vh !important;
+}
+
+.legend-info-map{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 60%;
+  padding-bottom: 5px;
+}
+
+.legend-info-map-details{
+  height: 100%;
 }
 
 @page {
@@ -406,5 +548,13 @@ p {
 
 .image-container {
     width: 100%; /* Garante que o container tenha largura suficiente */
+}
+
+.row {
+  margin: 0!important;
+}
+
+img.layer-thumbnail{
+    width: 25px;
 }
 </style>
