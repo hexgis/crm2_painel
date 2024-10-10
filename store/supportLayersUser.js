@@ -2,6 +2,8 @@ import Vue from 'vue';
 
 export const state = () => ({
   supportLayerUser: {},
+  activeMonitoringLabel: [],
+  supportLayers: [],
   popupInfo: {},
   selectedColor: '#FF0000',
 });
@@ -11,6 +13,12 @@ export const getters = {
 };
 
 export const mutations = {
+  reorderLayers(state, payload) {
+    state.supportLayers = payload.supportLayers;
+    state.supportLayerUser = payload.supportLayerUser;
+    state.activeMonitoringLabel = payload.activeMonitoringLabel;
+  },
+
   SET_COLOR(state, color) {
     state.selectedColor = color;
   },

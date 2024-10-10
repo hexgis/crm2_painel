@@ -364,10 +364,9 @@ export default {
     ...mapState('monitoring', ['selectedStages', 'showFeaturesMonitoring']),
   },
 
-  mounted() {
-    console.log(this.showFeaturesMonitoring, this.showFeaturesSupportLayers);
-    if (this.selectedStages) {
-      this.selectedStages.forEach((item) => {
+  mounted(){
+    if (this.selectedStages){
+      this.selectedStages.forEach(item => {
         item === 'CR' ? this.activeMonitoringLabel.push({
           id: 'cr',
           color: '#ff3333',
