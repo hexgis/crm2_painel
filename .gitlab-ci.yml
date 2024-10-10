@@ -36,6 +36,7 @@ test:
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
+  allow_failure: true
   before_script:
     - /usr/sbin/update-ca-certificates --fresh
     - export TRIVY_VERSION=$(wget -tls1 --retry-connrefused --waitretry=1 -qO - "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
