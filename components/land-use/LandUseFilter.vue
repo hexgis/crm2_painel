@@ -298,6 +298,8 @@ export default {
   data() {
     return {
       isGeoserver: process.env.MONITORING_GEOSERVER === 'true',
+      searchTi: '',
+      searchCr: '',
       filters: {
         currentView: false,
         year: [],
@@ -355,9 +357,7 @@ export default {
     },
     filteredTiFilters() {
       if (this.searchTi) {
-        return this.filterOptions.tiFilters.filter(item =>
-          item.no_ti.toLowerCase().includes(this.searchTi.toLowerCase())
-        );
+        return this.filterOptions.tiFilters.filter((item) => item.no_ti.toLowerCase().includes(this.searchTi.toLowerCase()));
       }
       return this.filterOptions.tiFilters;
     },
@@ -393,7 +393,7 @@ export default {
       });
 
       Object.keys(groups).forEach((categoryId) => {
-        const categoryExists = this.flattened.some(item => item.header === categoryId);
+        const categoryExists = this.flattened.some((item) => item.header === categoryId);
         if (!categoryExists) {
           const category = groups[categoryId];
           const categoryRegiao = categoryId;

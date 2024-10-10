@@ -391,21 +391,21 @@ export default {
           zIndex: 1,
         },
       },
+      // {
+      //   url: '//mt0.google.com/vt/lyrs=r&hl=en&x={x}&y={y}&z={z}',
+      //   options: {
+      //     label: 'Google Roadmap',
+      //     tag: 'Google Roadmap',
+      //     attribution:
+      //                   'Map data &copy; <a href="//maps.google.com/">Google</a> Altered roadmap',
+      //     maxZoom: 21,
+      //     maxNativeZoom: 19,
+      //     subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+      //     zIndex: 1,
+      //   },
+      // },
       {
-        url: '//mt0.google.com/vt/lyrs=r&hl=en&x={x}&y={y}&z={z}',
-        options: {
-          label: 'Google Roadmap',
-          tag: 'Google Roadmap',
-          attribution:
-                        'Map data &copy; <a href="//maps.google.com/">Google</a> Altered roadmap',
-          maxZoom: 21,
-          maxNativeZoom: 19,
-          subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-          zIndex: 1,
-        },
-      },
-      {
-        url: '//mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}',
+        url: '//mt0.google.com/vt/lyrs=y&hl=pt&x={x}&y={y}&z={z}',
         options: {
           label: 'Google Hybrid',
           tag: 'Google Hybrid',
