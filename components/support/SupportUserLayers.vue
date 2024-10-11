@@ -8,7 +8,6 @@
                     </span>
                 </v-list-item-title>
             </v-list-item-content>
-
             <v-list-item-action @click.stop="">
                 <v-switch
                     :input-value="layer.visible"
@@ -102,27 +101,26 @@
             </v-row>
         </v-container>    
         <v-dialog v-model="rename" max-width="800">
-            <v-card>
+            <v-card style="overflow: hidden;">
                 <v-card-title>
                     {{ $t('edit-label') }}
                     <v-spacer />
                     <v-btn icon class="mr-n5 mt-n5" @click="rename = false">
-                        <v-icon> mdi-close </v-icon>
+                        <v-icon class="mr-5 mt-5"> mdi-close </v-icon>
                     </v-btn>
                 </v-card-title>
                 <v-card-text class="py-6">
-                    <p>{{ $t('info-text') }}</p>
                     <v-row>
                         <v-col cols="12">
                             <v-text-field
                                 v-model="name"
                                 :label="$t('field-label')"
-                                outlined
                                 required
                                 hide-details
                             />
-                        </v-col>
-                        <v-col>
+                            <p class="mt-4">{{ $t('info-text') }}</p>
+                        </v-col>                        
+                        <v-col class="mt-n8">
                             <v-tooltip bottom v-if="isPointType">
                                 <template #activator="{ on }">
                                     <v-btn
@@ -145,7 +143,7 @@
                                 <span>{{ $t('palette-button') }}</span>
                             </v-tooltip>
                         </v-col>
-                    </v-row>
+                    </v-row>                    
                     <v-expand-transition>
                         <div v-show="pallete">
                             <v-color-picker
@@ -190,11 +188,11 @@
 {
     "en": {
         "zoom-label": "Zoom to area",
-        "edit-label": "Rename layer",
+        "edit-label": "Edit",
         "download-label": "Download layer",
         "remove-label": "Remove layer",
-        "info-text": "Enter layer name",
-        "field-label": "Name",
+        "info-text": "Layer color",
+        "field-label": "Layer name",
         "button-label": "Save",
         "api-error-update": "Error while updating layer, contact a system administrator in case it persists.",
         "api-error-delete": "Error while removing bookmark, contact a system administrator in case it persists.",
@@ -208,11 +206,11 @@
 
     "pt-br": {
         "zoom-label": "Aproximar para área",
-        "edit-label": "Renomear camada",
+        "edit-label": "Editar",
         "download-label": "Baixar camada",
         "remove-label": "Excluir camada",
-        "info-text": "Digite o nome da camada",
-        "field-label": "Nome",
+        "info-text": "Cor da camada",
+        "field-label": "Nome da camada",
         "button-label": "Salvar",
         "api-error-update": "Não foi possível atualizar o camada, entre em contato com um administrador caso persista.",
         "api-error-delete": "Não foi possível remover a camada, entre em contato com um administrador caso persista",
