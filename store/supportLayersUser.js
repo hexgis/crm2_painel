@@ -13,14 +13,14 @@ export const getters = {
 };
 
 export const mutations = {
+  SET_COLOR(state, color) {
+    state.selectedColor = color;
+  },
+
   reorderLayers(state, payload) {
     state.supportLayers = payload.supportLayers;
     state.supportLayerUser = payload.supportLayerUser;
     state.activeMonitoringLabel = payload.activeMonitoringLabel;
-  },
-
-  SET_COLOR(state, color) {
-    state.selectedColor = color;
   },
 
   setSupportLayersUser(state, LayersUser) {

@@ -102,7 +102,7 @@ export default {
 
         pointToLayer(feature, latlng) {
             const markerColor =
-                feature.properties.marker_properties.color || this.color1
+                feature.properties?.marker_properties?.color || this.color1
             if (feature.geometry && feature.geometry.type === 'Point') {
                 return L.marker(latlng, {
                     icon: L.divIcon({
