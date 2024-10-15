@@ -164,7 +164,6 @@ export default {
       },
     },
     ...mapState('land-use', [
-      'showFeaturesLandUse',
       'features',
       'total',
       'tableLandUse',

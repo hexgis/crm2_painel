@@ -84,7 +84,7 @@
                 <div class="legend-info-map legend-info-map-details">
                   <div>
                     <p
-                      v-if="showFeaturesSupportLayers || showFeaturesMonitoring"
+                      v-if="hasLegend"
                       class="d-block ma-1"
                     >
                       {{ $t('legend') }}
@@ -93,114 +93,32 @@
                       class="ma-1 flex-wrap"
                       style="width: 100%; max-height: 100%; overflow: hidden;"
                     >
-                      <div
-                        v-for="layer in supportLayerUser"
-                        :key="layer.id"
-                      >
-                        <v-row
-                          v-if="layer.visible"
-                          no-gutters
-                          align="center"
-                          class="image-container"
-                        >
-                          <v-icon
-                            class="layer-thumbnail"
-                            style="font-size: 40px;"
-                            :color="layer.properties.color"
-                          >
-                            mdi-square
-                          </v-icon>
-                          <span class="ml-1">
-                            <p>{{ layer.name }}</p>
-                          </span>
-                        </v-row>
-                        <v-row />
-                      </div>
-                      <div v-if="showFeaturesSupportLayers">
-                        <div
-                          v-for="layer in supportLayers"
-                          :key="layer.id"
-                        >
-                          <v-row
-                            v-if="layer.visible"
-                            no-gutters
-                            align="center"
-                            class="image-container"
-                          >
-                            <img
-                              v-if="layer.wms"
-                              :src="
-                                layer.wms.geoserver
-                                  .preview_url +
-                                  layer.wms
-                                    .geoserver_layer_name
-                              "
-                              class="layer-thumbnail"
-                              alt="CorLayer"
-                            >
-                            <img
-                              v-else-if="vectorImage(layer)"
-                              :src="`data:image/png;base64,${vectorImage(
-                                layer
-                              )}`"
-                              class="layer-thumbnail"
-                              alt="CorLayer"
-                            >
-                            <v-col>
-                              <p class="ml-1">
-                                {{ layer.name }}
-                              </p>
-                            </v-col>
-                          </v-row>
-                        </div>
-                      </div>
-                      <div v-if="showFeaturesMonitoring">
-                        <div
-                          v-for="layer in activeMonitoringLabel"
-                          :key="layer.id"
-                        >
-                          <v-row
-                            no-gutters
-                            align="center"
-                            class="image-container"
-                          >
-                            <v-icon
-                              class="mr-2"
-                              :color="layer.color"
-                            >
-                              mdi-square
-                            </v-icon>
-                            <span class="ml-1">
-                              <p>{{ layer.name }}</p>
-                            </span>
-                          </v-row>
-                          <v-row />
-                        </div>
-                      </div>
+                      <LayerList :layers="supportLayerUser" />
+                      <LayerList v-if="showFeaturesSupportLayers" :layers="supportLayers" />
+                      <LayerList :layers="supportLayersCategoryFire" />
+                      <LayerList :layers="supportLayersCategoryProdes" :prodes=true />
+                      <CustomizedLegend v-if="showFeaturesLandUse" :items="landUseCategories" />
+                      <CustomizedLegend v-if="showFeaturesDeter" :items="deterItems" />
+                      <CustomizedLegend v-if="showFeaturesUrgentAlert && !showFeaturesMonitoring" :items="urgentAlertItems" />
+                      <LayerList v-if="showFeaturesMonitoring" :layers="activeMonitoringLabel" :monitoring=true />
                     </div>
                   </div>
                   <div>
                     <v-divider />
                     <p
-                      v-if="showFeaturesSupportLayers"
+                      v-if="hasCartographicDatasets"
                       class="d-block ma-1"
                     >
                       Bases Cartográficas:
                     </p>
-                    <div v-if="showFeaturesSupportLayers">
-                      <div
-                        v-for="layer in supportLayers"
-                        :key="layer.id"
-                      >
-                        <v-row
-                          v-if="layer.visible"
-                          no-gutters
-                          align="center"
-                          class="image-container"
-                        >
+                    <div v-for="layerCategory in layerCategories" :key="layerCategory.name">
+                      <div v-for="layer in layerCategory.layers" :key="layer.id">
+                        <v-row v-if="layer.visible" no-gutters align="center" class="image-container">
                           <v-col>
                             <p class="ml-1">
-                              <strong>{{ layer.name || '-' }}. </strong> Fonte: {{ layer.layer_info.fonte || '-' }}, Data de atualização: {{ handleData(layer.layer_info.dt_atualizacao) }}.
+                              <strong>{{ layer.name || '-' }}. </strong>
+                              Fonte: {{ layer.layer_info.fonte || '-' }},
+                              Data de atualização: {{ handleData(layer.layer_info.dt_atualizacao) }}.
                             </p>
                           </v-col>
                         </v-row>
@@ -277,7 +195,21 @@
           "clear-cut": "Clear Cut",
           "degradation": "Degradation",
           "forest-fire": "Forest Fire",
-          "regeneration-deforestation": "Regeneration Deforestation"
+          "regeneration-deforestation": "Regeneration Deforestation",
+          "burnt-scar": "Burnt Scar",
+          "deforestation-veg": "Vegetation Deforestation",
+          "disorderly-cs": "Disorderly Cs",
+          "deforestation-cr": "Deforestation Cr",
+          "geometric-cs": "Geometric Cs",
+          "mining": "Mining",
+          "land-use-categories": {
+              "agriculture": "Agriculture",
+              "water-body": "Water Body",
+              "village": "Village",
+              "natural-vegetation": "Natural Vegetation",
+              "clear-cut": "Clear Cut"
+          }
+
       },
       "pt-br": {
           "print-out": "Impressão",
@@ -292,7 +224,20 @@
           "clear-cut": "Corte Raso",
           "degradation": "Degradação",
           "forest-fire": "Fogo em Floresta",
-          "regeneration-deforestation": "Desmatamento em Regeneração"
+          "regeneration-deforestation": "Desmatamento em Regeneração",
+          "burnt-scar": "Cicatriz de Queimada",
+          "deforestation-veg": "Desmatamento Veg",
+          "disorderly-cs": "Cs Desordenado",
+          "deforestation-cr": "Desmatamento Cr",
+          "geometric-cs": "Cs Geométrico",
+          "mining": "Mineração",
+          "land-use-categories": {
+              "agriculture": "Agropecuária",
+              "water-body": "Massa de Água",
+              "village": "Vilarejo",
+              "natural-vegetation": "Vegetação Natural",
+              "clear-cut": "Corte Raso"
+          }
       }
   }
 </i18n>
@@ -301,6 +246,8 @@
 import { mapState } from 'vuex';
 import MapForPrint from './MapForPrint.vue';
 import MiniMap from '@/components/map/print-map/MiniMap.vue';
+import LayerList from './LayerListActive.vue';
+import CustomizedLegend from './CustomizedLegendActive.vue';
 
 if (typeof window !== 'undefined') {
   require('leaflet-bing-layer');
@@ -310,6 +257,8 @@ export default {
   components: {
     MapForPrint,
     MiniMap,
+    LayerList,
+    CustomizedLegend
   },
 
   props: {
@@ -349,19 +298,62 @@ export default {
     print_title: process.env.PRINT_TITLE,
     print_info: process.env.PRINT_INFO,
     activeMonitoringLabel: [],
+    deterItems: [
+        { label: 'burnt-scar', color: '#330000' },
+        { label: 'deforestation-veg', color: '#b2b266' },
+        { label: 'disorderly-cs', color: '#ff4dff' },
+        { label: 'deforestation-cr', color: '#cca300' },
+        { label: 'geometric-cs', color: '#669999' },
+        { label: 'degradation', color: '#ff8000' },
+        { label: 'mining', color: '#cccc00' },
+      ],
+      urgentAlertItems: [
+        { label: 'regeneration-deforestation', color: '#990099' },
+        { label: 'degradation', color: '#ff8000' },
+        { label: 'clear-cut', color: '#ff3333' },
+      ],
+      landUseCategories: [
+        { label: 'land-use-categories.agriculture', color: '#ffff00' },
+        { label: 'land-use-categories.water-body', color: '#66ffff' },
+        { label: 'land-use-categories.village', color: '#cc9966' },
+        { label: 'land-use-categories.natural-vegetation', color: '#00cc00' },
+        { label: 'land-use-categories.clear-cut', color: '#ff3333' }
+      ]
   }),
 
   computed: {
     showDialog() {
       return this.showDialogLandscape;
     },
+    hasCartographicDatasets(){
+      return !!(this.showFeaturesSupportLayers || this.supportLayersCategoryProdes || this.showFeaturesDeter)
+    },
+    hasLegend(){
+      return !!(this.showFeaturesSupportLayers || this.showFeaturesMonitoring || this.showFeaturesDeter || this.showFeaturesLandUse || this.showFeaturesUrgentAlert)
+    },
+    layerCategories() {
+      return [
+        { name: 'Support Layers', layers: this.supportLayers, show: this.showFeaturesSupportLayers },
+        { name: 'Fire Category Layers', layers: this.supportLayersCategoryFire, show: true },
+        { name: 'Prodes Category Layers', layers: this.supportLayersCategoryProdes, show: true }
+      ].filter(category => category.show);
+    },
     ...mapState('supportLayersUser', ['supportLayerUser']),
     ...mapState('map', ['bounds']),
     ...mapState('supportLayers', [
       'showFeaturesSupportLayers',
       'supportLayers',
+      'supportLayersCategoryFire',
+      'supportLayersCategoryBase',
+      'supportLayersCategoryRaster',
+      'supportLayersCategoryProdes',
+      'supportLayersCategoryAntropismo',
     ]),
     ...mapState('monitoring', ['selectedStages', 'showFeaturesMonitoring']),
+    ...mapState('deter', ['showFeaturesDeter', 'features']),
+    ...mapState('urgent-alerts', ['showFeaturesUrgentAlert']),
+    ...mapState('land-use', ['showFeaturesLandUse','features'])
+
   },
 
   mounted(){
