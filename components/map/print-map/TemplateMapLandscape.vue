@@ -94,13 +94,32 @@
                       style="width: 100%; max-height: 100%; overflow: hidden;"
                     >
                       <LayerList :layers="supportLayerUser" />
-                      <LayerList v-if="showFeaturesSupportLayers" :layers="supportLayers" />
+                      <LayerList
+                        v-if="showFeaturesSupportLayers"
+                        :layers="supportLayers"
+                      />
                       <LayerList :layers="supportLayersCategoryFire" />
-                      <LayerList :layers="supportLayersCategoryProdes" :prodes=true />
-                      <CustomizedLegend v-if="showFeaturesLandUse" :items="landUseCategories" />
-                      <CustomizedLegend v-if="showFeaturesDeter" :items="deterItems" />
-                      <CustomizedLegend v-if="showFeaturesUrgentAlert && !showFeaturesMonitoring" :items="urgentAlertItems" />
-                      <LayerList v-if="showFeaturesMonitoring" :layers="activeMonitoringLabel" :monitoring=true />
+                      <LayerList
+                        :layers="supportLayersCategoryProdes"
+                        :prodes="true"
+                      />
+                      <CustomizedLegend
+                        v-if="showFeaturesLandUse"
+                        :items="landUseCategories"
+                      />
+                      <CustomizedLegend
+                        v-if="showFeaturesDeter"
+                        :items="deterItems"
+                      />
+                      <CustomizedLegend
+                        v-if="showFeaturesUrgentAlert && !showFeaturesMonitoring"
+                        :items="urgentAlertItems"
+                      />
+                      <LayerList
+                        v-if="showFeaturesMonitoring"
+                        :layers="activeMonitoringLabel"
+                        :monitoring="true"
+                      />
                     </div>
                   </div>
                   <div>
@@ -111,9 +130,20 @@
                     >
                       Bases Cartográficas:
                     </p>
-                    <div v-for="layerCategory in layerCategories" :key="layerCategory.name">
-                      <div v-for="layer in layerCategory.layers" :key="layer.id">
-                        <v-row v-if="layer.visible" no-gutters align="center" class="image-container">
+                    <div
+                      v-for="layerCategory in layerCategories"
+                      :key="layerCategory.name"
+                    >
+                      <div
+                        v-for="layer in layerCategory.layers"
+                        :key="layer.id"
+                      >
+                        <v-row
+                          v-if="layer.visible"
+                          no-gutters
+                          align="center"
+                          class="image-container"
+                        >
                           <v-col>
                             <p class="ml-1">
                               <strong>{{ layer.name || '-' }}. </strong>
@@ -155,6 +185,17 @@
             </div>
           </v-col>
         </v-row>
+        <div
+          v-if="showFeaturesMonitoring"
+          style="width: 100%"
+        >
+          <v-data-table
+            :headers="headers"
+            :items="analyticsMonitoring"
+            hide-default-footer
+            class="elevation-1"
+          />
+        </div>
         <div class="no-print">
           <div class="d-flex flex-row align-md-center mr-6 mt-2">
             <v-btn
@@ -243,7 +284,7 @@
 </i18n>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import MapForPrint from './MapForPrint.vue';
 import MiniMap from '@/components/map/print-map/MiniMap.vue';
 import LayerList from './LayerListActive.vue';
@@ -258,7 +299,7 @@ export default {
     MapForPrint,
     MiniMap,
     LayerList,
-    CustomizedLegend
+    CustomizedLegend,
   },
 
   props: {
@@ -289,6 +330,13 @@ export default {
   },
 
   data: () => ({
+    headers: [
+      { text: 'TI', value: 'no_ti' },
+      { text: 'Área CR (ha)', value: 'cr_nu_area_ha' },
+      { text: 'Área DG (ha)', value: 'dg_nu_area_ha' },
+      { text: 'Área DR (ha)', value: 'dr_nu_area_ha' },
+      { text: 'Área FF (ha)', value: 'ff_nu_area_ha' },
+    ],
     map: null,
     miniMap: null,
     currentBouldMap: null,
@@ -299,44 +347,53 @@ export default {
     print_info: process.env.PRINT_INFO,
     activeMonitoringLabel: [],
     deterItems: [
-        { label: 'burnt-scar', color: '#330000' },
-        { label: 'deforestation-veg', color: '#b2b266' },
-        { label: 'disorderly-cs', color: '#ff4dff' },
-        { label: 'deforestation-cr', color: '#cca300' },
-        { label: 'geometric-cs', color: '#669999' },
-        { label: 'degradation', color: '#ff8000' },
-        { label: 'mining', color: '#cccc00' },
-      ],
-      urgentAlertItems: [
-        { label: 'regeneration-deforestation', color: '#990099' },
-        { label: 'degradation', color: '#ff8000' },
-        { label: 'clear-cut', color: '#ff3333' },
-      ],
-      landUseCategories: [
-        { label: 'land-use-categories.agriculture', color: '#ffff00' },
-        { label: 'land-use-categories.water-body', color: '#66ffff' },
-        { label: 'land-use-categories.village', color: '#cc9966' },
-        { label: 'land-use-categories.natural-vegetation', color: '#00cc00' },
-        { label: 'land-use-categories.clear-cut', color: '#ff3333' }
-      ]
+      { label: 'burnt-scar', color: '#330000' },
+      { label: 'deforestation-veg', color: '#b2b266' },
+      { label: 'disorderly-cs', color: '#ff4dff' },
+      { label: 'deforestation-cr', color: '#cca300' },
+      { label: 'geometric-cs', color: '#669999' },
+      { label: 'degradation', color: '#ff8000' },
+      { label: 'mining', color: '#cccc00' },
+    ],
+    urgentAlertItems: [
+      { label: 'regeneration-deforestation', color: '#990099' },
+      { label: 'degradation', color: '#ff8000' },
+      { label: 'clear-cut', color: '#ff3333' },
+    ],
+    landUseCategories: [
+      { label: 'land-use-categories.agriculture', color: '#ffff00' },
+      { label: 'land-use-categories.water-body', color: '#66ffff' },
+      { label: 'land-use-categories.village', color: '#cc9966' },
+      { label: 'land-use-categories.natural-vegetation', color: '#00cc00' },
+      { label: 'land-use-categories.clear-cut', color: '#ff3333' },
+    ],
   }),
 
   computed: {
     showDialog() {
       return this.showDialogLandscape;
     },
-    hasCartographicDatasets(){
-      return !!(this.showFeaturesSupportLayers || this.supportLayersCategoryProdes || this.showFeaturesDeter)
+    hasCartographicDatasets() {
+      return !!(
+        this.showFeaturesSupportLayers
+        || this.supportLayersCategoryProdes
+        || this.showFeaturesDeter);
     },
-    hasLegend(){
-      return !!(this.showFeaturesSupportLayers || this.showFeaturesMonitoring || this.showFeaturesDeter || this.showFeaturesLandUse || this.showFeaturesUrgentAlert)
+    hasLegend() {
+      return !!(
+        this.showFeaturesSupportLayers
+        || this.showFeaturesMonitoring
+        || this.showFeaturesDeter
+        || this.showFeaturesLandUse
+        || this.showFeaturesUrgentAlert
+      );
     },
     layerCategories() {
       return [
         { name: 'Support Layers', layers: this.supportLayers, show: this.showFeaturesSupportLayers },
         { name: 'Fire Category Layers', layers: this.supportLayersCategoryFire, show: true },
-        { name: 'Prodes Category Layers', layers: this.supportLayersCategoryProdes, show: true }
-      ].filter(category => category.show);
+        { name: 'Prodes Category Layers', layers: this.supportLayersCategoryProdes, show: true },
+      ].filter((category) => category.show);
     },
     ...mapState('supportLayersUser', ['supportLayerUser']),
     ...mapState('map', ['bounds']),
@@ -349,16 +406,19 @@ export default {
       'supportLayersCategoryProdes',
       'supportLayersCategoryAntropismo',
     ]),
-    ...mapState('monitoring', ['selectedStages', 'showFeaturesMonitoring']),
+    ...mapState('monitoring', ['selectedStages', 'showFeaturesMonitoring', 'analyticsMonitoring']),
     ...mapState('deter', ['showFeaturesDeter', 'features']),
     ...mapState('urgent-alerts', ['showFeaturesUrgentAlert']),
-    ...mapState('land-use', ['showFeaturesLandUse','features'])
+    ...mapState('land-use', ['showFeaturesLandUse', 'features']),
 
   },
 
-  mounted(){
-    if (this.selectedStages){
-      this.selectedStages.forEach(item => {
+  mounted() {
+    if (this.showFeaturesMonitoring) {
+      this.getDataAnalyticsMonitoringByFunai();
+    }
+    if (this.selectedStages) {
+      this.selectedStages.forEach((item) => {
         item === 'CR' ? this.activeMonitoringLabel.push({
           id: 'cr',
           color: '#ff3333',
@@ -436,6 +496,7 @@ export default {
       style.setAttribute('media', 'print');
       window.print();
     },
+    ...mapActions('monitoring', ['getDataAnalyticsMonitoringByFunai']),
   },
 };
 </script>
