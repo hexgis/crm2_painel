@@ -11,7 +11,7 @@
           height="36"
           width="36"
           class="button-drawer"
-          @click="removeAllFeatures()"
+          @click="toggleFileLoader()"
           v-on="on"
         >
           <transition name="slide-x-file-drawer-button">
@@ -289,8 +289,12 @@ export default {
     },
 
     remove(index) {
-      this.files.splice(index, 1);
-      this.removeFileFromMap(index);
+        this.files.splice(index, 1);
+        this.removeFileFromMap(index);
+        this.showOptions = false;
+        setTimeout(() => {
+          this.showOptions = true;
+        }, 0);      
     },
 
     saveIntoDb(index) {
@@ -298,7 +302,7 @@ export default {
       this.saveToDatabase({ index });
     },
 
-    removeAllFeatures() {
+    toggleFileLoader() {
       this.showOptions = !this.showOptions;
     },
 
