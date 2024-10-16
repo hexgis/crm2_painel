@@ -27,7 +27,7 @@
 export default {
   props: {
     layers: {
-      type: Array,
+      type: [Array, Object],
       required: true
     },
     monitoring: {
