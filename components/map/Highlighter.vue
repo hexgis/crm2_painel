@@ -68,7 +68,7 @@
                         >
                           <v-text-field
                             v-model="lat"
-                            placeholder="-8.62065"
+                            :placeholder="placeholderLat"
                             class="decimal-field"
                             :class="latError"
                             suffix="°"
@@ -93,7 +93,7 @@
                             v-model="lng"
                             class="decimal-field"
                             :class="lngError"
-                            placeholder="-53.32244"
+                            :placeholder="placeholderLon"
                             suffix="°"
                             solo
                             flat
@@ -506,6 +506,16 @@ export default {
     },
   },
 
+  computed: {
+    placeholderLat() {
+      return this.$i18n.locale === 'pt-br' ? '-8,62065' : '-8.62065'
+    },
+    placeholderLon() {
+      return this.$i18n.locale === 'pt-br' ? '-53,32244' : '-53.32244'
+    },
+  },
+
+
   methods: {
     updateColor(color) {
       this.selectedColor = color;
@@ -565,6 +575,12 @@ export default {
       let longitude;
       let hasError = false;
 
+      const normalizeCoordinate = (value) => {
+          return this.$i18n.locale === 'pt-br'
+              ? value.replace(',', '.')
+              : value
+      }
+
       const validateDMSInput = () => {
         const fields = ['degN', 'minN', 'secN', 'degW', 'minW', 'secW'];
         fields.forEach((field) => {
@@ -576,14 +592,14 @@ export default {
       };
 
       const validateDecimalInput = () => {
-        if (!this.lat || isNaN(this.lat)) {
-          this.latError = true;
-          hasError = true;
-        }
-        if (!this.lng || isNaN(this.lng)) {
-          this.lngError = true;
-          hasError = true;
-        }
+          if (!this.lat || isNaN(normalizeCoordinate(this.lat))) {
+              this.latError = true;
+              hasError = true;
+          }
+          if (!this.lng || isNaN(normalizeCoordinate(this.lng))) {
+              this.lngError = true;
+              hasError = true;
+          }
       };
 
       const calculateDecimal = (deg, min, sec) => parseFloat(deg) + parseFloat(min / 60) + parseFloat(sec / 3600);
@@ -596,46 +612,30 @@ export default {
 
       const calculateLatitudeLongitude = () => {
         if (this.coordType === this.$i18n.t('decimal-label')) {
-          validateDecimalInput();
+          validateDecimalInput()
           if (!hasError) {
-            latitude = parseFloat(this.lat);
-            longitude = parseFloat(this.lng);
+            latitude = parseFloat(normalizeCoordinate(this.lat))
+            longitude = parseFloat(normalizeCoordinate(this.lng))
           }
         } else {
-          validateDMSInput();
+          validateDMSInput()
           if (!hasError) {
             latitude = this.north
-              ? this.calculateDecimal(
-                this.degN,
-                this.minN,
-                this.secN,
-              )
-              : this.calculateNegativeDecimal(
-                this.degN,
-                this.minN,
-                this.secN,
-              );
+              ? calculateDecimal(this.degN, this.minN, this.secN)
+              : calculateNegativeDecimal(this.degN, this.minN, this.secN)
             longitude = this.east
-              ? this.calculateDecimal(
-                this.degW,
-                this.minW,
-                this.secW,
-              )
-              : this.calculateNegativeDecimal(
-                this.degW,
-                this.minW,
-                this.secW,
-              );
+              ? calculateDecimal(this.degW, this.minW, this.secW)
+              : calculateNegativeDecimal(this.degW, this.minW, this.secW)
+              }
           }
         }
-      };
 
-      calculateLatitudeLongitude();
+      calculateLatitudeLongitude()
 
-      if (hasError) return;
+      if (hasError) return
 
-      this.showEdit = true;
-      this.map.flyTo([latitude, longitude], 12);
+      this.showEdit = true
+      this.map.flyTo([latitude, longitude], 12)
       const svgIcon = L.divIcon({
         className: 'custom-icon',
         html: `<svg id="Layer_1" style="enable-background:new 0 0 91 91;" version="1.1" viewBox="0 0 91 91" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
@@ -646,12 +646,12 @@ export default {
             </svg>`,
         iconSize: [54, 54],
         iconAnchor: [28, 45],
-      });
+      })
       const novoMarcador = L.marker([latitude, longitude], {
         icon: svgIcon,
-      });
-      novoMarcador.addTo(this.map);
-      this.drawnItems.addLayer(novoMarcador);
+      })
+      novoMarcador.addTo(this.map)
+      this.drawnItems.addLayer(novoMarcador)
 
       novoMarcador.on('click', () => {
         if (this.isDeleteButtonActive) {
