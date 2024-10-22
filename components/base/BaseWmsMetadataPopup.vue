@@ -1,8 +1,11 @@
 <template>
   <l-layer-group ref="popup">
     <l-popup :options="popupOptions">
-      <LoadingIconVue v-if="isLoadingData"/>
-      <v-card v-else class="fill-height">
+      <LoadingIconVue v-if="isLoadingData" />
+      <v-card
+        v-else
+        class="fill-height"
+      >
         <v-tabs
           v-if="data && Object.keys(data).length"
           background-color="primary"
@@ -169,8 +172,8 @@ import LoadingIconVue from '../map/file-loader/LoadingIcon.vue';
 
 export default {
   name: 'BaseWmsMetadataPopup',
-  components:{
-    LoadingIconVue
+  components: {
+    LoadingIconVue,
   },
   props: {
     map: {
@@ -184,12 +187,12 @@ export default {
     popup: null,
     data: null,
     instrumentoGestao: {}, // Changed to an empty object
-    loadingData: false
+    loadingData: false,
   }),
 
   computed: {
-    isLoadingData(){
-        return this.loadingData
+    isLoadingData() {
+      return this.loadingData;
     },
     isSmallScreen() {
       return window.innerWidth < 768;
@@ -386,9 +389,8 @@ export default {
       );
     },
 
-    async fetchInstrumentoGestao(co_funai) {
-      this.loadingData = true;
-      const url = await this.$api.$get(`funai/instrumento-gestao/?co_funai=${co_funai}`);
+    fetchInstrumentoGestao(co_funai) {
+      const url = `https://cmr.funai.gov.br/priority_api/funai/instrumento-gestao/?co_funai=${co_funai}`;
       this.$axios
         .get(url)
         .then((response) => {
@@ -401,7 +403,6 @@ export default {
             this.instrumentoGestao = {};
           }
         })
-        .finally(()=> this.loadingData = false)
         .catch((error) => {
           console.error('Error fetching data:', error);
           this.instrumentoGestao = {};
