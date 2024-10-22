@@ -1,8 +1,11 @@
 <template>
   <l-layer-group ref="popup">
     <l-popup :options="popupOptions">
-      <LoadingIconVue v-if="isLoadingData"/>
-      <v-card v-else class="fill-height">
+      <LoadingIconVue v-if="isLoadingData" />
+      <v-card
+        v-else
+        class="fill-height"
+      >
         <v-tabs
           v-if="data && Object.keys(data).length"
           background-color="primary"
@@ -111,37 +114,51 @@
           </v-tab>
 
           <v-tab-item
-            v-if="
-              instrumentoGestao &&
-                Object.keys(instrumentoGestao).length
-            "
+            v-if="instrumentoGestao && instrumentoGestao.length"
             class="fill-height"
           >
-            <v-card-text
-              style="max-height: 312px; overflow-y: auto"
-            >
-              <v-row
-                v-for="(value, field) in instrumentoGestao"
-                :key="field"
-                class="mx-0 list-separator"
-                dense
+            <v-card-text style="max-height: 312px; overflow-y: auto">
+              <div
+                v-for="(item, index) in instrumentoGestao"
+                :key="index"
               >
-                <v-col
-                  cols="5"
-                  class="text-right"
+                <v-row class="mx-0 grey lighten-4 my-2">
+                  <v-col
+                    cols="12"
+                    class="text-center font-weight-bold"
+                  >
+                    {{ $t('instrument-management') }} {{ index + 1 }}
+                  </v-col>
+                </v-row>
+                <v-row
+                  v-for="(value, key) in item"
+                  :key="key + index"
+                  class="mx-0 list-separator"
+                  dense
                 >
-                  {{ formatField(field) }}:
-                </v-col>
-                <v-col
-                  cols="7"
-                  class="text-subtitle-2"
-                  style="overflow-wrap: anywhere"
-                >
-                  <span>
-                    {{ formatValue(value, field) }}
-                  </span>
-                </v-col>
-              </v-row>
+                  <v-col
+                    cols="5"
+                    class="text-right font-weight-bold"
+                  >
+                    {{ formatField(key) }}:
+                  </v-col>
+                  <v-col
+                    cols="7"
+                    class="text-subtitle-2"
+                    style="overflow-wrap: anywhere"
+                  >
+                    <span v-if="isValidUrl(value)">
+                      <a
+                        :href="value"
+                        target="_blank"
+                      >{{ value }}</a>
+                    </span>
+                    <span v-else>
+                      {{ formatValue(value, key) }}
+                    </span>
+                  </v-col>
+                </v-row>
+              </div>
             </v-card-text>
           </v-tab-item>
         </v-tabs>
@@ -169,8 +186,8 @@ import LoadingIconVue from '../map/file-loader/LoadingIcon.vue';
 
 export default {
   name: 'BaseWmsMetadataPopup',
-  components:{
-    LoadingIconVue
+  components: {
+    LoadingIconVue,
   },
   props: {
     map: {
@@ -184,12 +201,12 @@ export default {
     popup: null,
     data: null,
     instrumentoGestao: {}, // Changed to an empty object
-    loadingData: false
+    loadingData: false,
   }),
 
   computed: {
-    isLoadingData(){
-        return this.loadingData
+    isLoadingData() {
+      return this.loadingData;
     },
     isSmallScreen() {
       return window.innerWidth < 768;
@@ -386,22 +403,18 @@ export default {
       );
     },
 
-    async fetchInstrumentoGestao(co_funai) {
-      this.loadingData = true;
-      const url = await this.$api.$get(`funai/instrumento-gestao/?co_funai=${co_funai}`);
+    async  fetchInstrumentoGestao(co_funai) {
+      const url = `http://localhost:8080/funai/instrumento-gestao/?co_funai=${co_funai}`;
       this.$axios
         .get(url)
         .then((response) => {
           if (response.data && response.data.length > 0) {
-            const data = response.data[0];
-            this.instrumentoGestao = Array.isArray(data)
-              ? data[0]
-              : data;
+            const { data } = response;
+            this.instrumentoGestao = data; // Verifica se é um array antes de acessar o índice 0
           } else {
             this.instrumentoGestao = {};
           }
         })
-        .finally(()=> this.loadingData = false)
         .catch((error) => {
           console.error('Error fetching data:', error);
           this.instrumentoGestao = {};
