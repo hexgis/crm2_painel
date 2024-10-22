@@ -2,8 +2,6 @@ import Vue from 'vue';
 
 export const state = () => ({
   supportLayerUser: {},
-  activeMonitoringLabel: [],
-  supportLayers: [],
   popupInfo: {},
   selectedColor: '#FF0000',
 });
