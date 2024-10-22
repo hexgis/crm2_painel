@@ -15,6 +15,12 @@ export const mutations = {
     state.selectedColor = color;
   },
 
+  reorderLayers(state, payload) {
+    state.supportLayers = payload.supportLayers;
+    state.supportLayerUser = payload.supportLayerUser;
+    state.activeMonitoringLabel = payload.activeMonitoringLabel;
+  },
+
   setSupportLayersUser(state, LayersUser) {
     state.supportLayerUser = {};
     for (const layer of LayersUser) {

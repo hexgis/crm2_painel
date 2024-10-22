@@ -1,6 +1,6 @@
 <template>
   <v-list-group
-    v-if="group"
+    v-if="group && (isPlanet ? group.name.includes('Planet') : !group.name.includes('Planet'))"
     v-show="checkSearchLayer()"
     v-model="value"
   >
@@ -24,7 +24,7 @@
         </v-list-item-title>
       </v-list-item-content>
 
-      <v-col v-if="group.name === 'Alta Resolução'">
+      <v-col v-if="group.name === 'Alta Resolução' && !isPlanet">
         <div>
           <v-tooltip>
             <template #activator="{ on }">
@@ -104,12 +104,16 @@ export default {
 
   components: { SupportLayersGroupItemRaster },
 
-  props: {
-    group: {
-      type: Object,
-      default: null,
+    props: {
+        group: {
+            type: Object,
+            default: null,
+        },
+        isPlanet: {
+            type: Boolean,
+            default: false,
+        },
     },
-  },
 
   data: () => ({
     value: null,
