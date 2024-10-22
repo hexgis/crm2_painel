@@ -403,10 +403,9 @@ export default {
       );
     },
 
-    async  fetchInstrumentoGestao(co_funai) {
-      const url = `http://localhost:8080/funai/instrumento-gestao/?co_funai=${co_funai}`;
-      this.$axios
-        .get(url)
+    fetchInstrumentoGestao(co_funai) {
+      this.$api
+        .$get(`funai/instrumento-gestao/?co_funai=${co_funai}`)
         .then((response) => {
           if (response.data && response.data.length > 0) {
             const { data } = response;
