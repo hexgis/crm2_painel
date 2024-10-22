@@ -34,6 +34,7 @@ export const state = () => ({
   },
   filteredLayers: [],
   filteredLayersId: [],
+  orderedLayers: [],
 });
 
 export const getters = {
@@ -424,6 +425,9 @@ export const mutations = {
   setSearchLayer(state, search) {
     state.searchLayer = search;
   },
+  setOrderedLayers(state, layers) {
+    state.orderedLayers = layers;
+  }
 };
 
 export const actions = {
@@ -705,4 +709,28 @@ export const actions = {
 
     commit('setFilterOptions', data);
   },
+
+  removeSupportLayers({commit, rootCommit }, {concatenatedLayers}){
+    concatenatedLayers.forEach(layer => {
+      if (layer.date_created) {
+        commit('supportLayersUser/toggleLayerVisibility', { id: layer.id, visible: false }, { root: true });
+        return
+      }
+      commit('toggleLayerVisibility', {id: layer.id, visible: false})
+    });
+  },
+
+  addSupportLayers({ commit, dispatch }, { layers }) {
+    for (let index = layers.length - 1; index >= 0; index--) {
+      const layer = layers[index];
+      setTimeout(() => {
+        if (layer.date_created) {
+          commit('supportLayersUser/toggleLayerVisibility', { id: layer.id, visible: true }, { root: true });
+          return;
+        }
+        commit('toggleLayerVisibility', { id: layer.id, visible: true });
+      }, 100);
+    }
+    commit('setOrderedLayers', layers);
+  }
 };
