@@ -62,7 +62,7 @@
             <div class="file-block">
               <div class="file-button-area">
                 <ConfirmButton
-                  icon="mdi-delete-outline"
+                  icon="mdi-delete"
                   :icon-tooltip="$t('remove-feature-tooltip')"
                   @confirm="remove(i)"
                 />
@@ -76,15 +76,15 @@
                       v-on="on"
                       @click="flyToBound(file.feature)"
                     >
-                      <v-icon size="50">
-                        {{ 'mdi-navigation-outline' }}
+                      <v-icon size="50" class="icon-color">
+                        {{ 'mdi-navigation' }}
                       </v-icon>
                     </v-btn>
                   </template>
                   <span>{{ $t('go-to-tooltip') }}</span>
                 </v-tooltip>
                 <ConfirmButton
-                  icon="mdi-database-plus-outline"
+                  icon="mdi-database-plus"
                   :icon-tooltip="$t('database-tooltip')"
                   @confirm="saveIntoDb(i)"
                 />
@@ -462,6 +462,9 @@ export default {
 </script>
 
 <style lang="sass">
+.icon-color  
+  color: #31383A !important
+
 .button-drawer
     z-index: 9999
 .file-option-class
@@ -486,9 +489,7 @@ export default {
         margin-top: -3px
         > .v-icon
             transform: rotate(45deg)
-            opacity: 0.4
-.go-to-icon:hover
-    opacity: 1
+
 .file-legend
     width: 100%
     height: 100%
@@ -543,7 +544,7 @@ export default {
         flex-direction: column
         position: relative
         z-index: 1
-        margin: 5px 10px 0 50px
+        margin: 2px 10px 0 15px
         padding-bottom: 5px
         transition: ease all 0.6s
         .file-list-box
@@ -557,7 +558,7 @@ export default {
                 z-index: 1
                 align-items: center
                 background-color: white
-                border-radius: 40px
+                border-radius: 5px
                 border: 1px solid rgba(0, 0, 0, 0.1)
                 padding: 1px 20px 1px 0
                 margin: 2px 0
