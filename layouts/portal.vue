@@ -21,101 +21,188 @@
         <v-row class="info">
           <div class="help-cards-container">
             <v-row>
-              <v-col cols="10" class="mt-5">
-                <v-card class="info card" flat layout="row" layout-wrap layout-align="space-around">
+              <v-col
+                cols="10"
+                class="mt-5"
+              >
+                <v-card
+                  class="info card"
+                  flat
+                  layout="row"
+                  layout-wrap
+                  layout-align="space-around"
+                >
                   <div class="logo--wrapper">
-                    <v-img contain class="logo" src="/img/portal/acesso-informacao.png" />
-                    <v-img contain class="logo" src="/img/logo-cmr.svg" />
-                    <v-img contain class="logo" src="/img/portal/ne-logo.png" />
-                    <v-img contain class="logo" src="/img/funai.svg" />
+                    <v-img
+                      contain
+                      class="logo"
+                      src="/img/portal/acesso-informacao.png"
+                    />
+                    <v-img
+                      contain
+                      class="logo"
+                      src="/img/logo-cmr.svg"
+                    />
+                    <v-img
+                      contain
+                      class="logo"
+                      src="/img/portal/ne-logo.png"
+                    />
+                    <v-img
+                      contain
+                      class="logo"
+                      src="/img/funai.svg"
+                    />
                   </div>
                 </v-card>
               </v-col>
-              <v-col cols="6" class="mobile-help-column" v-show="isSmallScreen">
+              <v-col
+                v-show="isSmallScreen"
+                cols="6"
+                class="mobile-help-column"
+              >
                 <v-row>
                   <v-col class="card-mobile">
                     {{ $t('we-are-help-title') }}
-                    <a :href="helpLinks.cmrProjectUrl" target="_blank">
-                      {{ $t('we-are-help-link') }}</a></v-col>
+                    <a
+                      :href="helpLinks.cmrProjectUrl"
+                      target="_blank"
+                    >
+                      {{ $t('we-are-help-link') }}</a>
+                  </v-col>
                 </v-row>
                 <v-row>
                   <v-col class="card-mobile">
                     {{ $t('access-help-title') }}
-                    <a :href="helpLinks.cmrProjectUrl" target="_blank">
-                      {{ $t('access-help-link') }}</a></v-col>
+                    <a
+                      :href="helpLinks.cmrProjectUrl"
+                      target="_blank"
+                    >
+                      {{ $t('access-help-link') }}</a>
+                  </v-col>
                 </v-row>
                 <v-row>
                   <v-col class="card-mobile">
                     {{ $t('project-help-title') }}
-                    <a :href="helpLinks.cmrProjectUrl" target="_blank">
-                      {{ $t('project-help-link') }}</a></v-col>
+                    <a
+                      :href="helpLinks.cmrProjectUrl"
+                      target="_blank"
+                    >
+                      {{ $t('project-help-link') }}</a>
+                  </v-col>
                 </v-row>
                 <v-row>
                   <v-col class="card-mobile">
                     {{ $t('manual-help-title') }}
-                    <a :href="helpLinks.cmrManualUrl" target="_blank">
-                      {{ $t('manual-help-link') }}</a></v-col>
+                    <a
+                      :href="helpLinks.cmrManualUrl"
+                      target="_blank"
+                    >
+                      {{ $t('manual-help-link') }}</a>
+                  </v-col>
                 </v-row>
               </v-col>
             </v-row>
           </div>
           <v-col cols="2">
-            <v-card width="200" class="info card" flat layout="row" layout-wrap layout-align="space-between"
-              v-show="!isSmallScreen">
+            <v-card
+              v-show="!isSmallScreen"
+              width="200"
+              class="info card"
+              flat
+              layout="row"
+              layout-wrap
+              layout-align="space-between"
+            >
               <v-card-title class="card-title">
                 {{ $t('we-are-help-title') }}
               </v-card-title>
               <v-card-subtitle class="card-subtitle">
                 <p class="link-footer-dark text-h7">
-                  <a :href="helpLinks.cmrProjectUrl" target="_blank">{{ $t('we-are-help-link') }}</a>
+                  <a
+                    :href="helpLinks.cmrProjectUrl"
+                    target="_blank"
+                  >{{ $t('we-are-help-link') }}</a>
                 </p>
               </v-card-subtitle>
             </v-card>
           </v-col>
           <v-col cols="2">
-            <v-card width="200" flat class="info card" layout="row" layout-wrap layout-align="space-between"
-              v-show="!isSmallScreen">
+            <v-card
+              v-show="!isSmallScreen"
+              width="200"
+              flat
+              class="info card"
+              layout="row"
+              layout-wrap
+              layout-align="space-between"
+            >
               <v-card-title class="card-title">
                 {{ $t('access-help-title') }}
               </v-card-title>
               <v-card-subtitle class="card-subtitle">
                 <p class="link-footer-dark text-h7">
-                  <a :href="helpLinks.cmrProjectUrl" target="_blank">
+                  <a
+                    :href="helpLinks.cmrProjectUrl"
+                    target="_blank"
+                  >
                     {{ $t('access-help-link') }}</a>
                 </p>
               </v-card-subtitle>
             </v-card>
           </v-col>
           <v-col cols="2">
-            <v-card width="200" flat class="info card" layout="row" layout-wrap layout-align="space-between"
-              v-show="!isSmallScreen">
+            <v-card
+              v-show="!isSmallScreen"
+              width="200"
+              flat
+              class="info card"
+              layout="row"
+              layout-wrap
+              layout-align="space-between"
+            >
               <v-card-title class="card-title">
                 {{ $t('project-help-title') }}
               </v-card-title>
               <v-card-subtitle class="card-subtitle">
                 <p class="link-footer-dark text-h7">
-                  <a :href="helpLinks.cmrProjectUrl" target="_blank">
+                  <a
+                    :href="helpLinks.cmrProjectUrl"
+                    target="_blank"
+                  >
                     {{ $t('project-help-link') }}</a>
                 </p>
               </v-card-subtitle>
             </v-card>
           </v-col>
-          <v-col v-if="userLogged" cols="2">
-            <v-card flat width="275" class="info card" layout="row" layout-wrap layout-align="space-between"
-              v-show="!isSmallScreen">
+          <v-col
+            v-if="userLogged"
+            cols="2"
+          >
+            <v-card
+              v-show="!isSmallScreen"
+              flat
+              width="275"
+              class="info card"
+              layout="row"
+              layout-wrap
+              layout-align="space-between"
+            >
               <v-card-title class="card-title">
                 {{ $t('manual-help-title') }}
               </v-card-title>
               <v-card-subtitle class="card-subtitle">
                 <p class="link-footer-dark text-h7">
-                  <a :href="helpLinks.cmrManualUrl" target="_blank">
+                  <a
+                    :href="helpLinks.cmrManualUrl"
+                    target="_blank"
+                  >
                     {{ $t('manual-help-link') }}</a>
                 </p>
               </v-card-subtitle>
             </v-card>
           </v-col>
         </v-row>
-
       </div>
     </v-main>
   </v-app>
@@ -156,10 +243,11 @@
 
 <script>
 import CarouselDefault from '../components/panel/CarouselDefault';
+
 export default {
   name: 'App',
   components: {
-    CarouselDefault
+    CarouselDefault,
   },
   data() {
     return {
@@ -173,28 +261,28 @@ export default {
         cmrProjectUrl: 'https://cmr.funai.gov.br/o-projeto/',
         cmrTalkToUs: 'https://cmr.funai.gov.br/contato/',
       },
-    }
-  },
-
-  mounted() {
-    this.checkScreenSize()
-    window.addEventListener('resize', this.checkScreenSize)
-  },
-
-  beforeDestroy() {
-    window.removeEventListener('resize', this.checkScreenSize)
-  },
-
-  methods: {
-    checkScreenSize() {
-      this.isSmallScreen = window.innerWidth <= 768
-    },
+    };
   },
 
   head: () => ({
     title: 'CMR',
   }),
-}
+
+  mounted() {
+    this.checkScreenSize();
+    window.addEventListener('resize', this.checkScreenSize);
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('resize', this.checkScreenSize);
+  },
+
+  methods: {
+    checkScreenSize() {
+      this.isSmallScreen = window.innerWidth <= 768;
+    },
+  },
+};
 </script>
 
 <style scoped lang="sass">
@@ -202,7 +290,6 @@ export default {
   height: 100vh
   overflow-y: auto
   overflow-x: hidden
-
 
 .link-footer-dark a,
 .link-footer a
@@ -217,11 +304,9 @@ export default {
   height: 80px
   width: 150px
 
-
 .card-title
   font-size: 0.9vw
   font-weight: normal
-
 
 .card-subtitle
   font-size: 0.8vw
@@ -231,7 +316,6 @@ export default {
   color: white
   background: #D92B3F
   justify-content: center
-
 
   &-content
     max-width: 50%
