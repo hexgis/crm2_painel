@@ -62,7 +62,7 @@ push:
   image: docker:24.0.5
   before_script:
     - docker load -i app
-    - base64 -d $GCP_SA_KEY | docker login -u _json_key --password-stdin https://gcr.io
+    - base64 -d $GCP_SA_KEY | docker login -u _json_key --password-stdin https://us-central1-docker.pkg.dev
   script:
     - docker push $IMAGE
   dependencies:
