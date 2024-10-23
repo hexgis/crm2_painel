@@ -388,24 +388,15 @@ export default {
 
     async fetchInstrumentoGestao(co_funai) {
       this.loadingData = true;
-      const url = await this.$api.$get(`funai/instrumento-gestao/?co_funai=${co_funai}`);
-      this.$axios
-        .get(url)
-        .then((response) => {
-          if (response.data && response.data.length > 0) {
-            const data = response.data[0];
-            this.instrumentoGestao = Array.isArray(data)
-              ? data[0]
-              : data;
-          } else {
-            this.instrumentoGestao = {};
-          }
-        })
-        .finally(()=> this.loadingData = false)
-        .catch((error) => {
-          console.error('Error fetching data:', error);
-          this.instrumentoGestao = {};
-        });
+      const url = `funai/instrumento-gestao/?co_funai=${co_funai}`;
+      try {
+        this.instrumentoGestao = await this.$api.$get(url)
+      } catch(error) {
+        console.error('Error fetching data:', error);
+        this.instrumentoGestao = {};
+      } finally {
+        this.loadingData = false
+      }
     },
   },
 };
