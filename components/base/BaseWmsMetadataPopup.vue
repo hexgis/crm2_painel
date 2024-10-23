@@ -403,16 +403,13 @@ export default {
       );
     },
 
-    fetchInstrumentoGestao(co_funai) {
-      this.$api
-        .$get(`funai/instrumento-gestao/?co_funai=${co_funai}`)
+    async  fetchInstrumentoGestao(co_funai) {
+      const url = `https://cmr.funai.gov.br/priority_api/funai/instrumento-gestao/?co_funai=${co_funai}`;
+      this.$axios
+        .get(url)
         .then((response) => {
-          if (response.data && response.data.length > 0) {
-            const { data } = response;
-            this.instrumentoGestao = data; // Verifica se é um array antes de acessar o índice 0
-          } else {
-            this.instrumentoGestao = {};
-          }
+          const { data } = response;
+          this.instrumentoGestao = data;
         })
         .catch((error) => {
           console.error('Error fetching data:', error);
