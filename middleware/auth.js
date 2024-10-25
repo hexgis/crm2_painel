@@ -5,6 +5,9 @@ export default function ({ store, redirect, route, getRouteBaseName, localePath 
     }
     store.dispatch('auth/tryAutoLogin')
     if (!store.state.auth.token) {
+      if (getRouteBaseName() === 'cadastro') {
+        return
+    }
         if (getRouteBaseName() !== 'login') {
             return redirect(localePath('/login'))
         }
