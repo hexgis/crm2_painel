@@ -407,12 +407,12 @@ export default {
       this.loadingData = true;
       const url = `funai/instrumento-gestao/?co_funai=${co_funai}`;
       try {
-        this.instrumentoGestao = await this.$api.$get(url)
-      } catch(error) {
+        this.instrumentoGestao = await this.$api.$get(url);
+      } catch (error) {
         console.error('Error fetching data:', error);
         this.instrumentoGestao = {};
       } finally {
-        this.loadingData = false
+        this.loadingData = false;
       }
     },
   },
