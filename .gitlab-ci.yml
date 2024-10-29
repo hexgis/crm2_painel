@@ -2,15 +2,16 @@ stages: # List of stages for jobs, and their order of execution
   - build
   - test
   - push
+  - update
 
 variables:
   IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
 
 services:
-  - docker:24.0.5-dind
+  - docker:27.3.0-dind
 
 build:
-  image: docker:24.0.5
+  image: docker:27.3.0
   stage: build
   script:
     - docker build -t $IMAGE .
@@ -59,7 +60,7 @@ test:
 
 push:
   stage: push
-  image: docker:24.0.5
+  image: docker:27.3.0
   before_script:
     - docker load -i app
     - base64 -d $GCP_SA_KEY | docker login -u _json_key --password-stdin https://us-central1-docker.pkg.dev
@@ -71,3 +72,18 @@ push:
     - main
     - develop
     - tags
+
+update-dev-hex:
+  stage: update
+  image: dirceusilva/base_k8s_python:latest
+  script:
+    - echo $CI_COMMIT_BRANCH
+    - echo "${KUBECONFIG_DEV}" | base64 -d > /config
+    - export KUBECONFIG=/config
+    - git clone https://${CI_REGISTRY_USER}:${CI_REGISTRY_PASSWORD}@gitlab.xskylab.com/cmr/helm.git
+    - cd helm/charts/
+    - helm upgrade -i cmr2-painel -n funai cmr2-painel --reuse-values --set image.tag=$CI_COMMIT_SHORT_SHA
+  dependencies:
+    - push
+  only:
+    - develop
