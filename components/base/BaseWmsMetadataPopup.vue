@@ -403,16 +403,17 @@ export default {
       );
     },
 
-    async  fetchInstrumentoGestao(co_funai) {
-      this.$api
-        .$get(`funai/instrumento-gestao/?co_funai=${co_funai}`)
-        .then((response) => {
-          this.instrumentoGestao = response;
-        })
-        .catch((error) => {
-          console.error('Error fetching data:', error);
-          this.instrumentoGestao = {};
-        });
+    async fetchInstrumentoGestao(co_funai) {
+      this.loadingData = true;
+      const url = `funai/instrumento-gestao/?co_funai=${co_funai}`;
+      try {
+        this.instrumentoGestao = await this.$api.$get(url);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        this.instrumentoGestao = {};
+      } finally {
+        this.loadingData = false;
+      }
     },
   },
 };
