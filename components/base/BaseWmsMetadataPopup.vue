@@ -404,12 +404,10 @@ export default {
     },
 
     async  fetchInstrumentoGestao(co_funai) {
-      const url = `https://cmr.funai.gov.br/priority_api/funai/instrumento-gestao/?co_funai=${co_funai}`;
-      this.$axios
-        .get(url)
+      this.$api
+        .$get(`funai/instrumento-gestao/?co_funai=${co_funai}`)
         .then((response) => {
-          const { data } = response;
-          this.instrumentoGestao = data;
+          this.instrumentoGestao = response;
         })
         .catch((error) => {
           console.error('Error fetching data:', error);
