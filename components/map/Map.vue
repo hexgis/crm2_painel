@@ -269,7 +269,7 @@ import BaseWmsMetadataPopup from '@/components/base/BaseWmsMetadataPopup';
 // import WebhooksLayers from '@/components/webhooks/WebhooksLayers'
 import PriorityLayers from '@/components/priority/PriorityLayers';
 import DeterLayers from '@/components/deter/DeterLayers';
-import AlertLayers from '@/components/urgent-alerts/AlertLayers';
+import AlertLayers from '@/components/monitoring/AlertLayers';
 import LandUseLayers from '@/components/land-use/LandUseLayers';
 import SupportUserLayersMap from '@/components/support/SupportUserLayersMap';
 import 'leaflet/dist/leaflet.css';

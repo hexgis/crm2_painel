@@ -112,7 +112,7 @@
                         :items="deterItems"
                       />
                       <CustomizedLegend
-                        v-if="showFeaturesUrgentAlert && !showFeaturesMonitoring"
+                        v-if="showFeaturesUrgentAlerts && !showFeaturesMonitoring"
                         :items="urgentAlertItems"
                       />
                       <LayerList
@@ -385,7 +385,7 @@ export default {
         || this.showFeaturesMonitoring
         || this.showFeaturesDeter
         || this.showFeaturesLandUse
-        || this.showFeaturesUrgentAlert
+        || this.showFeaturesUrgentAlerts
       );
     },
     layerCategories() {
@@ -408,7 +408,7 @@ export default {
     ]),
     ...mapState('monitoring', ['selectedStages', 'showFeaturesMonitoring', 'analyticsMonitoring']),
     ...mapState('deter', ['showFeaturesDeter', 'features']),
-    ...mapState('urgent-alerts', ['showFeaturesUrgentAlert']),
+    ...mapState('urgent-alerts', ['showFeaturesUrgentAlerts']),
     ...mapState('land-use', ['showFeaturesLandUse', 'features']),
 
   },
