@@ -174,22 +174,34 @@ export default {
             }/${yyyy}`
         },
 
-        createMap() {
+       async createMap() {
             try {
                 require('@/plugins/L.SimpleGraticule')
                 require('@/plugins/L.Control.MapBounds')
 
+                if (!this.$refs.printMap) {
+              throw new Error('Referência ao mapa não encontrada.')
+            }
+
                 this.map = this.$refs.printMap.mapObject
 
                 window.L = this.$L // define leaflet global
+
+                if (!this.map) {
+              throw new Error('Mapa não foi corretamente inicializado.')
+            }
                                 
                 this.currentBouldMap = this.map.getBounds()
-                this.$emit('updateBounds', this.currentBouldMap)
+                this.$nextTick(() => {
+                  this.$emit('updateBounds', this.currentBouldMap)
+                })
                 this.map.invalidateSize()
                 this.map.on('move', this.onMainMapMoving)
                 this.map.on('moveend', this.onMainMapMoved)
 
-                this.$L.control
+                
+
+                await this.$L.control
                     .mapBounds({
                         type: 'center',
                         position: 'bottomleft',
@@ -203,14 +215,16 @@ export default {
                     zoomIntervals: intervalZooms.default[this.leafSize.type],
                 }
 
-                this.$L.simpleGraticule(options).addTo(this.map)
+                await this.$L.simpleGraticule(options).addTo(this.map)
 
                 if (
                     this.selectedBaseMap &&
                     this.selectedBaseMap.options.label === 'Bing'
                 ) {
                     const bingLayer = this.createBingLayer()
-                    this.map.addLayer(bingLayer)
+                    if (bingLayer) {
+                      this.map.addLayer(bingLayer)
+                    }
                 }
 
                 if (!this.tmsToPrint.visible) {
