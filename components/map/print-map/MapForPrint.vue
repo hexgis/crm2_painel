@@ -182,7 +182,7 @@ export default {
                 this.map = this.$refs.printMap.mapObject
 
                 window.L = this.$L // define leaflet global
-
+                                
                 this.currentBouldMap = this.map.getBounds()
                 this.$emit('updateBounds', this.currentBouldMap)
                 this.map.invalidateSize()
@@ -213,12 +213,41 @@ export default {
                     this.map.addLayer(bingLayer)
                 }
 
-                this.mainMap.eachLayer((layer) => {
-                    if (layer._events) {
-                        const cloned = cloneLayer(layer)
-                        this.map.addLayer(cloned)
-                    }
-                })
+                if (!this.tmsToPrint.visible) {
+                    this.mainMap.eachLayer((layer) => {
+                        if (layer._events.add) {
+                            const cloned = cloneLayer(layer)
+                            this.map.addLayer(cloned)
+                        }
+
+                        if (layer instanceof this.$L.Marker) {
+                            const elements = layer.getIcon().options.html
+
+                            if (
+                                elements &&
+                                elements.classList.contains('custom-marker')
+                            ) {
+                                const elementsClone = elements.cloneNode(true)
+                                elementsClone.querySelector(
+                                    'input'
+                                ).readOnly = true
+                                const clonedMarker = this.$L.marker(
+                                    layer.getLatLng(),
+                                    {
+                                        icon: this.$L.divIcon({
+                                            className: '',
+                                            html: elementsClone,
+                                        }),
+                                    }
+                                )
+                                this.map.addLayer(clonedMarker)
+                            } else {
+                                const cloned = cloneLayer(layer)
+                                this.map.addLayer(cloned)
+                            }
+                        }
+                    })
+                }
 
                 this.valueScale = true
                 this.valueNorthArrow = true
@@ -264,5 +293,4 @@ export default {
     color: red
     font-weight: bold
     padding: 5px
-
 </style>
