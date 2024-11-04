@@ -1,5 +1,5 @@
 <template>
-  <l-layer-group ref="popup">
+  <l-layer-group ref="popup" :visible="!isDrawing">
     <l-popup :options="popupOptions">
       <LoadingIconVue v-if="isLoadingData" />
       <v-card
@@ -181,6 +181,7 @@
   }
   </i18n>
 <script>
+import {mapState} from 'vuex';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import LoadingIconVue from '../map/file-loader/LoadingIcon.vue';
 
@@ -219,6 +220,8 @@ export default {
         color: 'secondary',
       };
     },
+
+    ...mapState('map', ['isDrawing']),
   },
 
   watch: {
