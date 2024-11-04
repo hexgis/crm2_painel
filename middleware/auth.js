@@ -4,14 +4,21 @@ export default function ({ store, redirect, route, getRouteBaseName, localePath 
       return redirect(newPath)
     }
     store.dispatch('auth/tryAutoLogin')
+    const baseName = getRouteBaseName()
+    const isPublicRoute = [
+      'cadastro',
+      'portal',
+      'projeto',
+      'terras-indigenas',
+      'como-funciona',
+      'video',
+      'contato'].includes(baseName)
     if (!store.state.auth.token) {
-      if (getRouteBaseName() === 'cadastro') {
-        return
-    }
-        if (getRouteBaseName() !== 'login') {
+        if (isPublicRoute) return
+        if (baseName !== 'login') {
             return redirect(localePath('/login'))
         }
-    } else if (getRouteBaseName() === 'login') {
+    } else if (baseName === 'login') {
         return redirect(localePath('/'))
     }
 }
