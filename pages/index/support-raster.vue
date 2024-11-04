@@ -188,7 +188,7 @@ export default {
     computed: {
         years() {
             const groupsWithContent = this.orderedSupportLayersGroups.filter(
-                (group) => group.layers && group.layers.length > 0
+                (group) => group.layers && group.layers.length > 0 && !group.name.includes('Planet')
             )
             const yearsWithContent = groupsWithContent
                 .map((group) => {
