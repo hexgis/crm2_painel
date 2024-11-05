@@ -142,6 +142,7 @@
             width="35"
             :src="northArrow"
           />
+
           <v-col
             cols="12"
             class="pa-0"
@@ -166,7 +167,6 @@
           :options-style="interestStyle"
           :visible="showInterestArea"
         />
-
         <SupportUserLayersMap />
 
         <MapIndigenousLand />
@@ -269,13 +269,14 @@ import BaseWmsMetadataPopup from '@/components/base/BaseWmsMetadataPopup';
 // import WebhooksLayers from '@/components/webhooks/WebhooksLayers'
 import PriorityLayers from '@/components/priority/PriorityLayers';
 import DeterLayers from '@/components/deter/DeterLayers';
-import AlertLayers from '@/components/urgent-alerts/AlertLayers';
+import AlertLayers from '@/components/monitoring/AlertLayers';
 import LandUseLayers from '@/components/land-use/LandUseLayers';
 import SupportUserLayersMap from '@/components/support/SupportUserLayersMap';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-basemaps/L.Control.Basemaps.css';
 import 'leaflet-minimap/dist/Control.MiniMap.min.css';
 import DrawingPanel from '@/components/map/drawing-tool/DrawingPanel.vue';
+
 import Highlighter from '@/components/map/Highlighter.vue';
 import MapIndigenousLand from '@/components/map/MapIndigenousLand';
 
@@ -390,21 +391,21 @@ export default {
           zIndex: 1,
         },
       },
+      // {
+      //   url: '//mt0.google.com/vt/lyrs=r&hl=en&x={x}&y={y}&z={z}',
+      //   options: {
+      //     label: 'Google Roadmap',
+      //     tag: 'Google Roadmap',
+      //     attribution:
+      //                   'Map data &copy; <a href="//maps.google.com/">Google</a> Altered roadmap',
+      //     maxZoom: 21,
+      //     maxNativeZoom: 19,
+      //     subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+      //     zIndex: 1,
+      //   },
+      // },
       {
-        url: '//mt0.google.com/vt/lyrs=r&hl=en&x={x}&y={y}&z={z}',
-        options: {
-          label: 'Google Roadmap',
-          tag: 'Google Roadmap',
-          attribution:
-                        'Map data &copy; <a href="//maps.google.com/">Google</a> Altered roadmap',
-          maxZoom: 21,
-          maxNativeZoom: 19,
-          subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-          zIndex: 1,
-        },
-      },
-      {
-        url: '//mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}',
+        url: '//mt0.google.com/vt/lyrs=y&hl=pt&x={x}&y={y}&z={z}',
         options: {
           label: 'Google Hybrid',
           tag: 'Google Hybrid',
