@@ -140,12 +140,12 @@ export default {
           route: '/monitoring',
           show: process.env.ROUTE_MONITORING === 'true',
         },
-        {
-          name: this.$t('urgent-alerts-tab'),
-          icon: 'mdi-alarm-light',
-          route: '/urgent-alerts',
-          show: process.env.ROUTE_URGENT_ALERTS === 'true',
-        },
+        // {
+        //   name: this.$t('urgent-alerts-tab'),
+        //   icon: 'mdi-alarm-light',
+        //   route: '/urgent-alerts',
+        //   show: process.env.ROUTE_URGENT_ALERTS === 'true',
+        // },
         {
           name: this.$t('high-resolution-mosaics-tab'),
           icon: 'mdi-book-open-page-variant',
