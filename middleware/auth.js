@@ -14,11 +14,18 @@ export default function ({ store, redirect, route, getRouteBaseName, localePath 
       'video',
       'contato'].includes(baseName)
     if (!store.state.auth.token) {
-        if (isPublicRoute) return
-        if (baseName !== 'login') {
-            return redirect(localePath('/login'))
+      if (getRouteBaseName() === 'auth-confirmar') {
+        const code = route.query.code;
+        if (code) {
+          store.commit('auth/setConfirmationCode', code);
         }
-    } else if (baseName === 'login') {
-        return redirect(localePath('/'))
-    }
+        return;
+      }
+      if (isPublicRoute) return
+      if (baseName !== 'login') {
+          return redirect(localePath('/login'))
+      }
+  } else if (baseName === 'login') {
+      return redirect(localePath('/'))
+  }
 }
