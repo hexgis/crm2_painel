@@ -285,6 +285,7 @@ if (typeof window !== 'undefined') {
   require('leaflet-basemaps');
   require('leaflet-minimap');
   require('leaflet-draw');
+  require('@/plugins/text-box');
 }
 
 export default {
