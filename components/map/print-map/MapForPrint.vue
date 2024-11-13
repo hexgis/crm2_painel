@@ -69,7 +69,7 @@ import SupportLayers from '@/components/support/SupportLayers'
 import SupportLayersHazard from '@/components/support/SupportLayersHazard'
 import SupportLayersProdes from '@/components/support/SupportLayersProdes'
 import SupportLayersRaster from '@/components/support/SupportLayersRaster'
-import AlertLayers from '@/components/urgent-alerts/AlertLayers'
+import AlertLayers from '@/components/monitoring/AlertLayers'
 import DeterLayers from '@/components/deter/DeterLayers'
 import LandUseLayers from '@/components/land-use/LandUseLayers'
 import SupportUserLayersMap from '@/components/support/SupportUserLayersMap'
@@ -174,12 +174,12 @@ export default {
             }/${yyyy}`
         },
 
-       async createMap() {
+        async createMap() {
             try {
                 require('@/plugins/L.SimpleGraticule')
                 require('@/plugins/L.Control.MapBounds')
 
-                if (!this.$refs.printMap) {
+            if (!this.$refs.printMap) {
               throw new Error('Referência ao mapa não encontrada.')
             }
 
@@ -187,19 +187,17 @@ export default {
 
                 window.L = this.$L // define leaflet global
 
-                if (!this.map) {
+            if (!this.map) {
               throw new Error('Mapa não foi corretamente inicializado.')
             }
-                                
-                this.currentBouldMap = this.map.getBounds()
+
+                this.currentBouldMap = await this.map.getBounds()
                 this.$nextTick(() => {
                   this.$emit('updateBounds', this.currentBouldMap)
                 })
                 this.map.invalidateSize()
                 this.map.on('move', this.onMainMapMoving)
                 this.map.on('moveend', this.onMainMapMoved)
-
-                
 
                 await this.$L.control
                     .mapBounds({
@@ -212,9 +210,8 @@ export default {
                     interval: 20,
                     showOriginLabel: true,
                     redraw: 'move',
-                    zoomIntervals: intervalZooms.default[this.leafSize.type],
+                    zoomIntervals: intervalZooms?.default[this.leafSize.type],
                 }
-
                 await this.$L.simpleGraticule(options).addTo(this.map)
 
                 if (
@@ -227,41 +224,20 @@ export default {
                     }
                 }
 
-                if (!this.tmsToPrint.visible) {
-                    this.mainMap.eachLayer((layer) => {
-                        if (layer._events.add) {
-                            const cloned = cloneLayer(layer)
-                            this.map.addLayer(cloned)
-                        }
-
-                        if (layer instanceof this.$L.Marker) {
-                            const elements = layer.getIcon().options.html
-
-                            if (
-                                elements &&
-                                elements.classList.contains('custom-marker')
-                            ) {
-                                const elementsClone = elements.cloneNode(true)
-                                elementsClone.querySelector(
-                                    'input'
-                                ).readOnly = true
-                                const clonedMarker = this.$L.marker(
-                                    layer.getLatLng(),
-                                    {
-                                        icon: this.$L.divIcon({
-                                            className: '',
-                                            html: elementsClone,
-                                        }),
-                                    }
-                                )
-                                this.map.addLayer(clonedMarker)
-                            } else {
-                                const cloned = cloneLayer(layer)
-                                this.map.addLayer(cloned)
-                            }
-                        }
-                    })
-                }
+                this.mainMap.eachLayer((layer) => {
+                  if (layer && layer._events) {
+                    try {
+                      const clonedLayer = cloneLayer(layer);
+                      if (clonedLayer) {
+                        this.map.addLayer(clonedLayer);
+                      } else {
+                        console.warn('Falha ao clonar camada:', layer);
+                      }
+                    } catch (cloneError) {
+                      console.error('Erro ao clonar camada:', cloneError);
+                    }
+                  }
+                });
 
                 this.valueScale = true
                 this.valueNorthArrow = true
