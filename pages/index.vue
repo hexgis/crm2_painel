@@ -121,13 +121,9 @@ export default {
       return this.getRouteBaseName() === 'index';
     },
     allTabs() {
-      return [
-        {
-          name: this.$t('layers-tab'),
-          icon: 'mdi-layers',
-          route: '/support',
-          show: process.env.ROUTE_SUPPORT === 'true',
-        },
+      /*
+        TODO: Commented modules will be added post-launch cmr2
+
         {
           name: this.$t('priority-tab'),
           icon: 'mdi-map-marker-alert',
@@ -135,17 +131,45 @@ export default {
           show: process.env.ROUTE_PRIORITY === 'true',
         },
         {
+          name: this.$t('document-tab'),
+          icon: 'mdi-file-document',
+          route: '/document',
+          show: process.env.ROUTE_DOCUMENT === 'true',
+        },
+        {
+          name: this.$t('deter-tab'),
+          icon: 'mdi-leaf',
+          route: '/deter',
+          show: process.env.ROUTE_DETER === 'true',
+        },
+        {
+          name: this.$t('prodes-tab'),
+          icon: 'mdi-view-dashboard',
+          route: '/support-prodes',
+          show: process.env.ROUTE_SUPPORT_PRODES === 'true',
+        },
+           {
+          name: this.$t('catalog-tab'),
+          icon: 'mdi-folder-multiple-image',
+          route: '/catalog',
+          show: process.env.ROUTE_CATALOG === 'true',
+        },
+        */
+
+      return [
+        {
+          name: this.$t('layers-tab'),
+          icon: 'mdi-layers',
+          route: '/support',
+          show: process.env.ROUTE_SUPPORT === 'true',
+        },
+
+        {
           name: this.$t('search-tab'),
           icon: 'mdi-map-search',
           route: '/monitoring',
           show: process.env.ROUTE_MONITORING === 'true',
         },
-        // {
-        //   name: this.$t('urgent-alerts-tab'),
-        //   icon: 'mdi-alarm-light',
-        //   route: '/urgent-alerts',
-        //   show: process.env.ROUTE_URGENT_ALERTS === 'true',
-        // },
         {
           name: this.$t('high-resolution-mosaics-tab'),
           icon: 'mdi-book-open-page-variant',
@@ -165,34 +189,10 @@ export default {
           show: process.env.ROUTE_LAND_USE === 'true',
         },
         {
-          name: this.$t('prodes-tab'),
-          icon: 'mdi-view-dashboard',
-          route: '/support-prodes',
-          show: process.env.ROUTE_SUPPORT_PRODES === 'true',
-        },
-        {
-          name: this.$t('document-tab'),
-          icon: 'mdi-file-document',
-          route: '/document',
-          show: process.env.ROUTE_DOCUMENT === 'true',
-        },
-        {
-          name: this.$t('catalog-tab'),
-          icon: 'mdi-folder-multiple-image',
-          route: '/catalog',
-          show: process.env.ROUTE_CATALOG === 'true',
-        },
-        {
           name: this.$t('mapoteca-tab'),
           icon: 'mdi-dresser',
           route: '/mapoteca',
           show: process.env.ROUTE_MAPOTECA === 'true',
-        },
-        {
-          name: this.$t('deter-tab'),
-          icon: 'mdi-leaf',
-          route: '/deter',
-          show: process.env.ROUTE_DETER === 'true',
         },
         {
           name: this.$t('analytics-tab'),
