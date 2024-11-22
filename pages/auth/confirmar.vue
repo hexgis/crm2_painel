@@ -36,7 +36,9 @@
             <div class="text-h6 text-center mb-2">
               {{ $t('title') }} <br />
             </div>
-
+            <span style="color: #d92b3f" class="text-subtitle-2" v-if="!isValidPassword">
+              {{ $t('password-validation-error') }}
+            </span>
             <v-text-field
               :append-icon="showPassword ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
               @click:append="togglePasswordVisibility"
@@ -63,9 +65,8 @@
             </div>
           </v-card-text>
           </div>
-
           <v-card-actions class="justify-center pa-4 flex-column">
-            <v-btn block color="primary" :disabled="!passwordsMatch" @click="resetPassword">
+          <v-btn block color="primary" :disabled="!isValidPassword || !passwordsMatch" @click="resetPassword">
               {{ $t('reset-password') }}
             </v-btn>
           </v-card-actions>
@@ -101,7 +102,8 @@
     "password-not-changed": "An error ocurred while processing your request. Please try again.",
     "error-label" : "Error",
     "token-expired-message": "It seems your validation token has expired. Please request a new token to continue.",
-    "password-changed": "Your password has been changed! Sign in with your new password to access CMR."
+    "password-changed": "Your password has been changed! Sign in with your new password to access CMR.",
+    "password-validation-error": "A senha deve ter no mínimo 8 caracteres, incluindo letras maiúsculas e minúsculas, números e caracteres especiais."
   },
   "pt-br": {
     "title": "Redefinição de senha",
@@ -115,7 +117,8 @@
     "password-not-changed": "Ocorreu um erro ao processar sua solicitação. Por favor, tente novamente.",
     "error-label" : "Erro",
     "token-expired-message" : "Parece que seu token de validação expirou. Por favor, solicite um novo token para continuar.",
-    "password-changed" : "Sua senha foi alterada! Faça login com sua nova senha para acessar o CMR."
+    "password-changed" : "Sua senha foi alterada! Faça login com sua nova senha para acessar o CMR.",
+    "password-validation-error": "A senha deve ter no mínimo 8 caracteres, incluindo letras maiúsculas e minúsculas, números e caracteres especiais."
   }
 }
 </i18n>
@@ -147,6 +150,10 @@ export default {
     },
     passwordsMatch() {
       return this.password === this.confirmPassword && this.password !== '';
+    },
+    isValidPassword() {
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+        return passwordRegex.test(this.password)
     },
   },
   methods: {
@@ -181,5 +188,3 @@ export default {
   }
 };
 </script>
-
-
