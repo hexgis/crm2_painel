@@ -154,6 +154,12 @@ export default {
           route: '/catalog',
           show: process.env.ROUTE_CATALOG === 'true',
         },
+          {
+          name: this.$t('support-fire-tab'),
+          icon: 'mdi-fire',
+          route: '/support-hazard',
+          show: process.env.ROUTE_SUPPORT_HAZARD === 'true',
+        },
         */
 
       return [
@@ -175,12 +181,6 @@ export default {
           icon: 'mdi-book-open-page-variant',
           route: '/support-raster',
           show: process.env.ROUTE_SUPPORT_RASTER === 'true',
-        },
-        {
-          name: this.$t('support-fire-tab'),
-          icon: 'mdi-fire',
-          route: '/support-hazard',
-          show: process.env.ROUTE_SUPPORT_HAZARD === 'true',
         },
         {
           name: this.$t('landuse-tab'),
@@ -269,7 +269,7 @@ export default {
       left: 52px !important
 
     > .v-window, > .v-window > .v-window__container > .v-window-item
-      overflow-y: auto
+      overflow-y: hidden !important
       height: 100%
       display: block !important
       margin-bottom: 50px
