@@ -113,12 +113,13 @@
                     <v-row>
                         <v-col cols="12">
                             <v-text-field
+                            
                                 v-model="name"
                                 :label="$t('field-label')"
                                 required
                                 hide-details
                             />
-                            <p class="mt-4">{{ $t('info-text') }}</p>
+                            <p class="mt-4" v-if="isPointType">{{ $t('info-text') }}</p>
                         </v-col>                        
                         <v-col class="mt-n8">
                             <v-tooltip bottom v-if="isPointType">
