@@ -133,7 +133,7 @@
                         v-if="isItemSelected"
                         :selectedItems="selectedItems"
                         @close="handleClose"
-                       
+
                     /> -->
 
                     <v-img
@@ -266,10 +266,11 @@ import Highlighter from '@/components/map/Highlighter.vue'
 import MapIndigenousLand from '@/components/map/MapIndigenousLand'
 
 if (typeof window !== 'undefined') {
-    require('leaflet-bing-layer')
-    require('leaflet-basemaps')
-    require('leaflet-minimap')
-    require('leaflet-draw')
+  require('leaflet-bing-layer');
+  require('leaflet-basemaps');
+  require('leaflet-minimap');
+  require('leaflet-draw');
+  require('@/plugins/text-box');
 }
 
 export default {
