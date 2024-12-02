@@ -16,8 +16,8 @@ export default {
     data() {
         return {
             locales: [
-                { code: 'br', name: 'Português (Brasil)', flag: "/img/brasil-flag.svg", url: "/portal" },
-                { code: 'en', name: 'English (USA)', flag: "/img/usa-flag.svg", url: "/en/portal" }
+                { code: 'pt', name: 'Português (Brasil)', flag: "/img/brasil-flag.svg", url: "/portal" },
+                { code: 'eng', name: 'English (USA)', flag: "/img/usa-flag.svg", url: "/en/portal" }
             ]
         };
     },
