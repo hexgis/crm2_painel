@@ -341,7 +341,7 @@ export default {
 
     async saveColor() {
       try {
-        await this.$api.$patch(
+        await this.$api.patch(
           'user/upload-file/geo/update-properties/',
           {
             id: this.layer.id,
