@@ -37,12 +37,13 @@
           :error="errorTi"
           :search-input.sync="searchTi"
           @change="clearSearchTi"
+          :disabled="isLoadingTi"
         />
       </v-row>
     </v-slide-y-transition>
 
     <v-row
-      v-if="filterOptions.tiFilters && filterOptions.year"
+      v-if="filters.ti && filterOptions.tiFilters && filterOptions.year"
       class="pt-1 px-3"
     >
       <v-select
@@ -297,6 +298,7 @@ export default {
 
   data() {
     return {
+      isLoadingTi: false,
       isGeoserver: process.env.MONITORING_GEOSERVER === 'true',
       searchTi: '',
       searchCr: '',
@@ -325,6 +327,7 @@ export default {
 
   watch: {
     'filters.cr': function (value) {
+      this.filters.ti = null;
       this.populateTiOptions(value);
     },
 
@@ -414,8 +417,15 @@ export default {
     },
 
     populateTiOptions(cr) {
-      if (cr) this.$store.dispatch('land-use/getTiOptions', cr);
-      else this.$store.dispatch('land-use/getTiOptions');
+      this.isLoadingTi = true;
+      if (cr) {
+      this.$store.dispatch('land-use/getTiOptions', cr).finally(() => {
+        this.isLoadingTi = false;
+      });
+    } else {
+      this.$store.dispatch('land-use/getTiOptions').finally(() => {
+        this.isLoadingTi = false; 
+      });}
     },
 
     populateYearsOptions(ti) {
