@@ -36,8 +36,8 @@
           multiple
           :error="errorTi"
           :search-input.sync="searchTi"
-          @change="clearSearchTi"
           :disabled="isLoadingTi"
+          @change="clearSearchTi"
         />
       </v-row>
     </v-slide-y-transition>
@@ -416,16 +416,19 @@ export default {
       this.searchTi = '';
     },
 
+    /**
+ * Populates the TI options based on the provided regional coordination.
+ * @param {Object|null} cr - The cr for filtering TI options. Pass `null` for no filtering.
+ */
     populateTiOptions(cr) {
       this.isLoadingTi = true;
-      if (cr) {
-      this.$store.dispatch('land-use/getTiOptions', cr).finally(() => {
+      const action = cr
+        ? this.$store.dispatch('land-use/getTiOptions', cr)
+        : this.$store.dispatch('land-use/getTiOptions');
+
+      action.finally(() => {
         this.isLoadingTi = false;
       });
-    } else {
-      this.$store.dispatch('land-use/getTiOptions').finally(() => {
-        this.isLoadingTi = false; 
-      });}
     },
 
     populateYearsOptions(ti) {
