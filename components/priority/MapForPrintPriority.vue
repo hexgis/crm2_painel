@@ -593,10 +593,6 @@ export default {
 </script>
 
 <style>
-p {
-    font-size: xx-small;
-    margin: 0;
-}
 .print-mini-map-text {
     color: dimgray !important;
     background: white;
